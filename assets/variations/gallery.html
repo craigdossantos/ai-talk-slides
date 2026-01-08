@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html><head>
+<meta charset="UTF-8"><title>Ice Cream Directions - Variations</title>
+<style>
+body { font-family: 'Comic Sans MS', system-ui; background: linear-gradient(135deg, #ff6b6b 0%, #feca57 50%, #48dbfb 100%); min-height: 100vh; padding: 2rem; color: #2d3436; }
+.container { max-width: 1600px; margin: 0 auto; background: white; border: 4px solid black; border-radius: 0; padding: 2rem; box-shadow: 8px 8px 0 black; }
+h1 { text-align: center; font-size: 2.5rem; text-transform: uppercase; letter-spacing: 4px; text-shadow: 3px 3px 0 #feca57; }
+.subtitle { text-align: center; color: #636e72; margin-bottom: 2rem; font-style: italic; }
+.chars { background: #ffeaa7; border: 3px solid black; padding: 1rem; margin-bottom: 2rem; }
+.chars h3 { margin: 0 0 0.5rem 0; }
+.chars p { margin: 0.25rem 0; font-size: 0.9rem; }
+.gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+.card { position: relative; border: 4px solid black; overflow: hidden; cursor: pointer; transition: all 0.2s; background: white; }
+.card:hover { transform: translate(-4px, -4px); box-shadow: 8px 8px 0 black; }
+.card.selected { border-color: #e17055; box-shadow: 8px 8px 0 #e17055; }
+.card img { width: 100%; display: block; }
+.badge { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.85); color: #feca57; padding: 0.75rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+.selected-badge { position: absolute; top: 1rem; right: 1rem; background: #e17055; color: white; padding: 0.5rem 1rem; font-weight: bold; opacity: 0; transition: all 0.2s; }
+.card.selected .selected-badge { opacity: 1; }
+.feedback { background: #dfe6e9; border: 3px solid black; padding: 1.5rem; margin: 2rem 0; }
+.feedback h3 { margin: 0 0 1rem 0; text-transform: uppercase; }
+textarea { width: 100%; min-height: 80px; padding: 1rem; border: 3px solid black; font-size: 1rem; font-family: inherit; }
+.actions { display: flex; gap: 1rem; justify-content: center; margin-top: 1rem; }
+button { padding: 1rem 2rem; border: 3px solid black; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 1rem; transition: all 0.2s; }
+button:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 black; }
+.btn-primary { background: #e17055; color: white; }
+.output { margin-top: 2rem; padding: 1rem; background: #2d3436; color: #00ff00; border: 3px solid black; font-family: monospace; display: none; }
+.output.visible { display: block; }
+</style></head>
+<body><div class="container">
+<h1>🍦 Ice Cream Directions</h1>
+<p class="subtitle">Same concept, different visual interpretations - pick the one that IS the slide</p>
+
+<div class="chars">
+<h3>Characters:</h3>
+<p><strong>Main:</strong> 30-something tech woman - confident, casual-professional, digitally native</p>
+<p><strong>Secondary:</strong> 40s curmudgeonly dev - stuck in 90s/2000s mindset, resistant to change</p>
+</div>
+
+<div class="gallery">
+<div class="card" data-index="0" data-filename="variation_20260107_215953_01_classic-comic-strip.jpg" data-style="Classic Comic Strip">
+<img src="variation_20260107_215953_01_classic-comic-strip.jpg" alt="Classic Comic Strip">
+<div class="badge">Classic Comic Strip</div>
+<div class="selected-badge">✓ SELECTED</div>
+</div><div class="card" data-index="1" data-filename="variation_20260107_215953_02_split-screen-comparison.jpg" data-style="Split Screen Comparison">
+<img src="variation_20260107_215953_02_split-screen-comparison.jpg" alt="Split Screen Comparison">
+<div class="badge">Split Screen Comparison</div>
+<div class="selected-badge">✓ SELECTED</div>
+</div><div class="card" data-index="2" data-filename="variation_20260107_215953_03_before-and-after-tutorial.jpg" data-style="Before & After Tutorial">
+<img src="variation_20260107_215953_03_before-and-after-tutorial.jpg" alt="Before & After Tutorial">
+<div class="badge">Before & After Tutorial</div>
+<div class="selected-badge">✓ SELECTED</div>
+</div><div class="card" data-index="3" data-filename="variation_20260107_215953_04_thought-process-contrast.jpg" data-style="Thought Process Contrast">
+<img src="variation_20260107_215953_04_thought-process-contrast.jpg" alt="Thought Process Contrast">
+<div class="badge">Thought Process Contrast</div>
+<div class="selected-badge">✓ SELECTED</div>
+</div>
+</div>
+<div class="feedback"><h3>Feedback for iteration</h3><textarea id="feedback" placeholder="What would make this better for your slide?"></textarea></div>
+<div class="actions"><button class="btn-primary" id="confirmBtn" disabled>Confirm Selection</button></div>
+<pre class="output" id="output"></pre>
+</div>
+<script>
+let selected = null;
+document.querySelectorAll('.card').forEach(card => {
+  card.onclick = () => {
+    if (selected) selected.classList.remove('selected');
+    card.classList.add('selected');
+    selected = card;
+    document.getElementById('confirmBtn').disabled = false;
+  };
+});
+document.getElementById('confirmBtn').onclick = () => {
+  const sel = {action:'select', filename:selected.dataset.filename, style:selected.dataset.style, feedback:document.getElementById('feedback').value};
+  const out = document.getElementById('output');
+  out.textContent = JSON.stringify(sel, null, 2);
+  out.classList.add('visible');
+  navigator.clipboard.writeText(JSON.stringify(sel));
+  alert('Copied to clipboard! Paste back to Claude.');
+};
+</script></body></html>

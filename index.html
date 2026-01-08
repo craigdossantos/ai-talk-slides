@@ -1,0 +1,998 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leveling Up With AI</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/black.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --r-background-color: #0a0a0f;
+        --r-main-font: "Space Grotesk", sans-serif;
+        --r-main-font-size: 38px;
+        --r-main-color: #e8e6e3;
+        --r-heading-font: "Space Grotesk", sans-serif;
+        --r-heading-color: #ffffff;
+        --r-heading-letter-spacing: -0.02em;
+        --r-heading-text-transform: none;
+        --r-heading1-size: 2.2em;
+        --r-heading2-size: 1.6em;
+        --r-heading3-size: 1.2em;
+        --r-link-color: #60a5fa;
+        --accent-warm: #f59e0b;
+        --accent-cool: #3b82f6;
+        --accent-purple: #8b5cf6;
+        --accent-emerald: #10b981;
+      }
+
+      .reveal {
+        background: linear-gradient(
+          135deg,
+          #0a0a0f 0%,
+          #1a1a2e 50%,
+          #16213e 100%
+        );
+      }
+
+      .reveal::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background:
+          radial-gradient(
+            ellipse at 20% 80%,
+            rgba(59, 130, 246, 0.08) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at 80% 20%,
+            rgba(139, 92, 246, 0.06) 0%,
+            transparent 50%
+          ),
+          radial-gradient(
+            ellipse at 50% 50%,
+            rgba(16, 185, 129, 0.04) 0%,
+            transparent 70%
+          );
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .reveal h1,
+      .reveal h2,
+      .reveal h3 {
+        font-weight: 600;
+        line-height: 1.15;
+        margin-bottom: 0.8em;
+      }
+
+      .reveal h1 {
+        background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .reveal blockquote {
+        background: rgba(139, 92, 246, 0.1);
+        border-left: 4px solid var(--accent-purple);
+        padding: 1em 1.5em;
+        margin: 1em 0;
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: 1.1em;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .reveal code {
+        font-family: "JetBrains Mono", monospace;
+        background: rgba(59, 130, 246, 0.15);
+        padding: 0.15em 0.4em;
+        border-radius: 4px;
+        font-size: 0.85em;
+      }
+
+      .reveal ul {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .reveal ul li {
+        position: relative;
+        padding-left: 1.5em;
+        margin-bottom: 0.5em;
+      }
+
+      .reveal ul li::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0.55em;
+        width: 8px;
+        height: 8px;
+        background: var(--accent-cool);
+        border-radius: 50%;
+      }
+
+      .reveal .highlight {
+        color: var(--accent-warm);
+        font-weight: 500;
+      }
+
+      .reveal .section-title {
+        font-size: 0.5em;
+        text-transform: uppercase;
+        letter-spacing: 0.2em;
+        color: var(--accent-purple);
+        margin-bottom: 0.5em;
+        font-weight: 500;
+      }
+
+      .reveal .level-badge {
+        display: inline-block;
+        background: linear-gradient(
+          135deg,
+          var(--accent-cool),
+          var(--accent-purple)
+        );
+        padding: 0.3em 0.8em;
+        border-radius: 20px;
+        font-size: 0.6em;
+        font-weight: 600;
+        margin-bottom: 0.5em;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .reveal .two-column {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2em;
+        text-align: left;
+      }
+
+      .reveal .card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 12px;
+        padding: 1.5em;
+      }
+
+      .reveal .subtitle {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        color: #a5b4fc;
+        font-size: 0.9em;
+        margin-top: -0.5em;
+      }
+
+      .reveal .fragment.fade-up {
+        transform: translateY(20px);
+      }
+
+      .reveal .progress {
+        background: rgba(139, 92, 246, 0.2);
+        height: 3px;
+      }
+
+      .reveal .progress span {
+        background: linear-gradient(
+          90deg,
+          var(--accent-cool),
+          var(--accent-purple)
+        );
+      }
+
+      .reveal .track-header {
+        font-size: 0.4em;
+        text-transform: uppercase;
+        letter-spacing: 0.3em;
+        padding: 0.5em 1em;
+        border-radius: 4px;
+        margin-bottom: 1em;
+      }
+
+      .reveal .track-nontechnical {
+        background: linear-gradient(
+          90deg,
+          rgba(16, 185, 129, 0.2),
+          rgba(16, 185, 129, 0.05)
+        );
+        border-left: 3px solid var(--accent-emerald);
+      }
+
+      .reveal .track-technical {
+        background: linear-gradient(
+          90deg,
+          rgba(59, 130, 246, 0.2),
+          rgba(59, 130, 246, 0.05)
+        );
+        border-left: 3px solid var(--accent-cool);
+      }
+
+      .slide-number {
+        font-family: "JetBrains Mono", monospace !important;
+        font-size: 14px !important;
+        color: rgba(255, 255, 255, 0.3) !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- Title Slide -->
+        <section
+          data-background-image="assets/images/title_option_4.jpg"
+          data-background-size="cover"
+          data-background-opacity="0.4"
+        >
+          <h1>Leveling Up With AI</h1>
+          <p class="subtitle">
+            A practical map for learning, working, and building with AI
+          </p>
+          <p
+            style="
+              margin-top: 2em;
+              font-size: 0.6em;
+              color: rgba(255, 255, 255, 0.5);
+            "
+          >
+            Grounded in lived use, not hype.
+          </p>
+        </section>
+
+        <!-- Section 1: Mental Models, Not Magic -->
+        <section>
+          <section>
+            <p class="section-title">Part 1</p>
+            <h1>Mental Models, Not Magic</h1>
+            <p class="subtitle">The real starting point</p>
+          </section>
+
+          <section>
+            <h2>This talk is not about tools</h2>
+            <p class="fragment fade-up">
+              It's about <span class="highlight">mental models</span>
+            </p>
+            <p
+              class="fragment fade-up"
+              style="font-size: 0.85em; color: #a5b4fc"
+            >
+              How you think about what a tool <em>is</em>, what it can do, and
+              how you work with it over time.
+            </p>
+          </section>
+
+          <section>
+            <h2>The Google Analogy</h2>
+            <ul>
+              <li class="fragment">Google made the internet's corpus usable</li>
+              <li class="fragment">
+                Getting "good at Google" wasn't about features
+              </li>
+              <li class="fragment">
+                It was about
+                <span class="highlight">internalizing a mental model</span>
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Learning to Think Like Google</h2>
+            <div class="card" style="margin-top: 1em">
+              <p style="margin-bottom: 0.5em; color: #ef4444; font-size: 0.8em">
+                What you first tried:
+              </p>
+              <p
+                style="
+                  font-family: &quot;Playfair Display&quot;, serif;
+                  font-style: italic;
+                "
+              >
+                "Please give me directions to the nearest ice cream store which
+                is called Molly Moon."
+              </p>
+            </div>
+            <div class="card fragment" style="margin-top: 1em">
+              <p style="margin-bottom: 0.5em; color: #10b981; font-size: 0.8em">
+                What you learned:
+              </p>
+              <p><code>Molly Moon directions Google Maps</code></p>
+            </div>
+          </section>
+
+          <section>
+            <h2>Chatbots: The Next Step</h2>
+            <p style="margin-bottom: 1em">ChatGPT and Claude are closer to:</p>
+            <ul>
+              <li class="fragment">A savant friend</li>
+              <li class="fragment">Who knows the entire corpus</li>
+              <li class="fragment">
+                And can <span class="highlight">reason across domains</span>
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>The Real Leap: Execution</h2>
+            <p>With coding tools, agents, and workflows...</p>
+            <p
+              class="fragment fade-up"
+              style="font-size: 1.2em; margin-top: 1em"
+            >
+              You are no longer talking to a friend.
+            </p>
+            <p
+              class="fragment fade-up"
+              style="font-size: 1.2em; color: var(--accent-warm)"
+            >
+              You are directing <strong>digital employees</strong>.
+            </p>
+          </section>
+
+          <section>
+            <h2>At Scale</h2>
+            <ul>
+              <li class="fragment">You don't do the execution</li>
+              <li class="fragment">
+                You don't even do most of the coordination
+              </li>
+              <li class="fragment">
+                You become a <span class="highlight">top-level director</span>
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>The Expanded Mental Model</h2>
+            <blockquote>
+              I now have access to the world's corpus of knowledge
+              <strong>and</strong> the ability to make things digitally.
+            </blockquote>
+          </section>
+
+          <section>
+            <h2>Key Insight</h2>
+            <p>
+              Just like Google, this understanding does not arrive by watching.
+            </p>
+            <p
+              class="fragment fade-up"
+              style="
+                margin-top: 1em;
+                font-size: 1.1em;
+                color: var(--accent-warm);
+              "
+            >
+              It only arrives by
+              <strong
+                >using the tools repeatedly until the mental model
+                clicks</strong
+              >.
+            </p>
+            <p
+              class="fragment"
+              style="margin-top: 1.5em; font-size: 0.85em; color: #a5b4fc"
+            >
+              Unlike Google, the cost of <em>not</em> developing this literacy
+              is much higher.
+            </p>
+          </section>
+        </section>
+
+        <!-- Section 2: From Chatting to Labor -->
+        <section>
+          <section>
+            <p class="section-title">Part 2</p>
+            <h1>From Chatting to Labor</h1>
+          </section>
+
+          <section>
+            <h2>Chatbots as Knowledgeable Friends</h2>
+            <ul>
+              <li>Asking questions</li>
+              <li>Getting explanations</li>
+              <li>Brainstorming</li>
+              <li>Summarizing</li>
+            </ul>
+            <p class="fragment" style="margin-top: 1em; color: #a5b4fc">
+              Powerful — but still <em>advisory</em>.
+            </p>
+          </section>
+
+          <section>
+            <h2>The Shift</h2>
+            <p>When AI is given tools, skills, and the ability to act:</p>
+            <div class="two-column fragment" style="margin-top: 1.5em">
+              <div class="card" style="text-align: center">
+                <p style="color: #ef4444; margin-bottom: 0.5em">Stops being</p>
+                <p style="font-size: 1.3em">Advice</p>
+              </div>
+              <div class="card" style="text-align: center">
+                <p style="color: #10b981; margin-bottom: 0.5em">
+                  Starts becoming
+                </p>
+                <p style="font-size: 1.3em; color: var(--accent-warm)">Labor</p>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>The New Stack</h2>
+            <ul>
+              <li class="fragment">Agents</li>
+              <li class="fragment">Skills</li>
+              <li class="fragment">Tools</li>
+              <li class="fragment">Execution loops</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Reframing</h2>
+            <div class="two-column" style="margin-top: 1em">
+              <div class="card">
+                <p
+                  style="font-size: 0.8em; color: #a5b4fc; margin-bottom: 0.5em"
+                >
+                  One chatbot
+                </p>
+                <p style="font-size: 1.2em">One helpful friend</p>
+              </div>
+              <div class="card">
+                <p
+                  style="font-size: 0.8em; color: #a5b4fc; margin-bottom: 0.5em"
+                >
+                  Agents + tools
+                </p>
+                <p style="font-size: 1.2em; color: var(--accent-warm)">
+                  Teams of digital employees
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <blockquote>
+              The big shift isn't better answers.<br />
+              It's
+              <strong>getting work done from a knowledgeable perspective</strong
+              >.
+            </blockquote>
+          </section>
+        </section>
+
+        <!-- Section 3: Why Mapping the Journey Matters -->
+        <section>
+          <section>
+            <p class="section-title">Part 3</p>
+            <h1>Why Mapping the Journey Matters</h1>
+          </section>
+
+          <section>
+            <h2>The Current Reality</h2>
+            <ul>
+              <li class="fragment">Overwhelming amount of information</li>
+              <li class="fragment">Everyone teaches from a different level</li>
+              <li class="fragment">Context is rarely stated</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>What Happens</h2>
+            <ul>
+              <li class="fragment">People skip steps</li>
+              <li class="fragment">Everything feels hard</li>
+              <li class="fragment">Nothing feels coherent</li>
+              <li class="fragment" style="color: #ef4444">
+                "This is too complex — I'm out."
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <blockquote style="font-size: 1.1em">
+              Confusion is almost always a <strong>sequencing problem</strong>,
+              not an intelligence problem.
+            </blockquote>
+          </section>
+
+          <section>
+            <h2>Why the Map Exists</h2>
+            <ul>
+              <li class="fragment">
+                To help you know <span class="highlight">where you are</span>
+              </li>
+              <li class="fragment">
+                To understand what's <span class="highlight">next</span>
+              </li>
+              <li class="fragment">
+                To give you permission to
+                <span class="highlight">ignore everything else</span>
+              </li>
+            </ul>
+          </section>
+        </section>
+
+        <!-- Section 4: The Map Itself -->
+        <section>
+          <section>
+            <p class="section-title">Part 4</p>
+            <h1>The Map Itself</h1>
+            <p class="subtitle">Depth, Not Identity</p>
+          </section>
+
+          <section>
+            <h2>Important Clarification</h2>
+            <div class="two-column">
+              <div class="card">
+                <p
+                  style="color: #ef4444; margin-bottom: 0.5em; font-size: 0.8em"
+                >
+                  This is NOT:
+                </p>
+                <ul style="font-size: 0.9em">
+                  <li>Technical vs non-technical people</li>
+                  <li>Smart vs not smart</li>
+                </ul>
+              </div>
+              <div class="card fragment">
+                <p
+                  style="color: #10b981; margin-bottom: 0.5em; font-size: 0.8em"
+                >
+                  This IS:
+                </p>
+                <ul style="font-size: 0.9em">
+                  <li>Different depths of engagement</li>
+                  <li>Different willingness to go further</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section>
+            <h2>The Real Divider</h2>
+            <p style="font-size: 1.1em; margin-top: 1em">
+              None of this is inherently hard.
+            </p>
+            <p
+              class="fragment fade-up"
+              style="margin-top: 1em; color: var(--accent-warm)"
+            >
+              The real divider is
+              <strong
+                >willingness to ask questions about things you don't yet
+                understand</strong
+              >.
+            </p>
+          </section>
+        </section>
+
+        <!-- Section 5: Non-Technical Track -->
+        <section>
+          <section>
+            <div class="track-header track-nontechnical">
+              Non-Technical Track
+            </div>
+            <h1>Depth Without Coding</h1>
+            <p class="subtitle">Levels 0–8</p>
+          </section>
+
+          <section>
+            <span class="level-badge">Level 0</span>
+            <h2>Avoidance</h2>
+            <p
+              class="fragment"
+              style="
+                font-family: &quot;Playfair Display&quot;, serif;
+                font-style: italic;
+                color: #a5b4fc;
+              "
+            >
+              "This won't affect my job."
+            </p>
+            <p class="fragment" style="font-size: 0.8em; margin-top: 1em">
+              Historical echoes of early internet skepticism.
+            </p>
+          </section>
+
+          <section>
+            <span class="level-badge">Level 1</span>
+            <h2>AI as Enhanced Google</h2>
+            <ul>
+              <li>Q&A</li>
+              <li>Summaries</li>
+              <li>Explanations</li>
+              <li>Brainstorming</li>
+            </ul>
+            <p
+              class="fragment"
+              style="
+                margin-top: 1em;
+                font-size: 0.85em;
+                color: var(--accent-emerald);
+              "
+            >
+              The goal here is <strong>confidence</strong>, not mastery.
+            </p>
+          </section>
+
+          <section>
+            <span class="level-badge">Level 2</span>
+            <h2>AI as a Thought Partner</h2>
+            <ul>
+              <li>Thinking out loud</li>
+              <li>Writing assistance</li>
+              <li>Reflection and synthesis</li>
+            </ul>
+            <p
+              class="fragment"
+              style="margin-top: 1em; font-style: italic; color: #a5b4fc"
+            >
+              "Oh — this is different."
+            </p>
+          </section>
+
+          <section>
+            <span class="level-badge">Level 3</span>
+            <h2>Context Engineering</h2>
+            <ul>
+              <li>How much context helps vs hurts</li>
+              <li>Structuring inputs for better performance</li>
+              <li>Being explicit about desired outputs</li>
+              <li>Using Projects (Claude / ChatGPT)</li>
+              <li>Choosing the right model</li>
+            </ul>
+            <p
+              class="fragment"
+              style="margin-top: 1em; color: var(--accent-emerald)"
+            >
+              Results start to feel <strong>reliable</strong>.
+            </p>
+          </section>
+
+          <section>
+            <span class="level-badge">Level 4</span>
+            <h2>Capture & Learning</h2>
+            <ul>
+              <li>Voice dictation (Wispr Flow)</li>
+              <li>Automatic meeting notes (Granola)</li>
+              <li>AI as an active tutor</li>
+              <li>Voice mode for learning</li>
+            </ul>
+            <blockquote class="fragment" style="font-size: 0.9em">
+              Separate thinking from formatting. Cleanup comes later.
+            </blockquote>
+          </section>
+
+          <section>
+            <span class="level-badge">Level 5</span>
+            <h2>AI-Enabled Browsing</h2>
+            <ul>
+              <li>AI layers attached to the browser</li>
+              <li>Research without breaking flow</li>
+              <li>Context maintained across tabs</li>
+            </ul>
+            <p
+              class="fragment"
+              style="
+                margin-top: 1em;
+                font-size: 0.85em;
+                color: var(--accent-emerald);
+              "
+            >
+              Autonomy begins <strong>before</strong> APIs or code.
+            </p>
+          </section>
+
+          <section>
+            <span class="level-badge">Level 6</span>
+            <h2>Media & Creative Production</h2>
+            <ul>
+              <li>Image generation (Midjourney, Nano Banana)</li>
+              <li>Iterative refinement</li>
+              <li>Model-specific tuning</li>
+            </ul>
+            <p
+              class="fragment"
+              style="margin-top: 1em; font-style: italic; color: #a5b4fc"
+            >
+              The skill here is not prompting — it's <em>directing taste</em>.
+            </p>
+          </section>
+
+          <section>
+            <span class="level-badge">Level 7</span>
+            <h2>No-Code Automations</h2>
+            <ul>
+              <li>Workflow tools (n8n, Gum Loop)</li>
+              <li>Automating personal & work processes</li>
+              <li>Surprisingly deep without writing code</li>
+            </ul>
+          </section>
+
+          <section>
+            <span class="level-badge">Level 8</span>
+            <h2>Natural-Language Software</h2>
+            <ul>
+              <li>Tools like Lovable, Bolt, AI Studio</li>
+              <li>Creating front-end systems</li>
+              <li>Without understanding internals</li>
+            </ul>
+          </section>
+        </section>
+
+        <!-- Section 6: Technical Track -->
+        <section>
+          <section>
+            <div class="track-header track-technical">Technical Track</div>
+            <h1>Agency & Compounding Power</h1>
+            <p class="subtitle">Levels 1–9</p>
+          </section>
+
+          <section>
+            <span class="level-badge">Level 1</span>
+            <h2>Command Line Basics</h2>
+            <ul>
+              <li>Navigating folders</li>
+              <li>Running commands</li>
+              <li>Letting AI operate where work actually lives</li>
+            </ul>
+          </section>
+
+          <section>
+            <span class="level-badge">Level 2</span>
+            <h2>Version Control</h2>
+            <ul>
+              <li>GitHub as the Dropbox of code</li>
+              <li>History, safety, and experimentation</li>
+            </ul>
+          </section>
+
+          <section>
+            <span class="level-badge">Level 3</span>
+            <h2>AI-Native IDEs</h2>
+            <ul>
+              <li>Tools like Cursor</li>
+              <li>Composer, inline edits</li>
+              <li>First taste of real software creation</li>
+            </ul>
+          </section>
+
+          <section>
+            <span class="level-badge">Level 4</span>
+            <h2>Multi-Mode Workflows</h2>
+            <ul>
+              <li>Planning mode</li>
+              <li>Execution mode</li>
+              <li>Review mode</li>
+            </ul>
+            <p
+              class="fragment"
+              style="margin-top: 1em; font-size: 0.85em; color: #a5b4fc"
+            >
+              Still hand-holding, but with structure.
+            </p>
+          </section>
+
+          <section>
+            <span class="level-badge">Level 5</span>
+            <h2>Full Software Lifecycle</h2>
+            <ul>
+              <li>Deeper planning iterations</li>
+              <li>Deployment & Hosting</li>
+              <li>Databases & MCP servers</li>
+            </ul>
+            <p
+              class="fragment"
+              style="margin-top: 1em; color: var(--accent-cool)"
+            >
+              AI becomes your guide through unfamiliar territory.
+            </p>
+          </section>
+
+          <section>
+            <span class="level-badge">Level 6</span>
+            <h2>Customizing the Harness</h2>
+            <ul>
+              <li>Custom agents & Skills</li>
+              <li>Plugins & Slash commands</li>
+              <li>Editing agent instruction files</li>
+            </ul>
+          </section>
+
+          <section>
+            <span class="level-badge">Level 7</span>
+            <h2>Context & Session Management</h2>
+            <ul>
+              <li>Multiple terminals per project</li>
+              <li>Managing memory and context windows</li>
+              <li>Knowing when to reset vs continue</li>
+            </ul>
+          </section>
+
+          <section>
+            <span class="level-badge">Level 8</span>
+            <h2>Parallel Agents</h2>
+            <ul>
+              <li>Multiple sub-agents</li>
+              <li>Explicit memory systems</li>
+              <li>Custom state handling</li>
+            </ul>
+          </section>
+
+          <section>
+            <span class="level-badge">Level 9</span>
+            <h2>Swarms & Infrastructure</h2>
+            <ul>
+              <li>Large numbers of agents</li>
+              <li>Heavy token usage</li>
+              <li>Local + cloud execution</li>
+              <li>Persistent systems on servers</li>
+            </ul>
+          </section>
+        </section>
+
+        <!-- Section 7: Managing Input Overload -->
+        <section>
+          <section>
+            <p class="section-title">Extension</p>
+            <h1>Managing Input Overload</h1>
+          </section>
+
+          <section>
+            <h2>After Creative & Media Use</h2>
+            <p>Using AI to manage:</p>
+            <ul>
+              <li class="fragment">Email</li>
+              <li class="fragment">Slack</li>
+              <li class="fragment">Docs</li>
+              <li class="fragment">Notifications</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>AI for Cognitive Load</h2>
+            <ul>
+              <li>Summarize</li>
+              <li>Prioritize</li>
+              <li>Draft</li>
+              <li>Reduce noise</li>
+            </ul>
+          </section>
+        </section>
+
+        <!-- Section 8: Examples -->
+        <section>
+          <section>
+            <p class="section-title">Part 5</p>
+            <h1>Examples</h1>
+            <p class="subtitle">Dormant Intelligence</p>
+          </section>
+
+          <section>
+            <h2>Notes Example</h2>
+            <ul>
+              <li>Years of Apple Notes</li>
+              <li>Locked inside an app</li>
+              <li class="fragment">Exported to Markdown</li>
+              <li class="fragment" style="color: var(--accent-emerald)">
+                Became searchable, transformable, and <strong>alive</strong>
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>Recipes Example</h2>
+            <ul>
+              <li>Personal cooking history</li>
+              <li>Messy but rich</li>
+              <li class="fragment">Cleaned, structured, and reusable</li>
+              <li class="fragment">
+                Potential to become sites, systems, or references
+              </li>
+            </ul>
+          </section>
+
+          <section>
+            <blockquote style="font-size: 1.2em">
+              This isn't new data.<br />
+              It's <strong>dormant intelligence</strong>.
+            </blockquote>
+          </section>
+        </section>
+
+        <!-- Section 9: Closing -->
+        <section>
+          <section>
+            <p class="section-title">Closing</p>
+            <h1>Where You Are on the Map</h1>
+          </section>
+
+          <section>
+            <h2>You don't become good at this by watching.</h2>
+            <p class="fragment fade-up" style="margin-top: 1em">
+              You become good at it the same way you became good at Google:
+            </p>
+            <ul class="fragment">
+              <li>By using it</li>
+              <li>By struggling</li>
+              <li>By internalizing a mental model</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2>The Difference</h2>
+            <blockquote style="font-size: 1.2em">
+              This time, the stakes are much higher.
+            </blockquote>
+          </section>
+
+          <section>
+            <h2>You are not behind.</h2>
+            <p
+              class="fragment fade-up"
+              style="font-size: 1.2em; margin-top: 1em"
+            >
+              You are just somewhere on the map.
+            </p>
+            <p
+              class="fragment fade-up"
+              style="
+                margin-top: 1.5em;
+                color: var(--accent-warm);
+                font-size: 1.1em;
+              "
+            >
+              Learn the next step — and ignore the rest for now.
+            </p>
+          </section>
+
+          <section>
+            <h1 style="font-size: 2.5em">Thank You</h1>
+            <p class="subtitle">Questions?</p>
+          </section>
+        </section>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        transition: "fade",
+        transitionSpeed: "default",
+        backgroundTransition: "fade",
+        center: true,
+        slideNumber: "c/t",
+        progress: true,
+        controls: true,
+        controlsTutorial: false,
+        keyboard: true,
+        overview: true,
+        width: 1280,
+        height: 720,
+        margin: 0.1,
+      });
+    </script>
+  </body>
+</html>

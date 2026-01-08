@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Title Slide Image Options</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        background: #0a0a0f;
+        color: #e8e6e3;
+        padding: 2rem;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+        background: linear-gradient(135deg, #ffffff, #a5b4fc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        max-width: 1600px;
+        margin: 0 auto;
+      }
+      .option {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .option img {
+        width: 100%;
+        display: block;
+      }
+      .option-info {
+        padding: 1rem;
+      }
+      .option-number {
+        display: inline-block;
+        background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+        padding: 0.3em 0.8em;
+        border-radius: 20px;
+        font-size: 0.8em;
+        font-weight: 600;
+        margin-bottom: 0.5em;
+      }
+      .option-desc {
+        font-size: 0.9em;
+        color: #a5b4fc;
+        line-height: 1.5;
+      }
+      .user-choice {
+        border-color: #f59e0b;
+        box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+      }
+      .user-choice .option-number {
+        background: linear-gradient(135deg, #f59e0b, #ef4444);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Title Slide Image Options</h1>
+    <div class="grid">
+      <div class="option user-choice">
+        <img src="assets/images/title_option_1.jpg" alt="Option 1" />
+        <div class="option-info">
+          <span class="option-number">Option 1 - Your Direction</span>
+          <p class="option-desc">
+            Split scene: Person with notepad/green-screen CRT vs. person
+            orchestrating a luminous sphere of digital workers, computers, and
+            AI possibility.
+          </p>
+        </div>
+      </div>
+      <div class="option">
+        <img src="assets/images/title_option_2.jpg" alt="Option 2" />
+        <div class="option-info">
+          <span class="option-number">Option 2 - Transformation</span>
+          <p class="option-desc">
+            Single figure mid-transformation: traditional office worker on one
+            side, becoming luminous on the other with glowing geometric birds
+            becoming AI symbols.
+          </p>
+        </div>
+      </div>
+      <div class="option">
+        <img src="assets/images/title_option_3.jpg" alt="Option 3" />
+        <div class="option-info">
+          <span class="option-number">Option 3 - Mountain/Levels</span>
+          <p class="option-desc">
+            Person at base of crystalline mountain with visible levels spiraling
+            up - chat bubbles at bottom, tools, agents, mastery burst at peak.
+            "Leveling up" metaphor.
+          </p>
+        </div>
+      </div>
+      <div class="option">
+        <img src="assets/images/title_option_4.jpg" alt="Option 4" />
+        <div class="option-info">
+          <span class="option-number">Option 4 - Hands/Orchestration</span>
+          <p class="option-desc">
+            Human hands with dozens of holographic arms extending outward, each
+            performing different tasks - coding, designing, writing. Connected
+            by luminous threads.
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
