@@ -73,25 +73,37 @@ function SlideNode({ data }: SlideNodeProps) {
 
   return (
     <div
-      className={`slide-node ${isActive ? "slide-node--active" : ""}`}
+      className={`slide-node ${isActive ? "slide-node--active" : ""} ${slide.backgroundImage ? "slide-node--has-image" : ""}`}
       style={{
         width: `${width}px`,
         height: `${height}px`,
         borderLeftColor: trackColor,
+        backgroundImage: slide.backgroundImage
+          ? `url(${slide.backgroundImage})`
+          : undefined,
       }}
     >
+      {slide.backgroundImage && <div className="slide-node__overlay" />}
       <Handle
         type="target"
         position={Position.Top}
+        id="top"
         className="slide-node__handle"
       />
       {slide.level !== undefined && (
         <span className="slide-node__level">Level {slide.level}</span>
       )}
-      {renderContent()}
+      <div className="slide-node__content-wrapper">{renderContent()}</div>
       <Handle
         type="source"
         position={Position.Bottom}
+        id="bottom"
+        className="slide-node__handle"
+      />
+      <Handle
+        type="source"
+        position={Position.Right}
+        id="right"
         className="slide-node__handle"
       />
     </div>
