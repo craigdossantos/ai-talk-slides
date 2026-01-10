@@ -1,3 +1,4 @@
+import { memo } from "react";
 import type { ReactElement } from "react";
 import { Handle, Position } from "@xyflow/react";
 import type { ResourceNodeProps, ResourceType } from "../../types/presentation";
@@ -76,4 +77,4 @@ function ResourceNode({ data }: ResourceNodeProps) {
   );
 }
 
-export default ResourceNode;
+export default memo(ResourceNode);

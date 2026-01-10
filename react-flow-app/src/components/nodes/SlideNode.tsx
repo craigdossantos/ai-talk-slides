@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Handle, Position } from "@xyflow/react";
 import type { SlideNodeProps } from "../../types/presentation";
 import { NODE_DIMENSIONS, TRACK_COLORS } from "../../types/presentation";
@@ -110,4 +111,4 @@ function SlideNode({ data }: SlideNodeProps) {
   );
 }
 
-export default SlideNode;
+export default memo(SlideNode);

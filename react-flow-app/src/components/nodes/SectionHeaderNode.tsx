@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Handle, Position } from "@xyflow/react";
 import type { SectionHeaderNodeProps } from "../../types/presentation";
 import { NODE_DIMENSIONS, TRACK_COLORS } from "../../types/presentation";
@@ -44,4 +45,4 @@ function SectionHeaderNode({ data }: SectionHeaderNodeProps) {
   );
 }
 
-export default SectionHeaderNode;
+export default memo(SectionHeaderNode);
