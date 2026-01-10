@@ -514,3 +514,19 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - The transition from dark to light theme requires inverting text colors (light text on dark -> dark text on light)
   - Background and text colors are paired - update them together to maintain contrast
 ---
+
+## 2025-01-10 - US-030
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Updated SectionNavigator.css for light theme
+- Changed background from dark (rgba(15, 23, 42, 0.95)) to light (rgba(255, 255, 255, 0.95))
+- Changed border from light (rgba(255, 255, 255, 0.1)) to dark (rgba(0, 0, 0, 0.1))
+- Updated header border-bottom to dark (rgba(0, 0, 0, 0.1))
+- Changed hover states from light overlays to dark overlays
+- Reduced box-shadow intensity for light theme (0.4 → 0.1 opacity)
+- Text colors already handled by CSS custom properties updated in US-029
+- Files changed: src/components/panels/SectionNavigator.css
+- **Learnings for future iterations:**
+  - Components using CSS custom properties (--color-text-*) automatically update when root variables change
+  - For light themes, update rgba() values from white-based to black-based for borders, shadows, and overlays
+  - backdrop-filter: blur() works well on both light and dark themes
+---
