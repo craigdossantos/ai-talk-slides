@@ -418,3 +418,17 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - backdrop-filter: blur(4px) adds visual polish to overlay elements
   - Remove padding from parent when children handle their own padding
 ---
+
+## 2025-01-10 - US-024
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Adjusted layout spacing constants in generateNodes.ts for larger slides
+- Updated SECTION_HORIZONTAL_SPACING from 600 to 800
+- Updated SLIDE_VERTICAL_SPACING from 220 to 450
+- Fixed resourceX calculation to use 520 (new slide width) instead of 280 (old width)
+- Updated function documentation to reflect new spacing values
+- Files changed: src/utils/generateNodes.ts
+- **Learnings for future iterations:**
+  - Layout constants in generateNodes.ts control node spacing on the canvas
+  - When slide dimensions change, remember to update hardcoded width references (like resourceX calculation)
+  - Larger slides require proportionally larger spacing to maintain readability
+---
