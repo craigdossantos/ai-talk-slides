@@ -1,9 +1,10 @@
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, useEffect } from "react";
 import {
   ReactFlow,
   Background,
   BackgroundVariant,
   MiniMap,
+  useReactFlow,
   type NodeMouseHandler,
 } from "@xyflow/react";
 import SlideNode from "./nodes/SlideNode";
@@ -25,6 +26,8 @@ const nodeTypes = {
 };
 
 function PresentationCanvas() {
+  const { fitView } = useReactFlow();
+
   // Generate nodes and edges from data
   const nodes = useMemo(() => generateNodes(sections, slides, resources), []);
 
@@ -42,6 +45,41 @@ function PresentationCanvas() {
     slides,
     nodes,
   });
+
+  // Handle window resize gracefully - refocus current slide after resize
+  useEffect(() => {
+    let resizeTimeout: number;
+
+    const handleResize = () => {
+      // Debounce resize events to avoid excessive fitView calls
+      clearTimeout(resizeTimeout);
+      resizeTimeout = window.setTimeout(() => {
+        if (currentSlideId && !isOverviewMode) {
+          // Refocus on current slide after resize
+          fitView({
+            nodes: [{ id: `slide-${currentSlideId}` }],
+            duration: 300,
+            padding: 0.3,
+            maxZoom: 1.5,
+          });
+        } else if (isOverviewMode) {
+          // Keep overview mode - fit all nodes
+          fitView({
+            duration: 300,
+            padding: 0.05,
+            minZoom: 0.1,
+            maxZoom: 1,
+          });
+        }
+      }, 150);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      clearTimeout(resizeTimeout);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [fitView, currentSlideId, isOverviewMode]);
 
   // Handle node click - navigate to clicked slide or section
   // In overview mode, clicking any node focuses it

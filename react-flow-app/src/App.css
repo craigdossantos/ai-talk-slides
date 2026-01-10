@@ -8,3 +8,60 @@
 .react-flow__pane {
   background-color: var(--color-bg-primary);
 }
+
+/* Smooth edge transitions */
+.react-flow__edge-path {
+  transition:
+    stroke-width 0.2s ease,
+    stroke 0.2s ease;
+}
+
+/* Edge hover effect - slightly thicker */
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke-width: 3px;
+  filter: drop-shadow(0 0 4px var(--color-accent));
+}
+
+/* Viewport transition smoothness */
+.react-flow__viewport {
+  transition: transform 0.3s ease-out;
+}
+
+/* Minimap styling improvements */
+.react-flow__minimap {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Controls styling for consistent dark theme */
+.react-flow__controls {
+  background: var(--color-bg-secondary);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.react-flow__controls button {
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.react-flow__controls button:hover {
+  background: var(--color-bg-primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1366px) {
+  :root {
+    --spacing-md: 12px;
+    --spacing-lg: 20px;
+  }
+}
+
+@media (max-width: 1280px) {
+  :root {
+    --spacing-md: 10px;
+    --spacing-lg: 16px;
+  }
+}

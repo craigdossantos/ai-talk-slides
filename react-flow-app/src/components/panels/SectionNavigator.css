@@ -105,3 +105,47 @@
 .section-navigator__item--active .section-navigator__track-indicator {
   opacity: 1;
 }
+
+/* Responsive adjustments */
+@media (max-width: 1366px) {
+  .section-navigator {
+    min-width: 180px;
+    max-width: 240px;
+    padding: var(--spacing-sm);
+  }
+
+  .section-navigator__title {
+    font-size: 11px;
+  }
+
+  .section-navigator__section-title {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 1280px) {
+  .section-navigator {
+    min-width: 160px;
+    max-width: 200px;
+    top: var(--spacing-md);
+    left: var(--spacing-md);
+  }
+
+  .section-navigator__item {
+    padding: var(--spacing-xs) var(--spacing-sm);
+  }
+
+  .section-navigator__section-title {
+    font-size: 11px;
+  }
+
+  .section-navigator__number {
+    font-size: 11px;
+    min-width: 16px;
+  }
+
+  .section-navigator__track-indicator {
+    width: 6px;
+    height: 6px;
+  }
+}
