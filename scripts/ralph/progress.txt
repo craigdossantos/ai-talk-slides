@@ -401,3 +401,20 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - Level badges should overlay the hero image area for visual hierarchy
   - Top border color works better than left border for wide slide nodes
 ---
+
+## 2025-01-10 - US-023
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Updated SlideNode CSS for hero image layout
+- Added .slide-node__hero class with flex: 0 0 60%, background-size: cover
+- Changed .slide-node padding from var(--spacing-md) to 0 (content-wrapper has padding)
+- Updated .slide-node__content-wrapper to flex: 0 0 40% for bottom area
+- Updated .slide-node__level with white text, darker background (rgba(0,0,0,0.6)), backdrop-filter blur
+- Changed border from border-left to border-top
+- Increased font sizes: title 14px→18px, subtitle 12px→14px, bullets 11px→13px
+- Files changed: src/components/nodes/SlideNode.css
+- **Learnings for future iterations:**
+  - Use flex: 0 0 percentage for fixed-ratio layouts (60%/40% split)
+  - Level badges on images need high contrast - white text on dark translucent background
+  - backdrop-filter: blur(4px) adds visual polish to overlay elements
+  - Remove padding from parent when children handle their own padding
+---

@@ -369,7 +369,7 @@
         "Verify in browser using dev-browser skill: slides show image at top, text below"
       ],
       "priority": 23,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
