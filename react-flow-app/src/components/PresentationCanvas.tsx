@@ -167,23 +167,28 @@ function PresentationCanvas() {
   );
 
   // Initialize keyboard navigation
-  const { currentSlideId, navigateToSlide } = useKeyboardNavigation({
-    sections: sampleSections,
-    slides: sampleSlides,
-    nodes,
-  });
+  const { currentSlideId, isOverviewMode, navigateToSlide, navigateToSection } =
+    useKeyboardNavigation({
+      sections: sampleSections,
+      slides: sampleSlides,
+      nodes,
+    });
 
-  // Handle node click - navigate to clicked slide
+  // Handle node click - navigate to clicked slide or section
+  // In overview mode, clicking any node focuses it
   const handleNodeClick = useCallback<NodeMouseHandler>(
     (_, node) => {
-      // Only navigate for slide nodes
       if (node.type === "slide") {
         // Extract slide ID from node ID (format: "slide-{id}")
         const slideId = node.id.replace("slide-", "");
         navigateToSlide(slideId);
+      } else if (node.type === "sectionHeader") {
+        // Extract section ID from node ID (format: "section-{id}")
+        const sectionId = node.id.replace("section-", "");
+        navigateToSection(sectionId);
       }
     },
-    [navigateToSlide],
+    [navigateToSlide, navigateToSection],
   );
 
   // Mark current slide as active

@@ -16,8 +16,11 @@ interface UseKeyboardNavigationOptions {
 interface UseKeyboardNavigationReturn {
   currentSlideId: string | null;
   currentSectionId: string | null;
+  isOverviewMode: boolean;
   navigateToSlide: (slideId: string) => void;
   navigateToSection: (sectionId: string) => void;
+  toggleOverview: () => void;
+  fitCurrentSlide: () => void;
 }
 
 /**
@@ -26,6 +29,8 @@ interface UseKeyboardNavigationReturn {
  * Arrow keys (up/down/left/right) - Move to adjacent slides
  * PageUp/PageDown - Jump to previous/next section
  * Number keys 1-9 - Jump to numbered section
+ * Escape - Toggle overview mode (fit all nodes)
+ * 0 - Fit current slide to view
  */
 export function useKeyboardNavigation({
   sections,
@@ -39,6 +44,9 @@ export function useKeyboardNavigation({
   const [currentSlideId, setCurrentSlideId] = useState<string | null>(
     slides.length > 0 ? slides[0].id : null,
   );
+
+  // Track overview mode state
+  const [isOverviewMode, setIsOverviewMode] = useState(false);
 
   // Derive current section from current slide
   const currentSectionId =
@@ -56,6 +64,7 @@ export function useKeyboardNavigation({
   const navigateToSlide = useCallback(
     (slideId: string) => {
       setCurrentSlideId(slideId);
+      setIsOverviewMode(false);
       fitView({
         nodes: [{ id: `slide-${slideId}` }],
         duration: fitViewDuration,
@@ -75,6 +84,7 @@ export function useKeyboardNavigation({
         setCurrentSlideId(sectionSlides[0].id);
       }
 
+      setIsOverviewMode(false);
       fitView({
         nodes: [{ id: `section-${sectionId}` }],
         duration: fitViewDuration,
@@ -84,6 +94,45 @@ export function useKeyboardNavigation({
     },
     [fitView, fitViewDuration, slidesBySection],
   );
+
+  // Toggle overview mode (fit all nodes into view)
+  const toggleOverview = useCallback(() => {
+    const newOverviewMode = !isOverviewMode;
+    setIsOverviewMode(newOverviewMode);
+
+    if (newOverviewMode) {
+      // Zoom out to show all nodes - don't specify nodes to fit ALL
+      fitView({
+        duration: fitViewDuration,
+        padding: 0.05,
+        minZoom: 0.1,
+        maxZoom: 1,
+      });
+    } else {
+      // Zoom back to current slide
+      if (currentSlideId) {
+        fitView({
+          nodes: [{ id: `slide-${currentSlideId}` }],
+          duration: fitViewDuration,
+          padding: 0.3,
+          maxZoom: 1.5,
+        });
+      }
+    }
+  }, [fitView, fitViewDuration, currentSlideId, isOverviewMode]);
+
+  // Fit current slide to view (zoom back to focused view)
+  const fitCurrentSlide = useCallback(() => {
+    if (currentSlideId) {
+      setIsOverviewMode(false);
+      fitView({
+        nodes: [{ id: `slide-${currentSlideId}` }],
+        duration: fitViewDuration,
+        padding: 0.3,
+        maxZoom: 1.5,
+      });
+    }
+  }, [fitView, fitViewDuration, currentSlideId]);
 
   // Get all slides in presentation order (flattened by section)
   const orderedSlides = sections.flatMap(
@@ -254,6 +303,20 @@ export function useKeyboardNavigation({
           }
           break;
         }
+
+        case "Escape": {
+          // Toggle overview mode
+          event.preventDefault();
+          toggleOverview();
+          break;
+        }
+
+        case "0": {
+          // Fit current slide to view
+          event.preventDefault();
+          fitCurrentSlide();
+          break;
+        }
       }
     },
     [
@@ -261,6 +324,8 @@ export function useKeyboardNavigation({
       findSectionByNumber,
       navigateToSlide,
       navigateToSection,
+      toggleOverview,
+      fitCurrentSlide,
       currentSectionId,
       sections,
     ],
@@ -277,7 +342,10 @@ export function useKeyboardNavigation({
   return {
     currentSlideId,
     currentSectionId,
+    isOverviewMode,
     navigateToSlide,
     navigateToSection,
+    toggleOverview,
+    fitCurrentSlide,
   };
 }
