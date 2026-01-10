@@ -10,8 +10,8 @@ import type {
 } from "../types/presentation";
 
 // Layout constants
-const SECTION_HORIZONTAL_SPACING = 600;
-const SLIDE_VERTICAL_SPACING = 220;
+const SECTION_HORIZONTAL_SPACING = 800;
+const SLIDE_VERTICAL_SPACING = 450;
 const RESOURCE_OFFSET = 160;
 
 // Starting positions
@@ -23,8 +23,8 @@ const SLIDE_OFFSET_Y = 180; // Offset from section header to first slide
  * Generates React Flow nodes with clustered positioning for sections, slides, and resources.
  *
  * Layout:
- * - Section headers are positioned horizontally with 600px spacing
- * - Slides are positioned vertically within their section with 220px spacing
+ * - Section headers are positioned horizontally with 800px spacing
+ * - Slides are positioned vertically within their section with 450px spacing
  * - Resource nodes are positioned 160px to the right of their parent slide
  */
 export function generateNodes(
@@ -106,7 +106,7 @@ export function generateNodes(
     const slideResources = resourcesBySlide.get(resource.slideId) || [];
     const resourceIndex = slideResources.indexOf(resource);
 
-    const resourceX = parentPosition.x + 280 + RESOURCE_OFFSET; // 280 is slide width
+    const resourceX = parentPosition.x + 520 + RESOURCE_OFFSET; // 520 is slide width
     const resourceY = parentPosition.y + resourceIndex * 100; // Stack resources vertically
 
     const resourceNode: ResourceNode = {
