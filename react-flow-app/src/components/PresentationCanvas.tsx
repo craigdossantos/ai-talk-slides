@@ -13,8 +13,8 @@ import SectionNavigator from "./panels/SectionNavigator";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
 import { generateNodes } from "../utils/generateNodes";
 import { generateEdges } from "../utils/generateEdges";
-import { sections, slides } from "../data/slides";
-import type { Resource, PresentationNode } from "../types/presentation";
+import { sections, slides, resources } from "../data/slides";
+import type { PresentationNode } from "../types/presentation";
 import { TRACK_COLORS } from "../types/presentation";
 
 // Register custom node types
@@ -23,9 +23,6 @@ const nodeTypes = {
   sectionHeader: SectionHeaderNode,
   resource: ResourceNode,
 };
-
-// Empty resources array - will be populated in US-014
-const resources: Resource[] = [];
 
 function PresentationCanvas() {
   // Generate nodes and edges from data

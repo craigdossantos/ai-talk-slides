@@ -1,4 +1,4 @@
-import type { Section, SlideContent } from "../types/presentation";
+import type { Section, SlideContent, Resource } from "../types/presentation";
 
 // Define the sections of the presentation
 export const sections: Section[] = [
@@ -228,6 +228,66 @@ export const slides: SlideContent[] = [
       "Great playground to get comfortable",
       "Understanding the limits is part of the learning",
     ],
+  },
+];
+
+// Define resources linked to key slides
+export const resources: Resource[] = [
+  // Level 1: AI as Uber Google - link to ChatGPT
+  {
+    id: "res-01",
+    slideId: "slide-08",
+    type: "tool",
+    title: "ChatGPT",
+    url: "https://chat.openai.com",
+  },
+  // Level 2: AI as Thought Partner - link to Claude
+  {
+    id: "res-02",
+    slideId: "slide-09",
+    type: "tool",
+    title: "Claude AI",
+    url: "https://claude.ai",
+  },
+  // Level 4: Tools in Your Workflow - link to Wispr Flow
+  {
+    id: "res-03",
+    slideId: "slide-11",
+    type: "tool",
+    title: "Wispr Flow",
+    url: "https://www.wispr.ai",
+  },
+  // Level 4: Tools in Your Workflow - link to Granola
+  {
+    id: "res-04",
+    slideId: "slide-11",
+    type: "tool",
+    title: "Granola Notes",
+    url: "https://www.granola.so",
+  },
+  // Level 6: Media & Creative Production - link to Midjourney
+  {
+    id: "res-05",
+    slideId: "slide-13",
+    type: "tool",
+    title: "Midjourney",
+    url: "https://www.midjourney.com",
+  },
+  // Level 7: Automation Tools - link to Zapier docs
+  {
+    id: "res-06",
+    slideId: "slide-14",
+    type: "docs",
+    title: "Zapier Guide",
+    url: "https://zapier.com/learn",
+  },
+  // Level 8: Natural Language Software - link to Lovable
+  {
+    id: "res-07",
+    slideId: "slide-15",
+    type: "tool",
+    title: "Lovable Dev",
+    url: "https://lovable.dev",
   },
 ];
 
