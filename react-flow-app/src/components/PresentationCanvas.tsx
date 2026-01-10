@@ -1,11 +1,21 @@
-import { ReactFlow, Background, BackgroundVariant } from "@xyflow/react";
+import { useMemo, useCallback } from "react";
+import {
+  ReactFlow,
+  Background,
+  BackgroundVariant,
+  type NodeMouseHandler,
+} from "@xyflow/react";
 import SlideNode from "./nodes/SlideNode";
 import SectionHeaderNode from "./nodes/SectionHeaderNode";
 import ResourceNode from "./nodes/ResourceNode";
+import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
+import { generateNodes } from "../utils/generateNodes";
+import { generateEdges } from "../utils/generateEdges";
 import type {
-  SlideNode as SlideNodeType,
-  SectionHeaderNode as SectionHeaderNodeType,
-  ResourceNode as ResourceNodeType,
+  Section,
+  SlideContent,
+  Resource,
+  PresentationNode,
 } from "../types/presentation";
 
 // Register custom node types
@@ -15,216 +25,196 @@ const nodeTypes = {
   resource: ResourceNode,
 };
 
-// Sample data for testing node components
-const sampleSlideNodes: SlideNodeType[] = [
+// Sample sections for testing
+const sampleSections: Section[] = [
   {
-    id: "slide-1",
-    type: "slide",
-    position: { x: 400, y: 0 },
-    data: {
-      slide: {
-        id: "slide-1",
-        sectionId: "section-1",
-        type: "title",
-        title: "Using AI as a Native Skill",
-        subtitle: "A practical map for learning, working, and building with AI",
-      },
-      section: {
-        id: "section-1",
-        title: "Introduction",
-        track: "general",
-      },
-      isActive: true,
-    },
+    id: "section-1",
+    title: "Introduction",
+    track: "general",
   },
   {
-    id: "slide-2",
-    type: "slide",
-    position: { x: 400, y: 220 },
-    data: {
-      slide: {
-        id: "slide-2",
-        sectionId: "section-1",
-        type: "content",
-        title: "Mental Models, Not Magic",
-        bullets: [
-          "AI is a tool, not magic",
-          "Build mental models for effective use",
-          "Understand the capabilities and limitations",
-          "Practice deliberate skill development",
-        ],
-      },
-      section: {
-        id: "section-1",
-        title: "Introduction",
-        track: "non-technical",
-      },
-      isActive: false,
-    },
+    id: "section-2",
+    title: "Non-Technical Track",
+    track: "non-technical",
   },
   {
-    id: "slide-3",
-    type: "slide",
-    position: { x: 1000, y: 220 },
-    data: {
-      slide: {
-        id: "slide-3",
-        sectionId: "section-2",
-        type: "content",
-        title: "Level 3: Code Generation",
-        level: 3,
-        bullets: [
-          "Generate boilerplate code",
-          "Explain existing code",
-          "Debug with AI assistance",
-        ],
-      },
-      section: {
-        id: "section-2",
-        title: "Technical Track",
-        track: "technical",
-      },
-      isActive: false,
-    },
+    id: "section-3",
+    title: "Technical Track",
+    track: "technical",
   },
 ];
 
-// Sample section header nodes for testing
-const sampleSectionHeaderNodes: SectionHeaderNodeType[] = [
+// Sample slides for testing
+const sampleSlides: SlideContent[] = [
   {
-    id: "section-header-1",
-    type: "sectionHeader",
-    position: { x: 0, y: 80 },
-    data: {
-      section: {
-        id: "section-1",
-        title: "Introduction",
-        track: "general",
-      },
-      isActive: false,
-    },
+    id: "1",
+    sectionId: "section-1",
+    type: "title",
+    title: "Using AI as a Native Skill",
+    subtitle: "A practical map for learning, working, and building with AI",
   },
   {
-    id: "section-header-2",
-    type: "sectionHeader",
-    position: { x: 0, y: 280 },
-    data: {
-      section: {
-        id: "section-2",
-        title: "Non-Technical Track",
-        track: "non-technical",
-      },
-      isActive: true,
-    },
+    id: "2",
+    sectionId: "section-1",
+    type: "content",
+    title: "Mental Models, Not Magic",
+    bullets: [
+      "AI is a tool, not magic",
+      "Build mental models for effective use",
+      "Understand the capabilities and limitations",
+      "Practice deliberate skill development",
+    ],
   },
   {
-    id: "section-header-3",
-    type: "sectionHeader",
-    position: { x: 0, y: 480 },
-    data: {
-      section: {
-        id: "section-3",
-        title: "Technical Track",
-        track: "technical",
-      },
-      isActive: false,
-    },
-  },
-];
-
-// Sample resource nodes for testing
-const sampleResourceNodes: ResourceNodeType[] = [
-  {
-    id: "resource-1",
-    type: "resource",
-    position: { x: 720, y: 10 },
-    data: {
-      resource: {
-        id: "resource-1",
-        slideId: "slide-1",
-        type: "article",
-        title: "AI Native Skills Guide",
-        url: "https://example.com/ai-guide",
-      },
-      isActive: false,
-    },
+    id: "3",
+    sectionId: "section-2",
+    type: "content",
+    title: "Level 0: Awareness",
+    level: 0,
+    bullets: [
+      "Know AI exists and its basic capabilities",
+      "Recognize potential use cases",
+      "Understand the hype vs reality",
+    ],
   },
   {
-    id: "resource-2",
-    type: "resource",
-    position: { x: 720, y: 230 },
-    data: {
-      resource: {
-        id: "resource-2",
-        slideId: "slide-2",
-        type: "tool",
-        title: "Claude AI Assistant",
-        url: "https://claude.ai",
-      },
-      isActive: false,
-    },
+    id: "4",
+    sectionId: "section-2",
+    type: "content",
+    title: "Level 2: Regular Usage",
+    level: 2,
+    bullets: [
+      "Use AI for daily tasks",
+      "Improve prompt quality over time",
+      "Recognize patterns in AI responses",
+    ],
   },
   {
-    id: "resource-3",
-    type: "resource",
-    position: { x: 1320, y: 230 },
-    data: {
-      resource: {
-        id: "resource-3",
-        slideId: "slide-3",
-        type: "github",
-        title: "Code Generation Examples",
-        url: "https://github.com/example/code-gen",
-      },
-      isActive: true,
-    },
+    id: "5",
+    sectionId: "section-3",
+    type: "content",
+    title: "Level 3: Code Generation",
+    level: 3,
+    bullets: [
+      "Generate boilerplate code",
+      "Explain existing code",
+      "Debug with AI assistance",
+    ],
   },
   {
-    id: "resource-4",
-    type: "resource",
-    position: { x: 720, y: 330 },
-    data: {
-      resource: {
-        id: "resource-4",
-        slideId: "slide-2",
-        type: "video",
-        title: "Mental Models Tutorial",
-        url: "https://youtube.com/watch?v=example",
-      },
-      isActive: false,
-    },
-  },
-  {
-    id: "resource-5",
-    type: "resource",
-    position: { x: 1320, y: 330 },
-    data: {
-      resource: {
-        id: "resource-5",
-        slideId: "slide-3",
-        type: "docs",
-        title: "API Documentation",
-        url: "https://docs.example.com/api",
-      },
-      isActive: false,
-    },
+    id: "6",
+    sectionId: "section-3",
+    type: "content",
+    title: "Level 5: AI-Native Development",
+    level: 5,
+    bullets: [
+      "Build with AI from the start",
+      "Design systems for AI collaboration",
+      "Leverage AI for architecture decisions",
+    ],
   },
 ];
 
-// Combine all sample nodes
-const sampleNodes = [
-  ...sampleSlideNodes,
-  ...sampleSectionHeaderNodes,
-  ...sampleResourceNodes,
+// Sample resources for testing
+const sampleResources: Resource[] = [
+  {
+    id: "1",
+    slideId: "1",
+    type: "article",
+    title: "AI Native Skills Guide",
+    url: "https://example.com/ai-guide",
+  },
+  {
+    id: "2",
+    slideId: "2",
+    type: "tool",
+    title: "Claude AI Assistant",
+    url: "https://claude.ai",
+  },
+  {
+    id: "3",
+    slideId: "5",
+    type: "github",
+    title: "Code Generation Examples",
+    url: "https://github.com/example/code-gen",
+  },
+  {
+    id: "4",
+    slideId: "2",
+    type: "video",
+    title: "Mental Models Tutorial",
+    url: "https://youtube.com/watch?v=example",
+  },
+  {
+    id: "5",
+    slideId: "5",
+    type: "docs",
+    title: "API Documentation",
+    url: "https://docs.example.com/api",
+  },
 ];
 
 function PresentationCanvas() {
+  // Generate nodes and edges from data
+  const nodes = useMemo(
+    () => generateNodes(sampleSections, sampleSlides, sampleResources),
+    [],
+  );
+
+  const edges = useMemo(
+    () => generateEdges(sampleSections, sampleSlides, sampleResources),
+    [],
+  );
+
+  // Initialize keyboard navigation
+  const { currentSlideId, navigateToSlide } = useKeyboardNavigation({
+    sections: sampleSections,
+    slides: sampleSlides,
+    nodes,
+  });
+
+  // Handle node click - navigate to clicked slide
+  const handleNodeClick = useCallback<NodeMouseHandler>(
+    (_, node) => {
+      // Only navigate for slide nodes
+      if (node.type === "slide") {
+        // Extract slide ID from node ID (format: "slide-{id}")
+        const slideId = node.id.replace("slide-", "");
+        navigateToSlide(slideId);
+      }
+    },
+    [navigateToSlide],
+  );
+
+  // Mark current slide as active
+  const nodesWithActiveState = useMemo(() => {
+    return nodes.map((node) => {
+      if (node.type === "slide") {
+        const slideId = node.id.replace("slide-", "");
+        return {
+          ...node,
+          data: {
+            ...node.data,
+            isActive: slideId === currentSlideId,
+          },
+        };
+      }
+      return node;
+    }) as PresentationNode[];
+  }, [nodes, currentSlideId]);
+
   return (
     <ReactFlow
-      nodes={sampleNodes}
-      edges={[]}
+      nodes={nodesWithActiveState}
+      edges={edges}
       nodeTypes={nodeTypes}
+      onNodeClick={handleNodeClick}
       fitView
+      fitViewOptions={{
+        nodes: [{ id: `slide-${sampleSlides[0].id}` }],
+        padding: 0.3,
+        maxZoom: 1.5,
+      }}
       proOptions={{ hideAttribution: true }}
     >
       <Background
