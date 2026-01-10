@@ -448,7 +448,7 @@
         "Verify in browser using dev-browser skill: can drag a slide to new position"
       ],
       "priority": 28,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {

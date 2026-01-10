@@ -482,3 +482,21 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - The hook already exports goToNextSlide/goToPreviousSlide - just need to destructure and pass as props
   - Panel components overlay on the ReactFlow canvas using position: absolute within the container div
 ---
+
+## 2025-01-10 - US-028
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Enabled node dragging in PresentationCanvas
+- Converted nodes from useMemo to useState to allow position updates during drag
+- Added onNodesChange handler using applyNodeChanges from @xyflow/react
+- Set nodesDraggable={true} on ReactFlow component
+- Imported useState, applyNodeChanges, and NodeChange type
+- Verified in browser: nodes can be dragged to new positions, edges automatically follow
+- Files changed: src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - To enable dragging, nodes must be in useState (not useMemo) so positions can be updated
+  - applyNodeChanges from @xyflow/react handles all node change events (drag, selection, etc.)
+  - NodeChange<T> type from @xyflow/react provides proper typing for the changes callback
+  - nodesDraggable={true} is required on ReactFlow component to enable drag behavior
+  - Edges automatically update to follow dragged nodes without additional configuration
+  - onNodeClick still fires during drag operations - dragging works but clicking also navigates
+---
