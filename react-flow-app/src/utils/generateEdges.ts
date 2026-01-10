@@ -7,7 +7,7 @@ const EDGE_STYLES = {
   sectionToSection: {
     stroke: "#6366f1", // indigo
     strokeWidth: 3,
-    animated: true,
+    animated: false,
   },
   // Slide-to-slide: solid connection within a section
   slideToSlide: {
