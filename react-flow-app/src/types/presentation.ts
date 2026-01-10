@@ -23,6 +23,7 @@ export interface SlideContent {
   bullets?: string[];
   quote?: string;
   level?: number; // For level-based slides (0-8)
+  backgroundImage?: string; // Path to background image
 }
 
 // Resource types for linked resources
@@ -40,17 +41,20 @@ export interface Resource {
 // Node data interfaces for React Flow nodes
 
 export interface SlideNodeData {
+  [key: string]: unknown;
   slide: SlideContent;
   section: Section;
   isActive?: boolean;
 }
 
 export interface SectionHeaderNodeData {
+  [key: string]: unknown;
   section: Section;
   isActive?: boolean;
 }
 
 export interface ResourceNodeData {
+  [key: string]: unknown;
   resource: Resource;
   isActive?: boolean;
 }
@@ -70,9 +74,9 @@ export type ResourceNodeProps = NodeProps<ResourceNode>;
 
 // Constants for node dimensions
 export const NODE_DIMENSIONS = {
-  slide: { width: 280, height: 180 },
-  sectionHeader: { width: 320, height: 120 },
-  resource: { width: 140, height: 80 },
+  slide: { width: 520, height: 400 },
+  sectionHeader: { width: 400, height: 140 },
+  resource: { width: 160, height: 90 },
 } as const;
 
 // Track colors for styling
