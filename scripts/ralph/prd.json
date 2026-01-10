@@ -1,0 +1,255 @@
+{
+  "project": "ai-talk-slides",
+  "branchName": "ralph/react-flow-migration",
+  "description": "Migrate the 15-slide reveal.js presentation to an interactive React Flow-based experience with visible graph structure, resource link nodes, and Slate Canvas design",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Initialize Vite + React + TypeScript project",
+      "description": "As a developer, I need a properly configured React project so I can build the presentation app.",
+      "acceptanceCriteria": [
+        "Create react-flow-app/ directory with Vite + React + TypeScript template",
+        "Configure vite.config.ts with appropriate settings",
+        "Add base CSS reset and font imports (Space Grotesk, Inter, JetBrains Mono)",
+        "npm run dev starts dev server successfully",
+        "Typecheck passes"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-002",
+      "title": "Install and configure @xyflow/react",
+      "description": "As a developer, I need React Flow installed and configured so I can render nodes and edges.",
+      "acceptanceCriteria": [
+        "Install @xyflow/react package",
+        "Install react-remark for markdown rendering in slides",
+        "Create basic App.tsx with ReactFlowProvider wrapper",
+        "Render empty React Flow canvas with dark background (#0f172a)",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: empty dark canvas displays"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-003",
+      "title": "Create TypeScript type definitions",
+      "description": "As a developer, I need type definitions for presentation data so the codebase is type-safe.",
+      "acceptanceCriteria": [
+        "Create src/types/presentation.ts",
+        "Define Section type with id, title, track fields",
+        "Define SlideContent type with id, sectionId, type, title, subtitle, bullets, quote fields",
+        "Define Resource type with id, slideId, type, title, url fields",
+        "Define node data interfaces for SlideNode, SectionHeaderNode, ResourceNode",
+        "Typecheck passes"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-004",
+      "title": "Build SlideNode component",
+      "description": "As a user, I want to see slide content rendered in nodes so I can read the presentation.",
+      "acceptanceCriteria": [
+        "Create src/components/nodes/SlideNode.tsx",
+        "Render title with Space Grotesk font",
+        "Render subtitle if present with Playfair Display italic",
+        "Render bullet point preview (max 3 items)",
+        "Apply track-colored left border (emerald #10b981 for non-tech, blue #3b82f6 for tech)",
+        "Node dimensions: 280x180px",
+        "Handle title, section-header, content, quote variants",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: sample SlideNode renders with correct styling"
+      ],
+      "priority": 4,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-005",
+      "title": "Build SectionHeaderNode component",
+      "description": "As a user, I want section headers to be visually distinct so I can orient myself in the presentation.",
+      "acceptanceCriteria": [
+        "Create src/components/nodes/SectionHeaderNode.tsx",
+        "Node dimensions: 320x120px",
+        "Display section title prominently with Space Grotesk 600 weight",
+        "Apply track-specific gradient background",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: sample SectionHeaderNode renders distinctly"
+      ],
+      "priority": 5,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-006",
+      "title": "Build ResourceNode component",
+      "description": "As a user, I want to see resource links attached to slides so I can access related content.",
+      "acceptanceCriteria": [
+        "Create src/components/nodes/ResourceNode.tsx",
+        "Node dimensions: 140x80px",
+        "Dashed border styling to distinguish from main slides",
+        "Display icon based on resource type (article, tool, video, docs, github)",
+        "Display truncated resource title",
+        "Click opens URL in new browser tab using window.open",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: ResourceNode click opens external link"
+      ],
+      "priority": 6,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-007",
+      "title": "Implement generateNodes() with clustered positioning",
+      "description": "As a developer, I need automatic node positioning so slides are arranged in a readable layout.",
+      "acceptanceCriteria": [
+        "Create src/utils/generateNodes.ts",
+        "Position section headers horizontally with 600px spacing",
+        "Position slides vertically within sections with 220px spacing",
+        "Position resource nodes 160px offset from parent slide",
+        "Return array of React Flow Node objects with correct x,y positions",
+        "Typecheck passes"
+      ],
+      "priority": 7,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-008",
+      "title": "Implement generateEdges() with styled connections",
+      "description": "As a developer, I need edges connecting nodes so users can see the presentation flow.",
+      "acceptanceCriteria": [
+        "Create src/utils/generateEdges.ts",
+        "Section-to-section edges: 3px stroke, indigo color #6366f1, animated",
+        "Slide-to-slide edges: 1.5px solid stroke, gray color",
+        "Slide-to-resource edges: 1px dashed stroke, muted color",
+        "Return array of React Flow Edge objects",
+        "Typecheck passes"
+      ],
+      "priority": 8,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-009",
+      "title": "Add useKeyboardNavigation hook",
+      "description": "As a user, I want to navigate with keyboard so I can present without using the mouse.",
+      "acceptanceCriteria": [
+        "Create src/hooks/useKeyboardNavigation.ts",
+        "Arrow keys (up/down/left/right) move to adjacent slides",
+        "PageUp/PageDown jump to previous/next section",
+        "Number keys 1-9 jump to numbered section",
+        "Hook integrates with React Flow fitView for smooth transitions",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: arrow keys navigate between slides"
+      ],
+      "priority": 9,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-010",
+      "title": "Implement fitView transitions and overview mode",
+      "description": "As a user, I want smooth zoom transitions and an overview mode so I can see the full presentation map.",
+      "acceptanceCriteria": [
+        "Escape key toggles overview mode (zoom to fit all nodes)",
+        "0 key fits current slide to view",
+        "Smooth animation on all fitView calls (500ms duration)",
+        "Click on slide in overview mode focuses that slide",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: Escape zooms out to show all, click on node focuses it"
+      ],
+      "priority": 10,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-011",
+      "title": "Add minimap panel",
+      "description": "As a user, I want a minimap so I can see my position in the overall presentation.",
+      "acceptanceCriteria": [
+        "Add React Flow MiniMap component",
+        "Position in bottom-right corner",
+        "Color nodes by track (emerald #10b981 for non-tech, blue #3b82f6 for tech, gray for general)",
+        "Current viewport highlighted",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: minimap shows current position"
+      ],
+      "priority": 11,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-012",
+      "title": "Add section navigator panel",
+      "description": "As a user, I want a section navigator so I can quickly jump to any section.",
+      "acceptanceCriteria": [
+        "Create src/components/panels/SectionNavigator.tsx",
+        "Display list of all sections with titles",
+        "Highlight current section",
+        "Click on section jumps to that section header node",
+        "Position on left side of screen",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: clicking section in navigator jumps to it"
+      ],
+      "priority": 12,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-013",
+      "title": "Migrate slide content from index.html",
+      "description": "As a developer, I need all 15 slides extracted into the data structure so the presentation is complete.",
+      "acceptanceCriteria": [
+        "Create src/data/slides.ts",
+        "Extract all 15 slides from index.html into typed Section[] and SlideContent[] arrays",
+        "Preserve section groupings and order",
+        "Include slide titles, subtitles, and bullet points",
+        "All slides render correctly in React Flow",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: all 15 slides visible and readable"
+      ],
+      "priority": 13,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-014",
+      "title": "Add resource link nodes to key slides",
+      "description": "As a user, I want resource links on relevant slides so I can explore related content.",
+      "acceptanceCriteria": [
+        "Add at least 5 resource nodes across the presentation",
+        "Each resource has appropriate type (article/tool/video/docs/github)",
+        "Resources positioned correctly relative to parent slides (160px offset)",
+        "All resource links open correctly in new tabs",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: resource nodes visible and clickable"
+      ],
+      "priority": 14,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-015",
+      "title": "Polish animations and responsive behavior",
+      "description": "As a user, I want smooth animations and responsive layout so the presentation feels professional.",
+      "acceptanceCriteria": [
+        "Add CSS transitions for node hover states",
+        "Smooth edge animations on navigation",
+        "Handle window resize gracefully",
+        "Test at viewport sizes: 1920x1080, 1366x768, 1280x720",
+        "No visual glitches during navigation",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: resize window, confirm no layout issues"
+      ],
+      "priority": 15,
+      "passes": false,
+      "notes": ""
+    }
+  ]
+}
