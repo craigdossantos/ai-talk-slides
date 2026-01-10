@@ -1,18 +1,23 @@
 import { ReactFlow, Background, BackgroundVariant } from "@xyflow/react";
 import SlideNode from "./nodes/SlideNode";
-import type { SlideNode as SlideNodeType } from "../types/presentation";
+import SectionHeaderNode from "./nodes/SectionHeaderNode";
+import type {
+  SlideNode as SlideNodeType,
+  SectionHeaderNode as SectionHeaderNodeType,
+} from "../types/presentation";
 
 // Register custom node types
 const nodeTypes = {
   slide: SlideNode,
+  sectionHeader: SectionHeaderNode,
 };
 
-// Sample data for testing the SlideNode component
-const sampleNodes: SlideNodeType[] = [
+// Sample data for testing node components
+const sampleSlideNodes: SlideNodeType[] = [
   {
     id: "slide-1",
     type: "slide",
-    position: { x: 0, y: 0 },
+    position: { x: 400, y: 0 },
     data: {
       slide: {
         id: "slide-1",
@@ -32,7 +37,7 @@ const sampleNodes: SlideNodeType[] = [
   {
     id: "slide-2",
     type: "slide",
-    position: { x: 320, y: 0 },
+    position: { x: 400, y: 220 },
     data: {
       slide: {
         id: "slide-2",
@@ -57,50 +62,10 @@ const sampleNodes: SlideNodeType[] = [
   {
     id: "slide-3",
     type: "slide",
-    position: { x: 640, y: 0 },
+    position: { x: 1000, y: 220 },
     data: {
       slide: {
         id: "slide-3",
-        sectionId: "section-2",
-        type: "quote",
-        title: "Someone Famous",
-        quote: "The best way to predict the future is to invent it.",
-      },
-      section: {
-        id: "section-2",
-        title: "Quotes",
-        track: "technical",
-      },
-      isActive: false,
-    },
-  },
-  {
-    id: "slide-4",
-    type: "slide",
-    position: { x: 0, y: 220 },
-    data: {
-      slide: {
-        id: "slide-4",
-        sectionId: "section-2",
-        type: "section-header",
-        title: "The Technical Track",
-        subtitle: "From chatting to building",
-      },
-      section: {
-        id: "section-2",
-        title: "Technical",
-        track: "technical",
-      },
-      isActive: false,
-    },
-  },
-  {
-    id: "slide-5",
-    type: "slide",
-    position: { x: 320, y: 220 },
-    data: {
-      slide: {
-        id: "slide-5",
         sectionId: "section-2",
         type: "content",
         title: "Level 3: Code Generation",
@@ -113,13 +78,59 @@ const sampleNodes: SlideNodeType[] = [
       },
       section: {
         id: "section-2",
-        title: "Technical",
+        title: "Technical Track",
         track: "technical",
       },
       isActive: false,
     },
   },
 ];
+
+// Sample section header nodes for testing
+const sampleSectionHeaderNodes: SectionHeaderNodeType[] = [
+  {
+    id: "section-header-1",
+    type: "sectionHeader",
+    position: { x: 0, y: 80 },
+    data: {
+      section: {
+        id: "section-1",
+        title: "Introduction",
+        track: "general",
+      },
+      isActive: false,
+    },
+  },
+  {
+    id: "section-header-2",
+    type: "sectionHeader",
+    position: { x: 0, y: 280 },
+    data: {
+      section: {
+        id: "section-2",
+        title: "Non-Technical Track",
+        track: "non-technical",
+      },
+      isActive: true,
+    },
+  },
+  {
+    id: "section-header-3",
+    type: "sectionHeader",
+    position: { x: 0, y: 480 },
+    data: {
+      section: {
+        id: "section-3",
+        title: "Technical Track",
+        track: "technical",
+      },
+      isActive: false,
+    },
+  },
+];
+
+// Combine all sample nodes
+const sampleNodes = [...sampleSlideNodes, ...sampleSectionHeaderNodes];
 
 function PresentationCanvas() {
   return (
