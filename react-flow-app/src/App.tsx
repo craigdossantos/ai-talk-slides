@@ -1,11 +1,15 @@
+import { ReactFlowProvider } from "@xyflow/react";
+import "@xyflow/react/dist/style.css";
 import "./App.css";
+import PresentationCanvas from "./components/PresentationCanvas";
 
 function App() {
   return (
-    <div className="app">
-      <h1>AI Native Skills Presentation</h1>
-      <p>React Flow migration in progress...</p>
-    </div>
+    <ReactFlowProvider>
+      <div className="app">
+        <PresentationCanvas />
+      </div>
+    </ReactFlowProvider>
   );
 }
 

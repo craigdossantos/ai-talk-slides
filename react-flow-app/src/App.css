@@ -1,18 +1,10 @@
 .app {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  padding: var(--spacing-xl);
+  width: 100%;
+  height: 100vh;
+  background-color: var(--color-bg-primary);
 }
 
-.app h1 {
-  font-family: var(--font-primary);
-  font-size: 2.5rem;
-  margin-bottom: var(--spacing-md);
-}
-
-.app p {
-  color: var(--color-text-secondary);
+/* React Flow overrides for dark theme */
+.react-flow__pane {
+  background-color: var(--color-bg-primary);
 }
