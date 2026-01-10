@@ -467,3 +467,18 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - isFirstSlide = currentSlideIndex <= 0, isLastSlide = currentSlideIndex >= totalSlides - 1 for button disable logic
   - Dark theme pill (rgba(15, 23, 42, 0.9)) with backdrop blur matches SectionNavigator styling pattern
 ---
+
+## 2025-01-10 - US-027
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Integrated NavigationControls component into PresentationCanvas
+- Imported NavigationControls from ./panels/NavigationControls
+- Destructured additional values from useKeyboardNavigation: currentSlideIndex, totalSlides, goToNextSlide, goToPreviousSlide, toggleOverview
+- Passed all required props to NavigationControls component: currentSlideIndex, totalSlides, isOverviewMode, onPrevious, onNext, onToggleOverview
+- Navigation controls now appear at bottom center of canvas (positioned via CSS in NavigationControls.css)
+- Verified in browser: Next/Previous buttons visible and functional, progress indicator updates correctly
+- Files changed: src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - NavigationControls props use callback naming convention: onPrevious, onNext, onToggleOverview (matching the component's interface)
+  - The hook already exports goToNextSlide/goToPreviousSlide - just need to destructure and pass as props
+  - Panel components overlay on the ReactFlow canvas using position: absolute within the container div
+---
