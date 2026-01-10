@@ -500,3 +500,17 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - Edges automatically update to follow dragged nodes without additional configuration
   - onNodeClick still fires during drag operations - dragging works but clicking also navigates
 ---
+
+## 2025-01-10 - US-029
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Updated CSS custom properties in index.css for brighter theme
+- Changed --color-bg-primary from dark (#0f172a) to white (#ffffff)
+- Changed --color-text-primary from light (rgba(255, 255, 255, 0.95)) to dark (#0f172a) for better contrast
+- Changed --color-text-secondary from light (rgba(255, 255, 255, 0.7)) to dark (#334155)
+- Changed --color-text-muted from light (rgba(255, 255, 255, 0.5)) to gray (#94a3b8)
+- Files changed: src/index.css
+- **Learnings for future iterations:**
+  - CSS custom properties in :root control the entire theme color scheme
+  - The transition from dark to light theme requires inverting text colors (light text on dark -> dark text on light)
+  - Background and text colors are paired - update them together to maintain contrast
+---
