@@ -448,3 +448,22 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - currentSlideIndex returns -1 when no slide is selected (currentSlideId is null)
   - These exports enable NavigationControls component to show progress and handle button clicks
 ---
+
+## 2025-01-10 - US-026
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Created NavigationControls component in src/components/panels/NavigationControls.tsx
+- Created NavigationControls.css with floating pill design and backdrop blur
+- Implemented Previous button with gray styling (slate-500 based)
+- Implemented Next button with orange/coral color (#f97316, orange-500)
+- Added progress indicator showing "X / Y" format with JetBrains Mono font
+- Added overview toggle button with 4-grid icon, highlights when overview mode active
+- Buttons correctly disabled at first/last slide positions
+- Wrapped component in React.memo for performance optimization
+- Added responsive styles for mobile viewports (768px and 480px breakpoints)
+- Files changed: src/components/panels/NavigationControls.tsx (new), src/components/panels/NavigationControls.css (new)
+- **Learnings for future iterations:**
+  - NavigationControls receives props from useKeyboardNavigation: currentSlideIndex, totalSlides, goToNextSlide, goToPreviousSlide, toggleOverview, isOverviewMode
+  - Use displayIndex = currentSlideIndex + 1 for 1-indexed display to users
+  - isFirstSlide = currentSlideIndex <= 0, isLastSlide = currentSlideIndex >= totalSlides - 1 for button disable logic
+  - Dark theme pill (rgba(15, 23, 42, 0.9)) with backdrop blur matches SectionNavigator styling pattern
+---
