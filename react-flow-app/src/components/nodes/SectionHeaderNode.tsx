@@ -22,6 +22,7 @@ function SectionHeaderNode({ data }: SectionHeaderNodeProps) {
       <Handle
         type="target"
         position={Position.Left}
+        id="left"
         className="section-header-node__handle"
       />
       <div className="section-header-node__content">
@@ -30,6 +31,7 @@ function SectionHeaderNode({ data }: SectionHeaderNodeProps) {
       <Handle
         type="source"
         position={Position.Right}
+        id="right"
         className="section-header-node__handle"
       />
       <Handle

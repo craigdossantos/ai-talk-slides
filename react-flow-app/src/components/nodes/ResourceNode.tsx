@@ -1,10 +1,11 @@
+import type { ReactElement } from "react";
 import { Handle, Position } from "@xyflow/react";
 import type { ResourceNodeProps, ResourceType } from "../../types/presentation";
 import { NODE_DIMENSIONS } from "../../types/presentation";
 import "./ResourceNode.css";
 
 // Icon components for each resource type
-const ResourceIcons: Record<ResourceType, JSX.Element> = {
+const ResourceIcons: Record<ResourceType, ReactElement> = {
   article: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
       <path d="M4 4h16v16H4z" />
@@ -63,6 +64,7 @@ function ResourceNode({ data }: ResourceNodeProps) {
       <Handle
         type="target"
         position={Position.Left}
+        id="left"
         className="resource-node__handle"
       />
       <div className="resource-node__icon">{ResourceIcons[resource.type]}</div>
