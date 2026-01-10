@@ -386,3 +386,18 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - These dimensions prepare for the hero image layout in upcoming stories
   - Larger slides allow for more content and a dedicated image area
 ---
+
+## 2025-01-10 - US-022
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Redesigned SlideNode for hero image layout
+- Added slide-node__hero div as dedicated image container (60% height)
+- Moved content-wrapper to bottom (40% height)
+- Level badge now positioned inside hero area
+- Changed border from left-side (borderLeftColor) to top (borderTopColor)
+- Removed --has-image modifier class and overlay div in favor of dedicated hero container
+- Files changed: src/components/nodes/SlideNode.tsx
+- **Learnings for future iterations:**
+  - Hero image layouts use separate container divs rather than background-image on the node
+  - Level badges should overlay the hero image area for visual hierarchy
+  - Top border color works better than left border for wide slide nodes
+---
