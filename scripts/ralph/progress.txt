@@ -361,3 +361,28 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - MiniMap's nodeColor callback is called for every node on every render - wrapping in useCallback prevents new function instance creation
   - useCallback with empty deps array is fine when the function only uses stable references (like TRACK_COLORS constant)
 ---
+
+## 2025-01-10 - US-020
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Disabled animated edges for improved panning performance
+- Changed EDGE_STYLES.sectionToSection.animated from true to false in generateEdges.ts
+- Verified in browser that canvas panning is responsive without animation overhead
+- Files changed: src/utils/generateEdges.ts
+- **Learnings for future iterations:**
+  - Animated edges cause continuous repaints which can impact performance during panning
+  - Simple boolean flag change in EDGE_STYLES constant disables animation for edge type
+  - Static edges still provide clear visual connections without performance cost
+---
+
+## 2025-01-10 - US-021
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Updated NODE_DIMENSIONS in types/presentation.ts for larger slides
+- Changed slide dimensions from 280x180 to 520x400 (larger for hero image layout)
+- Changed sectionHeader dimensions from 320x120 to 400x140
+- Changed resource dimensions from 140x80 to 160x90
+- Files changed: src/types/presentation.ts
+- **Learnings for future iterations:**
+  - NODE_DIMENSIONS constant in types/presentation.ts is used throughout the codebase for node sizing
+  - These dimensions prepare for the hero image layout in upcoming stories
+  - Larger slides allow for more content and a dedicated image area
+---
