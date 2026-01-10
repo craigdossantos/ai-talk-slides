@@ -432,3 +432,19 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - When slide dimensions change, remember to update hardcoded width references (like resourceX calculation)
   - Larger slides require proportionally larger spacing to maintain readability
 ---
+
+## 2025-01-10 - US-025
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added sequential navigation functions to useKeyboardNavigation hook
+- Added goToNextSlide() function that navigates to next slide in orderedSlides sequence
+- Added goToPreviousSlide() function that navigates to previous slide
+- Added currentSlideIndex calculation (0-indexed position in orderedSlides array)
+- Added totalSlides count (orderedSlides.length)
+- Updated UseKeyboardNavigationReturn interface to export new functions and values
+- Files changed: src/hooks/useKeyboardNavigation.ts
+- **Learnings for future iterations:**
+  - orderedSlides already exists in the hook - just need to calculate currentSlideIndex from it
+  - goToNextSlide/goToPreviousSlide reuse the existing navigateToSlide function
+  - currentSlideIndex returns -1 when no slide is selected (currentSlideId is null)
+  - These exports enable NavigationControls component to show progress and handle button clicks
+---
