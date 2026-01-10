@@ -530,3 +530,19 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - For light themes, update rgba() values from white-based to black-based for borders, shadows, and overlays
   - backdrop-filter: blur() works well on both light and dark themes
 ---
+
+## 2025-01-10 - US-031
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added image lazy loading to SlideNode component
+- Converted hero image from CSS background-image to <img> element with loading="lazy" attribute
+- Added slide-node__hero-image CSS class with object-fit: cover for proper image scaling
+- Added overflow: hidden to slide-node__hero container
+- Removed background-size and background-position from hero container (now handled by <img> styles)
+- Images now load as they come into viewport, improving initial load performance
+- Files changed: src/components/nodes/SlideNode.tsx, src/components/nodes/SlideNode.css
+- **Learnings for future iterations:**
+  - CSS background-image does not support native lazy loading - must use <img> element with loading="lazy"
+  - Use object-fit: cover and object-position: center on <img> for same effect as background-size: cover
+  - Always add overflow: hidden to container when using object-fit to prevent image overflow
+  - The alt attribute should use slide.title for accessibility
+---
