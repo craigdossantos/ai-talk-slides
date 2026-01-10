@@ -1,24 +1,23 @@
 import { useCallback, useEffect, useState } from "react";
 import { useReactFlow } from "@xyflow/react";
-import type {
-  Section,
-  SlideContent,
-  PresentationNode,
-} from "../types/presentation";
+import type { Section, SlideContent } from "../types/presentation";
 
 interface UseKeyboardNavigationOptions {
   sections: Section[];
   slides: SlideContent[];
-  nodes: PresentationNode[];
   fitViewDuration?: number;
 }
 
 interface UseKeyboardNavigationReturn {
   currentSlideId: string | null;
   currentSectionId: string | null;
+  currentSlideIndex: number;
+  totalSlides: number;
   isOverviewMode: boolean;
   navigateToSlide: (slideId: string) => void;
   navigateToSection: (sectionId: string) => void;
+  goToNextSlide: () => void;
+  goToPreviousSlide: () => void;
   toggleOverview: () => void;
   fitCurrentSlide: () => void;
 }
@@ -35,7 +34,6 @@ interface UseKeyboardNavigationReturn {
 export function useKeyboardNavigation({
   sections,
   slides,
-  nodes,
   fitViewDuration = 500,
 }: UseKeyboardNavigationOptions): UseKeyboardNavigationReturn {
   const { fitView } = useReactFlow();
@@ -138,6 +136,26 @@ export function useKeyboardNavigation({
   const orderedSlides = sections.flatMap(
     (section) => slidesBySection.get(section.id) || [],
   );
+
+  // Calculate current slide index (0-indexed) and total slides
+  const currentSlideIndex = currentSlideId
+    ? orderedSlides.findIndex((s) => s.id === currentSlideId)
+    : -1;
+  const totalSlides = orderedSlides.length;
+
+  // Navigate to next slide in order
+  const goToNextSlide = useCallback(() => {
+    if (currentSlideIndex < orderedSlides.length - 1) {
+      navigateToSlide(orderedSlides[currentSlideIndex + 1].id);
+    }
+  }, [currentSlideIndex, orderedSlides, navigateToSlide]);
+
+  // Navigate to previous slide in order
+  const goToPreviousSlide = useCallback(() => {
+    if (currentSlideIndex > 0) {
+      navigateToSlide(orderedSlides[currentSlideIndex - 1].id);
+    }
+  }, [currentSlideIndex, orderedSlides, navigateToSlide]);
 
   // Find adjacent slides
   const findAdjacentSlide = useCallback(
@@ -342,9 +360,13 @@ export function useKeyboardNavigation({
   return {
     currentSlideId,
     currentSectionId,
+    currentSlideIndex,
+    totalSlides,
     isOverviewMode,
     navigateToSlide,
     navigateToSection,
+    goToNextSlide,
+    goToPreviousSlide,
     toggleOverview,
     fitCurrentSlide,
   };
