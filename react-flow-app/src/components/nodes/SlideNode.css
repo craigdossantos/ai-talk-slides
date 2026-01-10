@@ -17,11 +17,18 @@
 /* Hero image area - 60% height */
 .slide-node__hero {
   flex: 0 0 60%;
-  background-size: cover;
-  background-position: center;
   background-color: var(--color-bg-tertiary, #f1f5f9);
   position: relative;
   border-radius: 8px 8px 0 0;
+  overflow: hidden;
+}
+
+/* Hero image with lazy loading */
+.slide-node__hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 
 /* Content area - 40% height */

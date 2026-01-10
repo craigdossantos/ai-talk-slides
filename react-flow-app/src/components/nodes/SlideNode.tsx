@@ -89,14 +89,15 @@ function SlideNode({ data }: SlideNodeProps) {
       />
 
       {/* Hero image area - 60% height */}
-      <div
-        className="slide-node__hero"
-        style={{
-          backgroundImage: slide.backgroundImage
-            ? `url(${slide.backgroundImage})`
-            : undefined,
-        }}
-      >
+      <div className="slide-node__hero">
+        {slide.backgroundImage && (
+          <img
+            src={slide.backgroundImage}
+            alt={slide.title}
+            loading="lazy"
+            className="slide-node__hero-image"
+          />
+        )}
         {slide.level !== undefined && (
           <span className="slide-node__level">Level {slide.level}</span>
         )}
