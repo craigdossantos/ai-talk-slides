@@ -1,11 +1,13 @@
-import { useMemo, useCallback, useEffect, useRef } from "react";
+import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import {
   ReactFlow,
   Background,
   BackgroundVariant,
   MiniMap,
   useReactFlow,
+  applyNodeChanges,
   type NodeMouseHandler,
+  type NodeChange,
 } from "@xyflow/react";
 import SlideNode from "./nodes/SlideNode";
 import SectionHeaderNode from "./nodes/SectionHeaderNode";
@@ -29,10 +31,20 @@ const nodeTypes = {
 function PresentationCanvas() {
   const { fitView } = useReactFlow();
 
-  // Generate nodes and edges from data
-  const nodes = useMemo(() => generateNodes(sections, slides, resources), []);
+  // Generate nodes from data - use useState to allow dragging to update positions
+  const [nodes, setNodes] = useState<PresentationNode[]>(() =>
+    generateNodes(sections, slides, resources),
+  );
 
   const edges = useMemo(() => generateEdges(sections, slides, resources), []);
+
+  // Handle node changes (dragging, selection, etc.)
+  const onNodesChange = useCallback(
+    (changes: NodeChange<PresentationNode>[]) => {
+      setNodes((nds) => applyNodeChanges(changes, nds));
+    },
+    [],
+  );
 
   // Initialize keyboard navigation
   const {
@@ -176,6 +188,8 @@ function PresentationCanvas() {
         edges={edges}
         nodeTypes={nodeTypes}
         onNodeClick={handleNodeClick}
+        onNodesChange={onNodesChange}
+        nodesDraggable={true}
         fitView
         fitViewOptions={{
           nodes: [{ id: `slide-${slides[0].id}` }],
