@@ -492,6 +492,107 @@
       "priority": 31,
       "passes": true,
       "notes": ""
+    },
+    {
+      "id": "US-032",
+      "title": "Fix slide image sizing for full display",
+      "description": "As a user, I want slide images to display at full size and be consistent across all slides.",
+      "acceptanceCriteria": [
+        "Slide node dimensions should match the full image aspect ratio",
+        "All slide images should be landscape mode and uniform size",
+        "Images should display in their entirety without cropping",
+        "Use object-fit: contain instead of cover where appropriate",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: all slide images show fully and are consistent size"
+      ],
+      "priority": 32,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-033",
+      "title": "Remove panning lag for instant canvas movement",
+      "description": "As a user, I want the canvas to move exactly with my mouse when I grab and drag, with no lag or delay.",
+      "acceptanceCriteria": [
+        "Canvas moves instantly with mouse during pan operation (no animation delay)",
+        "Reference React Flow tutorial: https://reactflow.dev/learn/tutorials/slide-shows-with-react-flow for settings",
+        "Consider adding panOnDrag settings or disabling animated transitions during drag",
+        "May need to remove fitView animations during manual panning",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: panning feels immediate and responsive"
+      ],
+      "priority": 33,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-034",
+      "title": "Add lined notepad paper background",
+      "description": "As a user, I want the canvas background to look like an old school lined notepad instead of plain white.",
+      "acceptanceCriteria": [
+        "Background should display horizontal ruled lines like notebook paper",
+        "Lines should be blue or black, subtle but visible",
+        "Include a red/pink vertical margin line on the left side (like college ruled paper)",
+        "Paper should have a slightly off-white/cream color for authenticity",
+        "Use CSS or SVG pattern for the lined effect",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: background looks like lined notebook paper"
+      ],
+      "priority": 34,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-035",
+      "title": "Add visible connections between slides",
+      "description": "As a user, I want visible edges/connections drawn between related slides showing the presentation flow.",
+      "acceptanceCriteria": [
+        "Edges should connect slides in sequential order within each section",
+        "Edges should connect section headers to their first slide",
+        "Edges should be visually clear and styled appropriately",
+        "Edges should follow React Flow connection patterns",
+        "Reference React Flow tutorial for proper edge styling: https://reactflow.dev/learn/tutorials/slide-shows-with-react-flow",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: edges visible connecting slides in logical order"
+      ],
+      "priority": 35,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-036",
+      "title": "Add custom or fetched images for resource link nodes",
+      "description": "As a user, I want resource link nodes to display either a custom image or the og:image from the linked webpage.",
+      "acceptanceCriteria": [
+        "Resource type should support optional 'image' field for custom image URL",
+        "If no custom image, attempt to fetch og:image metadata from the URL",
+        "Display thumbnail image on ResourceNode component",
+        "Graceful fallback if no image available (show icon or placeholder)",
+        "Consider caching fetched metadata to avoid repeated requests",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: resource nodes show images"
+      ],
+      "priority": 36,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-037",
+      "title": "Create editable markdown file for slide content",
+      "description": "As a user, I want all slide content in a single markdown file so I can easily edit titles, text, and images.",
+      "acceptanceCriteria": [
+        "Create a markdown file (e.g., slides.md or content.md) with all slide content",
+        "Include slide images with markdown image syntax",
+        "Include original talk outline text from talk-outline.md",
+        "Include current slide titles, subtitles, and bullet points",
+        "Format should be clear and easy to edit",
+        "Document how the markdown maps to slide data structure",
+        "Consider using frontmatter or structured sections per slide",
+        "Typecheck passes (if build pipeline changes)"
+      ],
+      "priority": 37,
+      "passes": false,
+      "notes": "Content should be synchronized from the markdown file to the app data"
     }
   ]
 }
