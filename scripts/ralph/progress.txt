@@ -1,3 +1,363 @@
 # Ralph Progress Log
 Started: 2025-01-09
+
+## Codebase Patterns
+- Use Vite template `react-ts` for new React + TypeScript projects
+- CSS custom properties in :root for theme colors and typography
+- Google Fonts imported via @import in index.css
+- Typecheck with `npx tsc --noEmit` in react-flow-app directory
+- React Flow components live in src/components/, wrap app in ReactFlowProvider
+- React Flow CSS import: `import "@xyflow/react/dist/style.css"` in App.tsx
+- Types live in src/types/presentation.ts - import node types and data interfaces from there
+- Custom nodes: Create in src/components/nodes/, register in nodeTypes, use NodeProps<T> for typing
+- Utility functions: Create in src/utils/, export typed functions that return React Flow nodes/edges
+- Custom hooks: Create in src/hooks/, use useReactFlow() from @xyflow/react to access fitView
+- Panels: Create in src/components/panels/, use position: absolute for overlay positioning on ReactFlow canvas
+- Data files: Create in src/data/, export typed arrays (sections[], slides[], resources[]) for presentation content
+---
+
+## 2025-01-09 - US-001
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Initialized Vite + React + TypeScript project in react-flow-app/
+- Configured vite.config.ts with dev server port 5173 and sourcemaps
+- Added CSS reset and Google Fonts imports (Space Grotesk, Inter, JetBrains Mono)
+- Created Slate Canvas theme with CSS custom properties for colors
+- Cleaned up default Vite template with minimal App component
+- Files changed: react-flow-app/ (new directory with 16 files)
+- **Learnings for future iterations:**
+  - npm create vite@latest works with `--template react-ts` for TypeScript support
+  - Dev server starts on port 5173 by default
+  - Typecheck passes with clean template after simplifying App.tsx
+---
+
+## 2025-01-09 - US-002
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Installed @xyflow/react v12.10.0 and react-remark v2.1.0
+- Created App.tsx with ReactFlowProvider wrapper
+- Created PresentationCanvas component with empty ReactFlow canvas
+- Configured dark background (#0f172a) matching Slate Canvas theme
+- Added Background component with subtle dot pattern
+- Files changed: package.json, package-lock.json, src/App.tsx, src/App.css, src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - Import @xyflow/react CSS with `import "@xyflow/react/dist/style.css"`
+  - ReactFlowProvider must wrap parent component containing ReactFlow
+  - Port 5173 may be in use from previous sessions; Vite auto-increments to 5174
+  - Background component accepts variant (Dots/Lines/Cross), gap, size, and color props
+  - Use `proOptions={{ hideAttribution: true }}` to remove React Flow attribution
+---
+
+## 2025-01-09 - US-003
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Created src/types/presentation.ts with comprehensive type definitions
+- Defined Track type for parallel presentation tracks (non-technical, technical, general)
+- Defined Section interface with id, title, track fields
+- Defined SlideContent interface with id, sectionId, type, title, subtitle?, bullets?, quote?, level? fields
+- Defined Resource interface with id, slideId, type, title, url fields
+- Created node data interfaces: SlideNodeData, SectionHeaderNodeData, ResourceNodeData
+- Created typed React Flow node types: SlideNode, SectionHeaderNode, ResourceNode using Node<Data, Type> pattern
+- Added NodeProps types for custom node components
+- Exported NODE_DIMENSIONS and TRACK_COLORS constants for consistent styling
+- Files changed: react-flow-app/src/types/presentation.ts (new file)
+- **Learnings for future iterations:**
+  - Use Node<DataType, "nodeType"> pattern from @xyflow/react for typed nodes
+  - Use NodeProps<NodeType> for component props in custom node components
+  - Include optional fields like level? for slides that have level indicators (Level 0-8)
+  - Constants for dimensions and colors should be exported for use in node components and layout utilities
+---
+
+## 2025-01-09 - US-004
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Created SlideNode custom React Flow component with CSS styling
+- Implemented four slide type variants: title, section-header, content, quote
+- Added track-colored left borders using TRACK_COLORS constants
+- Implemented bullet point preview with max 3 items and "+N more" indicator
+- Added level badge display for slides with level indicators
+- Added Playfair Display font import for italic subtitles and quotes
+- Registered SlideNode as custom node type in PresentationCanvas with sample data
+- Files changed: src/components/nodes/SlideNode.tsx, src/components/nodes/SlideNode.css, src/components/PresentationCanvas.tsx, src/index.css
+- **Learnings for future iterations:**
+  - Custom nodes must be registered in nodeTypes object passed to ReactFlow component
+  - Use Handle component from @xyflow/react for connection points (Position.Top/Bottom)
+  - BEM naming convention for CSS classes (e.g., slide-node__title, slide-node--active)
+  - Type SlideNodeProps from presentation.ts for component props
+  - Add fonts to Google Fonts URL with proper weight/style specs
+---
+
+## 2025-01-09 - US-005
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Created SectionHeaderNode custom React Flow component with CSS styling
+- Node dimensions: 320x120px as specified in NODE_DIMENSIONS constants
+- Display section title with Space Grotesk 600 weight, centered
+- Implemented track-specific gradient backgrounds:
+  - non-technical: emerald gradient (#10b981)
+  - technical: blue gradient (#3b82f6)
+  - general: gray gradient (#6b7280)
+- Added active state styling with glowing border effect
+- Added Handles for Left, Right, and Bottom positions for flexible edge connections
+- Registered SectionHeaderNode in PresentationCanvas nodeTypes
+- Added sample section header nodes for all three tracks to test styling
+- Updated PresentationCanvas to use combined sample nodes array
+- Files changed: src/components/nodes/SectionHeaderNode.tsx (new), src/components/nodes/SectionHeaderNode.css (new), src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - CSS custom properties (--track-color) can be set inline via style prop with type assertion
+  - Track-specific modifier classes (--non-technical, --technical, --general) work well for gradient backgrounds
+  - Section headers use Left/Right handles for horizontal section-to-section connections
+  - Multiple sample node arrays can be combined with spread operator for testing multiple node types
+---
+
+## 2025-01-09 - US-006
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Created ResourceNode custom React Flow component with CSS styling
+- Node dimensions: 140x80px as specified in NODE_DIMENSIONS constants
+- Implemented dashed border styling to distinguish from main slide nodes
+- Created inline SVG icons for all 5 resource types:
+  - article: document with lines icon (amber #f59e0b)
+  - tool: wrench icon (violet #8b5cf6)
+  - video: play button icon (red #ef4444)
+  - docs: document with page corner icon (emerald #10b981)
+  - github: github fork/branch icon (gray #6b7280)
+- Implemented title truncation (max 20 characters with ellipsis)
+- Added click handler using window.open() with noopener,noreferrer for security
+- Added type badge showing resource type in uppercase
+- Registered ResourceNode in PresentationCanvas nodeTypes
+- Added 5 sample resource nodes (one of each type) to test all styling variations
+- Verified in browser that clicking ResourceNode opens external URL in new tab
+- Files changed: src/components/nodes/ResourceNode.tsx (new), src/components/nodes/ResourceNode.css (new), src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - Use CSS custom properties (--resource-color) for type-specific accent colors
+  - SVG icons can be defined inline as JSX and stored in a Record<ResourceType, JSX.Element> for easy lookup
+  - Position.Left handle for resource nodes since they connect from parent slides on the left
+  - Use onClick handler directly on the node div for click-to-open functionality
+  - window.open with 'noopener,noreferrer' prevents opened tab from accessing opener
+---
+
+## 2025-01-09 - US-007
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Created src/utils/generateNodes.ts for automatic node positioning
+- Implemented clustered layout algorithm:
+  - Section headers positioned horizontally with 600px spacing
+  - Slides positioned vertically below section headers with 220px spacing
+  - Resource nodes positioned 160px to the right of parent slides
+- Added SECTION_HORIZONTAL_SPACING, SLIDE_VERTICAL_SPACING, RESOURCE_OFFSET constants
+- Groups slides by sectionId using Map for efficient lookup
+- Groups resources by slideId for vertical stacking
+- Returns typed PresentationNode[] array ready for React Flow
+- Added helper function getNodeCenter() for fitView calculations
+- Files changed: src/utils/generateNodes.ts (new)
+- **Learnings for future iterations:**
+  - Utility functions go in src/utils/ directory
+  - Use Map<string, T[]> pattern for grouping items by parent ID
+  - Position calculations should use constants for maintainability
+  - Resource nodes stack vertically with 100px spacing when multiple per slide
+---
+
+## 2025-01-09 - US-008
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Created src/utils/generateEdges.ts for styled edge connections
+- Implemented three edge types with distinct visual styles:
+  - Section-to-section: 3px indigo #6366f1 stroke, animated for major flow
+  - Slide-to-slide: 1.5px gray #4b5563 solid stroke for vertical section flow
+  - Slide-to-resource: 1px gray #6b7280 dashed stroke for resource connections
+- Added section-to-first-slide edges connecting headers to their content
+- Uses EDGE_STYLES constant object for maintainable style definitions
+- Maps sections, slides, and resources to build complete edge graph
+- Returns typed Edge[] array ready for React Flow
+- Files changed: src/utils/generateEdges.ts (new)
+- **Learnings for future iterations:**
+  - Use sourceHandle/targetHandle props to connect specific handles (left/right/top/bottom)
+  - Edge animated prop creates flowing animation effect, good for primary navigation paths
+  - strokeDasharray: "5,5" creates dashed line effect for subtle connections
+  - Group by parent ID patterns from generateNodes apply to edge generation as well
+---
+
+## 2025-01-09 - US-009
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Created src/hooks/useKeyboardNavigation.ts for keyboard-based slide navigation
+- Implemented arrow key navigation:
+  - Up/Down: Navigate between slides within current section
+  - Left/Right: Navigate to first slide of adjacent sections
+- Implemented section jumping:
+  - PageUp/PageDown: Jump to previous/next section
+  - Number keys 1-9: Jump directly to numbered section
+- Integrates with React Flow fitView for smooth 500ms transitions with padding
+- Updated PresentationCanvas to use generateNodes/generateEdges utilities
+- Added click-to-navigate functionality via onNodeClick handler
+- Added active slide state tracking with visual highlighting
+- Files changed: src/hooks/useKeyboardNavigation.ts (new), src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - useReactFlow() hook provides fitView function for programmatic navigation
+  - fitView accepts nodes array with partial objects (just {id} is sufficient)
+  - fitView options: duration (ms), padding, maxZoom control transition behavior
+  - Use window.addEventListener for global keyboard events in hooks
+  - NodeMouseHandler type from @xyflow/react for typed onNodeClick handlers
+  - Node IDs use format `slide-{slideId}` and `section-{sectionId}` - match these in fitView calls
+---
+
+## 2025-01-09 - US-010
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added overview mode toggle via Escape key to zoom out and show all nodes
+- Added 0 key to fit current slide to view (zoom back from overview)
+- Implemented isOverviewMode state tracking in useKeyboardNavigation hook
+- Added toggleOverview() and fitCurrentSlide() functions
+- All fitView calls use 500ms duration for smooth transitions
+- Updated PresentationCanvas to support section header navigation via click
+- Click on any node exits overview mode and focuses that node
+- Files changed: src/hooks/useKeyboardNavigation.ts, src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - fitView without nodes array fits ALL nodes in the viewport
+  - Use minZoom/maxZoom options to control zoom constraints in fitView
+  - Don't call setState inside setState callback when also calling external functions (React warning)
+  - Visual zoom differences may be subtle with small sample data - full presentation will show clearer distinction
+---
+
+## 2025-01-09 - US-011
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added React Flow MiniMap component to PresentationCanvas
+- Imported MiniMap from @xyflow/react
+- Positioned minimap in bottom-right corner using position="bottom-right"
+- Implemented nodeColor function to color nodes by track:
+  - Section headers and slides: Use TRACK_COLORS based on section.track
+  - Resource nodes: Muted gray #4b5563
+- Styled minimap with dark background matching Slate Canvas theme
+- Added maskColor for viewport highlighting
+- Files changed: src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - MiniMap component accepts nodeColor callback to dynamically color nodes
+  - Use type assertions to access nested node data in nodeColor callback
+  - position prop accepts "top-left", "top-right", "bottom-left", "bottom-right"
+  - MiniMap automatically shows current viewport position as highlighted area
+  - Import TRACK_COLORS constant from presentation.ts for consistent styling
+---
+
+## 2025-01-09 - US-012
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Created SectionNavigator panel component for quick section navigation
+- Created src/components/panels/SectionNavigator.tsx with TypeScript props interface
+- Created src/components/panels/SectionNavigator.css with dark theme styling
+- Panel displays all sections with numbered list (1, 2, 3...)
+- Shows section titles with track color indicators (emerald/blue/gray dots)
+- Highlights current section with active state and track-colored left border
+- Click on section calls navigateToSection to jump to section header node
+- Positioned on left side using position: absolute with backdrop blur effect
+- Updated PresentationCanvas to wrap ReactFlow in container div for overlay positioning
+- Added currentSectionId to destructured values from useKeyboardNavigation hook
+- Files changed: src/components/panels/SectionNavigator.tsx (new), src/components/panels/SectionNavigator.css (new), src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - Panels live in src/components/panels/ directory
+  - Wrap ReactFlow in a container div with position: relative for overlay panels
+  - useKeyboardNavigation hook returns currentSectionId - must destructure to use
+  - CSS custom properties (--track-color) for dynamic track coloring via inline styles
+  - Use aria-current="true" for accessibility on active navigation items
+---
+
+## 2025-01-09 - US-013
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Created src/data/slides.ts with all 15 slides extracted from index.html
+- Organized slides into 4 logical sections:
+  - The Widening Gulf (general track): Technology and the Widening Gulf, Mental Models Through Use
+  - Understanding AI (non-technical track): New Tech Old Mental Models, From Confidant to Digital Employee
+  - Mapping the Journey (general track): Mapping the Journey, The Wrong Split
+  - The Levels (non-technical track): Levels 0-8 (Avoidance through Natural Language Software)
+- Updated PresentationCanvas to import and use real slide data from slides.ts
+- Replaced sample data with actual presentation content
+- Added helper functions: getSlidesBySection(), getSectionById()
+- Files changed: src/data/slides.ts (new), src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - Data files live in src/data/ directory
+  - Keep data separate from components - PresentationCanvas imports data, doesn't define it
+  - Resources array is empty placeholder for US-014
+  - Slide IDs use format `slide-01`, `slide-02` etc. for human readability
+  - Each slide references sectionId to group slides by section
+---
+
+## 2025-01-09 - US-014
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added 7 resource nodes to src/data/slides.ts linking to external tools and documentation
+- Resource nodes attached to key slides in "The Levels" section:
+  - Level 1 (slide-08): ChatGPT - chat.openai.com
+  - Level 2 (slide-09): Claude AI - claude.ai
+  - Level 4 (slide-11): Wispr Flow and Granola Notes (two resources on same slide)
+  - Level 6 (slide-13): Midjourney
+  - Level 7 (slide-14): Zapier Guide (docs type)
+  - Level 8 (slide-15): Lovable Dev
+- Updated PresentationCanvas.tsx to import resources from slides.ts (removed empty placeholder array)
+- Verified in browser: All 7 resource nodes visible in React Flow canvas, click opens new tab
+- Files changed: src/data/slides.ts, src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - Resources array exports from slides.ts alongside sections[] and slides[]
+  - Multiple resources can attach to same slide - generateNodes stacks them vertically with 100px spacing
+  - Resource IDs use format `res-01`, `res-02` etc. for human readability
+  - SlideId references use the slide ID without "slide-" prefix (e.g., "slide-08" not "slide-slide-08")
+---
+
+## 2025-01-09 - US-015
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added smooth edge transitions and hover effects in App.css
+- Implemented window resize handler with debounced fitView in PresentationCanvas.tsx
+- Added responsive media queries for 1366px and 1280px viewport sizes
+- Enhanced minimap and controls styling for dark theme consistency
+- Added responsive adjustments to SectionNavigator.css (font sizes, padding, spacing)
+- Tested at viewport sizes: 1920x1080, 1366x768, 1280x720 - no visual glitches
+- Files changed: src/App.css, src/components/PresentationCanvas.tsx, src/components/panels/SectionNavigator.css
+- **Learnings for future iterations:**
+  - Use debounced resize handler (150ms) to avoid excessive fitView calls during window resize
+  - React Flow edge transitions can be styled via .react-flow__edge-path CSS selector
+  - Viewport transition smoothness can be added via .react-flow__viewport CSS transition
+  - Media queries should target both :root for CSS variables and specific components
+  - The edge warnings in console (about missing handles) don't affect functionality - they occur when edges reference handles that exist but aren't visible
+---
+
+## 2025-01-10 - US-016
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added explicit id attributes to Handle components in SlideNode.tsx
+- Added id="top" to target Handle at Position.Top
+- Added id="bottom" to source Handle at Position.Bottom
+- Added NEW source Handle with id="right" at Position.Right for resource connections
+- Files changed: src/components/nodes/SlideNode.tsx
+- **Learnings for future iterations:**
+  - Handle id attributes must match sourceHandle/targetHandle values in generateEdges.ts
+  - SlideNode needs right handle for slide-to-resource connections (edges reference sourceHandle: "right")
+  - Handle components can have both type and id - id is what edge connections reference
+---
+
+## 2025-01-10 - US-017
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added explicit id attributes to Handle components in SectionHeaderNode.tsx and ResourceNode.tsx
+- Added id="left" to target Handle at Position.Left in SectionHeaderNode
+- Added id="right" to source Handle at Position.Right in SectionHeaderNode
+- Added id="left" to target Handle at Position.Left in ResourceNode
+- Verified in browser: all edges now render correctly between nodes
+- Console warnings about missing handle IDs have been eliminated
+- Files changed: src/components/nodes/SectionHeaderNode.tsx, src/components/nodes/ResourceNode.tsx
+- **Learnings for future iterations:**
+  - All Handle components need explicit id attributes that match the sourceHandle/targetHandle values in generateEdges.ts
+  - Section headers use left/right handles for horizontal section-to-section edges, bottom handle for section-to-first-slide edges
+  - Resource nodes only need a target handle (left) since they receive edges from slides, not emit them
+  - Edge visibility in browser is the best way to confirm handle IDs are correct - look for all edge types rendering
+---
+
+## 2025-01-10 - US-018
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Wrapped all three node components with React.memo() for performance optimization
+- Added `import { memo } from "react"` to each component file
+- Changed exports to `export default memo(ComponentName)` pattern
+- Files changed: src/components/nodes/SlideNode.tsx, src/components/nodes/SectionHeaderNode.tsx, src/components/nodes/ResourceNode.tsx
+- **Learnings for future iterations:**
+  - React.memo() wraps the exported component, not the function declaration
+  - Import memo from 'react' at the top of the file alongside other React imports
+  - This optimization prevents unnecessary re-renders when parent components change but node data remains the same
+---
+
+## 2025-01-10 - US-019
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Optimized PresentationCanvas performance with two key improvements
+- Added useRef to track previous active slide ID for comparison
+- Refactored nodesWithActiveState useMemo to only create new objects when isActive actually changes for a node
+- Wrapped MiniMap nodeColor callback in useCallback with empty dependency array to prevent unnecessary re-renders
+- Files changed: src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - Use useRef to track previous state values across renders for comparison in useMemo
+  - The pattern `wasActive !== isActive` detects when a specific node's active state changed, not just when the global currentSlideId changed
+  - MiniMap's nodeColor callback is called for every node on every render - wrapping in useCallback prevents new function instance creation
+  - useCallback with empty deps array is fine when the function only uses stable references (like TRACK_COLORS constant)
 ---

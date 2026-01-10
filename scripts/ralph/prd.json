@@ -15,7 +15,7 @@
         "Typecheck passes"
       ],
       "priority": 1,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -31,7 +31,7 @@
         "Verify in browser using dev-browser skill: empty dark canvas displays"
       ],
       "priority": 2,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -47,7 +47,7 @@
         "Typecheck passes"
       ],
       "priority": 3,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -66,7 +66,7 @@
         "Verify in browser using dev-browser skill: sample SlideNode renders with correct styling"
       ],
       "priority": 4,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -82,7 +82,7 @@
         "Verify in browser using dev-browser skill: sample SectionHeaderNode renders distinctly"
       ],
       "priority": 5,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -100,7 +100,7 @@
         "Verify in browser using dev-browser skill: ResourceNode click opens external link"
       ],
       "priority": 6,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -116,7 +116,7 @@
         "Typecheck passes"
       ],
       "priority": 7,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -132,7 +132,7 @@
         "Typecheck passes"
       ],
       "priority": 8,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -149,7 +149,7 @@
         "Verify in browser using dev-browser skill: arrow keys navigate between slides"
       ],
       "priority": 9,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -165,7 +165,7 @@
         "Verify in browser using dev-browser skill: Escape zooms out to show all, click on node focuses it"
       ],
       "priority": 10,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -181,7 +181,7 @@
         "Verify in browser using dev-browser skill: minimap shows current position"
       ],
       "priority": 11,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -198,7 +198,7 @@
         "Verify in browser using dev-browser skill: clicking section in navigator jumps to it"
       ],
       "priority": 12,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -215,7 +215,7 @@
         "Verify in browser using dev-browser skill: all 15 slides visible and readable"
       ],
       "priority": 13,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -231,7 +231,7 @@
         "Verify in browser using dev-browser skill: resource nodes visible and clickable"
       ],
       "priority": 14,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -248,6 +248,248 @@
         "Verify in browser using dev-browser skill: resize window, confirm no layout issues"
       ],
       "priority": 15,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-016",
+      "title": "Add handle IDs to SlideNode component",
+      "description": "As a developer, I need handles with explicit IDs so edges connect properly.",
+      "acceptanceCriteria": [
+        "Add id=\"top\" to target Handle in SlideNode.tsx",
+        "Add id=\"bottom\" to source Handle in SlideNode.tsx",
+        "Add NEW right-side Handle with id=\"right\" and position={Position.Right} for resource connections",
+        "Console warnings 'Couldn't create edge for source handle id' are reduced",
+        "Typecheck passes"
+      ],
+      "priority": 16,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-017",
+      "title": "Add handle IDs to SectionHeaderNode and ResourceNode",
+      "description": "As a developer, I need all nodes to have explicit handle IDs for consistent edge connections.",
+      "acceptanceCriteria": [
+        "Add id=\"left\" to target Handle in SectionHeaderNode.tsx",
+        "Add id=\"right\" to source Handle in SectionHeaderNode.tsx",
+        "Add id=\"left\" to target Handle in ResourceNode.tsx",
+        "All edge-related console warnings eliminated",
+        "Edges visibly render between nodes",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: edges visible between slides"
+      ],
+      "priority": 17,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-018",
+      "title": "Memoize node components with React.memo",
+      "description": "As a user, I want smooth panning without lag caused by unnecessary re-renders.",
+      "acceptanceCriteria": [
+        "Wrap SlideNode with React.memo() - export default memo(SlideNode)",
+        "Wrap SectionHeaderNode with React.memo() - export default memo(SectionHeaderNode)",
+        "Wrap ResourceNode with React.memo() - export default memo(ResourceNode)",
+        "Import memo from 'react' in each file",
+        "Typecheck passes"
+      ],
+      "priority": 18,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-019",
+      "title": "Optimize PresentationCanvas performance",
+      "description": "As a user, I want responsive canvas interactions without lag.",
+      "acceptanceCriteria": [
+        "Fix nodesWithActiveState useMemo to only create new objects when isActive changes",
+        "Wrap MiniMap nodeColor callback in useCallback",
+        "Import useCallback from 'react' if not already imported",
+        "Typecheck passes"
+      ],
+      "priority": 19,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-020",
+      "title": "Disable animated edges",
+      "description": "As a user, I want smoother performance by removing continuous edge animations.",
+      "acceptanceCriteria": [
+        "In generateEdges.ts, change EDGE_STYLES.sectionToSection.animated from true to false",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: panning feels responsive"
+      ],
+      "priority": 20,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-021",
+      "title": "Update NODE_DIMENSIONS for larger slides",
+      "description": "As a user, I want larger slide nodes so content is more readable.",
+      "acceptanceCriteria": [
+        "Update slide dimensions from 280x180 to 520x400 in types/presentation.ts",
+        "Update sectionHeader dimensions from 320x120 to 400x140",
+        "Update resource dimensions from 140x80 to 160x90",
+        "Typecheck passes"
+      ],
+      "priority": 21,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-022",
+      "title": "Redesign SlideNode for hero image layout",
+      "description": "As a user, I want slides with prominent images at top and text below.",
+      "acceptanceCriteria": [
+        "Restructure SlideNode to have hero image area (60% height) at top",
+        "Add slide-node__hero div for image container",
+        "Move content (title, subtitle, bullets) to bottom 40%",
+        "Level badge positioned on hero image area",
+        "Remove background image overlay approach, use dedicated image container",
+        "Typecheck passes"
+      ],
+      "priority": 22,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-023",
+      "title": "Update SlideNode CSS for hero layout",
+      "description": "As a user, I want visually appealing slides with the new hero layout.",
+      "acceptanceCriteria": [
+        "Add .slide-node__hero class with background-size: cover",
+        "Update .slide-node__content for compact bottom area",
+        "Update .slide-node__level to overlay on hero image",
+        "Change border from left-side to top (borderTopColor instead of borderLeftColor)",
+        "Increase font sizes: title 18px, subtitle 14px, bullets 13px",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: slides show image at top, text below"
+      ],
+      "priority": 23,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-024",
+      "title": "Adjust layout spacing for larger slides",
+      "description": "As a developer, I need node spacing adjusted for the larger slide dimensions.",
+      "acceptanceCriteria": [
+        "Update SECTION_HORIZONTAL_SPACING from 600 to 800 in generateNodes.ts",
+        "Update SLIDE_VERTICAL_SPACING from 220 to 450 in generateNodes.ts",
+        "Typecheck passes"
+      ],
+      "priority": 24,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-025",
+      "title": "Add sequential navigation to useKeyboardNavigation hook",
+      "description": "As a developer, I need functions to support next/previous button navigation.",
+      "acceptanceCriteria": [
+        "Add goToNextSlide() function that navigates to next slide in order",
+        "Add goToPreviousSlide() function that navigates to previous slide",
+        "Export currentSlideIndex (0-indexed position in orderedSlides)",
+        "Export totalSlides count",
+        "Typecheck passes"
+      ],
+      "priority": 25,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-026",
+      "title": "Create NavigationControls component",
+      "description": "As a user, I want Next/Previous buttons to navigate the presentation.",
+      "acceptanceCriteria": [
+        "Create NavigationControls.tsx in src/components/panels/",
+        "Previous button on left (gray styling)",
+        "Progress indicator showing 'X / Y' format",
+        "Next button on right (orange/coral color like reference site)",
+        "Overview toggle button with grid icon",
+        "Buttons disabled at first/last slide appropriately",
+        "Create NavigationControls.css with floating pill design, backdrop blur",
+        "Wrap component in React.memo",
+        "Typecheck passes"
+      ],
+      "priority": 26,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-027",
+      "title": "Integrate NavigationControls into PresentationCanvas",
+      "description": "As a user, I want to see and use navigation controls on the presentation.",
+      "acceptanceCriteria": [
+        "Import NavigationControls component in PresentationCanvas.tsx",
+        "Pass currentSlideIndex, totalSlides, goToNextSlide, goToPreviousSlide, toggleOverview, isOverviewMode as props",
+        "Position NavigationControls at bottom center of canvas",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: Next/Previous buttons visible and functional"
+      ],
+      "priority": 27,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-028",
+      "title": "Enable node dragging in PresentationCanvas",
+      "description": "As a user, I want to drag slides to rearrange them on the canvas.",
+      "acceptanceCriteria": [
+        "Convert nodes from useMemo to useState in PresentationCanvas.tsx",
+        "Add onNodesChange handler using applyNodeChanges from @xyflow/react",
+        "Set nodesDraggable={true} on ReactFlow component",
+        "Import applyNodeChanges and NodeChange types",
+        "Edges automatically follow dragged nodes",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: can drag a slide to new position"
+      ],
+      "priority": 28,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-029",
+      "title": "Update color variables for brighter theme",
+      "description": "As a user, I want a brighter, more vibrant visual design.",
+      "acceptanceCriteria": [
+        "Update --color-bg-primary to #ffffff in index.css",
+        "Update --color-text-primary to #0f172a for better contrast",
+        "Update --color-text-secondary to #334155",
+        "Typecheck passes"
+      ],
+      "priority": 29,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-030",
+      "title": "Update SectionNavigator to light theme",
+      "description": "As a user, I want the section navigator to match the brighter theme.",
+      "acceptanceCriteria": [
+        "Change SectionNavigator background from dark to white/light (rgba(255,255,255,0.95))",
+        "Update border to dark (rgba(0,0,0,0.1))",
+        "Update text colors from light to dark",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill: section navigator has light theme"
+      ],
+      "priority": 30,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-031",
+      "title": "Add image lazy loading",
+      "description": "As a user, I want faster initial load by deferring offscreen images.",
+      "acceptanceCriteria": [
+        "Add loading=\"lazy\" attribute to hero images in SlideNode",
+        "Images load as they come into viewport",
+        "Typecheck passes"
+      ],
+      "priority": 31,
       "passes": false,
       "notes": ""
     }
