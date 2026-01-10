@@ -11,6 +11,7 @@ import SlideNode from "./nodes/SlideNode";
 import SectionHeaderNode from "./nodes/SectionHeaderNode";
 import ResourceNode from "./nodes/ResourceNode";
 import SectionNavigator from "./panels/SectionNavigator";
+import NavigationControls from "./panels/NavigationControls";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
 import { generateNodes } from "../utils/generateNodes";
 import { generateEdges } from "../utils/generateEdges";
@@ -37,9 +38,14 @@ function PresentationCanvas() {
   const {
     currentSlideId,
     currentSectionId,
+    currentSlideIndex,
+    totalSlides,
     isOverviewMode,
     navigateToSlide,
     navigateToSection,
+    goToNextSlide,
+    goToPreviousSlide,
+    toggleOverview,
   } = useKeyboardNavigation({
     sections,
     slides,
@@ -197,6 +203,14 @@ function PresentationCanvas() {
         sections={sections}
         currentSectionId={currentSectionId}
         onSectionClick={navigateToSection}
+      />
+      <NavigationControls
+        currentSlideIndex={currentSlideIndex}
+        totalSlides={totalSlides}
+        isOverviewMode={isOverviewMode}
+        onPrevious={goToPreviousSlide}
+        onNext={goToNextSlide}
+        onToggleOverview={toggleOverview}
       />
     </div>
   );
