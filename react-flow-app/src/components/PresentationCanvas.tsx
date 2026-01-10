@@ -3,6 +3,7 @@ import {
   ReactFlow,
   Background,
   BackgroundVariant,
+  MiniMap,
   type NodeMouseHandler,
 } from "@xyflow/react";
 import SlideNode from "./nodes/SlideNode";
@@ -17,6 +18,7 @@ import type {
   Resource,
   PresentationNode,
 } from "../types/presentation";
+import { TRACK_COLORS } from "../types/presentation";
 
 // Register custom node types
 const nodeTypes = {
@@ -227,6 +229,30 @@ function PresentationCanvas() {
         gap={20}
         size={1}
         color="rgba(255, 255, 255, 0.1)"
+      />
+      <MiniMap
+        nodeColor={(node) => {
+          // Get track color based on node type and data
+          if (node.type === "sectionHeader") {
+            const data = node.data as {
+              section: { track: keyof typeof TRACK_COLORS };
+            };
+            return TRACK_COLORS[data.section.track];
+          }
+          if (node.type === "slide") {
+            const data = node.data as {
+              section: { track: keyof typeof TRACK_COLORS };
+            };
+            return TRACK_COLORS[data.section.track];
+          }
+          // Resource nodes get a muted gray color
+          return "#4b5563";
+        }}
+        style={{
+          backgroundColor: "rgba(15, 23, 42, 0.9)",
+        }}
+        maskColor="rgba(15, 23, 42, 0.7)"
+        position="bottom-right"
       />
     </ReactFlow>
   );
