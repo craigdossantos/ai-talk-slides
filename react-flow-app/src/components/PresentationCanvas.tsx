@@ -1,4 +1,4 @@
-import { useMemo, useCallback, useEffect } from "react";
+import { useMemo, useCallback, useEffect, useRef } from "react";
 import {
   ReactFlow,
   Background,
@@ -43,7 +43,6 @@ function PresentationCanvas() {
   } = useKeyboardNavigation({
     sections,
     slides,
-    nodes,
   });
 
   // Handle window resize gracefully - refocus current slide after resize
@@ -98,22 +97,71 @@ function PresentationCanvas() {
     [navigateToSlide, navigateToSection],
   );
 
-  // Mark current slide as active
+  // Track previous active slide to only update changed nodes
+  const prevActiveSlideIdRef = useRef<string | null>(null);
+
+  // Mark current slide as active - only create new objects when isActive actually changes
   const nodesWithActiveState = useMemo(() => {
+    const prevActiveSlideId = prevActiveSlideIdRef.current;
+
     return nodes.map((node) => {
       if (node.type === "slide") {
         const slideId = node.id.replace("slide-", "");
-        return {
-          ...node,
-          data: {
-            ...node.data,
-            isActive: slideId === currentSlideId,
-          },
-        };
+        const wasActive = slideId === prevActiveSlideId;
+        const isActive = slideId === currentSlideId;
+
+        // Only create a new object if the isActive state changed for this node
+        if (wasActive !== isActive) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              isActive,
+            },
+          };
+        }
+        // Return node as-is if isActive state didn't change
+        // But we still need to set isActive on initial render
+        if (node.data.isActive !== isActive) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              isActive,
+            },
+          };
+        }
       }
       return node;
     }) as PresentationNode[];
   }, [nodes, currentSlideId]);
+
+  // Update ref after render
+  useEffect(() => {
+    prevActiveSlideIdRef.current = currentSlideId;
+  }, [currentSlideId]);
+
+  // Memoized MiniMap nodeColor callback
+  const getNodeColor = useCallback(
+    (node: { type?: string; data: Record<string, unknown> }) => {
+      // Get track color based on node type and data
+      if (node.type === "sectionHeader") {
+        const data = node.data as {
+          section: { track: keyof typeof TRACK_COLORS };
+        };
+        return TRACK_COLORS[data.section.track];
+      }
+      if (node.type === "slide") {
+        const data = node.data as {
+          section: { track: keyof typeof TRACK_COLORS };
+        };
+        return TRACK_COLORS[data.section.track];
+      }
+      // Resource nodes get a muted gray color
+      return "#94a3b8";
+    },
+    [],
+  );
 
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
@@ -134,30 +182,14 @@ function PresentationCanvas() {
           variant={BackgroundVariant.Dots}
           gap={20}
           size={1}
-          color="rgba(255, 255, 255, 0.1)"
+          color="rgba(0, 0, 0, 0.08)"
         />
         <MiniMap
-          nodeColor={(node) => {
-            // Get track color based on node type and data
-            if (node.type === "sectionHeader") {
-              const data = node.data as {
-                section: { track: keyof typeof TRACK_COLORS };
-              };
-              return TRACK_COLORS[data.section.track];
-            }
-            if (node.type === "slide") {
-              const data = node.data as {
-                section: { track: keyof typeof TRACK_COLORS };
-              };
-              return TRACK_COLORS[data.section.track];
-            }
-            // Resource nodes get a muted gray color
-            return "#4b5563";
-          }}
+          nodeColor={getNodeColor}
           style={{
-            backgroundColor: "rgba(15, 23, 42, 0.9)",
+            backgroundColor: "rgba(255, 255, 255, 0.95)",
           }}
-          maskColor="rgba(15, 23, 42, 0.7)"
+          maskColor="rgba(248, 250, 252, 0.7)"
           position="bottom-right"
         />
       </ReactFlow>
