@@ -9,6 +9,7 @@ import {
 import SlideNode from "./nodes/SlideNode";
 import SectionHeaderNode from "./nodes/SectionHeaderNode";
 import ResourceNode from "./nodes/ResourceNode";
+import SectionNavigator from "./panels/SectionNavigator";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
 import { generateNodes } from "../utils/generateNodes";
 import { generateEdges } from "../utils/generateEdges";
@@ -169,12 +170,17 @@ function PresentationCanvas() {
   );
 
   // Initialize keyboard navigation
-  const { currentSlideId, isOverviewMode, navigateToSlide, navigateToSection } =
-    useKeyboardNavigation({
-      sections: sampleSections,
-      slides: sampleSlides,
-      nodes,
-    });
+  const {
+    currentSlideId,
+    currentSectionId,
+    isOverviewMode,
+    navigateToSlide,
+    navigateToSection,
+  } = useKeyboardNavigation({
+    sections: sampleSections,
+    slides: sampleSlides,
+    nodes,
+  });
 
   // Handle node click - navigate to clicked slide or section
   // In overview mode, clicking any node focuses it
@@ -211,50 +217,57 @@ function PresentationCanvas() {
   }, [nodes, currentSlideId]);
 
   return (
-    <ReactFlow
-      nodes={nodesWithActiveState}
-      edges={edges}
-      nodeTypes={nodeTypes}
-      onNodeClick={handleNodeClick}
-      fitView
-      fitViewOptions={{
-        nodes: [{ id: `slide-${sampleSlides[0].id}` }],
-        padding: 0.3,
-        maxZoom: 1.5,
-      }}
-      proOptions={{ hideAttribution: true }}
-    >
-      <Background
-        variant={BackgroundVariant.Dots}
-        gap={20}
-        size={1}
-        color="rgba(255, 255, 255, 0.1)"
-      />
-      <MiniMap
-        nodeColor={(node) => {
-          // Get track color based on node type and data
-          if (node.type === "sectionHeader") {
-            const data = node.data as {
-              section: { track: keyof typeof TRACK_COLORS };
-            };
-            return TRACK_COLORS[data.section.track];
-          }
-          if (node.type === "slide") {
-            const data = node.data as {
-              section: { track: keyof typeof TRACK_COLORS };
-            };
-            return TRACK_COLORS[data.section.track];
-          }
-          // Resource nodes get a muted gray color
-          return "#4b5563";
+    <div style={{ width: "100%", height: "100%", position: "relative" }}>
+      <ReactFlow
+        nodes={nodesWithActiveState}
+        edges={edges}
+        nodeTypes={nodeTypes}
+        onNodeClick={handleNodeClick}
+        fitView
+        fitViewOptions={{
+          nodes: [{ id: `slide-${sampleSlides[0].id}` }],
+          padding: 0.3,
+          maxZoom: 1.5,
         }}
-        style={{
-          backgroundColor: "rgba(15, 23, 42, 0.9)",
-        }}
-        maskColor="rgba(15, 23, 42, 0.7)"
-        position="bottom-right"
+        proOptions={{ hideAttribution: true }}
+      >
+        <Background
+          variant={BackgroundVariant.Dots}
+          gap={20}
+          size={1}
+          color="rgba(255, 255, 255, 0.1)"
+        />
+        <MiniMap
+          nodeColor={(node) => {
+            // Get track color based on node type and data
+            if (node.type === "sectionHeader") {
+              const data = node.data as {
+                section: { track: keyof typeof TRACK_COLORS };
+              };
+              return TRACK_COLORS[data.section.track];
+            }
+            if (node.type === "slide") {
+              const data = node.data as {
+                section: { track: keyof typeof TRACK_COLORS };
+              };
+              return TRACK_COLORS[data.section.track];
+            }
+            // Resource nodes get a muted gray color
+            return "#4b5563";
+          }}
+          style={{
+            backgroundColor: "rgba(15, 23, 42, 0.9)",
+          }}
+          maskColor="rgba(15, 23, 42, 0.7)"
+          position="bottom-right"
+        />
+      </ReactFlow>
+      <SectionNavigator
+        sections={sampleSections}
+        currentSectionId={currentSectionId}
+        onSectionClick={navigateToSection}
       />
-    </ReactFlow>
+    </div>
   );
 }
 

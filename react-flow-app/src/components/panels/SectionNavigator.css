@@ -1,0 +1,107 @@
+.section-navigator {
+  position: absolute;
+  top: var(--spacing-lg);
+  left: var(--spacing-lg);
+  z-index: 10;
+  background: rgba(15, 23, 42, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: var(--spacing-md);
+  min-width: 200px;
+  max-width: 280px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.section-navigator__header {
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: var(--spacing-sm);
+}
+
+.section-navigator__title {
+  font-family: var(--font-primary);
+  font-weight: 600;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+.section-navigator__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.section-navigator__item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+  text-align: left;
+  width: 100%;
+}
+
+.section-navigator__item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.section-navigator__item:active {
+  transform: scale(0.98);
+}
+
+.section-navigator__item--active {
+  background: rgba(var(--track-color-rgb, 99, 102, 241), 0.15);
+  border-color: var(--track-color, var(--color-accent));
+  border-left-width: 3px;
+}
+
+.section-navigator__item--active .section-navigator__number {
+  color: var(--track-color, var(--color-accent));
+}
+
+.section-navigator__item--active .section-navigator__section-title {
+  color: var(--color-text-primary);
+}
+
+.section-navigator__number {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  min-width: 18px;
+}
+
+.section-navigator__section-title {
+  flex: 1;
+  font-family: var(--font-secondary);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.section-navigator__track-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.section-navigator__item--active .section-navigator__track-indicator {
+  opacity: 1;
+}
