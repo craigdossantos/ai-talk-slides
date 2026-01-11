@@ -14,6 +14,7 @@ Started: 2025-01-09
 - Custom hooks: Create in src/hooks/, use useReactFlow() from @xyflow/react to access fitView
 - Panels: Create in src/components/panels/, use position: absolute for overlay positioning on ReactFlow canvas
 - Data files: Create in src/data/, export typed arrays (sections[], slides[], resources[]) for presentation content
+- NEVER add CSS transitions to .react-flow__viewport - use fitView({ duration: X }) for smooth programmatic navigation instead
 ---
 
 ## 2025-01-09 - US-001
@@ -561,4 +562,19 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - object-fit: contain shows full image but may leave letterbox bars; cover fills area but crops
   - When using contain, the container should have flexbox centering to properly position the image
   - Slide dimensions should be calculated based on image aspect ratio plus content area height
+---
+
+## 2025-01-10 - US-033
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Removed CSS transition on .react-flow__viewport that was causing panning lag
+- The `transition: transform 0.3s ease-out` rule was animating every pan movement
+- Canvas now moves instantly with mouse during manual panning
+- React Flow handles smooth transitions internally via fitView({ duration: X }) for programmatic navigation
+- Verified in browser: pan operation immediately updates viewport transform
+- Files changed: src/App.css
+- **Learnings for future iterations:**
+  - Never add CSS transitions to .react-flow__viewport - this causes panning lag
+  - React Flow uses inline style transforms which CSS transitions will animate
+  - For smooth programmatic navigation, use fitView({ duration: X }) instead of CSS transitions
+  - The viewport transform is managed by React Flow and should not have external CSS transitions
 ---
