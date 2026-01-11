@@ -636,3 +636,22 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - Conditional className with ternary works well for has-image modifier: `${hasImage ? "resource-node--has-image" : ""}`
   - favicon.ico and apple-touch-icon.png are commonly available public image URLs for tools/services
 ---
+
+## 2025-01-10 - US-037
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Created slides.md markdown file in src/data/ with all 15 slides in editable format
+- Used YAML-like frontmatter between `---` markers for slide metadata (id, sectionId, type, level)
+- Included slide titles, subtitles, bullet points in bold-labeled sections
+- Added markdown image syntax for each slide with preview capability
+- Added Resources sections for slides that link to external tools
+- Created section reference table showing section IDs, titles, and tracks
+- Included original talk outline at bottom for content reference
+- Added format documentation at top explaining how to edit the file
+- Files changed: src/data/slides.md (new file, 548 lines)
+- **Learnings for future iterations:**
+  - Markdown files in src/data/ can store editable content alongside TypeScript data files
+  - YAML-like frontmatter between `---` markers provides structured metadata
+  - Bold labels like `**Title:**` create clear visual hierarchy for editable fields
+  - Including original reference material (talk outline) helps maintain content consistency
+  - The markdown format allows preview of slide images directly in editors that support it
+---
