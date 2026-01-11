@@ -3,24 +3,24 @@ import type { Section, SlideContent, Resource } from "../types/presentation";
 
 // Edge style constants
 const EDGE_STYLES = {
-  // Section-to-section: prominent, animated connection showing major flow
+  // Section-to-section: prominent connection showing major flow between sections
   sectionToSection: {
-    stroke: "#6366f1", // indigo
-    strokeWidth: 3,
+    stroke: "#4f46e5", // indigo-600 (darker for visibility)
+    strokeWidth: 4,
     animated: false,
   },
-  // Slide-to-slide: solid connection within a section
+  // Slide-to-slide: clear connection within a section
   slideToSlide: {
-    stroke: "#4b5563", // gray-600
-    strokeWidth: 1.5,
+    stroke: "#1e293b", // slate-800 (dark for visibility on cream paper)
+    strokeWidth: 2.5,
     animated: false,
   },
   // Slide-to-resource: subtle dashed connection
   slideToResource: {
-    stroke: "#6b7280", // gray-500
-    strokeWidth: 1,
+    stroke: "#64748b", // slate-500
+    strokeWidth: 1.5,
     animated: false,
-    strokeDasharray: "5,5",
+    strokeDasharray: "6,4",
   },
 } as const;
 
