@@ -14,27 +14,30 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Hero image area - 60% height */
+/* Hero image area - 69% height (290px of 420px total for 16:9 images) */
 .slide-node__hero {
-  flex: 0 0 60%;
+  flex: 0 0 69%;
   background-color: var(--color-bg-tertiary, #f1f5f9);
   position: relative;
   border-radius: 8px 8px 0 0;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Hero image with lazy loading */
+/* Hero image with lazy loading - contain to show full image */
 .slide-node__hero-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
 }
 
-/* Content area - 40% height */
+/* Content area - 31% height (~130px for title/bullets) */
 .slide-node__content-wrapper {
-  flex: 0 0 40%;
-  padding: var(--spacing-md);
+  flex: 0 0 31%;
+  padding: var(--spacing-sm) var(--spacing-md);
   display: flex;
   flex-direction: column;
   overflow: hidden;

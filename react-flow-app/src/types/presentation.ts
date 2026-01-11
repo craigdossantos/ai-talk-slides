@@ -73,8 +73,11 @@ export type SectionHeaderNodeProps = NodeProps<SectionHeaderNode>;
 export type ResourceNodeProps = NodeProps<ResourceNode>;
 
 // Constants for node dimensions
+// Slide dimensions optimized for 1376x768 images (16:9 aspect ratio)
+// Image area: 520px wide × 290px tall (maintains aspect ratio)
+// Content area: ~130px for title and bullets
 export const NODE_DIMENSIONS = {
-  slide: { width: 520, height: 400 },
+  slide: { width: 520, height: 420 },
   sectionHeader: { width: 400, height: 140 },
   resource: { width: 160, height: 90 },
 } as const;
