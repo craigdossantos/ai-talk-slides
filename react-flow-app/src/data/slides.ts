@@ -18,13 +18,23 @@ export const sections: Section[] = [
     track: "general",
   },
   {
-    id: "levels",
-    title: "The Levels",
+    id: "levels-nontech",
+    title: "Non-Technical Levels",
     track: "non-technical",
+  },
+  {
+    id: "levels-tech",
+    title: "Technical Levels",
+    track: "technical",
+  },
+  {
+    id: "closing",
+    title: "Closing",
+    track: "general",
   },
 ];
 
-// Define all 15 slides with their content
+// Define all 26 slides with their content
 export const slides: SlideContent[] = [
   // Section: Introduction - The Widening Gulf
   {
@@ -115,10 +125,10 @@ export const slides: SlideContent[] = [
     ],
   },
 
-  // Section: The Levels (0-8)
+  // Section: Non-Technical Levels (0-8)
   {
     id: "slide-07",
-    sectionId: "levels",
+    sectionId: "levels-nontech",
     type: "quote",
     title: "Avoidance",
     level: 0,
@@ -130,7 +140,7 @@ export const slides: SlideContent[] = [
   },
   {
     id: "slide-08",
-    sectionId: "levels",
+    sectionId: "levels-nontech",
     type: "content",
     title: "AI as Uber Google",
     level: 1,
@@ -145,7 +155,7 @@ export const slides: SlideContent[] = [
   },
   {
     id: "slide-09",
-    sectionId: "levels",
+    sectionId: "levels-nontech",
     type: "content",
     title: "AI as Thought Partner",
     level: 2,
@@ -159,7 +169,7 @@ export const slides: SlideContent[] = [
   },
   {
     id: "slide-10",
-    sectionId: "levels",
+    sectionId: "levels-nontech",
     type: "content",
     title: "Context Engineering",
     level: 3,
@@ -175,7 +185,7 @@ export const slides: SlideContent[] = [
   },
   {
     id: "slide-11",
-    sectionId: "levels",
+    sectionId: "levels-nontech",
     type: "content",
     title: "Tools in Your Workflow",
     level: 4,
@@ -190,7 +200,7 @@ export const slides: SlideContent[] = [
   },
   {
     id: "slide-12",
-    sectionId: "levels",
+    sectionId: "levels-nontech",
     type: "content",
     title: "AI-Enabled Browsing",
     level: 5,
@@ -204,7 +214,7 @@ export const slides: SlideContent[] = [
   },
   {
     id: "slide-13",
-    sectionId: "levels",
+    sectionId: "levels-nontech",
     type: "content",
     title: "Media & Creative Production",
     level: 6,
@@ -217,7 +227,7 @@ export const slides: SlideContent[] = [
   },
   {
     id: "slide-14",
-    sectionId: "levels",
+    sectionId: "levels-nontech",
     type: "content",
     title: "Automation Tools",
     level: 7,
@@ -231,7 +241,7 @@ export const slides: SlideContent[] = [
   },
   {
     id: "slide-15",
-    sectionId: "levels",
+    sectionId: "levels-nontech",
     type: "content",
     title: "Natural Language Software",
     level: 8,
@@ -242,6 +252,182 @@ export const slides: SlideContent[] = [
       "Currently best for front-end / visual things",
       "Great playground to get comfortable",
       "Understanding the limits is part of the learning",
+    ],
+  },
+
+  // Section: Technical Levels (1-9)
+  {
+    id: "slide-16",
+    sectionId: "levels-tech",
+    type: "section-header",
+    title: "Entering the Technical Track",
+    subtitle: "Where AI meets full computer access",
+    backgroundImage: "/assets/images/slide-16-entering-technical-track.jpg",
+    bullets: [
+      "Still using natural language as the interface",
+      "AI does the technical work — you direct it with words",
+      "Command line = text-based access to everything on your machine",
+      "AI now has full access to whatever you give it",
+    ],
+  },
+  {
+    id: "slide-17",
+    sectionId: "levels-tech",
+    type: "content",
+    title: "Command Line Basics",
+    level: 1,
+    backgroundImage: "/assets/images/slide-17-level-1-cli-basics.jpg",
+    bullets: [
+      "CLI = Command Line Interface",
+      "Learn basic navigation: cd, ls, pwd",
+      "Commands differ slightly between Mac and PC",
+      "Get comfortable with this text-based interface",
+      "Ask ChatGPT or Claude to teach you",
+    ],
+  },
+  {
+    id: "slide-18",
+    sectionId: "levels-tech",
+    type: "content",
+    title: "Version Control",
+    subtitle: "Git & GitHub",
+    level: 2,
+    backgroundImage: "/assets/images/slide-18-level-2-git-github.jpg",
+    bullets: [
+      "Git = versioning system (like Google Docs history, but for code)",
+      "Take snapshots, rewind, merge work from multiple people",
+      "GitHub = Dropbox for code (store, share, collaborate)",
+      "Essential safety net when AI makes mistakes",
+      "Worth taking time to understand properly",
+    ],
+  },
+  {
+    id: "slide-19",
+    sectionId: "levels-tech",
+    type: "content",
+    title: "AI-Native IDEs",
+    subtitle: "Where code meets conversation",
+    level: 3,
+    backgroundImage: "/assets/images/slide-19-level-3-ai-native-ides.jpg",
+    bullets: [
+      "IDE = Integrated Development Environment",
+      "Google's Anti-Gravity - easiest place to start",
+      "Cursor - chat window + code editor side by side",
+      "Inline execution: fast feedback loop",
+      "Agent writes → sees result → adjusts → improves",
+    ],
+  },
+  {
+    id: "slide-20",
+    sectionId: "levels-tech",
+    type: "content",
+    title: "Modes and Workflows",
+    subtitle: "Beyond back-and-forth chat",
+    level: 4,
+    backgroundImage: "/assets/images/slide-20-level-4-modes-workflows.jpg",
+    bullets: [
+      "Plan → Build → Test → Review → Deploy → Bug Fix → Plan",
+      "One model in different modes for each step",
+      "Model shape-shifts depending on the task",
+      "You're executing an actual software development lifecycle",
+      "Structured workflow vs. freeform conversation",
+    ],
+  },
+  {
+    id: "slide-21",
+    sectionId: "levels-tech",
+    type: "content",
+    title: "Full Software Lifecycle",
+    subtitle: "Deployment, databases, hosting",
+    level: 5,
+    backgroundImage: "/assets/images/slide-21-level-5-software-lifecycle.jpg",
+    bullets: [
+      "Supabase — databases",
+      "Vercel — hosting and deployment",
+      "Cloudflare — domains and DNS",
+      "AI-assisted deployment: MCP servers or CLI tools",
+      "Learn as the AI does it — don't just press buttons",
+    ],
+  },
+  {
+    id: "slide-22",
+    sectionId: "levels-tech",
+    type: "content",
+    title: "Customizing the Harness",
+    subtitle: "Skills, commands, and agents",
+    level: 6,
+    backgroundImage: "/assets/images/slide-22-level-6-customizing-harness.jpg",
+    bullets: [
+      "Skills: Markdown files loaded when needed (like Neo in The Matrix)",
+      "Slash commands: shortcuts instead of repeating instructions",
+      "Sub-agents: mini-versions doing tasks in separate contexts",
+      "Guidance files (claude.md): system prompts for every interaction",
+      "Hooks: trigger actions based on events",
+    ],
+  },
+  {
+    id: "slide-23",
+    sectionId: "levels-tech",
+    type: "content",
+    title: "Context Management",
+    subtitle: "The memory game",
+    level: 7,
+    backgroundImage: "/assets/images/slide-23-level-7-context-management.jpg",
+    bullets: [
+      "Context = everything you hand over with your instruction",
+      "Too bloated → model forgets things, quality degrades",
+      "New session = no context (like Memento amnesia)",
+      "Solutions: write to files, databases, or start fresh",
+      "Key skill: knowing when to reset your session",
+    ],
+  },
+  {
+    id: "slide-24",
+    sectionId: "levels-tech",
+    type: "content",
+    title: "Parallel Agents",
+    subtitle: "Orchestration at scale",
+    level: 8,
+    backgroundImage: "/assets/images/slide-24-level-8-parallel-agents.jpg",
+    bullets: [
+      "Multiple sub-agents and sessions simultaneously",
+      "GitHub Worktrees: separate working directories",
+      "Conductor.build, Beads: tools for parallel work",
+      "Sub-agents return answers, not their full process",
+      "You're coordinating, not executing",
+    ],
+  },
+  {
+    id: "slide-25",
+    sectionId: "levels-tech",
+    type: "content",
+    title: "Swarms and Infrastructure",
+    subtitle: "The edge of what's possible",
+    level: 9,
+    backgroundImage: "/assets/images/slide-25-level-9-swarms.jpg",
+    bullets: [
+      "Large numbers of agents running simultaneously",
+      "Ralph Wiggum: spin up agents in serial overnight",
+      "Token usage at this level: $100-200+/month plans",
+      "Virtual Private Servers: agents running in the cloud 24/7",
+      "Where infrastructure meets intelligence",
+    ],
+  },
+
+  // Section: Closing
+  {
+    id: "slide-26",
+    sectionId: "closing",
+    type: "title",
+    title: "The Only Way Forward Is Through",
+    subtitle: "Become good at it by using it",
+    backgroundImage: "/assets/images/slide-26-closing.jpg",
+    bullets: [
+      "Ask the models to teach you — no embarrassment about not knowing",
+      "Use tools → modify how you think → try again → richer understanding",
+      "It's changing so fast, you're not behind if you start now",
+      "The danger: putting it on the shelf for a couple years",
+      "Even if you think this doesn't apply to you — someone using this learns faster",
     ],
   },
 ];
@@ -310,6 +496,43 @@ export const resources: Resource[] = [
     title: "Lovable Dev",
     url: "https://lovable.dev",
     image: "https://lovable.dev/icon.svg",
+  },
+  // Technical Track Resources
+  // Git & GitHub
+  {
+    id: "res-08",
+    slideId: "slide-18",
+    type: "docs",
+    title: "GitHub Docs",
+    url: "https://docs.github.com",
+    image: "https://github.githubassets.com/favicons/favicon.svg",
+  },
+  // AI-Native IDEs - Cursor
+  {
+    id: "res-09",
+    slideId: "slide-19",
+    type: "tool",
+    title: "Cursor IDE",
+    url: "https://cursor.sh",
+    image: "https://cursor.sh/favicon.ico",
+  },
+  // Full Software Lifecycle - Vercel
+  {
+    id: "res-10",
+    slideId: "slide-21",
+    type: "tool",
+    title: "Vercel",
+    url: "https://vercel.com",
+    image: "https://vercel.com/favicon.ico",
+  },
+  // Full Software Lifecycle - Supabase
+  {
+    id: "res-11",
+    slideId: "slide-21",
+    type: "tool",
+    title: "Supabase",
+    url: "https://supabase.com",
+    image: "https://supabase.com/favicon.ico",
   },
 ];
 
