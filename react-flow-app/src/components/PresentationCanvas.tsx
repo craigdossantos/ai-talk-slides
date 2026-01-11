@@ -10,6 +10,7 @@ import {
 import SlideNode from "./nodes/SlideNode";
 import SectionHeaderNode from "./nodes/SectionHeaderNode";
 import ResourceNode from "./nodes/ResourceNode";
+import PaperBackgroundNode from "./nodes/PaperBackgroundNode";
 import SectionNavigator from "./panels/SectionNavigator";
 import NavigationControls from "./panels/NavigationControls";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
@@ -24,15 +25,58 @@ const nodeTypes = {
   slide: SlideNode,
   sectionHeader: SectionHeaderNode,
   resource: ResourceNode,
+  paperBackground: PaperBackgroundNode,
 };
+
+// Padding around content for paper background
+const PAPER_PADDING = 200;
 
 function PresentationCanvas() {
   const { fitView } = useReactFlow();
 
   // Generate nodes from data - use useState to allow dragging to update positions
-  const [nodes, setNodes] = useState<PresentationNode[]>(() =>
-    generateNodes(sections, slides, resources),
-  );
+  const [nodes, setNodes] = useState<PresentationNode[]>(() => {
+    const contentNodes = generateNodes(sections, slides, resources);
+
+    // Calculate bounds of all content nodes
+    let minX = Infinity,
+      minY = Infinity,
+      maxX = -Infinity,
+      maxY = -Infinity;
+
+    for (const node of contentNodes) {
+      // Estimate node dimensions based on type
+      const width =
+        node.type === "slide" ? 520 : node.type === "resource" ? 280 : 600;
+      const height =
+        node.type === "slide" ? 400 : node.type === "resource" ? 80 : 120;
+
+      minX = Math.min(minX, node.position.x);
+      minY = Math.min(minY, node.position.y);
+      maxX = Math.max(maxX, node.position.x + width);
+      maxY = Math.max(maxY, node.position.y + height);
+    }
+
+    // Create paper background node with padding
+    const paperNode: PresentationNode = {
+      id: "paper-background",
+      type: "paperBackground",
+      position: {
+        x: minX - PAPER_PADDING,
+        y: minY - PAPER_PADDING,
+      },
+      data: {
+        width: maxX - minX + PAPER_PADDING * 2,
+        height: maxY - minY + PAPER_PADDING * 2,
+      },
+      zIndex: -100,
+      selectable: false,
+      draggable: false,
+    };
+
+    // Paper goes first (rendered behind everything)
+    return [paperNode, ...contentNodes];
+  });
 
   const edges = useMemo(() => generateEdges(sections, slides, resources), []);
 

@@ -60,13 +60,27 @@ export interface ResourceNodeData {
   isActive?: boolean;
 }
 
+export interface PaperBackgroundNodeData {
+  [key: string]: unknown;
+  width: number;
+  height: number;
+}
+
 // React Flow node types with their data
 export type SlideNode = Node<SlideNodeData, "slide">;
 export type SectionHeaderNode = Node<SectionHeaderNodeData, "sectionHeader">;
 export type ResourceNode = Node<ResourceNodeData, "resource">;
+export type PaperBackgroundNode = Node<
+  PaperBackgroundNodeData,
+  "paperBackground"
+>;
 
 // Union type for all presentation nodes
-export type PresentationNode = SlideNode | SectionHeaderNode | ResourceNode;
+export type PresentationNode =
+  | SlideNode
+  | SectionHeaderNode
+  | ResourceNode
+  | PaperBackgroundNode;
 
 // Node props types for custom node components
 export type SlideNodeProps = NodeProps<SlideNode>;
@@ -81,6 +95,7 @@ export const NODE_DIMENSIONS = {
   slide: { width: 520, height: 420 },
   sectionHeader: { width: 400, height: 140 },
   resource: { width: 180, height: 120 }, // Increased for thumbnail images
+  paperBackground: { width: 0, height: 0 }, // Dynamic sizing
 } as const;
 
 // Track colors for styling

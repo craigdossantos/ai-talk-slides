@@ -4,33 +4,26 @@
   background-color: var(--color-bg-primary);
 }
 
-/* React Flow overrides - Lined notepad paper background */
+/* React Flow overrides - neutral desk/table background behind the paper */
 .react-flow__pane {
-  background-color: var(--color-bg-primary);
-  /* Lined notebook paper effect using repeating gradients */
-  background-image:
-    /* Red margin line on the left */
-    linear-gradient(
-      to right,
-      transparent 79px,
-      var(--color-notepad-margin) 79px,
-      var(--color-notepad-margin) 81px,
-      transparent 81px
-    ),
-    /* Horizontal ruled blue lines */
-    repeating-linear-gradient(
-        to bottom,
-        transparent 0px,
-        transparent 23px,
-        var(--color-notepad-line) 23px,
-        var(--color-notepad-line) 24px
-      );
-  background-size:
-    100% 100%,
-    100% 24px;
-  background-position:
-    0 0,
-    0 0;
+  /* Subtle desk surface color - shows around the paper edges */
+  background-color: #e8e4dc;
+  /* Subtle texture/grain */
+  background-image: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba(0, 0, 0, 0.02) 100%
+  );
+}
+
+/* Ensure edges are visible - override any max-width constraints */
+.react-flow__edges {
+  overflow: visible !important;
+}
+
+.react-flow__edges svg {
+  overflow: visible !important;
+  max-width: none !important;
 }
 
 /* Smooth edge transitions */
