@@ -1,8 +1,6 @@
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import {
   ReactFlow,
-  Background,
-  BackgroundVariant,
   MiniMap,
   useReactFlow,
   applyNodeChanges,
@@ -198,12 +196,7 @@ function PresentationCanvas() {
         }}
         proOptions={{ hideAttribution: true }}
       >
-        <Background
-          variant={BackgroundVariant.Dots}
-          gap={20}
-          size={1}
-          color="rgba(0, 0, 0, 0.08)"
-        />
+        {/* Notepad paper background is rendered via CSS on .react-flow__pane (see App.css) */}
         <MiniMap
           nodeColor={getNodeColor}
           style={{

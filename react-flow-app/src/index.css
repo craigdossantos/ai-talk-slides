@@ -63,9 +63,11 @@ h6 {
   --font-secondary: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 
-  /* Colors - Brighter theme */
-  --color-bg-primary: #ffffff;
-  --color-bg-secondary: #ffffff;
+  /* Colors - Brighter theme with notepad paper */
+  --color-bg-primary: #fffef8; /* Slightly off-white/cream like old paper */
+  --color-bg-secondary: #fffef8;
+  --color-notepad-line: rgba(120, 160, 200, 0.3); /* Subtle blue lines */
+  --color-notepad-margin: rgba(220, 100, 100, 0.4); /* Red margin line */
   --color-text-primary: #0f172a;
   --color-text-secondary: #334155;
   --color-text-muted: #94a3b8;

@@ -4,9 +4,33 @@
   background-color: var(--color-bg-primary);
 }
 
-/* React Flow overrides for dark theme */
+/* React Flow overrides - Lined notepad paper background */
 .react-flow__pane {
   background-color: var(--color-bg-primary);
+  /* Lined notebook paper effect using repeating gradients */
+  background-image:
+    /* Red margin line on the left */
+    linear-gradient(
+      to right,
+      transparent 79px,
+      var(--color-notepad-margin) 79px,
+      var(--color-notepad-margin) 81px,
+      transparent 81px
+    ),
+    /* Horizontal ruled blue lines */
+    repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 23px,
+        var(--color-notepad-line) 23px,
+        var(--color-notepad-line) 24px
+      );
+  background-size:
+    100% 100%,
+    100% 24px;
+  background-position:
+    0 0,
+    0 0;
 }
 
 /* Smooth edge transitions */
