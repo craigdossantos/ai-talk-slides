@@ -506,7 +506,7 @@
         "Verify in browser using dev-browser skill: all slide images show fully and are consistent size"
       ],
       "priority": 32,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {

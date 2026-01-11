@@ -546,3 +546,19 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - Always add overflow: hidden to container when using object-fit to prevent image overflow
   - The alt attribute should use slide.title for accessibility
 ---
+
+## 2025-01-10 - US-032
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Fixed slide image sizing for full display
+- Changed object-fit from cover to contain to show full images without cropping
+- Adjusted hero/content height ratio from 60/40 to 69/31 for proper 16:9 image display
+- Updated slide height from 400px to 420px to accommodate the image aspect ratio
+- Added flexbox centering to hero container (display: flex, align-items/justify-content: center)
+- Reduced content area padding from var(--spacing-md) to var(--spacing-sm) var(--spacing-md)
+- Files changed: src/types/presentation.ts, src/components/nodes/SlideNode.css
+- **Learnings for future iterations:**
+  - All slide images are 1376x768 pixels (approximately 16:9 / 1.79:1 aspect ratio)
+  - object-fit: contain shows full image but may leave letterbox bars; cover fills area but crops
+  - When using contain, the container should have flexbox centering to properly position the image
+  - Slide dimensions should be calculated based on image aspect ratio plus content area height
+---
