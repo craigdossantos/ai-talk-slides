@@ -22,33 +22,41 @@
   filter: drop-shadow(0 0 4px var(--color-accent));
 }
 
-/* Viewport transition smoothness */
-.react-flow__viewport {
-  transition: transform 0.3s ease-out;
-}
+/*
+ * IMPORTANT: Do NOT add CSS transitions to .react-flow__viewport!
+ * This causes lag during manual panning because the viewport transform
+ * animates instead of following the mouse instantly.
+ * React Flow handles smooth transitions internally via fitView({ duration: X })
+ */
 
 /* Minimap styling improvements */
 .react-flow__minimap {
   border-radius: 8px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: white;
 }
 
-/* Controls styling for consistent dark theme */
+/* Controls styling for light theme */
 .react-flow__controls {
   background: var(--color-bg-secondary);
   border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .react-flow__controls button {
   background: var(--color-bg-secondary);
   color: var(--color-text-primary);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .react-flow__controls button:hover {
   background: var(--color-bg-primary);
+}
+
+.react-flow__controls button svg {
+  fill: var(--color-text-primary);
 }
 
 /* Responsive adjustments */
