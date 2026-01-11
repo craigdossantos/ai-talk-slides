@@ -33,6 +33,7 @@ export const slides: SlideContent[] = [
     type: "title",
     title: "Technology and the Widening Gulf",
     subtitle: "The growing divide between tech-literate and non-tech-literate",
+    backgroundImage: "/assets/images/slide-01-technology-widening-gulf.jpg",
     bullets: [
       "Technology makes us more efficient: bicycle, typewriter, Google",
       "AI is creating a much larger gulf than previous tech",
@@ -45,6 +46,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Mental Models Through Use",
     subtitle: "Understanding comes from doing, not reading",
+    backgroundImage: "/assets/images/slide-02-mental-models.jpg",
     bullets: [
       'First tried: "Please give me directions to the nearest ice cream store..."',
       'Learned: "Molly Moon directions"',
@@ -59,6 +61,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "New Tech, Old Mental Models",
     subtitle: "The temptation to treat AI like enhanced Google",
+    backgroundImage: "/assets/images/slide-03-new-tech-old-models.jpg",
     bullets: [
       "First instinct: ChatGPT is a better Google",
       "Use it like a knowledgeable friend",
@@ -72,6 +75,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "From Confidant to Digital Employee",
     subtitle: "The major mental leap",
+    backgroundImage: "/assets/images/slide-04-confidant-to-employee.jpg",
     bullets: [
       "AI is not just an all-knowing friend",
       "Think of it as a digital employee",
@@ -88,6 +92,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Mapping the Journey",
     subtitle: "A progressive approach to understanding AI",
+    backgroundImage: "/assets/images/slide-05-mapping-journey.jpg",
     bullets: [
       "Overwhelming amount of information out there",
       "Skipping steps makes nothing feel coherent",
@@ -101,6 +106,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "The Wrong Split",
     subtitle: "Technical vs Non-Technical is a cultural issue",
+    backgroundImage: "/assets/images/slide-06-wrong-split.jpg",
     bullets: [
       "The floor of what you can do without code is now incredibly high",
       "Lines are blurring",
@@ -116,6 +122,7 @@ export const slides: SlideContent[] = [
     type: "quote",
     title: "Avoidance",
     level: 0,
+    backgroundImage: "/assets/images/slide-07-level-0-avoidance.jpg",
     quote: '"This won\'t affect my job."',
     bullets: [
       "Historical echoes of famous people dismissing transformative technology",
@@ -127,6 +134,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "AI as Uber Google",
     level: 1,
+    backgroundImage: "/assets/images/slide-08-level-1-uber-google.jpg",
     bullets: [
       "Questions and answers",
       "Summaries and explanations",
@@ -141,6 +149,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "AI as Thought Partner",
     level: 2,
+    backgroundImage: "/assets/images/slide-09-level-2-thought-partner.jpg",
     bullets: [
       "Giving AI more context: PDFs, docs, images",
       "Back and forth dialogue on complex topics",
@@ -154,6 +163,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Context Engineering",
     level: 3,
+    backgroundImage: "/assets/images/slide-10-level-3-context-engineering.jpg",
     bullets: [
       "Understanding how context helps or hurts",
       "Longer chat = more memory used = degraded performance",
@@ -169,6 +179,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Tools in Your Workflow",
     level: 4,
+    backgroundImage: "/assets/images/slide-11-level-4-tools-workflow.jpg",
     bullets: [
       "Wispr Flow - voice dictation",
       "Granola - automatic meeting notes",
@@ -183,6 +194,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "AI-Enabled Browsing",
     level: 5,
+    backgroundImage: "/assets/images/slide-12-level-5-ai-browsing.jpg",
     bullets: [
       "Google Gemini built into Chrome",
       "ChatGPT Operator (Atlas) browser",
@@ -196,6 +208,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Media & Creative Production",
     level: 6,
+    backgroundImage: "/assets/images/slide-13-level-6-media-creative.jpg",
     bullets: [
       "Image generation: Nano Banana, Midjourney",
       "Video production: Veo, O3",
@@ -208,6 +221,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Automation Tools",
     level: 7,
+    backgroundImage: "/assets/images/slide-14-level-7-automation.jpg",
     bullets: [
       "Zapier - most common automation tool",
       "N8n - bridge to complex automations",
@@ -221,6 +235,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Natural Language Software",
     level: 8,
+    backgroundImage: "/assets/images/slide-15-level-8-nl-software.jpg",
     bullets: [
       "Lovable, Bolt AI, Google AI Studio",
       "Create software without knowing code syntax",
@@ -240,6 +255,7 @@ export const resources: Resource[] = [
     type: "tool",
     title: "ChatGPT",
     url: "https://chat.openai.com",
+    image: "https://cdn.oaistatic.com/assets/apple-touch-icon-mz9nytnj.webp",
   },
   // Level 2: AI as Thought Partner - link to Claude
   {
@@ -248,6 +264,7 @@ export const resources: Resource[] = [
     type: "tool",
     title: "Claude AI",
     url: "https://claude.ai",
+    image: "https://claude.ai/images/claude_app_icon.png",
   },
   // Level 4: Tools in Your Workflow - link to Wispr Flow
   {
@@ -256,6 +273,7 @@ export const resources: Resource[] = [
     type: "tool",
     title: "Wispr Flow",
     url: "https://www.wispr.ai",
+    image: "https://www.wispr.ai/favicon.ico",
   },
   // Level 4: Tools in Your Workflow - link to Granola
   {
@@ -264,6 +282,7 @@ export const resources: Resource[] = [
     type: "tool",
     title: "Granola Notes",
     url: "https://www.granola.so",
+    image: "https://www.granola.so/icon.svg",
   },
   // Level 6: Media & Creative Production - link to Midjourney
   {
@@ -272,6 +291,7 @@ export const resources: Resource[] = [
     type: "tool",
     title: "Midjourney",
     url: "https://www.midjourney.com",
+    image: "https://www.midjourney.com/apple-touch-icon.png",
   },
   // Level 7: Automation Tools - link to Zapier docs
   {
@@ -280,6 +300,7 @@ export const resources: Resource[] = [
     type: "docs",
     title: "Zapier Guide",
     url: "https://zapier.com/learn",
+    image: "https://zapier.com/favicon.ico",
   },
   // Level 8: Natural Language Software - link to Lovable
   {
@@ -288,6 +309,7 @@ export const resources: Resource[] = [
     type: "tool",
     title: "Lovable Dev",
     url: "https://lovable.dev",
+    image: "https://lovable.dev/icon.svg",
   },
 ];
 

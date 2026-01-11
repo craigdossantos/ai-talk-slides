@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 import type { ReactElement } from "react";
 import { Handle, Position } from "@xyflow/react";
 import type { ResourceNodeProps, ResourceType } from "../../types/presentation";
@@ -42,6 +42,7 @@ const ResourceIcons: Record<ResourceType, ReactElement> = {
 function ResourceNode({ data }: ResourceNodeProps) {
   const { resource, isActive } = data;
   const { width, height } = NODE_DIMENSIONS.resource;
+  const [imageError, setImageError] = useState(false);
 
   const handleClick = () => {
     window.open(resource.url, "_blank", "noopener,noreferrer");
@@ -53,9 +54,11 @@ function ResourceNode({ data }: ResourceNodeProps) {
       ? resource.title.slice(0, 18) + "..."
       : resource.title;
 
+  const hasImage = resource.image && !imageError;
+
   return (
     <div
-      className={`resource-node resource-node--${resource.type} ${isActive ? "resource-node--active" : ""}`}
+      className={`resource-node resource-node--${resource.type} ${isActive ? "resource-node--active" : ""} ${hasImage ? "resource-node--has-image" : ""}`}
       style={{
         width: `${width}px`,
         height: `${height}px`,
@@ -68,11 +71,27 @@ function ResourceNode({ data }: ResourceNodeProps) {
         id="left"
         className="resource-node__handle"
       />
-      <div className="resource-node__icon">{ResourceIcons[resource.type]}</div>
-      <span className="resource-node__title" title={resource.title}>
-        {truncatedTitle}
-      </span>
-      <span className="resource-node__type">{resource.type}</span>
+      {hasImage ? (
+        <div className="resource-node__thumbnail">
+          <img
+            src={resource.image}
+            alt={resource.title}
+            className="resource-node__thumbnail-image"
+            loading="lazy"
+            onError={() => setImageError(true)}
+          />
+        </div>
+      ) : (
+        <div className="resource-node__icon">
+          {ResourceIcons[resource.type]}
+        </div>
+      )}
+      <div className="resource-node__content">
+        <span className="resource-node__title" title={resource.title}>
+          {truncatedTitle}
+        </span>
+        <span className="resource-node__type">{resource.type}</span>
+      </div>
     </div>
   );
 }

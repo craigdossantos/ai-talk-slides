@@ -36,6 +36,7 @@ export interface Resource {
   type: ResourceType;
   title: string;
   url: string;
+  image?: string; // Custom image URL or path for thumbnail display
 }
 
 // Node data interfaces for React Flow nodes
@@ -79,7 +80,7 @@ export type ResourceNodeProps = NodeProps<ResourceNode>;
 export const NODE_DIMENSIONS = {
   slide: { width: 520, height: 420 },
   sectionHeader: { width: 400, height: 140 },
-  resource: { width: 160, height: 90 },
+  resource: { width: 180, height: 120 }, // Increased for thumbnail images
 } as const;
 
 // Track colors for styling
