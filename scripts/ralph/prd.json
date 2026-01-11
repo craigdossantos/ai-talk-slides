@@ -556,7 +556,7 @@
         "Verify in browser using dev-browser skill: edges visible connecting slides in logical order"
       ],
       "priority": 35,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {

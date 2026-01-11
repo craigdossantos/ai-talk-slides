@@ -596,3 +596,24 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - Use repeating-linear-gradient for evenly spaced horizontal lines
   - CSS custom properties allow theme colors to be changed in one place
 ---
+
+## 2025-01-10 - US-035
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Enhanced edge visibility by increasing stroke widths and darkening colors
+- Updated EDGE_STYLES in generateEdges.ts:
+  - Section-to-section: 4px indigo-600 (#4f46e5)
+  - Slide-to-slide: 2.5px slate-800 (#1e293b) for visibility on cream paper
+  - Slide-to-resource: 1.5px slate-500 (#64748b) dashed
+- All edges connect properly:
+  - Section headers connect horizontally (left/right handles)
+  - Section headers connect to first slide (bottom/top handles)
+  - Slides connect vertically in sequence (bottom/top handles)
+  - Slides connect to resources (right/left handles)
+- Verified in browser: edges render correctly with visible connection points
+- Files changed: src/utils/generateEdges.ts
+- **Learnings for future iterations:**
+  - Edge visibility depends on stroke width and color contrast with background
+  - For cream/white backgrounds, use darker colors (slate-800 instead of gray-600)
+  - Edges appear as short lines or dots when nodes are close together - this is expected
+  - The accessibility tree shows all edges even when they're not easily visible on screen
+---
