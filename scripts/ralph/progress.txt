@@ -578,3 +578,21 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - For smooth programmatic navigation, use fitView({ duration: X }) instead of CSS transitions
   - The viewport transform is managed by React Flow and should not have external CSS transitions
 ---
+
+## 2025-01-10 - US-034
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added lined notepad paper background using CSS gradients
+- Replaced React Flow's Background component (dot pattern) with custom CSS on .react-flow__pane
+- Added CSS custom properties for notepad colors: --color-notepad-line, --color-notepad-margin
+- Changed background color from #ffffff to #fffef8 (off-white/cream) for paper authenticity
+- Horizontal ruled lines using repeating-linear-gradient (24px spacing, subtle blue rgba(120, 160, 200, 0.3))
+- Red/pink margin line on left side using linear-gradient (79-81px from left edge)
+- Removed Background component import and usage from PresentationCanvas.tsx
+- Verified in browser: background displays lined notebook paper effect with cream color, blue lines, and red margin
+- Files changed: src/index.css, src/App.css, src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - React Flow's Background component doesn't support custom patterns - use CSS on .react-flow__pane instead
+  - Combine multiple background-image gradients for layered effects (margin line + ruled lines)
+  - Use repeating-linear-gradient for evenly spaced horizontal lines
+  - CSS custom properties allow theme colors to be changed in one place
+---
