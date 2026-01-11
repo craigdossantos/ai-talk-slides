@@ -55,16 +55,11 @@ function SlideNode({ data }: SlideNodeProps) {
             <h3 className="slide-node__title">{slide.title}</h3>
             {slide.bullets && slide.bullets.length > 0 && (
               <ul className="slide-node__bullets">
-                {slide.bullets.slice(0, 3).map((bullet, index) => (
+                {slide.bullets.map((bullet, index) => (
                   <li key={index} className="slide-node__bullet">
                     {bullet}
                   </li>
                 ))}
-                {slide.bullets.length > 3 && (
-                  <li className="slide-node__bullet slide-node__bullet--more">
-                    +{slide.bullets.length - 3} more
-                  </li>
-                )}
               </ul>
             )}
           </div>
@@ -77,7 +72,7 @@ function SlideNode({ data }: SlideNodeProps) {
       className={`slide-node ${isActive ? "slide-node--active" : ""}`}
       style={{
         width: `${width}px`,
-        height: `${height}px`,
+        minHeight: `${height}px`,
         borderTopColor: trackColor,
       }}
     >

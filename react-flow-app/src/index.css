@@ -27,10 +27,16 @@ body {
 img,
 picture,
 video,
-canvas,
-svg {
+canvas {
   display: block;
   max-width: 100%;
+}
+
+/* Allow React Flow SVGs full dimensions for edges */
+.react-flow svg,
+.react-flow__renderer svg {
+  max-width: none;
+  overflow: visible;
 }
 
 input,

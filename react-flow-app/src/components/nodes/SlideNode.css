@@ -5,13 +5,18 @@
   padding: 0;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow: visible;
   transition:
     box-shadow 0.2s ease,
     transform 0.2s ease;
   cursor: pointer;
   position: relative;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* Deep shadow on bottom and sides only - no top shadow */
+  box-shadow:
+    0 8px 16px rgba(0, 0, 0, 0.15),
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    2px 0 8px rgba(0, 0, 0, 0.08),
+    -2px 0 8px rgba(0, 0, 0, 0.08);
 }
 
 /* Hero image area - 69% height (290px of 420px total for 16:9 images) */
@@ -34,17 +39,22 @@
   object-position: center;
 }
 
-/* Content area - 31% height (~130px for title/bullets) */
+/* Content area - flexible height to accommodate all content */
 .slide-node__content-wrapper {
-  flex: 0 0 31%;
+  flex: 1 0 auto;
+  min-height: 31%;
   padding: var(--spacing-sm) var(--spacing-md);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 
 .slide-node:hover {
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  /* Deeper shadow on hover - still no top shadow */
+  box-shadow:
+    0 16px 32px rgba(0, 0, 0, 0.2),
+    0 8px 12px rgba(0, 0, 0, 0.12),
+    3px 0 12px rgba(0, 0, 0, 0.1),
+    -3px 0 12px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
 }
 
