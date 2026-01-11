@@ -617,3 +617,22 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - Edges appear as short lines or dots when nodes are close together - this is expected
   - The accessibility tree shows all edges even when they're not easily visible on screen
 ---
+
+## 2025-01-10 - US-036
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added optional 'image' field to Resource type for custom thumbnail images
+- Updated ResourceNode component to display thumbnail images with icon fallback
+- Added useState hook to track image loading errors for graceful fallback
+- Increased resource node dimensions from 160x90 to 180x120 to accommodate images
+- Updated ResourceNode CSS with new thumbnail container and layout for image mode
+- Added resource-node--has-image modifier class for image-specific styling
+- Added image URLs for all 7 resources (ChatGPT, Claude AI, Wispr Flow, Granola, Midjourney, Zapier, Lovable)
+- Verified in browser: resource nodes display images correctly with fallback working
+- Files changed: src/types/presentation.ts, src/components/nodes/ResourceNode.tsx, src/components/nodes/ResourceNode.css, src/data/slides.ts
+- **Learnings for future iterations:**
+  - og:image fetching requires CORS proxy/server-side handling - static image URLs are simpler
+  - Use onError handler on <img> to gracefully fall back to icon when image fails to load
+  - useState for imageError state allows component to re-render with fallback
+  - Conditional className with ternary works well for has-image modifier: `${hasImage ? "resource-node--has-image" : ""}`
+  - favicon.ico and apple-touch-icon.png are commonly available public image URLs for tools/services
+---

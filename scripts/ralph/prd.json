@@ -573,8 +573,8 @@
         "Verify in browser using dev-browser skill: resource nodes show images"
       ],
       "priority": 36,
-      "passes": false,
-      "notes": ""
+      "passes": true,
+      "notes": "Implemented with custom image URLs. og:image fetching requires CORS proxy so used static URLs instead."
     },
     {
       "id": "US-037",
