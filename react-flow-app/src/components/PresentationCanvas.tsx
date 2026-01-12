@@ -16,6 +16,7 @@ import NavigationControls from "./panels/NavigationControls";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
 import { generateNodes } from "../utils/generateNodes";
 import { generateEdges } from "../utils/generateEdges";
+import { loadPersistedPositions } from "../utils/persistence";
 import { sections, slides, resources } from "../data/slides";
 import type { PresentationNode } from "../types/presentation";
 import { TRACK_COLORS } from "../types/presentation";
@@ -38,13 +39,30 @@ function PresentationCanvas() {
   const [nodes, setNodes] = useState<PresentationNode[]>(() => {
     const contentNodes = generateNodes(sections, slides, resources);
 
+    // Load any persisted positions from localStorage
+    const persistedPositions = loadPersistedPositions();
+
+    // Merge persisted positions with generated nodes
+    const nodesWithPersistedPositions = persistedPositions
+      ? contentNodes.map((node) => {
+          const persistedPos = persistedPositions[node.id];
+          if (persistedPos) {
+            return {
+              ...node,
+              position: persistedPos,
+            };
+          }
+          return node;
+        })
+      : contentNodes;
+
     // Calculate bounds of all content nodes
     let minX = Infinity,
       minY = Infinity,
       maxX = -Infinity,
       maxY = -Infinity;
 
-    for (const node of contentNodes) {
+    for (const node of nodesWithPersistedPositions) {
       // Estimate node dimensions based on type
       const width =
         node.type === "slide" ? 520 : node.type === "resource" ? 280 : 600;
@@ -75,7 +93,7 @@ function PresentationCanvas() {
     };
 
     // Paper goes first (rendered behind everything)
-    return [paperNode, ...contentNodes];
+    return [paperNode, ...nodesWithPersistedPositions];
   });
 
   const edges = useMemo(() => generateEdges(sections, slides, resources), []);
