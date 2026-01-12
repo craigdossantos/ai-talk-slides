@@ -1,5 +1,6 @@
-import { memo } from "react";
+import { memo, useCallback } from "react";
 import type { SlideContent, Section } from "../../types/presentation";
+import { useSlideNotes } from "../../hooks/useSlideNotes";
 import "./EditorPanel.css";
 
 interface EditorPanelProps {
@@ -19,6 +20,19 @@ function EditorPanel({
   isOpen,
   onClose,
 }: EditorPanelProps) {
+  const { notes, saveNotes } = useSlideNotes(slideId);
+
+  // Handle notes textarea change with auto-save
+  const handleNotesChange = useCallback(
+    (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+      saveNotes({
+        ...notes,
+        notes: event.target.value,
+      });
+    },
+    [notes, saveNotes],
+  );
+
   // Return null if panel is closed or no slide is selected
   if (!isOpen || !slideId || !slideData) {
     return null;
@@ -49,10 +63,19 @@ function EditorPanel({
         </button>
       </div>
       <div className="editor-panel__content">
-        {/* Content placeholder - will be implemented in US-055 and US-056 */}
-        <p className="editor-panel__placeholder">
-          Notes and resources editor coming soon...
-        </p>
+        <div className="editor-panel__section">
+          <label className="editor-panel__label" htmlFor="slide-notes">
+            Notes (Markdown)
+          </label>
+          <textarea
+            id="slide-notes"
+            className="editor-panel__textarea"
+            value={notes.notes}
+            onChange={handleNotesChange}
+            placeholder="Add notes for this slide..."
+          />
+        </div>
+        {/* Resource list placeholder - will be implemented in US-056 */}
       </div>
     </div>
   );
