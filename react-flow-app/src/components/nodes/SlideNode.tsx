@@ -5,9 +5,28 @@ import { NODE_DIMENSIONS, TRACK_COLORS } from "../../types/presentation";
 import "./SlideNode.css";
 
 function SlideNode({ data }: SlideNodeProps) {
-  const { slide, section, isActive } = data;
+  const {
+    slide,
+    section,
+    isActive,
+    hasPrev,
+    hasNext,
+    onNavigatePrev,
+    onNavigateNext,
+  } = data;
   const trackColor = TRACK_COLORS[section.track];
   const { width, height } = NODE_DIMENSIONS.slide;
+
+  // Handle navigation button clicks - stop propagation to prevent node click
+  const handlePrevClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onNavigatePrev) onNavigatePrev();
+  };
+
+  const handleNextClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onNavigateNext) onNavigateNext();
+  };
 
   // Render content based on slide type
   const renderContent = () => {
@@ -100,6 +119,26 @@ function SlideNode({ data }: SlideNodeProps) {
 
       {/* Content area - 40% height */}
       <div className="slide-node__content-wrapper">{renderContent()}</div>
+
+      {/* Navigation caret buttons */}
+      <div className="slide-node__navigation">
+        <button
+          className="slide-node__nav-button slide-node__nav-button--prev"
+          onClick={handlePrevClick}
+          disabled={!hasPrev}
+          aria-label="Previous slide"
+        >
+          ‹
+        </button>
+        <button
+          className="slide-node__nav-button slide-node__nav-button--next"
+          onClick={handleNextClick}
+          disabled={!hasNext}
+          aria-label="Next slide"
+        >
+          ›
+        </button>
+      </div>
 
       <Handle
         type="source"
