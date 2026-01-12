@@ -46,6 +46,10 @@ export interface SlideNodeData {
   slide: SlideContent;
   section: Section;
   isActive?: boolean;
+  hasPrev?: boolean;
+  hasNext?: boolean;
+  onNavigatePrev?: () => void;
+  onNavigateNext?: () => void;
 }
 
 export interface SectionHeaderNodeData {
