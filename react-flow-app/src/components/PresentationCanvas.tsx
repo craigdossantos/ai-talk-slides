@@ -286,7 +286,18 @@ function PresentationCanvas() {
   // Track previous active slide to only update changed nodes
   const prevActiveSlideIdRef = useRef<string | null>(null);
 
-  // Mark current slide as active - only create new objects when isActive actually changes
+  // Build ordered slides list for navigation (same logic as useKeyboardNavigation)
+  const orderedSlides = useMemo(() => {
+    const slidesBySection = new Map<string, typeof slides>();
+    for (const slide of slides) {
+      const sectionSlides = slidesBySection.get(slide.sectionId) || [];
+      sectionSlides.push(slide);
+      slidesBySection.set(slide.sectionId, sectionSlides);
+    }
+    return sections.flatMap((section) => slidesBySection.get(section.id) || []);
+  }, []);
+
+  // Mark current slide as active and add navigation props
   const nodesWithActiveState = useMemo(() => {
     const prevActiveSlideId = prevActiveSlideIdRef.current;
 
@@ -296,6 +307,19 @@ function PresentationCanvas() {
         const wasActive = slideId === prevActiveSlideId;
         const isActive = slideId === currentSlideId;
 
+        // Find slide's position in orderedSlides for prev/next calculation
+        const slideIndex = orderedSlides.findIndex((s) => s.id === slideId);
+        const hasPrev = slideIndex > 0;
+        const hasNext = slideIndex < orderedSlides.length - 1;
+
+        // Create navigation callbacks
+        const onNavigatePrev = hasPrev
+          ? () => navigateToSlide(orderedSlides[slideIndex - 1].id)
+          : undefined;
+        const onNavigateNext = hasNext
+          ? () => navigateToSlide(orderedSlides[slideIndex + 1].id)
+          : undefined;
+
         // Only create a new object if the isActive state changed for this node
         if (wasActive !== isActive) {
           return {
@@ -303,6 +327,10 @@ function PresentationCanvas() {
             data: {
               ...node.data,
               isActive,
+              hasPrev,
+              hasNext,
+              onNavigatePrev,
+              onNavigateNext,
             },
           };
         }
@@ -314,13 +342,28 @@ function PresentationCanvas() {
             data: {
               ...node.data,
               isActive,
+              hasPrev,
+              hasNext,
+              onNavigatePrev,
+              onNavigateNext,
             },
           };
         }
+        // Still need to update navigation props even if active state unchanged
+        return {
+          ...node,
+          data: {
+            ...node.data,
+            hasPrev,
+            hasNext,
+            onNavigatePrev,
+            onNavigateNext,
+          },
+        };
       }
       return node;
     }) as PresentationNode[];
-  }, [nodes, currentSlideId]);
+  }, [nodes, currentSlideId, orderedSlides, navigateToSlide]);
 
   // Update ref after render
   useEffect(() => {
