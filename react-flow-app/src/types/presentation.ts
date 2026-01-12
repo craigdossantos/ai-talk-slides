@@ -70,6 +70,13 @@ export interface PaperBackgroundNodeData {
   height: number;
 }
 
+export interface LevelNodeData {
+  [key: string]: unknown;
+  level: number;
+  slideId: string;
+  track: Track;
+}
+
 // React Flow node types with their data
 export type SlideNode = Node<SlideNodeData, "slide">;
 export type SectionHeaderNode = Node<SectionHeaderNodeData, "sectionHeader">;
@@ -78,13 +85,15 @@ export type PaperBackgroundNode = Node<
   PaperBackgroundNodeData,
   "paperBackground"
 >;
+export type LevelNode = Node<LevelNodeData, "level">;
 
 // Union type for all presentation nodes
 export type PresentationNode =
   | SlideNode
   | SectionHeaderNode
   | ResourceNode
-  | PaperBackgroundNode;
+  | PaperBackgroundNode
+  | LevelNode;
 
 // Node props types for custom node components
 export type SlideNodeProps = NodeProps<SlideNode>;
