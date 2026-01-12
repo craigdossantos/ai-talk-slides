@@ -16,7 +16,10 @@ import NavigationControls from "./panels/NavigationControls";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
 import { generateNodes } from "../utils/generateNodes";
 import { generateEdges } from "../utils/generateEdges";
-import { loadPersistedPositions } from "../utils/persistence";
+import {
+  loadPersistedPositions,
+  savePersistedPositions,
+} from "../utils/persistence";
 import { sections, slides, resources } from "../data/slides";
 import type { PresentationNode } from "../types/presentation";
 import { TRACK_COLORS } from "../types/presentation";
@@ -31,6 +34,9 @@ const nodeTypes = {
 
 // Padding around content for paper background
 const PAPER_PADDING = 200;
+
+// Debounce delay for saving node positions (ms)
+const SAVE_DEBOUNCE_MS = 500;
 
 function PresentationCanvas() {
   const { fitView } = useReactFlow();
@@ -98,12 +104,66 @@ function PresentationCanvas() {
 
   const edges = useMemo(() => generateEdges(sections, slides, resources), []);
 
+  // Ref for debounced save timeout
+  const saveTimeoutRef = useRef<number | null>(null);
+
+  // Debounced save function for node positions
+  const debouncedSavePositions = useCallback(
+    (nodesToSave: PresentationNode[]) => {
+      // Clear any existing timeout
+      if (saveTimeoutRef.current !== null) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+
+      // Set new timeout
+      saveTimeoutRef.current = window.setTimeout(() => {
+        // Extract only position data, exclude non-draggable nodes like paper background
+        const positions: Record<string, { x: number; y: number }> = {};
+        for (const node of nodesToSave) {
+          // Skip paper background and other non-draggable nodes
+          if (node.draggable === false) continue;
+          positions[node.id] = {
+            x: node.position.x,
+            y: node.position.y,
+          };
+        }
+        savePersistedPositions(positions);
+        saveTimeoutRef.current = null;
+      }, SAVE_DEBOUNCE_MS);
+    },
+    [],
+  );
+
+  // Cleanup debounce timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (saveTimeoutRef.current !== null) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, []);
+
   // Handle node changes (dragging, selection, etc.)
   const onNodesChange = useCallback(
     (changes: NodeChange<PresentationNode>[]) => {
-      setNodes((nds) => applyNodeChanges(changes, nds));
+      setNodes((nds) => {
+        const updatedNodes = applyNodeChanges(changes, nds);
+
+        // Check if any changes are position changes (from dragging)
+        // We save on any position change - the debounce handles rapid updates during drag
+        const hasPositionChange = changes.some(
+          (change) => change.type === "position",
+        );
+
+        // Trigger debounced save when positions change
+        if (hasPositionChange) {
+          debouncedSavePositions(updatedNodes as PresentationNode[]);
+        }
+
+        return updatedNodes;
+      });
     },
-    [],
+    [debouncedSavePositions],
   );
 
   // Initialize keyboard navigation
