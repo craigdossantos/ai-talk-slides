@@ -112,9 +112,6 @@ function SlideNode({ data }: SlideNodeProps) {
             className="slide-node__hero-image"
           />
         )}
-        {slide.level !== undefined && (
-          <span className="slide-node__level">Level {slide.level}</span>
-        )}
       </div>
 
       {/* Content area - 40% height */}

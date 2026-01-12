@@ -72,22 +72,6 @@
   border: none;
 }
 
-/* Level badge - positioned on hero image */
-.slide-node__level {
-  position: absolute;
-  top: var(--spacing-sm);
-  right: var(--spacing-sm);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 600;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.6);
-  padding: 4px 10px;
-  border-radius: 6px;
-  z-index: 2;
-  backdrop-filter: blur(4px);
-}
-
 /* Content container */
 .slide-node__content {
   flex: 1;
