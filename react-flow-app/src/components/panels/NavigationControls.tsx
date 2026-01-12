@@ -8,6 +8,7 @@ interface NavigationControlsProps {
   onPrevious: () => void;
   onNext: () => void;
   onToggleOverview: () => void;
+  onReset: () => void;
 }
 
 /**
@@ -21,6 +22,7 @@ function NavigationControls({
   onPrevious,
   onNext,
   onToggleOverview,
+  onReset,
 }: NavigationControlsProps) {
   const isFirstSlide = currentSlideIndex <= 0;
   const isLastSlide = currentSlideIndex >= totalSlides - 1;
@@ -95,6 +97,25 @@ function NavigationControls({
           <rect x="14" y="3" width="7" height="7" />
           <rect x="3" y="14" width="7" height="7" />
           <rect x="14" y="14" width="7" height="7" />
+        </svg>
+      </button>
+
+      <button
+        className="navigation-controls__button navigation-controls__button--reset"
+        onClick={onReset}
+        aria-label="Reset layout to default positions"
+      >
+        <svg
+          className="navigation-controls__icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+          <path d="M3 3v5h5" />
         </svg>
       </button>
     </div>

@@ -87,6 +87,18 @@
   background: rgba(99, 102, 241, 1);
 }
 
+/* Reset layout button - gray styling like previous button */
+.navigation-controls__button--reset {
+  padding: var(--spacing-sm);
+  background: rgba(100, 116, 139, 0.3);
+  border-color: rgba(100, 116, 139, 0.4);
+}
+
+.navigation-controls__button--reset:hover:not(:disabled) {
+  background: rgba(100, 116, 139, 0.5);
+  border-color: rgba(100, 116, 139, 0.6);
+}
+
 .navigation-controls__icon {
   width: 18px;
   height: 18px;

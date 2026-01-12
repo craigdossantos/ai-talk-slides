@@ -19,6 +19,7 @@ import { generateEdges } from "../utils/generateEdges";
 import {
   loadPersistedPositions,
   savePersistedPositions,
+  clearPersistedPositions,
 } from "../utils/persistence";
 import { sections, slides, resources } from "../data/slides";
 import type { PresentationNode } from "../types/presentation";
@@ -141,6 +142,53 @@ function PresentationCanvas() {
         clearTimeout(saveTimeoutRef.current);
       }
     };
+  }, []);
+
+  // Reset layout to default positions
+  const resetLayout = useCallback(() => {
+    // Clear persisted positions from localStorage
+    clearPersistedPositions();
+
+    // Regenerate nodes with default positions
+    const contentNodes = generateNodes(sections, slides, resources);
+
+    // Calculate bounds for paper background
+    let minX = Infinity,
+      minY = Infinity,
+      maxX = -Infinity,
+      maxY = -Infinity;
+
+    for (const node of contentNodes) {
+      const width =
+        node.type === "slide" ? 520 : node.type === "resource" ? 280 : 600;
+      const height =
+        node.type === "slide" ? 400 : node.type === "resource" ? 80 : 120;
+
+      minX = Math.min(minX, node.position.x);
+      minY = Math.min(minY, node.position.y);
+      maxX = Math.max(maxX, node.position.x + width);
+      maxY = Math.max(maxY, node.position.y + height);
+    }
+
+    // Create paper background node
+    const paperNode: PresentationNode = {
+      id: "paper-background",
+      type: "paperBackground",
+      position: {
+        x: minX - PAPER_PADDING,
+        y: minY - PAPER_PADDING,
+      },
+      data: {
+        width: maxX - minX + PAPER_PADDING * 2,
+        height: maxY - minY + PAPER_PADDING * 2,
+      },
+      zIndex: -100,
+      selectable: false,
+      draggable: false,
+    };
+
+    // Update nodes with default positions
+    setNodes([paperNode, ...contentNodes]);
   }, []);
 
   // Handle node changes (dragging, selection, etc.)
@@ -340,6 +388,7 @@ function PresentationCanvas() {
         onPrevious={goToPreviousSlide}
         onNext={goToNextSlide}
         onToggleOverview={toggleOverview}
+        onReset={resetLayout}
       />
     </div>
   );
