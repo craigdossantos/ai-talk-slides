@@ -10,6 +10,7 @@ import {
 import SlideNode from "./nodes/SlideNode";
 import SectionHeaderNode from "./nodes/SectionHeaderNode";
 import ResourceNode from "./nodes/ResourceNode";
+import LevelNode from "./nodes/LevelNode";
 import PaperBackgroundNode from "./nodes/PaperBackgroundNode";
 import SectionNavigator from "./panels/SectionNavigator";
 import NavigationControls from "./panels/NavigationControls";
@@ -30,6 +31,7 @@ const nodeTypes = {
   slide: SlideNode,
   sectionHeader: SectionHeaderNode,
   resource: ResourceNode,
+  level: LevelNode,
   paperBackground: PaperBackgroundNode,
 };
 
