@@ -1,0 +1,22 @@
+/* LevelNode styles - circular level indicator badges */
+/* Full styling to be implemented in US-048 */
+
+.level-node {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.level-node__number {
+  color: white;
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.level-node__handle {
+  opacity: 0;
+}
