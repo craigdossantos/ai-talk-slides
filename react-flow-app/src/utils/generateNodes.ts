@@ -5,6 +5,7 @@ import type {
   SlideNode,
   SectionHeaderNode,
   ResourceNode,
+  LevelNode,
   PresentationNode,
   NODE_DIMENSIONS,
 } from "../types/presentation";
@@ -13,6 +14,8 @@ import type {
 const SECTION_HORIZONTAL_SPACING = 800;
 const SLIDE_VERTICAL_SPACING = 450;
 const RESOURCE_OFFSET = 160;
+const LEVEL_NODE_X_OFFSET = 450; // Position level node to the right of slide
+const LEVEL_NODE_Y_OFFSET = -20; // Position level node above the slide
 
 // Starting positions
 const SECTION_START_X = 100;
@@ -20,12 +23,13 @@ const SECTION_START_Y = 100;
 const SLIDE_OFFSET_Y = 180; // Offset from section header to first slide
 
 /**
- * Generates React Flow nodes with clustered positioning for sections, slides, and resources.
+ * Generates React Flow nodes with clustered positioning for sections, slides, resources, and level indicators.
  *
  * Layout:
  * - Section headers are positioned horizontally with 800px spacing
  * - Slides are positioned vertically within their section with 450px spacing
  * - Resource nodes are positioned 160px to the right of their parent slide
+ * - Level nodes are positioned 450px right and 20px above slides that have level property
  */
 export function generateNodes(
   sections: Section[],
@@ -94,6 +98,24 @@ export function generateNodes(
         },
       };
       nodes.push(slideNode);
+
+      // Create LevelNode for slides with level property
+      if (slide.level !== undefined) {
+        const levelNode: LevelNode = {
+          id: `level-${slide.id}`,
+          type: "level",
+          position: {
+            x: slideX + LEVEL_NODE_X_OFFSET,
+            y: slideY + LEVEL_NODE_Y_OFFSET,
+          },
+          data: {
+            level: slide.level,
+            slideId: slide.id,
+            track: section.track,
+          },
+        };
+        nodes.push(levelNode);
+      }
     });
   });
 
