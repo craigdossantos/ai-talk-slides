@@ -7,7 +7,7 @@ interface PaperBackgroundData {
 }
 
 function PaperBackgroundNode({ data }: NodeProps) {
-  const { width, height } = data as PaperBackgroundData;
+  const { width, height } = data as unknown as PaperBackgroundData;
 
   return (
     <div
