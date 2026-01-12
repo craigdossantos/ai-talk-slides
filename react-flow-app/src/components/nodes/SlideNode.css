@@ -183,3 +183,56 @@
 .slide-node__bullet--more::before {
   content: "";
 }
+
+/* Navigation buttons container */
+.slide-node__navigation {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+/* Navigation button base styles */
+.slide-node__nav-button {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    opacity 0.15s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+/* Hover state - accent color background */
+.slide-node__nav-button:hover:not(:disabled) {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #fff;
+}
+
+/* Disabled state - reduced opacity, no cursor */
+.slide-node__nav-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Focus state for accessibility */
+.slide-node__nav-button:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
