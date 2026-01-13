@@ -655,3 +655,365 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - Including original reference material (talk outline) helps maintain content consistency
   - The markdown format allows preview of slide images directly in editors that support it
 ---
+
+## 2025-01-12 - US-038
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Created src/utils/persistence.ts for localStorage-based node position persistence
+- Implemented loadPersistedPositions() function that returns Record<string, {x, y}> or null
+- Implemented savePersistedPositions(positions) function with version and timestamp
+- Implemented clearPersistedPositions() function to reset stored positions
+- Used localStorage key 'presentation-node-positions'
+- Added graceful error handling for JSON parse errors and localStorage quota
+- Exported NodePosition interface for use in other modules
+- Files changed: src/utils/persistence.ts (new file, 82 lines)
+- **Learnings for future iterations:**
+  - Persistence utilities go in src/utils/ alongside other utility modules
+  - Use version field in stored data for future migration support
+  - Wrap localStorage operations in try/catch for quota exceeded errors
+  - Export interfaces alongside functions for type reuse
+---
+
+## 2025-01-12 - US-039
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added import for loadPersistedPositions from persistence.ts in PresentationCanvas.tsx
+- Modified useState initializer to load persisted positions from localStorage
+- Merged persisted positions with generated nodes (nodes with persisted positions get their position overwritten)
+- Updated paper background calculation to use nodes with merged positions
+- Verified typecheck passes
+- Files changed: src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - Load persisted positions at component initialization via useState initializer function
+  - Use ternary/map pattern to merge positions: if persistedPositions exists, map nodes and replace positions where available
+  - Paper background bounds must be calculated after merging positions so the paper wraps correctly around moved nodes
+---
+
+## 2025-01-12 - US-040
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added debounced save function (500ms delay) for node position persistence
+- Imported savePersistedPositions from persistence.ts
+- Added SAVE_DEBOUNCE_MS constant (500ms)
+- Added saveTimeoutRef ref to track debounce timeout
+- Created debouncedSavePositions callback that:
+  - Clears existing timeout
+  - Sets new timeout to save positions after 500ms
+  - Extracts only position data (x, y) from nodes
+  - Skips non-draggable nodes like paper background
+- Added cleanup effect to clear timeout on unmount
+- Updated onNodesChange to detect position changes and trigger debounced save
+- Verified in browser: node positions persist after dragging
+- Files changed: src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - Debounce with useRef + window.setTimeout pattern for performance
+  - Check change.type === "position" to detect drag operations
+  - Filter out non-draggable nodes (draggable === false) before saving
+  - Playwright's dragTo method may not trigger React Flow events - use page.mouse for authentic drag simulation
+---
+
+## 2025-01-12 - US-041
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added Reset Layout button to NavigationControls component
+- Added onReset prop to NavigationControlsProps interface
+- Created resetLayout callback in PresentationCanvas that:
+  - Calls clearPersistedPositions() to clear localStorage
+  - Regenerates nodes with generateNodes()
+  - Recalculates paper background bounds
+  - Updates nodes state with fresh default positions
+- Styled reset button with gray theme matching previous button
+- Added counterclockwise arrow SVG icon for reset button
+- Files changed: src/components/panels/NavigationControls.tsx, src/components/panels/NavigationControls.css, src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - Reset functionality requires both clearing storage AND regenerating nodes
+  - Paper background node must be recalculated when nodes are regenerated
+  - The resetLayout callback follows same pattern as useState initializer for node generation
+---
+
+## 2025-01-12 - US-042
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added navigation props to SlideNodeData interface in types/presentation.ts
+- Added hasPrev?: boolean for tracking if previous slide exists
+- Added hasNext?: boolean for tracking if next slide exists
+- Added onNavigatePrev?: () => void callback for navigating to previous slide
+- Added onNavigateNext?: () => void callback for navigating to next slide
+- Files changed: src/types/presentation.ts
+- **Learnings for future iterations:**
+  - Navigation callbacks in node data allow per-slide navigation without accessing global state
+  - Optional props with ? allow components to work with or without navigation enabled
+  - These props will be populated in PresentationCanvas and used by SlideNode component
+---
+
+## 2025-01-12 - US-043
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added navigation caret buttons (‹ ›) to SlideNode component
+- Created slide-node__navigation container div for button positioning
+- Added handlePrevClick and handleNextClick functions with e.stopPropagation()
+- Destructured hasPrev, hasNext, onNavigatePrev, onNavigateNext from data props
+- Buttons are disabled when hasPrev/hasNext is false
+- Added aria-label attributes for accessibility
+- Files changed: src/components/nodes/SlideNode.tsx
+- **Learnings for future iterations:**
+  - e.stopPropagation() prevents the button click from triggering the parent node's onClick handler
+  - Use disabled={!hasPrev} pattern to disable buttons based on optional boolean props
+  - aria-label is important for accessibility when buttons only contain symbols
+---
+
+## 2025-01-12 - US-044
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added CSS styles for SlideNode navigation caret buttons
+- Created .slide-node__navigation container class: absolute positioning, bottom center, translateX(-50%), flexbox with gap
+- Created .slide-node__nav-button class: 28px circular buttons, light background (rgba(255,255,255,0.9)), subtle border
+- Added hover state: accent color background with white text
+- Added disabled state: 0.4 opacity, cursor: not-allowed
+- Added focus-visible state with accent color outline for accessibility
+- Verified in browser: buttons visible at bottom of each slide card
+- Files changed: src/components/nodes/SlideNode.css
+- **Learnings for future iterations:**
+  - Use transform: translateX(-50%) with left: 50% for horizontal centering of absolutely positioned elements
+  - :hover:not(:disabled) prevents hover effects on disabled buttons
+  - Include focus-visible styles for keyboard accessibility
+  - CSS transitions on multiple properties should be comma-separated in the transition property
+---
+
+## 2025-01-12 - US-045
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Implemented navigation callbacks in PresentationCanvas for SlideNode components
+- Created orderedSlides useMemo that builds slide order from sections (same logic as useKeyboardNavigation)
+- Updated nodesWithActiveState useMemo to calculate hasPrev/hasNext for each slide
+- Created onNavigatePrev/onNavigateNext callbacks using navigateToSlide function
+- Passed hasPrev, hasNext, onNavigatePrev, onNavigateNext to each slide node's data
+- Verified in browser: clicking ‹ › buttons on slides navigates correctly between slides
+- Files changed: src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - orderedSlides can be computed from sections and slides using flatMap with slidesBySection lookup
+  - Navigation callbacks should be undefined (not empty function) when not applicable for proper button disabling
+  - The useMemo now depends on orderedSlides and navigateToSlide in addition to nodes and currentSlideId
+---
+
+## 2025-01-12 - US-046
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Created LevelNodeData interface in types/presentation.ts
+- Added level: number, slideId: string, and track: Track fields
+- Added index signature [key: string]: unknown for React Flow compatibility
+- Created LevelNode type as Node<LevelNodeData, "level">
+- Added LevelNode to PresentationNode union type
+- Files changed: src/types/presentation.ts
+- **Learnings for future iterations:**
+  - LevelNode follows same pattern as other nodes: interface for data, type for Node<Data, "type">
+  - Track field allows level nodes to use track-based gradient colors matching their parent slide's section
+  - slideId field creates link between level node and its parent slide for edge generation
+---
+
+## 2025-01-12 - US-047
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Created LevelNode component in src/components/nodes/LevelNode.tsx
+- Render 80x80px circular div with track-based gradient background
+- Display level number centered in circle using JetBrains Mono font
+- Added Handle on left side (Position.Left, id="left") for edge connections
+- Created basic CSS file with placeholder styles for US-048
+- Wrapped component in React.memo for performance optimization
+- Files changed: src/components/nodes/LevelNode.tsx (new), src/components/nodes/LevelNode.css (new)
+- **Learnings for future iterations:**
+  - Follow same patterns as SlideNode/ResourceNode: NodeProps<NodeType> for typing
+  - Gradient background uses template literal to build CSS from TRACK_COLORS constant
+  - CSS file needs to exist even with minimal styles since the import in TSX won't compile otherwise
+---
+
+## 2025-01-12 - US-048
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Completed LevelNode CSS styling for circular level indicator badges
+- Added 3px white border for visual definition
+- Added layered drop shadow (0 4px 12px and 0 2px 4px) for depth
+- Added hover effect with scale(1.05) and enhanced shadow
+- Specified JetBrains Mono font explicitly with fallback to --font-mono
+- Added text-shadow for better readability on gradient backgrounds
+- Added smooth transitions (0.2s ease) for transform and box-shadow
+- Verified typecheck passes
+- Files changed: src/components/nodes/LevelNode.css
+- **Learnings for future iterations:**
+  - LevelNode CSS is complete but nodes won't appear until US-049 (generate), US-050 (edges), US-051 (register)
+  - Layered shadows (two box-shadow values) create more natural depth than a single shadow
+  - Explicit font-family with fallback handles fonts that may not be loaded yet
+---
+
+## 2025-01-12 - US-049
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Modified generateNodes.ts to automatically create LevelNode for slides with level property
+- Added LEVEL_NODE_X_OFFSET (450px) and LEVEL_NODE_Y_OFFSET (-20px) constants
+- LevelNode is created for each slide where slide.level !== undefined
+- Level node ID follows pattern: 'level-{slideId}'
+- Level node data includes: level number, slideId reference, and track from parent section
+- Updated function documentation to describe level node positioning
+- Verified typecheck passes
+- Files changed: src/utils/generateNodes.ts
+- **Learnings for future iterations:**
+  - Level nodes are created within the slide generation loop for easy access to slide position
+  - Track comes from the section, not the slide (slides don't have track property)
+  - Position offsets are relative to slide position (slideX + offset, slideY + offset)
+---
+
+## 2025-01-12 - US-050
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added slide-to-level edge style in EDGE_STYLES constant (1.5px dashed gray-400 stroke)
+- Added logic to generate edges from slides to level nodes for slides with level property
+- Edge connects slide (right handle) to level node (left handle)
+- Edge ID follows pattern: 'edge-slide-{slideId}-to-level'
+- Updated function JSDoc to document the new edge type
+- Verified typecheck passes
+- Files changed: src/utils/generateEdges.ts
+- **Learnings for future iterations:**
+  - Follow existing EDGE_STYLES pattern for new edge types
+  - Check slide.level !== undefined to filter slides with levels
+  - Level node target ID is 'level-{slideId}' matching generateNodes.ts pattern
+---
+
+## 2025-01-12 - US-051
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Registered LevelNode type in PresentationCanvas so React Flow can render level nodes
+- Imported LevelNode component from ./nodes/LevelNode
+- Added 'level': LevelNode to nodeTypes object alongside slide, sectionHeader, resource, paperBackground
+- Verified typecheck passes
+- Files changed: src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - All custom node types must be registered in nodeTypes object passed to ReactFlow component
+  - Follow alphabetical-ish order in nodeTypes for consistency (level comes after resource)
+  - LevelNode completes the level feature started in US-046 through US-050
+---
+
+## 2025-01-12 - US-052
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Removed level badge span from SlideNode.tsx (lines 115-117)
+- Removed .slide-node__level CSS class from SlideNode.css (15 lines of styling)
+- Level display now handled by separate LevelNode component (implemented in US-046-051)
+- Verified in browser: no level badge overlays on slide hero images
+- Verified typecheck passes
+- Files changed: src/components/nodes/SlideNode.tsx, src/components/nodes/SlideNode.css
+- **Learnings for future iterations:**
+  - When moving functionality to a separate component, remove the old implementation completely
+  - SlideNode now has cleaner JSX with hero image area containing only the img element
+  - CSS cleanup reduces bundle size slightly and prevents dead code
+---
+
+## 2025-01-12 - US-053
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Created src/hooks/useSlideNotes.ts for slide notes persistence
+- Defined SlideNotes interface with notes string and customResources array
+- Defined CustomResource interface with title and url fields
+- Hook takes slideId parameter (string | null for flexibility)
+- Loads notes from localStorage on slideId change using useEffect
+- Provides saveNotes function that persists to localStorage and updates state
+- Uses key format 'presentation-slide-notes-{slideId}'
+- Includes version and timestamp for future migrations
+- Graceful error handling for JSON parse and localStorage errors
+- Files changed: src/hooks/useSlideNotes.ts (new file, 132 lines)
+- **Learnings for future iterations:**
+  - Follow same persistence pattern as persistence.ts (version, timestamp, data wrapper)
+  - Export both interfaces (SlideNotes, CustomResource) for use in other components
+  - Hook returns notes and saveNotes - simple interface for consumers
+  - slideId can be null (no slide selected) - hook returns default empty notes in this case
+---
+
+## 2025-01-12 - US-054
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Created src/components/panels/EditorPanel.tsx component structure
+- Created EditorPanelProps interface with slideId, slideData, isOpen, onClose
+- slideData uses object with slide and section for complete context
+- Returns null early when !isOpen, !slideId, or !slideData
+- Renders panel container with header showing slide title and close button
+- Added close button with X SVG icon and aria-label for accessibility
+- Created EditorPanel.css with basic layout (position fixed, 320px width)
+- Content area has placeholder text for future US-055/US-056 implementation
+- Wrapped component in React.memo for performance optimization
+- Files changed: src/components/panels/EditorPanel.tsx (new), src/components/panels/EditorPanel.css (new)
+- **Learnings for future iterations:**
+  - Panel components use position: fixed for overlay on the canvas
+  - Use slideData object to pass both slide and section context
+  - Early return pattern (if !condition return null) keeps component clean
+  - Placeholder content helps identify areas for future implementation
+---
+
+## 2025-01-12 - US-055
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added notes textarea to EditorPanel for markdown note editing
+- Imported and used useSlideNotes hook to load/save notes for selected slide
+- Created handleNotesChange callback with useCallback for auto-save on every keystroke
+- Added labeled textarea with "Notes (Markdown)" label and placeholder text
+- Added CSS styling for section, label, and textarea elements
+- Textarea styled with monospace font, 200px min-height, focus states
+- Notes persist to localStorage automatically via saveNotes function
+- Files changed: src/components/panels/EditorPanel.tsx, src/components/panels/EditorPanel.css
+- **Learnings for future iterations:**
+  - Use spread operator to preserve existing notes object while updating specific field
+  - useCallback memoization helps prevent unnecessary re-renders
+  - CSS custom properties (--color-accent) for focus ring color consistency
+  - Textarea uses var(--font-mono) for markdown editing
+---
+
+## 2025-01-12 - US-056
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added resource URL list to EditorPanel with add/delete functionality
+- Imported useState from react and CustomResource from useSlideNotes hook
+- Added state for add resource form: isAddingResource, newResourceTitle, newResourceUrl
+- Created handleAddResource callback that validates inputs, adds to customResources array, and saves
+- Created handleDeleteResource callback that filters out resource by index and saves
+- Created handleCancelAddResource callback to reset form state
+- Added resource list UI that displays customResources with title and URL
+- Each resource item has clickable link (opens in new tab) and delete button
+- Added "Add Resource" button that toggles add resource form
+- Add resource form has title input, URL input, Cancel and Add buttons
+- Add button disabled when either field is empty
+- Added comprehensive CSS for resource list, items, links, delete buttons, form inputs, and buttons
+- Files changed: src/components/panels/EditorPanel.tsx, src/components/panels/EditorPanel.css
+- **Learnings for future iterations:**
+  - Use index-based keys in map when list order is stable and items don't have unique IDs
+  - Filter by index pattern: `array.filter((_, i) => i !== indexToRemove)`
+  - Form state reset should happen after successful save, not before
+  - Dashed border on add button creates visual distinction for "empty state" actions
+---
+
+## 2025-01-12 - US-057
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Completed EditorPanel CSS styling with slide-in animation
+- Added @keyframes slideInFromLeft animation (0.25s ease-out)
+- Added backdrop-filter blur(8px) for glass effect on panel
+- Updated comment from "full styling in US-057" to "EditorPanel styles"
+- All existing CSS was already complete from US-054/055/056 (position, dimensions, header, textarea, resources)
+- Files changed: src/components/panels/EditorPanel.css
+- **Learnings for future iterations:**
+  - CSS animation keyframes use @keyframes declaration before the class that applies it
+  - Use `animation: name duration timing-function fill-mode` shorthand for simple animations
+  - `forwards` fill-mode keeps the element in its final animation state
+  - backdrop-filter: blur() adds subtle glass morphism effect
+  - EditorPanel will slide in from left once US-058 (integration) and US-059 (double-click) are complete
+---
+
+## 2025-01-12 - US-058
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Integrated EditorPanel component into PresentationCanvas
+- Added selectedSlideId state (separate from currentSlideId used for navigation focus)
+- Added isEditorOpen state to control panel visibility
+- Imported EditorPanel from ./panels/EditorPanel
+- Created handleCloseEditor callback that sets isEditorOpen to false
+- Created editorSlideData useMemo that computes slide and section from selectedSlideId
+- Passed all required props to EditorPanel: slideId, slideData, isOpen, onClose
+- EditorPanel renders but won't appear until US-059 (double-click) sets selectedSlideId and isEditorOpen
+- Files changed: src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - selectedSlideId is separate from currentSlideId: selected is for editing, current is for navigation focus
+  - editorSlideData useMemo finds the slide and its section to pass complete context to EditorPanel
+  - EditorPanel returns null when !isOpen so it's safe to always render in JSX
+---
+
+## 2025-01-12 - US-059
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added onNodeDoubleClick handler to PresentationCanvas ReactFlow component
+- Handler checks if clicked node is type "slide" before opening editor
+- Extracts slideId from node ID (format: "slide-{id}")
+- Sets selectedSlideId and isEditorOpen=true to open EditorPanel
+- Other node types (sectionHeader, resource, level) are ignored
+- Verified in browser: double-clicking slide opens EditorPanel on left
+- Files changed: src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - onNodeDoubleClick follows same pattern as onNodeClick (uses NodeMouseHandler type)
+  - Check node.type before processing to filter by node type
+  - useCallback with empty deps array is fine when only using setState functions
+  - EditorPanel will show with correct slide data due to editorSlideData useMemo
+---

@@ -593,6 +593,456 @@
       "priority": 37,
       "passes": true,
       "notes": "Created slides.md with all slide content in editable markdown format. Includes format documentation, section table, and original talk outline for reference."
+    },
+    {
+      "id": "US-038",
+      "title": "Create persistence utility for localStorage",
+      "description": "As a developer, I need a utility module to save and load data from localStorage so node positions and other state can persist.",
+      "acceptanceCriteria": [
+        "Create src/utils/persistence.ts",
+        "Implement loadPersistedPositions() function that returns Record<string, {x, y}> or null",
+        "Implement savePersistedPositions(positions) function that saves with version and timestamp",
+        "Implement clearPersistedPositions() function to reset",
+        "Use localStorage key 'presentation-node-positions'",
+        "Handle JSON parse errors gracefully (return null)",
+        "Typecheck passes"
+      ],
+      "priority": 38,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-039",
+      "title": "Load persisted node positions on app start",
+      "description": "As a user, I want my node arrangement to be restored when I reload the page.",
+      "acceptanceCriteria": [
+        "Import persistence utilities in PresentationCanvas.tsx",
+        "In useState initializer, load persisted positions",
+        "Merge persisted positions with generated node positions",
+        "If no persisted data, use default generated positions",
+        "Typecheck passes",
+        "Verify in browser: drag a node, refresh page, node is in same position"
+      ],
+      "priority": 39,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-040",
+      "title": "Save node positions on drag with debounce",
+      "description": "As a user, I want my node movements to be saved automatically without affecting performance.",
+      "acceptanceCriteria": [
+        "Add debounced save function (500ms delay) in PresentationCanvas.tsx",
+        "On onNodesChange, detect position changes and trigger debounced save",
+        "Only save position data, not full node objects",
+        "Typecheck passes"
+      ],
+      "priority": 40,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-041",
+      "title": "Add Reset Layout button to NavigationControls",
+      "description": "As a user, I want a button to reset all nodes to their default positions.",
+      "acceptanceCriteria": [
+        "Add 'Reset' button to NavigationControls component",
+        "Button calls clearPersistedPositions() and regenerates nodes",
+        "Style button to match existing controls (gray, icon)",
+        "Add reset icon (↺ or similar)",
+        "Typecheck passes",
+        "Verify in browser: clicking Reset restores default layout"
+      ],
+      "priority": 41,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-042",
+      "title": "Add navigation props to SlideNodeData type",
+      "description": "As a developer, I need type definitions for per-slide navigation callbacks.",
+      "acceptanceCriteria": [
+        "Add hasPrev?: boolean to SlideNodeData interface",
+        "Add hasNext?: boolean to SlideNodeData interface",
+        "Add onNavigatePrev?: () => void to SlideNodeData interface",
+        "Add onNavigateNext?: () => void to SlideNodeData interface",
+        "Typecheck passes"
+      ],
+      "priority": 42,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-043",
+      "title": "Add navigation caret buttons to SlideNode component",
+      "description": "As a user, I want forward/backward buttons on each slide for quick navigation.",
+      "acceptanceCriteria": [
+        "Add navigation container div at bottom of SlideNode",
+        "Add ‹ button for previous slide navigation",
+        "Add › button for next slide navigation",
+        "Buttons call onNavigatePrev/onNavigateNext from data props",
+        "Use e.stopPropagation() to prevent node click events",
+        "Disable buttons when hasPrev/hasNext is false",
+        "Typecheck passes"
+      ],
+      "priority": 43,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-044",
+      "title": "Style SlideNode navigation buttons",
+      "description": "As a user, I want the navigation buttons to look clean and minimal.",
+      "acceptanceCriteria": [
+        "Add .slide-node__navigation class for button container",
+        "Position buttons at bottom center of slide (absolute, translateX -50%)",
+        "Style buttons: 28px circular, light background, subtle border",
+        "Add hover effect: accent color background",
+        "Add disabled state: reduced opacity, no-cursor",
+        "Typecheck passes",
+        "Verify in browser: caret buttons visible at bottom of each slide"
+      ],
+      "priority": 44,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-045",
+      "title": "Pass navigation callbacks to SlideNode from PresentationCanvas",
+      "description": "As a developer, I need to wire up navigation data to each slide node.",
+      "acceptanceCriteria": [
+        "In nodesWithActiveState memo, calculate hasPrev/hasNext for each slide",
+        "Create navigation callback functions using orderedSlides array",
+        "Pass hasPrev, hasNext, onNavigatePrev, onNavigateNext in node data",
+        "Callbacks should use existing navigateToSlide function",
+        "Typecheck passes",
+        "Verify in browser: clicking ‹ › buttons navigates between slides"
+      ],
+      "priority": 45,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-046",
+      "title": "Create LevelNodeData type definition",
+      "description": "As a developer, I need type definitions for the new LevelNode component.",
+      "acceptanceCriteria": [
+        "Add LevelNodeData interface to types/presentation.ts",
+        "Include level: number field",
+        "Include slideId: string field",
+        "Include track: Track field",
+        "Add LevelNode type as Node<LevelNodeData, 'level'>",
+        "Add LevelNode to PresentationNode union type",
+        "Typecheck passes"
+      ],
+      "priority": 46,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-047",
+      "title": "Create LevelNode component",
+      "description": "As a user, I want to see circular level badges connected to slides.",
+      "acceptanceCriteria": [
+        "Create src/components/nodes/LevelNode.tsx",
+        "Render 80x80px circular div",
+        "Display level number centered in circle",
+        "Apply track-based gradient background color",
+        "Add Handle on left side (target) for edge connection",
+        "Wrap in React.memo for performance",
+        "Typecheck passes"
+      ],
+      "priority": 47,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-048",
+      "title": "Style LevelNode component",
+      "description": "As a user, I want level nodes to be visually appealing and consistent with the design.",
+      "acceptanceCriteria": [
+        "Create src/components/nodes/LevelNode.css",
+        "80px diameter with border-radius: 50%",
+        "Gradient background using track color",
+        "White border (3px) and drop shadow",
+        "Level number: JetBrains Mono font, 32px, bold, white",
+        "Center content with flexbox",
+        "Typecheck passes",
+        "Verify in browser: level nodes appear as styled circles"
+      ],
+      "priority": 48,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-049",
+      "title": "Generate LevelNode for each slide with level property",
+      "description": "As a developer, I need level nodes created automatically for slides that have levels.",
+      "acceptanceCriteria": [
+        "Modify generateNodes.ts to create LevelNode for slides with level !== undefined",
+        "Position level node 450px right and 20px above the slide",
+        "Set level node ID as 'level-{slideId}'",
+        "Pass level, slideId, and track in node data",
+        "Level nodes should be draggable",
+        "Typecheck passes"
+      ],
+      "priority": 49,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-050",
+      "title": "Add edges from slides to level nodes",
+      "description": "As a user, I want to see connections between slides and their level indicators.",
+      "acceptanceCriteria": [
+        "Modify generateEdges.ts to create edges from slides to level nodes",
+        "Edge from slide (right handle) to level node (left handle)",
+        "Style: 1.5px dashed gray stroke",
+        "Edge ID: 'edge-slide-{slideId}-to-level'",
+        "Typecheck passes",
+        "Verify in browser: dashed lines connect slides to their level badges"
+      ],
+      "priority": 50,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-051",
+      "title": "Register LevelNode type in PresentationCanvas",
+      "description": "As a developer, I need React Flow to recognize the new LevelNode component.",
+      "acceptanceCriteria": [
+        "Import LevelNode component in PresentationCanvas.tsx",
+        "Add 'level': LevelNode to nodeTypes object",
+        "Typecheck passes"
+      ],
+      "priority": 51,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-052",
+      "title": "Remove level badge from SlideNode hero image",
+      "description": "As a user, I want levels shown as separate nodes, not overlaid on slides.",
+      "acceptanceCriteria": [
+        "Remove .slide-node__level span from SlideNode.tsx",
+        "Remove .slide-node__level CSS from SlideNode.css",
+        "Level display now handled by separate LevelNode",
+        "Typecheck passes",
+        "Verify in browser: no level badge on slide hero images"
+      ],
+      "priority": 52,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-053",
+      "title": "Create useSlideNotes hook for note persistence",
+      "description": "As a developer, I need a hook to load and save slide notes to localStorage.",
+      "acceptanceCriteria": [
+        "Create src/hooks/useSlideNotes.ts",
+        "Define SlideNotes interface: { notes: string, customResources: Array<{title, url}> }",
+        "Hook takes slideId parameter",
+        "Load notes from localStorage on slideId change",
+        "Provide saveNotes function that persists to localStorage",
+        "Use key format 'presentation-slide-notes-{slideId}'",
+        "Typecheck passes"
+      ],
+      "priority": 53,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-054",
+      "title": "Create EditorPanel component structure",
+      "description": "As a user, I want a panel to appear when I select a slide so I can add notes.",
+      "acceptanceCriteria": [
+        "Create src/components/panels/EditorPanel.tsx",
+        "Props: slideId, slideData, isOpen, onClose",
+        "Return null if !isOpen or !slideId",
+        "Render panel container with header (slide title + close button)",
+        "Render content area placeholder",
+        "Wrap in React.memo",
+        "Typecheck passes"
+      ],
+      "priority": 54,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-055",
+      "title": "Add notes textarea to EditorPanel",
+      "description": "As a user, I want to type markdown notes for a slide.",
+      "acceptanceCriteria": [
+        "Use useSlideNotes hook in EditorPanel",
+        "Add labeled textarea for notes (Markdown)",
+        "Textarea value bound to notes.notes",
+        "On change, call saveNotes with updated notes object",
+        "Auto-save on every change (no save button needed)",
+        "Typecheck passes"
+      ],
+      "priority": 55,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-056",
+      "title": "Add resource URL list to EditorPanel",
+      "description": "As a user, I want to add custom resource URLs to a slide.",
+      "acceptanceCriteria": [
+        "Display list of customResources with title and URL",
+        "Add button to add new resource (prompts for title + URL)",
+        "Delete button on each resource item",
+        "Resources saved via saveNotes function",
+        "Typecheck passes"
+      ],
+      "priority": 56,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-057",
+      "title": "Style EditorPanel component",
+      "description": "As a user, I want the editor panel to look clean and functional.",
+      "acceptanceCriteria": [
+        "Create src/components/panels/EditorPanel.css",
+        "Position: fixed left side, full height",
+        "Width: 320px",
+        "Background: white with subtle shadow",
+        "Header: slide title, close button (X)",
+        "Textarea: full width, 200px min height, monospace font",
+        "Resource list: compact styling with delete buttons",
+        "Typecheck passes",
+        "Verify in browser: panel slides in from left when opened"
+      ],
+      "priority": 57,
+      "passes": true,
+      "notes": "Added slide-in animation keyframes, backdrop-filter blur, and verified all styling is complete."
+    },
+    {
+      "id": "US-058",
+      "title": "Integrate EditorPanel into PresentationCanvas",
+      "description": "As a developer, I need to wire up the editor panel to the canvas.",
+      "acceptanceCriteria": [
+        "Add selectedSlideId state (separate from currentSlideId for navigation)",
+        "Add isEditorOpen state",
+        "Import and render EditorPanel component",
+        "Pass required props: slideId, slideData, isOpen, onClose",
+        "onClose sets isEditorOpen to false",
+        "Typecheck passes"
+      ],
+      "priority": 58,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-059",
+      "title": "Open EditorPanel on slide double-click",
+      "description": "As a user, I want to double-click a slide to open the editor panel.",
+      "acceptanceCriteria": [
+        "Add onNodeDoubleClick handler to ReactFlow component",
+        "On slide node double-click, set selectedSlideId and isEditorOpen=true",
+        "Only open for slide nodes, not other node types",
+        "Typecheck passes",
+        "Verify in browser: double-click slide opens editor panel on left"
+      ],
+      "priority": 59,
+      "passes": true,
+      "notes": ""
+    },
+    {
+      "id": "US-060",
+      "title": "Create useEdgeEdits hook for edge persistence",
+      "description": "As a developer, I need a hook to track added and deleted edges.",
+      "acceptanceCriteria": [
+        "Create src/hooks/useEdgeEdits.ts",
+        "Define EdgeEdits interface: { addedEdges: Edge[], deletedEdgeIds: string[] }",
+        "Load edge edits from localStorage on mount",
+        "Provide addEdge function that adds to addedEdges and saves",
+        "Provide deleteEdge function that adds to deletedEdgeIds and saves",
+        "Use key 'presentation-edge-edits'",
+        "Typecheck passes"
+      ],
+      "priority": 60,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-061",
+      "title": "Apply edge edits to generated edges",
+      "description": "As a user, I want my edge changes to persist after page reload.",
+      "acceptanceCriteria": [
+        "Convert edges from useMemo to useState in PresentationCanvas",
+        "Import and use useEdgeEdits hook",
+        "In useState initializer, generate edges and apply edits",
+        "Filter out deletedEdgeIds from generated edges",
+        "Append addedEdges to the edge array",
+        "Typecheck passes"
+      ],
+      "priority": 61,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-062",
+      "title": "Enable creating new edges by dragging",
+      "description": "As a user, I want to drag from one node handle to another to create a connection.",
+      "acceptanceCriteria": [
+        "Add onConnect handler to ReactFlow component",
+        "Generate unique edge ID: 'edge-custom-{timestamp}'",
+        "Style custom edges: 2px indigo stroke",
+        "Call addEdge from useEdgeEdits hook",
+        "Add new edge to edges state",
+        "Typecheck passes",
+        "Verify in browser: dragging between handles creates new edge"
+      ],
+      "priority": 62,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-063",
+      "title": "Enable deleting edges with Shift+click",
+      "description": "As a user, I want to Shift+click an edge to delete it.",
+      "acceptanceCriteria": [
+        "Add onEdgeClick handler to ReactFlow component",
+        "Check if event.shiftKey is true",
+        "If shift-clicked, call deleteEdge from useEdgeEdits hook",
+        "Remove edge from edges state",
+        "Typecheck passes",
+        "Verify in browser: Shift+click on edge removes it"
+      ],
+      "priority": 63,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-064",
+      "title": "Add edge editing help tooltip",
+      "description": "As a user, I want to know how to create and delete edges.",
+      "acceptanceCriteria": [
+        "Add small help text or tooltip in NavigationControls or corner of canvas",
+        "Text: 'Drag handles to connect • Shift+click edge to delete'",
+        "Style: subtle, small font, low opacity",
+        "Typecheck passes"
+      ],
+      "priority": 64,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-065",
+      "title": "Add reset edge edits to Reset Layout button",
+      "description": "As a user, I want the Reset Layout button to also clear my edge changes.",
+      "acceptanceCriteria": [
+        "Modify reset handler to also clear edge edits from localStorage",
+        "Regenerate edges from scratch (no edits applied)",
+        "Update edges state with fresh generated edges",
+        "Typecheck passes",
+        "Verify in browser: Reset Layout restores default edges too"
+      ],
+      "priority": 65,
+      "passes": false,
+      "notes": ""
     }
   ]
 }

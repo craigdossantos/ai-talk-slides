@@ -404,6 +404,17 @@ function PresentationCanvas() {
     setIsEditorOpen(false);
   }, []);
 
+  // Handle double-click on node to open editor panel for slide nodes
+  const handleNodeDoubleClick = useCallback<NodeMouseHandler>((_, node) => {
+    // Only open editor for slide nodes
+    if (node.type === "slide") {
+      // Extract slide ID from node ID (format: "slide-{id}")
+      const slideId = node.id.replace("slide-", "");
+      setSelectedSlideId(slideId);
+      setIsEditorOpen(true);
+    }
+  }, []);
+
   // Compute slideData for EditorPanel from selectedSlideId
   const editorSlideData = useMemo(() => {
     if (!selectedSlideId) return null;
@@ -421,6 +432,7 @@ function PresentationCanvas() {
         edges={edges}
         nodeTypes={nodeTypes}
         onNodeClick={handleNodeClick}
+        onNodeDoubleClick={handleNodeDoubleClick}
         onNodesChange={onNodesChange}
         nodesDraggable={true}
         fitView
