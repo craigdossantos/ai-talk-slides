@@ -14,6 +14,7 @@ import LevelNode from "./nodes/LevelNode";
 import PaperBackgroundNode from "./nodes/PaperBackgroundNode";
 import SectionNavigator from "./panels/SectionNavigator";
 import NavigationControls from "./panels/NavigationControls";
+import EditorPanel from "./panels/EditorPanel";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
 import { generateNodes } from "../utils/generateNodes";
 import { generateEdges } from "../utils/generateEdges";
@@ -106,6 +107,10 @@ function PresentationCanvas() {
   });
 
   const edges = useMemo(() => generateEdges(sections, slides, resources), []);
+
+  // State for editor panel (separate from currentSlideId used for navigation)
+  const [selectedSlideId, setSelectedSlideId] = useState<string | null>(null);
+  const [isEditorOpen, setIsEditorOpen] = useState(false);
 
   // Ref for debounced save timeout
   const saveTimeoutRef = useRef<number | null>(null);
@@ -394,6 +399,21 @@ function PresentationCanvas() {
     [],
   );
 
+  // Close editor panel handler
+  const handleCloseEditor = useCallback(() => {
+    setIsEditorOpen(false);
+  }, []);
+
+  // Compute slideData for EditorPanel from selectedSlideId
+  const editorSlideData = useMemo(() => {
+    if (!selectedSlideId) return null;
+    const slide = slides.find((s) => s.id === selectedSlideId);
+    if (!slide) return null;
+    const section = sections.find((s) => s.id === slide.sectionId);
+    if (!section) return null;
+    return { slide, section };
+  }, [selectedSlideId]);
+
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
       <ReactFlow
@@ -434,6 +454,12 @@ function PresentationCanvas() {
         onNext={goToNextSlide}
         onToggleOverview={toggleOverview}
         onReset={resetLayout}
+      />
+      <EditorPanel
+        slideId={selectedSlideId}
+        slideData={editorSlideData}
+        isOpen={isEditorOpen}
+        onClose={handleCloseEditor}
       />
     </div>
   );
