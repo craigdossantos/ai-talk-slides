@@ -118,6 +118,10 @@ function NavigationControls({
           <path d="M3 3v5h5" />
         </svg>
       </button>
+
+      <span className="navigation-controls__help">
+        Drag handles to connect • Shift+click edge to delete
+      </span>
     </div>
   );
 }

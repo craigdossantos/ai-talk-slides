@@ -184,3 +184,29 @@
     min-width: 16px;
   }
 }
+
+/* Edge editing help text */
+.navigation-controls__help {
+  position: absolute;
+  bottom: calc(100% + var(--spacing-sm));
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-secondary);
+  font-size: 11px;
+  color: rgba(148, 163, 184, 0.7);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+  .navigation-controls__help {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navigation-controls__help {
+    display: none;
+  }
+}
