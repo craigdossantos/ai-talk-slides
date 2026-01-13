@@ -5,6 +5,7 @@ import {
   useReactFlow,
   applyNodeChanges,
   type NodeMouseHandler,
+  type EdgeMouseHandler,
   type NodeChange,
   type Edge,
   type Connection,
@@ -472,6 +473,21 @@ function PresentationCanvas() {
     [addEdge],
   );
 
+  // Handle edge click - Shift+click to delete edge
+  const handleEdgeClick = useCallback<EdgeMouseHandler>(
+    (event, edge) => {
+      // Only delete if Shift key is held
+      if (event.shiftKey) {
+        // Remove edge from state
+        setEdges((eds) => eds.filter((e) => e.id !== edge.id));
+
+        // Persist the deletion using the hook
+        deleteEdge(edge.id);
+      }
+    },
+    [deleteEdge],
+  );
+
   // Compute slideData for EditorPanel from selectedSlideId
   const editorSlideData = useMemo(() => {
     if (!selectedSlideId) return null;
@@ -492,6 +508,7 @@ function PresentationCanvas() {
         onNodeDoubleClick={handleNodeDoubleClick}
         onNodesChange={onNodesChange}
         onConnect={handleConnect}
+        onEdgeClick={handleEdgeClick}
         nodesDraggable={true}
         fitView
         fitViewOptions={{
