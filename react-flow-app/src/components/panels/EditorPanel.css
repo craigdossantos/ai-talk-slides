@@ -1,4 +1,16 @@
-/* EditorPanel styles - full styling in US-057 */
+/* EditorPanel styles */
+
+/* Slide-in animation keyframes */
+@keyframes slideInFromLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
 
 .editor-panel {
   position: fixed;
@@ -12,6 +24,8 @@
   z-index: 100;
   display: flex;
   flex-direction: column;
+  backdrop-filter: blur(8px);
+  animation: slideInFromLeft 0.25s ease-out forwards;
 }
 
 .editor-panel__header {
