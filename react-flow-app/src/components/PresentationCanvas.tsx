@@ -179,10 +179,13 @@ function PresentationCanvas() {
     };
   }, []);
 
-  // Reset layout to default positions
+  // Reset layout to default positions and edges
   const resetLayout = useCallback(() => {
     // Clear persisted positions from localStorage
     clearPersistedPositions();
+
+    // Clear edge edits from localStorage
+    clearEdgeEdits();
 
     // Regenerate nodes with default positions
     const contentNodes = generateNodes(sections, slides, resources);
@@ -224,6 +227,10 @@ function PresentationCanvas() {
 
     // Update nodes with default positions
     setNodes([paperNode, ...contentNodes]);
+
+    // Regenerate edges from scratch (no edits applied)
+    const freshEdges = generateEdges(sections, slides, resources);
+    setEdges(freshEdges);
   }, []);
 
   // Handle node changes (dragging, selection, etc.)
