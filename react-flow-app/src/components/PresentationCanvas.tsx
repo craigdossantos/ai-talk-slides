@@ -7,6 +7,7 @@ import {
   type NodeMouseHandler,
   type NodeChange,
   type Edge,
+  type Connection,
 } from "@xyflow/react";
 import SlideNode from "./nodes/SlideNode";
 import SectionHeaderNode from "./nodes/SectionHeaderNode";
@@ -441,6 +442,36 @@ function PresentationCanvas() {
     }
   }, []);
 
+  // Handle edge creation when user drags between handles
+  const handleConnect = useCallback(
+    (connection: Connection) => {
+      // Validate connection has required fields
+      if (!connection.source || !connection.target) {
+        return;
+      }
+
+      // Generate unique edge ID with timestamp
+      const edgeId = `edge-custom-${Date.now()}`;
+
+      // Create the new edge with indigo styling
+      const newEdge: Edge = {
+        id: edgeId,
+        source: connection.source,
+        target: connection.target,
+        sourceHandle: connection.sourceHandle,
+        targetHandle: connection.targetHandle,
+        style: { strokeWidth: 2, stroke: "#6366f1" },
+      };
+
+      // Add edge to edges state
+      setEdges((eds) => [...eds, newEdge]);
+
+      // Persist the edge using the hook
+      addEdge(newEdge);
+    },
+    [addEdge],
+  );
+
   // Compute slideData for EditorPanel from selectedSlideId
   const editorSlideData = useMemo(() => {
     if (!selectedSlideId) return null;
@@ -460,6 +491,7 @@ function PresentationCanvas() {
         onNodeClick={handleNodeClick}
         onNodeDoubleClick={handleNodeDoubleClick}
         onNodesChange={onNodesChange}
+        onConnect={handleConnect}
         nodesDraggable={true}
         fitView
         fitViewOptions={{
