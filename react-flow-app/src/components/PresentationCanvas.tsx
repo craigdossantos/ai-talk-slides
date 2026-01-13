@@ -6,6 +6,7 @@ import {
   applyNodeChanges,
   type NodeMouseHandler,
   type NodeChange,
+  type Edge,
 } from "@xyflow/react";
 import SlideNode from "./nodes/SlideNode";
 import SectionHeaderNode from "./nodes/SectionHeaderNode";
@@ -16,6 +17,7 @@ import SectionNavigator from "./panels/SectionNavigator";
 import NavigationControls from "./panels/NavigationControls";
 import EditorPanel from "./panels/EditorPanel";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
+import { useEdgeEdits, clearEdgeEdits } from "../hooks/useEdgeEdits";
 import { generateNodes } from "../utils/generateNodes";
 import { generateEdges } from "../utils/generateEdges";
 import {
@@ -106,7 +108,31 @@ function PresentationCanvas() {
     return [paperNode, ...nodesWithPersistedPositions];
   });
 
-  const edges = useMemo(() => generateEdges(sections, slides, resources), []);
+  // Use edge edits hook for tracking added/deleted edges
+  const { edgeEdits, addEdge, deleteEdge } = useEdgeEdits();
+
+  // Generate edges and apply persisted edits (added edges, filtered deleted edges)
+  const [edges, setEdges] = useState<Edge[]>(() => {
+    const generatedEdges = generateEdges(sections, slides, resources);
+
+    // Filter out deleted edges
+    const filteredEdges = generatedEdges.filter(
+      (edge) => !edgeEdits.deletedEdgeIds.includes(edge.id),
+    );
+
+    // Convert stored edges to full Edge objects and append added edges
+    const addedEdges: Edge[] = edgeEdits.addedEdges.map((storedEdge) => ({
+      id: storedEdge.id,
+      source: storedEdge.source,
+      target: storedEdge.target,
+      sourceHandle: storedEdge.sourceHandle,
+      targetHandle: storedEdge.targetHandle,
+      // Style custom edges with indigo color
+      style: { strokeWidth: 2, stroke: "#6366f1" },
+    }));
+
+    return [...filteredEdges, ...addedEdges];
+  });
 
   // State for editor panel (separate from currentSlideId used for navigation)
   const [selectedSlideId, setSelectedSlideId] = useState<string | null>(null);
