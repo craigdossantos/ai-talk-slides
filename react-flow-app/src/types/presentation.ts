@@ -11,7 +11,12 @@ export interface Section {
 }
 
 // Slide content types
-export type SlideType = "title" | "section-header" | "content" | "quote";
+export type SlideType =
+  | "title"
+  | "section-header"
+  | "content"
+  | "quote"
+  | "image";
 
 // Main slide content structure
 export interface SlideContent {

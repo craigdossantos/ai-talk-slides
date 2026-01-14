@@ -1,6 +1,7 @@
 import { memo, useCallback, useState } from "react";
 import type { SlideContent, Section } from "../../types/presentation";
-import { useSlideNotes, CustomResource } from "../../hooks/useSlideNotes";
+import { useSlideNotes } from "../../hooks/useSlideNotes";
+import type { CustomResource } from "../../hooks/useSlideNotes";
 import "./EditorPanel.css";
 
 interface EditorPanelProps {

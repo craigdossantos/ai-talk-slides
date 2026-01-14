@@ -963,7 +963,7 @@
         "Typecheck passes"
       ],
       "priority": 60,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -979,7 +979,7 @@
         "Typecheck passes"
       ],
       "priority": 61,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -996,7 +996,7 @@
         "Verify in browser: dragging between handles creates new edge"
       ],
       "priority": 62,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -1012,7 +1012,7 @@
         "Verify in browser: Shift+click on edge removes it"
       ],
       "priority": 63,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -1026,7 +1026,7 @@
         "Typecheck passes"
       ],
       "priority": 64,
-      "passes": false,
+      "passes": true,
       "notes": ""
     },
     {
@@ -1041,7 +1041,7 @@
         "Verify in browser: Reset Layout restores default edges too"
       ],
       "priority": 65,
-      "passes": false,
+      "passes": true,
       "notes": ""
     }
   ]

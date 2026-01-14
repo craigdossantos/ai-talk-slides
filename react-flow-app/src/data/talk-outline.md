@@ -1,6 +1,6 @@
 # Leveling Up Using AI
 
-*Talk outline with talking points and visual suggestions*
+_Talk outline with talking points and visual suggestions_
 
 ---
 
@@ -8,39 +8,39 @@
 
 ---
 
-### Slide 1: Technology and the Widening Gulf
+### Slide 1: The Widening Gulf of Technology
 
 **Talking Points:**
+
 - Technology has always made us more efficient as its main function
 - Examples of efficiency gains:
-  - Bicycle Ã¢â€ â€™ travel faster
-  - Typewriter/printing press Ã¢â€ â€™ push communications farther
-  - Google Ã¢â€ â€™ access to information
+  - Bicycle → travel faster
+  - Typewriter/printing press → push communications farther
+  - Google → access to information
 - We grew up with Google as part of our world, became accustomed to using it
 - Now AI tech is powerful enough that the gulf between tech-literate and non-tech-literate people is widening significantly
 - This literacy gap changes what you're able to do in your job
-- The most important thing: think about it from a **mental model perspective** first
-
-**Visual Suggestion:**
-Progression of images showing:
-1. Bicycle
-2. Computer
-3. Google home screen
-
-Each with labels/designations showing what that technology enables (speed, communication reach, information access)
-
-**Additional Point (connects to Slide 2):**
 - Common worry: "AI will take your job"
 - Some jobs will go away, but more importantly: there will be a separation between people who use AI and people who don't
 - Same pattern as previous tech divides (computers, internet, Google)
-- This gulf may be **much larger** than previous ones
-- Near-term reality: Less about AI taking your job Ã¢â€ â€™ More about **someone using AI getting hired instead of you**
+- This gulf may be much larger than previous ones
+
+**Bullet Points:**
+
+- Technology gives us speed and capabilities: fire, bicycles, cars, Internet
+- AI might create a larger gulf than previous tech
+- People with AI tools will outperform people without
+
+**Visual:**
+A picture of a gulf that's thin at the bottom, with layers showing fire, bicycles, the Internet at lower levels, and AI at the top pushing the gulf apart. Each progressive technology spreads the gulf wider. Remove the yellow text box. Title: "The Widening Gulf of Technology"
 
 ---
 
 ### Slide 2: Mental Models Through Use
 
 **Talking Points:**
+
+- Mental models are the first place to start
 - We already use mental models to understand technology
 - Example: Finding directions to an ice cream store
   - Less experienced user: "Please give me directions to the nearest ice cream store, which is called Molly Moon"
@@ -51,23 +51,25 @@ Each with labels/designations showing what that technology enables (speed, commu
   - You adapt your input to what the technology needs
 - Key insight: This understanding didn't come from a course or reading about Google
 - It comes through **use, not instruction**
-- Exposure Ã¢â€ â€™ see output Ã¢â€ â€™ adjust input Ã¢â€ â€™ see what works
+- Exposure → see output → adjust input → see what works
 - The more you use a tool, the better you get
 
-**Visual Suggestion:**
-- Google Maps showing Molly Moon ice cream shop in Seattle
-- Split image: 
-  - Left: Older person pecking at keyboard with one finger (struggling)
-  - Right: Younger person confidently using Google efficiently
+**Bullet Points:**
+
+- Mental models improve more through use, not instruction
+
+**Visual:**
+Title: "Mental Models Through Use" - Remove verbose search and confident action text, keep it simple.
 
 ---
 
-### Slide 3: New Tech, Old Mental Models
+### Slide 3: New Tech, Old Mental Model
 
 **Talking Points:**
+
 - Tempting to use the same mental model with new technology
 - First instinct with ChatGPT: treat it as a better version of Google
-- Google finds anything on the internet Ã¢â€ â€™ ChatGPT is an expert in anything on the internet
+- Google finds anything on the internet → ChatGPT is an expert in anything on the internet
 - You use it like a friend:
   - Back and forth conversation
   - Knows the entire corpus of internet knowledge
@@ -77,17 +79,23 @@ Each with labels/designations showing what that technology enables (speed, commu
   - Sometimes gives wrong information (hallucinations)
   - Not always reliable
 
-**Visual Suggestion:**
-- Google logo morphing/transitioning into ChatGPT logo
-- Split or dual image showing:
-  - ChatGPT giving accurate, helpful information
-  - ChatGPT hallucinating/giving wrong information
+**Bullet Points:**
+
+- Mental Model: ChatGPT as a better Google
+- It has different flaws: hallucinations
+
+**Visual:**
+Title: "New Tech, Old Mental Model" - Less busy, remove the yellow metaphorical visualization. Can have a hallucination visualization (like dripping clocks). Remove "Brilliant" text that doesn't make sense.
+
+**Connected Slide:**
+Add a connected slide with this image: https://framerusercontent.com/images/wImRiJQUuEpMwbYOB5dUXUcrUk.png?width=2752&height=1536
 
 ---
 
-### Slide 4: From Confidant to Digital Employee
+### Slide 4: From Savant to Digital Employee
 
 **Talking Points:**
+
 - Major mental leap: AI is not just an all-knowing friend
 - Think of it as a **digital employee**
 - Can do anything you can do on your computer (most knowledge work)
@@ -100,26 +108,21 @@ Each with labels/designations showing what that technology enables (speed, commu
 - Key difference: You don't have just one digital employee
 - You can have as many as you can handle
 
-**Visual Suggestion:**
-Horde/swarm of humanoid figures with computer monitors for heads, each screen displaying a different task:
-- Product management
-- Design
-- Coding
-- Code review
-- Testing
-- Brainstorming
-- Reading legal docs
-- Reading news
-- Reading books
-- Creating media
-- Creating music
-- Creating articles/blogs/books
+**Bullet Points:**
+
+- AI is not an all-knowing savant with advice
+- It's a digital employee who can execute work
+- You can become a team lead
+
+**Visual:**
+Title: "From Savant to Digital Employee" - Less busy background, keep the foreground clear to see what's happening.
 
 ---
 
 ### Slide 5: Mapping the Journey
 
 **Talking Points:**
+
 - To update mental models: understand what's possible and how to think at that level
 - Partly through using tools, partly through understanding the landscape
 - Helpful to map out the journey so far and where it's going
@@ -138,17 +141,24 @@ Horde/swarm of humanoid figures with computer monitors for heads, each screen di
   - No judgment for not knowing prerequisites
   - "I ask questions I wouldn't ask a human because it would be embarrassing to admit I don't know"
 
-**Visual Suggestion:**
-High-level flowchart/map showing the journey through different tracks
-*(Note: Revisit this visual after completing all slides to include the full map of tracks)*
+**Bullet Points:**
+
+- Overwhelming amount of information
+- Skipping steps makes nothing feel coherent
+- Feeling confused is a sequencing problem, not a capability
+- We have the greatest self learning tool ever
+
+**Visual:**
+Much less busy. Ada should be holding a flowchart that closely resembles the actual React site we're building, and that flowchart should be much larger and more prominent in the picture.
 
 ---
 
-### Slide 6: Technical vs Non-Technical Is the Wrong Split
+### Slide 6: What It Takes
 
 **Talking Points:**
+
 - Tempting to split by identity: "technical person" vs "non-technical person"
-- This is the wrong split Ã¢â‚¬â€ it's mostly a **cultural issue**
+- This is the wrong split — it's mostly a **cultural issue**
 - Historical pattern:
   - Technology treated as a black box
   - People who understand it protect that knowledge as valuable
@@ -164,33 +174,45 @@ High-level flowchart/map showing the journey through different tracks
   - Are you willing to adopt foreign technology?
   - Can you push through discomfort to get to the other side?
   - Or do you resist when things change?
-- **This** is the real gulf Ã¢â‚¬â€ not technical vs non-technical
+- **This** is the real gulf — not technical vs non-technical
 
-**Visual Suggestion:**
-Grand Canyon-style valley/chasm image representing the divide:
-- One side: Prosperous people with AI technology (thriving, advanced)
-- Other side: Cavemen hitting things with flint (stuck in the past)
-- Label one side with "Internet and Google"
-- Label the prosperous side with "AI"
+**Bullet Points:**
+
+- What does it mean to be "technical"
+- Resistance to change is the only barrier to entry
+
+**Visual:**
+Title: "What It Takes" - Ada leaping over the Gulf of Technology. AI is in the gulf. She's breaking through restraints/ropes as she jumps - those represent resistance to change. Remove the technical/non-technical and cultural/non-inherent labels from the sides.
 
 ---
 
-### Slide 7: Level 0 Ã¢â‚¬â€ Avoidance
+### Slide 7: Avoidance (Level 0)
 
 **Talking Points:**
+
 - Level zero is **avoidance**
 - "This won't affect my job"
 - Historical echoes: famous people dismissing transformative tech
-  - Example: Find quotes from people like Bill Gates downplaying the internet
+- Some people are afraid AI will take away our ability to think
+- I think that could be true for some.. but what's possible is that it pushes you to think bigger, and at a higher level
 
-**Visual Suggestion:**
-*(Need input on visual for this slide)*
+**Bullet Points:**
+
+- Avoidance is just fear showing its head
+- AI may require us to think at a higher level
+
+**Visual:**
+Remove the level badge (and from all following slides). Keep the head in the sand visual. Add two quotes:
+
+1. "I think there is a world market for maybe five computers." - Thomas Watson, IBM, 1943
+2. "I see little commercial potential for the internet for the next 10 years" - Bill Gates, early 90s
 
 ---
 
-### Slide 8: Level 1 Ã¢â‚¬â€ AI as Uber Google
+### Slide 8: AI = Portal to Internet Research (Level 1)
 
 **Talking Points:**
+
 - Using AI for:
   - Question and answers
   - Summaries
@@ -202,45 +224,67 @@ Grand Canyon-style valley/chasm image representing the divide:
   - Let the system clean it up
 - This is where most daily ChatGPT users start
 
-**Visual Suggestion:**
-- Google being sucked into/absorbed by ChatGPT (but smarter/enhanced)
-- Diagram showing: messy sentence Ã¢â€ â€™ box labeled "AI" Ã¢â€ â€™ polished prompt comes out
+**Bullet Points:**
+
+- Use AI for Q&A, summaries and explanations, brainstorming
+- Learn prompt engineering basics
+- Where most daily ChatGPT users are
+
+**Visual:**
+Title: "AI = Portal to Internet Research" - Remove level 1. Less busy, keep the Google turning into ChatGPT transformation. Remove the confusing box at the bottom with messy question stuff. Can add something about "prompt engineering" if it fits cleanly.
 
 ---
 
-### Slide 9: Level 2 Ã¢â‚¬â€ AI as Thought Partner
+### Slide 9: AI as Thought Partner (Level 2)
 
 **Talking Points:**
-- Giving AI more context:
-  - PDFs
-  - Docs
-  - Images
+
+- Giving AI more context: PDFs, docs, images
 - Having it read through things, then go back and forth
 - Beyond what you'd use enhanced Google for
-- Learning what's different than text-based, turn-based chat
+- Use AI as a thought partner, to explore ideas
+- Physical or mental health questions that require back and forth
 - Also at this level: trying different models
   - ChatGPT, Google Gemini, Anthropic Claude
   - Like talking to three different types of people
   - Each has strengths and weaknesses
-  - Example: Gemini (by Google) can natively take in YouTube videos, Google Docs
-  - Technologies integrated within same company ecosystem
+- Example: Gemini (by Google) can natively take in YouTube videos, Google Docs
+- Technologies integrated within same company ecosystem
 
-**Visual Suggestion:**
-- Mind meld imagery with ChatGPT
-- Documents and images being fed into the AI
-- Showing the shift from turn-based text chat to richer interaction
+**Bullet Points:**
+
+- Giving AI more context: PDFs, docs, images
+- Back and forth dialogue on complex topics like health
+- Trying different models: ChatGPT, Gemini, Claude
+
+**Visual:**
+
+1. Remove level 2
+2. Title: "AI as Thought Partner"
+3. Remove the box at the bottom
+4. Less busy background
+5. More like she's having a conversation with an AI
+6. The AI might be like an AI doctor for example
+
+**Connected Slides:**
+Three connected slides branching off, each with a screenshot:
+
+- ChatGPT
+- Google Gemini
+- Anthropic Claude
 
 ---
 
-### Slide 10: Level 3 Ã¢â‚¬â€ Context Engineering
+### Slide 10: Context Engineering (Level 3)
 
 **Talking Points:**
+
 - Understanding how context helps or hurts
 - Mental model shift required:
   - Longer chat window = more memory used up
   - Like holding too much in short-term memory
   - Performance and quality degrade as memory fills
-- Structured input Ã¢â€ â€™ better results
+- Structured input → better results
   - Example: Give Markdown instead of PDF
   - Learning Markdown takes about an hour
 - Being explicit about desired output type
@@ -259,23 +303,33 @@ Grand Canyon-style valley/chasm image representing the divide:
 - This is where results start feeling **reliable** instead of shooting in the dark
 - Requires understanding what makes input/output better and what "performance" looks like
 
-**Visual Suggestion:**
-- Messy input being formatted into structured, well-shaped objects going into the model
-- Memory as a bucket being filled with structured input
-- Bucket has holes at a certain level Ã¢â‚¬â€ once you exceed that level, things start falling/leaking out
-- Shows the concept of context window limits and memory degradation
+**Bullet Points:**
+
+- Understanding how context works
+- Structured input (Markdown) yields better results
+- Using Projects to manage context
+- Results start feeling reliable
+
+**Visual:**
+Title: "Context Engineering" - Remove the level. I like the idea of her putting tokens into a big memory bank/basket, and that basket has holes in the side, so when it gets too full of tokens, the tokens are spilling out.
+
+**Resources:**
+
+- https://www.markdownguide.org/basic-syntax/
+- A page about using projects with Claude and GPT etc.
 
 ---
 
-### Slide 11: Level 4 Ã¢â‚¬â€ Tools in Your Workflow
+### Slide 11: Using AI Tools (Level 4)
 
 **Talking Points:**
+
 - Starting to use AI-adjacent tools in daily workflow
 - Examples:
-  - **Wispr Flow** Ã¢â‚¬â€ voice dictation (this talk was created using it)
-  - **Granola** Ã¢â‚¬â€ automatic meeting notes
+  - **Wispr Flow** — voice dictation (this talk was created using it)
+  - **Granola** — automatic meeting notes
   - Many other tools people are using
-- Personal example: Apple Notes Ã¢â€ â€™ Obsidian
+- Personal example: Apple Notes → Obsidian
   - Similar tool but keeps everything in Markdown
   - AI can now look at all notes comprehensively
   - Can do things with notes that were impossible in Apple Notes (walled garden)
@@ -286,16 +340,28 @@ Grand Canyon-style valley/chasm image representing the divide:
   - Notion
   - Slack
 
-**Visual Suggestion:**
-- Icons for: Wispr Flow, Granola, Obsidian
-- Additional icons: Figma, Canva, Notion, Slack
-- Visual indication of "and more tools" / expandable ecosystem
+**Bullet Points:**
+
+- Use AI tools:
+  - Wispr Flow - voice dictation
+  - Granola - automatic meeting notes
+  - Obsidian - AI-accessible notes in Markdown
+  - Figma, Canva, Notion, Slack with AI features
+- Integrate AI into your workflows
+
+**Visual:**
+Title: "Using AI Tools" - Remove level 4. Keep the original icons. Use same style icon for Wispr Flow or a mic. Less busy background (currently looks like a dollar bill).
+
+**Resources:**
+
+- Links to Wispr and Granola
 
 ---
 
-### Slide 12: Level 5 Ã¢â‚¬â€ AI-Enabled Browsing
+### Slide 12: AI-Powered Browsing (Level 5)
 
 **Talking Points:**
+
 - AI tools integrated with your browser
 - **Google Gemini** built into Chrome:
   - Can look at whatever tab you're on
@@ -314,26 +380,35 @@ Grand Canyon-style valley/chasm image representing the divide:
   - Be careful with financial sites, sensitive data
   - But: don't let fear of what could go wrong stop you from figuring out what's possible
 
-**Visual Suggestion:**
-Screenshots of:
-- Gemini browser integration
-- Claude browser extension
-- Atlas browser (ChatGPT)
+**Bullet Points:**
 
-Either create visuals based on the product sites or clip directly from the sites themselves
+- Browsers are the modern workbench
+- How customized is yours?
+- Google Gemini built into Chrome
+- ChatGPT Operator (Atlas) browser
+- Claude extension - takes actions in browser
+
+**Visual:**
+Title: "AI-Powered Browsing" - Remove level 5. Less dark. Focus on these three tools:
+
+1. Claude extension
+2. ChatGPT Atlas browser
+3. Highlight the Gemini top right corner - make it very visible where people can find it in their Chrome browser
+
+**Resources:**
+Links to all the browser tools
 
 ---
 
-### Slide 13: Level 6 Ã¢â‚¬â€ Media and Creative Production
+### Slide 13: Creating Media with AI (Level 6)
 
 **Talking Points:**
-- Tools that help you create things with AI
+
+- Creating media with AI
 - Image generation:
-  - **Nano Banana** (Gemini/Google) Ã¢â‚¬â€ best image tool currently
-  - **Midjourney**
-- Video/media production:
-  - **Veo**
-  - **O3**
+  - Nano Banana (Gemini/Google) — best image tool currently
+  - Midjourney
+- Video/media production: Veo, O3
 - The skill here: Can you get it to give you what you want?
   - "I have this specific idea..."
 - Haven't spent much time here personally, but lots of potential
@@ -341,22 +416,31 @@ Either create visuals based on the product sites or clip directly from the sites
   - Higher fidelity than one-shotting everything
   - (Will discuss harnesses later)
 
-**Visual Suggestion:**
-- Crazy/impressive images from Nano Banana
-- Popular/striking examples from Midjourney
-- Fast-moving GIFs from Google's Veo page showing video generation examples
+**Bullet Points:**
+
+- Image generation: Nano Banana, Midjourney, ChatGPT
+- Video production: Veo3
+- The skill is can you get it to give you what you want?
+
+**Visual:**
+Title: "Creating Media with AI" - Remove the level. Show basic example images from Nano Banana, Midjourney, and ChatGPT with their icons.
+
+**Connected Slides:**
+Slides with images/screenshots of how the slides for this presentation were created.
 
 ---
 
-### Slide 14: Level 7 Ã¢â‚¬â€ Automation Tools
+### Slide 14: AI for Automation (Level 7)
 
 **Talking Points:**
+
+- Using AI for automation
 - Even non-technical people can do this easily without learning much
 - May not have dug in deeply yet
 - Tools:
-  - **Zapier** Ã¢â‚¬â€ most common, but not AI-centric
-  - **N8n** Ã¢â‚¬â€ bridge from Zapier to more complex automations
-  - **Gumloop** Ã¢â‚¬â€ built specifically with AI in mind
+  - **Zapier** — most common, but not AI-centric
+  - **N8n** — bridge from Zapier to more complex automations
+  - **Gumloop** — built specifically with AI in mind
 - These are visual interfaces to doing things with code
   - Don't actually have to look at code much
   - What you do see can be created by an AI model
@@ -364,16 +448,22 @@ Either create visuals based on the product sites or clip directly from the sites
   - Real **workflow automation**
   - Using tools to **do work** vs. getting information or creating assets
 
-**Visual Suggestion:**
-- Gumloop or N8n visual workflow diagram
-- Display the workflow with readable parts
-- Each component of the workflow should be clearly labeled and understandable
+**Bullet Points:**
+
+- Zapier - most common automation tool
+- N8n - bridge to complex automations
+- Gumloop - built with AI in mind
+- Visual interfaces to doing things with code - without looking at code
+
+**Visual:**
+Title: "AI for Automation" - Remove the level. Show something that looks like an N8n interface. Look at a picture of an N8n automation and create a version of that in the background instead of the machine.
 
 ---
 
-### Slide 15: Level 8 Ã¢â‚¬â€ Natural Language Software Creation
+### Slide 15: Natural Language Software Tools (Level 8)
 
 **Talking Points:**
+
 - Last level of completely non-technical path
 - Tools:
   - **Lovable**
@@ -388,21 +478,25 @@ Either create visuals based on the product sites or clip directly from the sites
 - Key insight: You don't need to know code syntax to make something semi-functional
 - Good playground to get comfortable with the idea
 
-**Visual Suggestion:**
-- Icons for: Google AI Studio, Lovable, Bolt
-- Screenshot of Google AI Studio showing:
-  - The chat interface
-  - The full interface
-  - Example of it creating a website
+**Bullet Points:**
+
+- Lovable, Bolt AI, Google AI Studio
+- Create software without knowing code syntax
+- Great playground to get comfortable with using AI for software
+- Understanding the limits is part of the learning
+
+**Visual:**
+Title: "Natural Language Software Tools" - Remove level 8. Keep Google AI Studio, Lovable, and Bolt brands. Less dark background. Show Ada turning language into software as a visualization.
 
 ---
 
-### Slide 16: Entering the Technical Track
+### Slide 16: Command Line Interface (CLI)
 
 **Talking Points:**
+
 - Moving into what might be called the "technical track"
 - Important reframe: Still using natural language as the interface
-- AI does the technical work â€” you direct it with words
+- AI does the technical work — you direct it with words
 - Key difference from chat interfaces:
   - Browser/desktop apps don't have full access
   - Like how Gmail doesn't know what's on your desktop
@@ -411,34 +505,41 @@ Either create visuals based on the product sites or clip directly from the sites
   - Text-based access to everything on your machine
   - Works perfectly with language models
 - The shift: AI now has full access to whatever you give it access to on your computer
-
----
-
-### Slide 17: Level 1 â€” Command Line Basics
-
-**Talking Points:**
 - CLI = Command Line Interface
-- First step: Learn basic navigation commands
-  - How to move between folders
-  - How to list what's in a folder
-  - How to copy files around
-- These are short, simple commands
-- You can learn this by asking ChatGPT or Claude to teach you
+- First step: Learn basic navigation commands (cd, ls, pwd)
 - Commands differ slightly between Mac and PC
-- The point: Get comfortable with this text-based interface to your computer
-- Once comfortable, you can use AI tools that operate at this level
+- Get comfortable with this text-based interface
 
-**Visual Suggestion:**
-- Terminal window as the central image
-- Visual showing terminal as a "portal" or gateway
-- Connecting out to: files, photos, apps, documents on the computer
-- Emphasize: text interface â†’ full computer access
+**Bullet Points:**
+
+- Still using natural language as the interface
+- Command line = text-based access to everything on your machine
+- Learn command line basics - cd, ls, pwd
+
+**Visual:**
+Title: "Command Line Interface (CLI)" - The command line prompt should be fairly prominent. It should look like the CLI is a portal to the rest of the computer. Make it bigger and clearer that the portal is a command line.
+
+**Resources:**
+
+- How to install Claude Code
+- How to install Codex
+- How to install Gemini CLI
+
+**Connected Slide:**
+Screenshot of typing "claude" and getting the Claude prompt.
 
 ---
 
-### Slide 18: Level 2 â€” Version Control (Git & GitHub)
+### Slide 17: REMOVED
+
+_(Content integrated into Slide 16)_
+
+---
+
+### Slide 18: Using Git and GitHub (Level 2 Technical)
 
 **Talking Points:**
+
 - Git = versioning system for code
   - Like version history in Google Docs, but for code
   - Take snapshots of your codebase
@@ -461,23 +562,28 @@ Either create visuals based on the product sites or clip directly from the sites
 - Can have AI teach you, watch YouTube videos
 - Important foundation before going deeper
 
-**Visual Suggestion:**
-- Side-by-side equivalence:
-  - Left: Dropbox logo â‰ˆ GitHub logo (cloud storage for code)
-  - Right: Word Doc "Save" / version history â‰ˆ Git (versioning snapshots)
-- Analogy visual: Folder of Word Docs = Codebase
-- Drive home the parallel between familiar document workflows and code workflows
+**Bullet Points:**
+
+- Git = versioning system (like Google Docs history, but for code)
+- Take snapshots, rewind, merge work from multiple people
+- GitHub = Dropbox for code (store, share, collaborate)
+- Essential safety net when AI makes mistakes
+- Worth taking time to understand properly
+
+**Visual:**
+Title: "Using Git and GitHub" - Big GitHub logo as one of the prominent elements on the page.
 
 ---
 
-### Slide 19: Level 3 â€” AI-Native IDEs
+### Slide 19: Agents and AI Coding (Level 3 Technical)
 
 **Talking Points:**
+
 - IDE = Integrated Development Environment
   - Like Word or Google Docs, but for code
   - Interface for writing and managing code files
   - Additional features: run code, test code, scripts, GitHub integration
-- You don't *have* to use an IDE (can use just command line)
+- You don't _have_ to use an IDE (can use just command line)
   - But eventually you'll want to see what the AI is doing
   - IDE gives you visibility into the work
 - **Google's Anti-Gravity**:
@@ -495,20 +601,25 @@ Either create visuals based on the product sites or clip directly from the sites
   - Fast feedback loop
   - AI can see where code is going and what happens
   - Creates a continuous improvement loop
-  - Agent writes â†’ sees result â†’ adjusts â†’ improves
+  - Agent writes → sees result → adjusts → improves
 
-**Visual Suggestion:**
-- Well-done screenshot of Cursor interface showing:
-  - The chat window (conversation with AI)
-  - The code editor window (files being created/edited)
-  - Clear view of what an IDE actually looks like
-- Show the two-panel layout that makes the feedback loop visible
+**Bullet Points:**
+
+- IDE = Integrated Development Environment
+- Google's Anti-Gravity - easiest place to start
+- Cursor = chat window + code editor side by side
+- Inline execution: fast feedback loop
+- Agent writes → sees result → adjusts → improves
+
+**Visual:**
+Title: "Agents and AI Coding" - Show symbols/logos for Anti-Gravity, Cursor, and VSCode.
 
 ---
 
-### Slide 20: Level 4 â€” Modes and Workflows
+### Slide 20: Modes and Workflows (Level 4 Technical)
 
 **Talking Points:**
+
 - Moving beyond back-and-forth chat conversation
 - Now creating distinct steps, using the model in different ways
 - The workflow:
@@ -529,89 +640,66 @@ Either create visuals based on the product sites or clip directly from the sites
   - Easy to start, progressively deepen with AI teaching you
 - Key shift: Structured workflow vs. freeform conversation
 
-**Visual Suggestion:**
-- Cycle diagram: Plan â†’ Build â†’ Test â†’ Review â†’ Deploy â†’ Bug Fix â†’ Plan
-- Each step shows the model in a different "form" or mode
-- Emphasize the shape-shifting nature â€” not a generic chatbot anymore
-- Model transforms based on which step it's executing
+**Bullet Points:**
+
+- Plan → Build → Test → Review → Deploy → Bug Fix → Plan
+- One model in different modes for each step
+- Model shape-shifts depending on the task
+- You're executing an actual software development lifecycle
+- Structured workflow vs. freeform conversation
+
+**Visual:**
+_(No specific visual feedback provided - maintain current style)_
 
 ---
 
-### Slide 21: Level 5 â€” Full Software Lifecycle
+### Slide 21: Full Software Lifecycle (Level 5 Technical)
 
 **Talking Points:**
+
 - Now handling the complete picture:
   - Deployment
   - Databases (saving data on backend)
   - Hosting
   - Domains and DNS
 - Popular tools:
-  - **Supabase** â€” databases
-  - **Vercel** â€” hosting and deployment
-  - **Cloudflare** â€” hosting, domains, DNS
+  - **Supabase** — databases
+  - **Vercel** — hosting and deployment
+  - **Cloudflare** — hosting, domains, DNS
 - AI-assisted deployment:
   - MCP servers or CLI tools can do setup and deployment for you
   - Huge level-up if you've never deployed before
   - Easy to get lost in settings without this help
 - Learning recommendation:
-  - Don't just press buttons â€” learn as the AI does it
+  - Don't just press buttons — learn as the AI does it
   - Have it explain what it's doing, especially when errors happen
   - Look at the interfaces even if you're not directly touching them
   - Build a general idea of what's happening
-  - Over time, repeated exposure â†’ better understanding
+  - Over time, repeated exposure → better understanding
 - This is where things go live and reach real users
 
-**Visual Suggestion:**
-- Icons: Supabase, Vercel, Cloudflare
-- Visual of code/app going from local â†’ deployed to live site
-- Show the "sending it out to people" moment
-- Maybe: laptop â†’ cloud â†’ globe/users
+**Bullet Points:**
+
+- Supabase — databases
+- Vercel — hosting and deployment
+- Cloudflare — domains and DNS
+- AI-assisted deployment: MCP servers or CLI tools
+- Learn as the AI does it — don't just press buttons
 
 ---
 
-### Slide: Overarching Point â€” Learning vs. Button Pressing (Place TBD)
+### Slide 22: Customizing the Harness (Level 6 Technical)
 
 **Talking Points:**
-- Tempting mindset: "I should know how to do this before doing it"
-- Opposite extreme: Just pressing buttons, hoping something works, not learning what's underneath
-- The button-pressing approach only gets you so far:
-  - Won't continuously improve at using the tools
-  - As tools get richer, your mental model won't keep up
-  - Won't understand what's newly possible
-- Reframe using the PM analogy:
-  - As a PM, I wasn't doing most of the coding
-  - Wasn't doing deployment, server management, scaling
-  - Always depending on others to fulfill different portions
-  - We fulfill our portion, trust others to fulfill theirs
-- This is the same â€” just with digital employees now
-  - Good to understand what's happening (notice when something's amiss)
-  - But trusting others to do parts of a large project is not new
-- The difference now:
-  - Digital employee can do everyone else's job
-  - AND it can do a lot of *your* job too
-- The level-up:
-  - Become accustomed to abstracting your thinking
-  - Operate from the top level
-  - How do I become the conductor/orchestrator as much as possible?
-  - What does that afford me?
-  - You can have as many digital employees as you can handle
 
-**Visual Suggestion:**
-*(TBD â€” consider conductor/orchestra imagery, or org chart with AI filling multiple roles)*
-
----
-
-### Slide 22: Level 6 â€” Customizing the Harness
-
-**Talking Points:**
 - At this point, AI is not just a chatbot with turn-based responses
 - It's an **agent**: chatting with itself, thinking, iterating
-  - Loop: do something â†’ look at result â†’ do something else â†’ come back to you
+  - Loop: do something → look at result → do something else → come back to you
 - Analogy to delegating to a real person:
   - Give custom instructions
   - Educate them on skills
   - Provide reference materials ("here's work done before")
-- Same applies to AI â€” this is called **tuning your harness**
+- Same applies to AI — this is called **tuning your harness**
 - Components you can customize:
   - **Skills**: Markdown files that say "this skill is available"
     - AI loads skills only when needed (like Neo in The Matrix)
@@ -621,36 +709,29 @@ Either create visuals based on the product sites or clip directly from the sites
   - **Sub-agents**: Mini-versions of the AI
     - Spin off to do specific tasks in separate context windows
     - Come back with results
-  - **Guidance files** (agent.md, claude.md): 
+  - **Guidance files** (agent.md, claude.md):
     - Overarching instructions for every prompt
     - Like a system prompt for the agent
   - **Hooks**: Trigger actions based on events
-    - Recently learned about these, using them a lot now
-- This is where you really start shaping how the AI works for you
 
-**Visual Suggestion:**
-- Skydiving harness imagery
-- Instead of parachute: Skills, Plugins, Slash Commands, Sub-agents, Claude.md
-- Each component is part of the "gear" attached to the harness
-- Person wearing harness = you, the orchestrator
+**Bullet Points:**
+
+- Skills: Markdown files loaded when needed (like Neo in The Matrix)
+- Slash commands: shortcuts instead of repeating instructions
+- Sub-agents: mini-versions doing tasks in separate contexts
+- Guidance files (claude.md): system prompts for every interaction
+- Hooks: trigger actions based on events
 
 ---
 
-### Slide 23: Level 7 â€” Context Management
+### Slide 23: Context Management (Level 7 Technical)
 
 **Talking Points:**
-- Context engineering was earlier â€” this goes deeper
-- At the basic level:
-  - You're taking written information, cutting it into tokens
-  - Handing tokens to the model, getting tokens back
+
+- Context engineering was earlier — this goes deeper
 - Context = everything you hand over alongside your specific instruction
-  - Chat history
-  - Codebase searches
-  - API documentation
-  - Reference materials
-- The goal: Get that lump of context as tuned as possible
 - The problem:
-  - Too bloated â†’ not enough memory for AI to understand it all
+  - Too bloated → not enough memory for AI to understand it all
   - Starts to forget things, like short-term memory overflow
   - Models get dumber the more full their memory gets
 - Session management challenge:
@@ -659,33 +740,27 @@ Either create visuals based on the product sites or clip directly from the sites
 - Solutions for persistent memory:
   - Write to markdown files (file system memory)
   - Write to a SQL database
-  - Many approaches exist
-- Multiple terminals per project:
-  - Can have different sessions focused on different aspects
-  - Each terminal = separate context window
-  - Useful for compartmentalizing work
 - Key skill: Knowing when to reset your session
-  - Sometimes a fresh start is better than a bloated context
-- *(Note to self: Connect back to "dumb zone" concept earlier in talk)*
 
-**Visual Suggestion:**
-- Leaky bucket filling with context
-- Once it reaches the top, it overflows
-- Below the bucket: a brain creating artwork on a canvas
-- Overflow spills like paint onto the canvas
-- The painting gets messy/ruined as too much context splashes down
-- Shows: overfull context â†’ degraded output quality
+**Bullet Points:**
+
+- Context = everything you hand over with your instruction
+- Too bloated → model forgets things, quality degrades
+- New session = no context (like Memento amnesia)
+- Solutions: write to files, databases, or start fresh
+- Key skill: knowing when to reset your session
 
 ---
 
-### Slide 24: Level 8 â€” Parallel Agents
+### Slide 24: Parallel Agents (Level 8 Technical)
 
 **Talking Points:**
+
 - Using multiple sub-agents and multiple sessions simultaneously
 - New challenges:
   - Managing context and memory across agents
-  - Code checkout strategies â€” when agents put work back together
-  - Avoiding collisions (like multiple people merging to main branch)
+  - Code checkout strategies
+  - Avoiding collisions
 - Tools for parallel work:
   - **GitHub Worktrees**: Separate working directories for same repo
   - **Conductor.build**: Popular tool that uses GitHub Worktrees
@@ -695,226 +770,65 @@ Either create visuals based on the product sites or clip directly from the sites
   - Comes back with just the answer, not all their work
   - Prevents filling up your context with their process
 - This is orchestration at scale
-  - Multiple digital employees working simultaneously
-  - You're coordinating, not executing
 
-**Visual Suggestion:**
-- Instead of one AI: three or four AIs running in parallel
-- Each working on different tasks simultaneously
-- Converging back to a central point (you, or main branch)
-- Show the parallel nature of the work
+**Bullet Points:**
+
+- Multiple sub-agents and sessions simultaneously
+- GitHub Worktrees: separate working directories
+- Conductor.build, Beads: tools for parallel work
+- Sub-agents return answers, not their full process
+- You're coordinating, not executing
 
 ---
 
-### Slide 25: Level 9 â€” Swarms and Infrastructure
+### Slide 25: Swarms and Infrastructure (Level 9 Technical)
 
 **Talking Points:**
+
 - The edge of what's possible right now
 - Large numbers of agents running simultaneously
 - Tools like **Ralph Wiggum**:
   - Spin up agents in serial, over and over
   - Let it run overnight
-  - Massive automation potential
 - Token usage at this level:
   - Using tons of tokens
   - Need the $100-$200/month plan or more
 - Beyond your local machine:
-  - Everything so far = agents running while your computer is open
-  - Next step: Virtual Private Server (VPS)
-  - Agents running in the cloud
-  - Or persistent agents on a home server
-  - Doing things automatically, 24/7
-- This is the edge of my current knowledge
-  - Have seen it, tried a little
-  - Haven't fully worked at this level yet
+  - Virtual Private Server (VPS)
+  - Agents running in the cloud 24/7
 - Where the infrastructure meets the intelligence
 
-**Visual Suggestion:**
-- Swarm of bees, but the bees are little AIs
-- Instead of a hive: a server in the cloud
-- Bees/AIs constantly buzzing around the server
-- Bees everywhere doing tasks
-- Human figure (maybe superhero-like) conducting the swarm
-- Eyes closed, arms out, orchestrating
-- The bees do their bidding
+**Bullet Points:**
+
+- Large numbers of agents running simultaneously
+- Ralph Wiggum: spin up agents in serial overnight
+- Token usage at this level: $100-200+/month plans
+- Virtual Private Servers: agents running in the cloud 24/7
+- Where infrastructure meets intelligence
 
 ---
 
-## Example Projects (Placement TBD)
-
----
-
-### Example: Create Assumptions Website
-
-**Project:** createassumptions.com â€” Projects folder (sub-site)
-
-**Notes:**
-*(Add details about this project)*
-
-**Visual:** Screenshot/demo of the site
-
----
-
-### Example: Doing Our Reunions Site
-
-**Project:** Reunions website
-
-**Notes:**
-*(Add details about this project)*
-
-**Visual:** Screenshot/demo of the site
-
----
-
-### Example: Dialogue Dojo
-
-**Project:** Dialogue Dojo
-
-**Notes:**
-*(Add details about this project)*
-
-**Visual:** Screenshot/demo
-
----
-
-### Example: The Secret Game
-
-**Project:** The Secret Game
-
-**Notes:**
-*(Add details about this project)*
-
-**Visual:** Screenshot/demo
-
----
-
-### Example: Apple Notes Mac App
-
-**Project:** Custom Mac app for Apple Notes
-
-**Notes:**
-*(Add details about this project)*
-
-**Visual:** Screenshot/demo
-
----
-
-### Example: Video Downloader / Video Note Taker
-
-**Project:** Video downloader and note-taking tool
-
-**Notes:**
-*(Add details about this project)*
-
-**Visual:** Screenshot/demo
-
----
-
-### Example: YouTube Note Taker
-
-**Project:** YouTube note-taking tool
-
-**Notes:**
-*(Add details about this project)*
-
-**Visual:** Screenshot/demo
-
----
-
-### Example: Book Summary Site
-
-**Project:** Book summary website
-
-**Notes:**
-*(Add details about this project)*
-
-**Visual:** Screenshot/demo
-
----
-
-### Example: Birthday Card for Stefani
-
-**Project:** Custom birthday card
-
-**Notes:**
-*(Add details about this project)*
-
-**Visual:** Screenshot/demo
-
----
-
-### Example: Sup Script (Payment API)
-
-**Project:** Underlying API for payments
-
-**Notes:**
-*(Add details about this project)*
-
-**Visual:** Screenshot/demo
-
----
-
-### Example: Apple Notes to Obsidian Migration
-
-**Project:** Moving notes from Apple Notes to Obsidian
-
-**Notes:**
-*(Add details about this project)*
-
-**Visual:** Before/after or process screenshots
-
----
-
-### Example: This Talk (Meta)
-
-**Project:** Creating this talk itself
-
-**Notes:**
-- Live demonstration of the process
-- Building a site for the talk
-- Using React Flow for flowcharts
-- Meta level: the talk is a project showing how to use AI
-- Using Skills to create images
-- Progressively more meta as it develops
-- Instead of Nano Banana: using a Skill to create a website for selecting screenshots
-- Screenshots of the whole process
-
-**Visual:** Screenshots of the talk creation process, React Flow diagrams, skill usage
-
----
-
-## Closing
-
----
-
-### Slide: The Only Way Forward Is Through
+### Slide 26: The Only Way Forward Is Through (Closing)
 
 **Talking Points:**
+
 - The real solution: become good at it by using it
-- Part of that will be a struggle â€” that's normal
 - The superpower: Ask the models to teach you
-  - No embarrassment about not knowing Git, GitHub, command line, anything
-  - No matter how "silly" the question seems
-  - You're never stopped
+  - No embarrassment about not knowing
   - Just ask progressively simpler questions until you understand
-- Personal note: I've bought courses along the way too
-  - That's how I like to learn
-  - But the main thing is using it to improve your mental model
 - The mental model loop:
-  - Use the tools â†’ modify how you think it works â†’ try again
-  - Your understanding gets richer, more accurate, more potential
-  - Only happens through doing
+  - Use the tools → modify how you think it works → try again
+  - Your understanding gets richer, more accurate
 - Good news: It's changing so fast, you're not behind if you start now
-  - You can stay afloat
 - The danger: Putting it on the shelf for a couple years
-  - The world is moving faster and faster
-  - To stay relevant, this is extremely necessary
-- "This doesn't apply to me" (therapist, negotiator, people-work):
-  - I'd love to think through that with you
-  - This will apply in places not obvious right now
-  - Even if the application is just: you can learn things faster
-  - Someone using this learns faster than someone who's not
+- Even if you think this doesn't apply to you — someone using this learns faster
 
-**Visual Suggestion:**
-*(TBD â€” maybe: person stepping forward into light/possibility, or the mental model loop visualized)*
+**Bullet Points:**
 
+- Ask the models to teach you — no embarrassment about not knowing
+- Use tools → modify how you think → try again → richer understanding
+- It's changing so fast, you're not behind if you start now
+- The danger: putting it on the shelf for a couple years
+- Even if you think this doesn't apply to you — someone using this learns faster
+
+---

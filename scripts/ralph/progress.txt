@@ -1017,3 +1017,106 @@ Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
   - useCallback with empty deps array is fine when only using setState functions
   - EditorPanel will show with correct slide data due to editorSlideData useMemo
 ---
+
+## 2025-01-12 - US-060
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Created src/hooks/useEdgeEdits.ts for edge edit persistence
+- Defined EdgeEdits interface with addedEdges (StoredEdge[]) and deletedEdgeIds (string[])
+- StoredEdge stores minimal edge data (id, source, target, sourceHandle, targetHandle)
+- Implemented loadEdgeEdits() that returns EdgeEdits or null on error
+- Implemented persistEdgeEdits() to save with version and timestamp
+- Implemented clearEdgeEdits() export for reset functionality (used by reset layout)
+- Hook uses useState with initializer function to load on mount
+- useEffect persists edgeEdits whenever they change
+- addEdge callback adds edge to addedEdges and removes from deletedEdgeIds if present
+- deleteEdge callback handles both user-added edges (removes from addedEdges) and generated edges (adds to deletedEdgeIds)
+- Files changed: src/hooks/useEdgeEdits.ts (new file, 177 lines)
+- **Learnings for future iterations:**
+  - StoredEdge is a minimal interface to avoid storing full Edge objects with style/type data
+  - deleteEdge has two branches: user-added edges just get removed, generated edges get added to deletedEdgeIds
+  - Follow same persistence pattern as persistence.ts and useSlideNotes.ts (version, timestamp, data wrapper)
+  - Export clearEdgeEdits for use by reset layout button
+---
+
+## 2025-01-12 - US-061
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Converted edges from useMemo to useState in PresentationCanvas.tsx
+- Imported and used useEdgeEdits hook (edgeEdits, addEdge, deleteEdge)
+- Also imported clearEdgeEdits for future reset layout integration
+- Added Edge type import from @xyflow/react
+- In useState initializer, generate edges and apply persisted edits
+- Filter out deletedEdgeIds from generated edges
+- Convert StoredEdge to full Edge objects with indigo styling for added edges
+- Append addedEdges to filtered generated edges array
+- Files changed: src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - useEdgeEdits hook is called at component level, then edgeEdits used in useState initializer
+  - addEdge and deleteEdge will be used in US-062 and US-063 for onConnect and onEdgeClick handlers
+  - User-added edges get styled with { strokeWidth: 2, stroke: "#6366f1" } (indigo)
+  - setEdges is available for US-062/063 to dynamically update edges state
+---
+
+## 2025-01-12 - US-062
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added onConnect handler to ReactFlow for creating edges by dragging between handles
+- Imported Connection type from @xyflow/react
+- Created handleConnect callback that validates connection, generates unique edge ID with timestamp
+- Edge ID follows pattern: 'edge-custom-{Date.now()}'
+- Custom edges styled with { strokeWidth: 2, stroke: "#6366f1" } (indigo)
+- Handler adds edge to edges state via setEdges and persists via addEdge from useEdgeEdits
+- Added onConnect={handleConnect} prop to ReactFlow component
+- Verified in browser: dragging from source handle to target handle creates persisted edge
+- Files changed: src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - Connection type from @xyflow/react provides typed connection object with source, target, and handles
+  - Validate connection.source && connection.target before creating edge (handles can be null)
+  - User-added edges persist to localStorage via useEdgeEdits hook's addEdge function
+  - React Flow's onConnect fires when user completes a drag from source handle to target handle
+---
+
+## 2025-01-12 - US-063
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added onEdgeClick handler to ReactFlow component for Shift+click edge deletion
+- Imported EdgeMouseHandler type from @xyflow/react
+- Created handleEdgeClick callback that checks event.shiftKey modifier
+- If Shift is held, removes edge from edges state and persists via deleteEdge hook
+- Added onEdgeClick={handleEdgeClick} prop to ReactFlow component
+- Verified in browser: Shift+click on edge successfully removes it
+- Files changed: src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - EdgeMouseHandler type from @xyflow/react for typed edge click handlers
+  - event.shiftKey detects Shift modifier on mouse events
+  - deleteEdge from useEdgeEdits hook handles persistence of deleted edges
+  - Same pattern as handleConnect - callback with persist function call
+---
+
+## 2025-01-12 - US-064
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added edge editing help tooltip to NavigationControls component
+- Added span element with class "navigation-controls__help" containing help text
+- Text: "Drag handles to connect • Shift+click edge to delete"
+- Styled with subtle appearance: 11px font, 0.6 opacity, muted gray color
+- Positioned above navigation controls using position: absolute with bottom offset
+- Added responsive styles: smaller font at 768px, hidden at 480px
+- Verified in browser: help text visible above navigation controls
+- Files changed: src/components/panels/NavigationControls.tsx, src/components/panels/NavigationControls.css
+- **Learnings for future iterations:**
+  - Use position: absolute with bottom: calc(100% + offset) to place elements above a container
+  - pointer-events: none prevents text from interfering with clicks on elements below
+  - Subtle help text benefits from low opacity (0.6) combined with muted colors
+  - Hide non-essential UI elements at small breakpoints (display: none at 480px)
+---
+
+## 2025-01-12 - US-065
+Thread: https://ampcode.com/threads/$AMP_CURRENT_THREAD_ID
+- Added edge reset to Reset Layout button in PresentationCanvas.tsx
+- Modified resetLayout callback to call clearEdgeEdits() (imported from useEdgeEdits)
+- Added regeneration of fresh edges via generateEdges() after clearing
+- Updated edges state with fresh generated edges (no edits applied)
+- Verified in browser: Shift+click deletes edge, Reset Layout button restores it
+- Files changed: src/components/PresentationCanvas.tsx
+- **Learnings for future iterations:**
+  - clearEdgeEdits was already imported but not used in resetLayout
+  - Reset functionality needs to both clear storage AND regenerate state
+  - setEdges call with fresh generateEdges output restores default edges
+---
