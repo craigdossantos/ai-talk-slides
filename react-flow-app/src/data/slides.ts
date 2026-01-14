@@ -34,20 +34,21 @@ export const sections: Section[] = [
   },
 ];
 
-// Define all 26 slides with their content
+// Define all slides with their content (slide 17 removed - integrated into slide 16)
 export const slides: SlideContent[] = [
   // Section: Introduction - The Widening Gulf
   {
     id: "slide-01",
     sectionId: "intro",
     type: "title",
-    title: "Technology and the Widening Gulf",
+    title: "The Widening Gulf of Technology",
     subtitle: "The growing divide between tech-literate and non-tech-literate",
-    backgroundImage: "/assets/images/slide-01-technology-widening-gulf.jpg",
+    backgroundImage:
+      "/assets/images/slide-01-the-widening-gulf-of-technology.jpg",
     bullets: [
-      "Technology makes us more efficient: bicycle, typewriter, Google",
-      "AI is creating a much larger gulf than previous tech",
-      "Think about it from a mental model perspective first",
+      "Technology gives us speed and capabilities: fire, bicycles, cars, Internet",
+      "AI might create a larger gulf than previous tech",
+      "People with AI tools will outperform people without",
     ],
   },
   {
@@ -56,12 +57,8 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Mental Models Through Use",
     subtitle: "Understanding comes from doing, not reading",
-    backgroundImage: "/assets/images/slide-02-mental-models.jpg",
-    bullets: [
-      'First tried: "Please give me directions to the nearest ice cream store..."',
-      'Learned: "Molly Moon directions"',
-      "This understanding comes through use, not instruction",
-    ],
+    backgroundImage: "/assets/images/slide-02-mental-models-through-use.jpg",
+    bullets: ["Mental models improve more through use, not instruction"],
   },
 
   // Section: Understanding AI
@@ -69,29 +66,35 @@ export const slides: SlideContent[] = [
     id: "slide-03",
     sectionId: "understanding",
     type: "content",
-    title: "New Tech, Old Mental Models",
+    title: "New Tech, Old Mental Model",
     subtitle: "The temptation to treat AI like enhanced Google",
-    backgroundImage: "/assets/images/slide-03-new-tech-old-models.jpg",
+    backgroundImage: "/assets/images/slide-03-new-tech,-old-mental-model.jpg",
     bullets: [
-      "First instinct: ChatGPT is a better Google",
-      "Use it like a knowledgeable friend",
-      "Back and forth conversation",
-      "But it's inconsistent: sometimes brilliant, sometimes wrong",
+      "Mental Model: ChatGPT as a better Google",
+      "It has different flaws: hallucinations",
     ],
+  },
+  {
+    id: "slide-03b",
+    sectionId: "understanding",
+    type: "image",
+    title: "",
+    backgroundImage:
+      "https://framerusercontent.com/images/wImRiJQUuEpMwbYOB5dUXUcrUk.png?width=2752&height=1536",
+    bullets: [],
   },
   {
     id: "slide-04",
     sectionId: "understanding",
     type: "content",
-    title: "From Confidant to Digital Employee",
+    title: "From Savant to Digital Employee",
     subtitle: "The major mental leap",
-    backgroundImage: "/assets/images/slide-04-confidant-to-employee.jpg",
+    backgroundImage:
+      "/assets/images/slide-04-from-savant-to-digital-employee.jpg",
     bullets: [
-      "AI is not just an all-knowing friend",
-      "Think of it as a digital employee",
-      "Shift from getting advice to actual execution",
-      "You become a director/orchestrator",
-      "You can have as many as you can handle",
+      "AI is not an all-knowing savant with advice",
+      "It's a digital employee who can execute work",
+      "You can become a team lead",
     ],
   },
 
@@ -102,26 +105,24 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Mapping the Journey",
     subtitle: "A progressive approach to understanding AI",
-    backgroundImage: "/assets/images/slide-05-mapping-journey.jpg",
+    backgroundImage: "/assets/images/slide-05-mapping-the-journey.jpg",
     bullets: [
-      "Overwhelming amount of information out there",
+      "Overwhelming amount of information",
       "Skipping steps makes nothing feel coherent",
-      "Confusion is a sequencing problem, not an identity problem",
-      "We now have the greatest learning tool ever",
+      "Feeling confused is a sequencing problem, not a capability",
+      "We have the greatest self learning tool ever",
     ],
   },
   {
     id: "slide-06",
     sectionId: "mapping",
     type: "content",
-    title: "The Wrong Split",
-    subtitle: "Technical vs Non-Technical is a cultural issue",
-    backgroundImage: "/assets/images/slide-06-wrong-split.jpg",
+    title: "What It Takes",
+    subtitle: "Resistance to change is the real barrier",
+    backgroundImage: "/assets/images/slide-06-what-it-takes.jpg",
     bullets: [
-      "The floor of what you can do without code is now incredibly high",
-      "Lines are blurring",
-      "The real question: How much resistance to change do you feel?",
-      "This is the real gulf",
+      'What does it mean to be "technical"',
+      "Resistance to change is the only barrier to entry",
     ],
   },
 
@@ -132,25 +133,25 @@ export const slides: SlideContent[] = [
     type: "quote",
     title: "Avoidance",
     level: 0,
-    backgroundImage: "/assets/images/slide-07-level-0-avoidance.jpg",
+    backgroundImage: "/assets/images/slide-07-avoidance.jpg",
     quote: '"This won\'t affect my job."',
     bullets: [
-      "Historical echoes of famous people dismissing transformative technology",
+      "Avoidance is just fear showing its head",
+      "AI may require us to think at a higher level",
     ],
   },
   {
     id: "slide-08",
     sectionId: "levels-nontech",
     type: "content",
-    title: "AI as Uber Google",
+    title: "AI = Portal to Internet Research",
     level: 1,
-    backgroundImage: "/assets/images/slide-08-level-1-uber-google.jpg",
+    backgroundImage:
+      "/assets/images/slide-08-ai--portal-to-internet-research.jpg",
     bullets: [
-      "Questions and answers",
-      "Summaries and explanations",
-      "Brainstorming",
-      "Prompt engineering basics",
-      "This is where most daily ChatGPT users start",
+      "Use AI for Q&A, summaries and explanations, brainstorming",
+      "Learn prompt engineering basics",
+      "Where most daily ChatGPT users are",
     ],
   },
   {
@@ -159,12 +160,11 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "AI as Thought Partner",
     level: 2,
-    backgroundImage: "/assets/images/slide-09-level-2-thought-partner.jpg",
+    backgroundImage: "/assets/images/slide-09-ai-as-thought-partner.jpg",
     bullets: [
       "Giving AI more context: PDFs, docs, images",
-      "Back and forth dialogue on complex topics",
+      "Back and forth dialogue on complex topics like health",
       "Trying different models: ChatGPT, Gemini, Claude",
-      "Each has strengths and weaknesses",
     ],
   },
   {
@@ -173,13 +173,11 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Context Engineering",
     level: 3,
-    backgroundImage: "/assets/images/slide-10-level-3-context-engineering.jpg",
+    backgroundImage: "/assets/images/slide-10-context-engineering.jpg",
     bullets: [
-      "Understanding how context helps or hurts",
-      "Longer chat = more memory used = degraded performance",
+      "Understanding how context works",
       "Structured input (Markdown) yields better results",
-      "Using Projects to keep context clean",
-      "Choosing the right model for the task",
+      "Using Projects to manage context",
       "Results start feeling reliable",
     ],
   },
@@ -187,51 +185,50 @@ export const slides: SlideContent[] = [
     id: "slide-11",
     sectionId: "levels-nontech",
     type: "content",
-    title: "Tools in Your Workflow",
+    title: "Using AI Tools",
     level: 4,
-    backgroundImage: "/assets/images/slide-11-level-4-tools-workflow.jpg",
+    backgroundImage: "/assets/images/slide-11-using-ai-tools.jpg",
     bullets: [
       "Wispr Flow - voice dictation",
       "Granola - automatic meeting notes",
       "Obsidian - AI-accessible notes in Markdown",
       "Figma, Canva, Notion, Slack with AI features",
-      "Making your data accessible and usable by AI",
     ],
   },
   {
     id: "slide-12",
     sectionId: "levels-nontech",
     type: "content",
-    title: "AI-Enabled Browsing",
+    title: "AI-Powered Browsing",
     level: 5,
-    backgroundImage: "/assets/images/slide-12-level-5-ai-browsing.jpg",
+    backgroundImage: "/assets/images/slide-12-ai-powered-browsing.jpg",
     bullets: [
+      "Browsers are the modern workbench",
       "Google Gemini built into Chrome",
       "ChatGPT Operator (Atlas) browser",
       "Claude extension - takes actions in browser",
-      "Be mindful of security with sensitive sites",
     ],
   },
   {
     id: "slide-13",
     sectionId: "levels-nontech",
     type: "content",
-    title: "Media & Creative Production",
+    title: "Creating Media with AI",
     level: 6,
-    backgroundImage: "/assets/images/slide-13-level-6-media-creative.jpg",
+    backgroundImage: "/assets/images/slide-13-placeholder.jpg",
     bullets: [
-      "Image generation: Nano Banana, Midjourney",
-      "Video production: Veo, O3",
-      "The skill: Can you get it to give you what you want?",
+      "Image generation: Nano Banana, Midjourney, ChatGPT",
+      "Video production: Veo3",
+      "The skill is can you get it to give you what you want?",
     ],
   },
   {
     id: "slide-14",
     sectionId: "levels-nontech",
     type: "content",
-    title: "Automation Tools",
+    title: "AI for Automation",
     level: 7,
-    backgroundImage: "/assets/images/slide-14-level-7-automation.jpg",
+    backgroundImage: "/assets/images/slide-14-ai-for-automation.jpg",
     bullets: [
       "Zapier - most common automation tool",
       "N8n - bridge to complex automations",
@@ -243,56 +240,41 @@ export const slides: SlideContent[] = [
     id: "slide-15",
     sectionId: "levels-nontech",
     type: "content",
-    title: "Natural Language Software",
+    title: "Natural Language Software Tools",
     level: 8,
-    backgroundImage: "/assets/images/slide-15-level-8-nl-software.jpg",
+    backgroundImage:
+      "/assets/images/slide-15-natural-language-software-tools.jpg",
     bullets: [
       "Lovable, Bolt AI, Google AI Studio",
       "Create software without knowing code syntax",
-      "Currently best for front-end / visual things",
-      "Great playground to get comfortable",
+      "Great playground to get comfortable with using AI for software",
       "Understanding the limits is part of the learning",
     ],
   },
 
-  // Section: Technical Levels (1-9)
+  // Section: Technical Levels (1-9) - Note: slide-17 removed, content merged into slide-16
   {
     id: "slide-16",
     sectionId: "levels-tech",
     type: "section-header",
-    title: "Entering the Technical Track",
+    title: "Command Line Interface (CLI)",
     subtitle: "Where AI meets full computer access",
-    backgroundImage: "/assets/images/slide-16-entering-technical-track.jpg",
+    backgroundImage: "/assets/images/slide-16-command-line-interface-cli.jpg",
     bullets: [
       "Still using natural language as the interface",
-      "AI does the technical work — you direct it with words",
       "Command line = text-based access to everything on your machine",
-      "AI now has full access to whatever you give it",
+      "Learn command line basics - cd, ls, pwd",
     ],
   },
-  {
-    id: "slide-17",
-    sectionId: "levels-tech",
-    type: "content",
-    title: "Command Line Basics",
-    level: 1,
-    backgroundImage: "/assets/images/slide-17-level-1-cli-basics.jpg",
-    bullets: [
-      "CLI = Command Line Interface",
-      "Learn basic navigation: cd, ls, pwd",
-      "Commands differ slightly between Mac and PC",
-      "Get comfortable with this text-based interface",
-      "Ask ChatGPT or Claude to teach you",
-    ],
-  },
+  // slide-17 REMOVED - content integrated into slide-16
   {
     id: "slide-18",
     sectionId: "levels-tech",
     type: "content",
-    title: "Version Control",
-    subtitle: "Git & GitHub",
+    title: "Using Git and GitHub",
+    subtitle: "Version control for AI-assisted development",
     level: 2,
-    backgroundImage: "/assets/images/slide-18-level-2-git-github.jpg",
+    backgroundImage: "/assets/images/slide-18-using-git-and-github.jpg",
     bullets: [
       "Git = versioning system (like Google Docs history, but for code)",
       "Take snapshots, rewind, merge work from multiple people",
@@ -305,14 +287,14 @@ export const slides: SlideContent[] = [
     id: "slide-19",
     sectionId: "levels-tech",
     type: "content",
-    title: "AI-Native IDEs",
+    title: "Agents and AI Coding",
     subtitle: "Where code meets conversation",
     level: 3,
-    backgroundImage: "/assets/images/slide-19-level-3-ai-native-ides.jpg",
+    backgroundImage: "/assets/images/slide-19-agents-and-ai-coding.jpg",
     bullets: [
       "IDE = Integrated Development Environment",
       "Google's Anti-Gravity - easiest place to start",
-      "Cursor - chat window + code editor side by side",
+      "Cursor = chat window + code editor side by side",
       "Inline execution: fast feedback loop",
       "Agent writes → sees result → adjusts → improves",
     ],
@@ -324,7 +306,7 @@ export const slides: SlideContent[] = [
     title: "Modes and Workflows",
     subtitle: "Beyond back-and-forth chat",
     level: 4,
-    backgroundImage: "/assets/images/slide-20-level-4-modes-workflows.jpg",
+    backgroundImage: "/assets/images/slide-20-modes-and-workflows.jpg",
     bullets: [
       "Plan → Build → Test → Review → Deploy → Bug Fix → Plan",
       "One model in different modes for each step",
@@ -337,7 +319,7 @@ export const slides: SlideContent[] = [
     id: "slide-21",
     sectionId: "levels-tech",
     type: "content",
-    title: "Full Software Lifecycle",
+    title: "Using AI to Go Live",
     subtitle: "Deployment, databases, hosting",
     level: 5,
     backgroundImage: "/assets/images/slide-21-level-5-software-lifecycle.jpg",
@@ -385,7 +367,7 @@ export const slides: SlideContent[] = [
     id: "slide-24",
     sectionId: "levels-tech",
     type: "content",
-    title: "Parallel Agents",
+    title: "Parallel Agents and Sub-agent Orchestration",
     subtitle: "Orchestration at scale",
     level: 8,
     backgroundImage: "/assets/images/slide-24-level-8-parallel-agents.jpg",
@@ -423,18 +405,15 @@ export const slides: SlideContent[] = [
     subtitle: "Become good at it by using it",
     backgroundImage: "/assets/images/slide-26-closing.jpg",
     bullets: [
-      "Ask the models to teach you — no embarrassment about not knowing",
-      "Use tools → modify how you think → try again → richer understanding",
-      "It's changing so fast, you're not behind if you start now",
-      "The danger: putting it on the shelf for a couple years",
-      "Even if you think this doesn't apply to you — someone using this learns faster",
+      "Use AI as your learning tool!",
+      "It's changing so fast, no one is that far ahead",
     ],
   },
 ];
 
 // Define resources linked to key slides
 export const resources: Resource[] = [
-  // Level 1: AI as Uber Google - link to ChatGPT
+  // Level 1: AI as Portal to Internet Research - link to ChatGPT
   {
     id: "res-01",
     slideId: "slide-08",
@@ -452,7 +431,16 @@ export const resources: Resource[] = [
     url: "https://claude.ai",
     image: "https://claude.ai/images/claude_app_icon.png",
   },
-  // Level 4: Tools in Your Workflow - link to Wispr Flow
+  // Level 3: Context Engineering - Markdown Guide
+  {
+    id: "res-02b",
+    slideId: "slide-10",
+    type: "docs",
+    title: "Markdown Guide",
+    url: "https://www.markdownguide.org/basic-syntax/",
+    image: "https://www.markdownguide.org/favicon.ico",
+  },
+  // Level 4: Using AI Tools - link to Wispr Flow
   {
     id: "res-03",
     slideId: "slide-11",
@@ -461,7 +449,7 @@ export const resources: Resource[] = [
     url: "https://www.wispr.ai",
     image: "https://www.wispr.ai/favicon.ico",
   },
-  // Level 4: Tools in Your Workflow - link to Granola
+  // Level 4: Using AI Tools - link to Granola
   {
     id: "res-04",
     slideId: "slide-11",
@@ -470,7 +458,35 @@ export const resources: Resource[] = [
     url: "https://www.granola.so",
     image: "https://www.granola.so/icon.svg",
   },
-  // Level 6: Media & Creative Production - link to Midjourney
+  // Level 5: AI-Powered Browsing - Claude Extension
+  {
+    id: "res-04b",
+    slideId: "slide-12",
+    type: "tool",
+    title: "Claude Chrome Extension",
+    url: "https://claude.ai/download",
+    image: "https://claude.ai/images/claude_app_icon.png",
+  },
+  // Level 5: AI-Powered Browsing - ChatGPT Operator
+  {
+    id: "res-04c",
+    slideId: "slide-12",
+    type: "tool",
+    title: "ChatGPT Operator",
+    url: "https://openai.com/index/introducing-operator/",
+    image: "https://cdn.oaistatic.com/assets/apple-touch-icon-mz9nytnj.webp",
+  },
+  // Level 5: AI-Powered Browsing - Gemini in Chrome
+  {
+    id: "res-04d",
+    slideId: "slide-12",
+    type: "tool",
+    title: "Gemini in Chrome",
+    url: "https://support.google.com/chrome/answer/14286918",
+    image:
+      "https://www.gstatic.com/lamda/images/gemini_favicon_f069958c85030456e93de685481c559f160ea06b.png",
+  },
+  // Level 6: Creating Media with AI - link to Midjourney
   {
     id: "res-05",
     slideId: "slide-13",
@@ -479,7 +495,7 @@ export const resources: Resource[] = [
     url: "https://www.midjourney.com",
     image: "https://www.midjourney.com/apple-touch-icon.png",
   },
-  // Level 7: Automation Tools - link to Zapier docs
+  // Level 7: AI for Automation - link to Zapier docs
   {
     id: "res-06",
     slideId: "slide-14",
@@ -487,6 +503,15 @@ export const resources: Resource[] = [
     title: "Zapier Guide",
     url: "https://zapier.com/learn",
     image: "https://zapier.com/favicon.ico",
+  },
+  // Level 7: AI for Automation - link to N8n
+  {
+    id: "res-06b",
+    slideId: "slide-14",
+    type: "tool",
+    title: "N8n",
+    url: "https://n8n.io",
+    image: "https://n8n.io/favicon.ico",
   },
   // Level 8: Natural Language Software - link to Lovable
   {
@@ -498,6 +523,34 @@ export const resources: Resource[] = [
     image: "https://lovable.dev/icon.svg",
   },
   // Technical Track Resources
+  // CLI Tools - Claude Code
+  {
+    id: "res-07b",
+    slideId: "slide-16",
+    type: "docs",
+    title: "Claude Code Installation",
+    url: "https://docs.anthropic.com/en/docs/claude-code",
+    image: "https://claude.ai/images/claude_app_icon.png",
+  },
+  // CLI Tools - OpenAI Codex CLI
+  {
+    id: "res-07c",
+    slideId: "slide-16",
+    type: "docs",
+    title: "OpenAI Codex CLI",
+    url: "https://github.com/openai/codex",
+    image: "https://cdn.oaistatic.com/assets/apple-touch-icon-mz9nytnj.webp",
+  },
+  // CLI Tools - Gemini CLI
+  {
+    id: "res-07d",
+    slideId: "slide-16",
+    type: "docs",
+    title: "Gemini CLI",
+    url: "https://github.com/google-gemini/gemini-cli",
+    image:
+      "https://www.gstatic.com/lamda/images/gemini_favicon_f069958c85030456e93de685481c559f160ea06b.png",
+  },
   // Git & GitHub
   {
     id: "res-08",
