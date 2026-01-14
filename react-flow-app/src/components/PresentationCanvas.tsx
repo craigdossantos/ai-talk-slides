@@ -13,7 +13,6 @@ import {
 import SlideNode from "./nodes/SlideNode";
 import SectionHeaderNode from "./nodes/SectionHeaderNode";
 import ResourceNode from "./nodes/ResourceNode";
-import LevelNode from "./nodes/LevelNode";
 import PaperBackgroundNode from "./nodes/PaperBackgroundNode";
 import SectionNavigator from "./panels/SectionNavigator";
 import NavigationControls from "./panels/NavigationControls";
@@ -36,12 +35,13 @@ const nodeTypes = {
   slide: SlideNode,
   sectionHeader: SectionHeaderNode,
   resource: ResourceNode,
-  level: LevelNode,
   paperBackground: PaperBackgroundNode,
 };
 
-// Padding around content for paper background
-const PAPER_PADDING = 200;
+// Padding around content for paper background (doubled for larger paper)
+const PAPER_PADDING = 400;
+// Extra paper size multiplier (2x as tall and wide)
+const PAPER_SIZE_MULTIPLIER = 2;
 
 // Debounce delay for saving node positions (ms)
 const SAVE_DEBOUNCE_MS = 500;
@@ -89,17 +89,29 @@ function PresentationCanvas() {
       maxY = Math.max(maxY, node.position.y + height);
     }
 
+    // Calculate base paper dimensions with padding
+    const baseWidth = maxX - minX + PAPER_PADDING * 2;
+    const baseHeight = maxY - minY + PAPER_PADDING * 2;
+
+    // Apply multiplier for larger paper (2x as tall and wide)
+    const paperWidth = baseWidth * PAPER_SIZE_MULTIPLIER;
+    const paperHeight = baseHeight * PAPER_SIZE_MULTIPLIER;
+
+    // Center the paper around content
+    const extraWidth = (paperWidth - baseWidth) / 2;
+    const extraHeight = (paperHeight - baseHeight) / 2;
+
     // Create paper background node with padding
     const paperNode: PresentationNode = {
       id: "paper-background",
       type: "paperBackground",
       position: {
-        x: minX - PAPER_PADDING,
-        y: minY - PAPER_PADDING,
+        x: minX - PAPER_PADDING - extraWidth,
+        y: minY - PAPER_PADDING - extraHeight,
       },
       data: {
-        width: maxX - minX + PAPER_PADDING * 2,
-        height: maxY - minY + PAPER_PADDING * 2,
+        width: paperWidth,
+        height: paperHeight,
       },
       zIndex: -100,
       selectable: false,
@@ -208,17 +220,29 @@ function PresentationCanvas() {
       maxY = Math.max(maxY, node.position.y + height);
     }
 
+    // Calculate base paper dimensions with padding
+    const baseWidth = maxX - minX + PAPER_PADDING * 2;
+    const baseHeight = maxY - minY + PAPER_PADDING * 2;
+
+    // Apply multiplier for larger paper (2x as tall and wide)
+    const paperWidth = baseWidth * PAPER_SIZE_MULTIPLIER;
+    const paperHeight = baseHeight * PAPER_SIZE_MULTIPLIER;
+
+    // Center the paper around content
+    const extraWidth = (paperWidth - baseWidth) / 2;
+    const extraHeight = (paperHeight - baseHeight) / 2;
+
     // Create paper background node
     const paperNode: PresentationNode = {
       id: "paper-background",
       type: "paperBackground",
       position: {
-        x: minX - PAPER_PADDING,
-        y: minY - PAPER_PADDING,
+        x: minX - PAPER_PADDING - extraWidth,
+        y: minY - PAPER_PADDING - extraHeight,
       },
       data: {
-        width: maxX - minX + PAPER_PADDING * 2,
-        height: maxY - minY + PAPER_PADDING * 2,
+        width: paperWidth,
+        height: paperHeight,
       },
       zIndex: -100,
       selectable: false,
@@ -282,19 +306,19 @@ function PresentationCanvas() {
       clearTimeout(resizeTimeout);
       resizeTimeout = window.setTimeout(() => {
         if (currentSlideId && !isOverviewMode) {
-          // Refocus on current slide after resize
+          // Refocus on current slide after resize (slide takes 2/3 of window)
           fitView({
             nodes: [{ id: `slide-${currentSlideId}` }],
             duration: 300,
-            padding: 0.3,
-            maxZoom: 1.5,
+            padding: 0.15,
+            maxZoom: 2.5,
           });
         } else if (isOverviewMode) {
-          // Keep overview mode - fit all nodes
+          // Keep overview mode - fit all nodes (can zoom out to see entire paper)
           fitView({
             duration: 300,
             padding: 0.05,
-            minZoom: 0.1,
+            minZoom: 0.02,
             maxZoom: 1,
           });
         }
@@ -517,11 +541,13 @@ function PresentationCanvas() {
         onConnect={handleConnect}
         onEdgeClick={handleEdgeClick}
         nodesDraggable={true}
+        minZoom={0.02}
+        maxZoom={3}
         fitView
         fitViewOptions={{
           nodes: [{ id: `slide-${slides[0].id}` }],
-          padding: 0.3,
-          maxZoom: 1.5,
+          padding: 0.15,
+          maxZoom: 2.5,
         }}
         proOptions={{ hideAttribution: true }}
       >

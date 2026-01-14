@@ -22,23 +22,15 @@ const EDGE_STYLES = {
     animated: false,
     strokeDasharray: "6,4",
   },
-  // Slide-to-level: dashed connection to level badge
-  slideToLevel: {
-    stroke: "#9ca3af", // gray-400
-    strokeWidth: 1.5,
-    animated: false,
-    strokeDasharray: "5,5",
-  },
 } as const;
 
 /**
- * Generates React Flow edges connecting sections, slides, resources, and level nodes.
+ * Generates React Flow edges connecting sections, slides, and resources.
  *
  * Edge types:
  * - Section-to-section: 4px indigo edges connecting section headers
  * - Slide-to-slide: 2.5px solid slate edges connecting slides within a section
  * - Slide-to-resource: 1.5px dashed slate edges connecting slides to their resources
- * - Slide-to-level: 1.5px dashed gray edges connecting slides to their level badges
  */
 export function generateEdges(
   sections: Section[],
@@ -134,26 +126,6 @@ export function generateEdges(
       },
     };
     edges.push(resourceEdge);
-  }
-
-  // 4. Generate slide-to-level edges for slides with level property
-  for (const slide of slides) {
-    if (slide.level !== undefined) {
-      const levelEdge: Edge = {
-        id: `edge-slide-${slide.id}-to-level`,
-        source: `slide-${slide.id}`,
-        target: `level-${slide.id}`,
-        sourceHandle: "right",
-        targetHandle: "left",
-        type: "default",
-        style: {
-          stroke: EDGE_STYLES.slideToLevel.stroke,
-          strokeWidth: EDGE_STYLES.slideToLevel.strokeWidth,
-          strokeDasharray: EDGE_STYLES.slideToLevel.strokeDasharray,
-        },
-      };
-      edges.push(levelEdge);
-    }
   }
 
   return edges;

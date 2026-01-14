@@ -58,7 +58,7 @@ export function useKeyboardNavigation({
     slidesBySection.set(slide.sectionId, sectionSlides);
   }
 
-  // Navigate to a specific slide
+  // Navigate to a specific slide (zoomed so slide takes 2/3 of window)
   const navigateToSlide = useCallback(
     (slideId: string) => {
       setCurrentSlideId(slideId);
@@ -66,8 +66,8 @@ export function useKeyboardNavigation({
       fitView({
         nodes: [{ id: `slide-${slideId}` }],
         duration: fitViewDuration,
-        padding: 0.3,
-        maxZoom: 1.5,
+        padding: 0.15,
+        maxZoom: 2.5,
       });
     },
     [fitView, fitViewDuration],
@@ -86,8 +86,8 @@ export function useKeyboardNavigation({
       fitView({
         nodes: [{ id: `section-${sectionId}` }],
         duration: fitViewDuration,
-        padding: 0.3,
-        maxZoom: 1.5,
+        padding: 0.15,
+        maxZoom: 2.5,
       });
     },
     [fitView, fitViewDuration, slidesBySection],
@@ -99,35 +99,35 @@ export function useKeyboardNavigation({
     setIsOverviewMode(newOverviewMode);
 
     if (newOverviewMode) {
-      // Zoom out to show all nodes - don't specify nodes to fit ALL
+      // Zoom out to show all nodes including large paper
       fitView({
         duration: fitViewDuration,
         padding: 0.05,
-        minZoom: 0.1,
+        minZoom: 0.02,
         maxZoom: 1,
       });
     } else {
-      // Zoom back to current slide
+      // Zoom back to current slide (takes 2/3 of window)
       if (currentSlideId) {
         fitView({
           nodes: [{ id: `slide-${currentSlideId}` }],
           duration: fitViewDuration,
-          padding: 0.3,
-          maxZoom: 1.5,
+          padding: 0.15,
+          maxZoom: 2.5,
         });
       }
     }
   }, [fitView, fitViewDuration, currentSlideId, isOverviewMode]);
 
-  // Fit current slide to view (zoom back to focused view)
+  // Fit current slide to view (takes 2/3 of window)
   const fitCurrentSlide = useCallback(() => {
     if (currentSlideId) {
       setIsOverviewMode(false);
       fitView({
         nodes: [{ id: `slide-${currentSlideId}` }],
         duration: fitViewDuration,
-        padding: 0.3,
-        maxZoom: 1.5,
+        padding: 0.15,
+        maxZoom: 2.5,
       });
     }
   }, [fitView, fitViewDuration, currentSlideId]);
