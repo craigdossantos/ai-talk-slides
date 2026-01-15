@@ -82,6 +82,15 @@ export interface LevelNodeData {
   track: Track;
 }
 
+export interface MetroStopNodeData {
+  [key: string]: unknown;
+  slide: SlideContent;
+  section: Section;
+  lineColor: string;
+  isActive?: boolean;
+  isHovered?: boolean;
+}
+
 // React Flow node types with their data
 export type SlideNode = Node<SlideNodeData, "slide">;
 export type SectionHeaderNode = Node<SectionHeaderNodeData, "sectionHeader">;
@@ -91,6 +100,7 @@ export type PaperBackgroundNode = Node<
   "paperBackground"
 >;
 export type LevelNode = Node<LevelNodeData, "level">;
+export type MetroStopNode = Node<MetroStopNodeData, "metroStop">;
 
 // Union type for all presentation nodes
 export type PresentationNode =
@@ -98,12 +108,14 @@ export type PresentationNode =
   | SectionHeaderNode
   | ResourceNode
   | PaperBackgroundNode
-  | LevelNode;
+  | LevelNode
+  | MetroStopNode;
 
 // Node props types for custom node components
 export type SlideNodeProps = NodeProps<SlideNode>;
 export type SectionHeaderNodeProps = NodeProps<SectionHeaderNode>;
 export type ResourceNodeProps = NodeProps<ResourceNode>;
+export type MetroStopNodeProps = NodeProps<MetroStopNode>;
 
 // Constants for node dimensions
 // Slide dimensions optimized for 1376x768 images (16:9 aspect ratio)
