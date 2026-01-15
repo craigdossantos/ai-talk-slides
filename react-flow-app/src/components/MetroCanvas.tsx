@@ -12,6 +12,7 @@ import MetroBackgroundNode from "./nodes/MetroBackgroundNode";
 import ResourceIconNode from "./nodes/ResourceIconNode";
 import SlideNode from "./nodes/SlideNode";
 import NavigationControls from "./panels/NavigationControls";
+import MetroLegend from "./panels/MetroLegend";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
 import { generateMetroLayout } from "../utils/generateMetroLayout";
 import { clearPersistedPositions } from "../utils/persistence";
@@ -149,6 +150,7 @@ function MetroCanvas() {
         }}
         proOptions={{ hideAttribution: true }}
       />
+      <MetroLegend />
       <NavigationControls
         currentSlideIndex={currentSlideIndex}
         totalSlides={totalSlides}
