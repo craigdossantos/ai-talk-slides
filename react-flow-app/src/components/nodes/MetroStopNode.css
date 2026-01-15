@@ -4,11 +4,12 @@
 }
 
 .metro-stop__circle {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background: white;
-  border: 3px solid currentColor;
+  background: currentColor;
+  border: 5px solid white;
+  box-shadow: 0 0 0 2px currentColor;
   transition:
     transform 0.15s ease,
     box-shadow 0.15s ease;
