@@ -168,6 +168,6 @@ export const METRO_LINE_COLORS = {
 // Metro layout constants
 export const METRO_LAYOUT = {
   stopSpacing: 160, // horizontal spacing between stops
-  lineThickness: 8, // thickness of metro lines
+  lineThickness: 12, // thickness of metro lines
   verticalOffset: 200, // vertical spacing between parallel lines
 } as const;
