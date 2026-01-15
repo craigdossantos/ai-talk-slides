@@ -13,11 +13,12 @@ import ResourceIconNode from "./nodes/ResourceIconNode";
 import SlideNode from "./nodes/SlideNode";
 import NavigationControls from "./panels/NavigationControls";
 import MetroLegend from "./panels/MetroLegend";
+import SlidePanel from "./panels/SlidePanel";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
 import { generateMetroLayout } from "../utils/generateMetroLayout";
 import { clearPersistedPositions } from "../utils/persistence";
 import { sections, slides, resources } from "../data/slides";
-import type { PresentationNode } from "../types/presentation";
+import type { PresentationNode, SlideContent } from "../types/presentation";
 
 // Register custom node types
 const nodeTypes = {
@@ -61,6 +62,9 @@ function MetroCanvas() {
 
   const [edges] = useState<Edge[]>(metroEdges);
 
+  // State for selected slide panel
+  const [selectedSlide, setSelectedSlide] = useState<SlideContent | null>(null);
+
   // Keyboard navigation
   const {
     currentSlideId,
@@ -73,13 +77,17 @@ function MetroCanvas() {
     toggleOverview,
   } = useKeyboardNavigation({ sections, slides });
 
-  // Handle node click - zoom to stop
+  // Handle node click - zoom to stop and open slide panel
   const handleNodeClick = useCallback<NodeMouseHandler>(
     (_, node) => {
       if (node.type === "metroStop") {
         // Extract slide id from metro node id (metro-slide-01 -> slide-01)
         const slideId = node.id.replace("metro-", "");
-        navigateToSlide(slideId);
+        const slide = slides.find((s) => s.id === slideId);
+        if (slide) {
+          setSelectedSlide(slide);
+          navigateToSlide(slideId);
+        }
 
         // Zoom to the clicked stop with smooth animation
         fitView({
@@ -112,6 +120,27 @@ function MetroCanvas() {
       });
     }
   }, [fitView, toggleOverview, isOverviewMode]);
+
+  // Slide panel handlers
+  const handleClosePanel = useCallback(() => {
+    setSelectedSlide(null);
+  }, []);
+
+  const handlePanelPrevious = useCallback(() => {
+    if (currentSlideIndex > 0) {
+      const prevSlide = slides[currentSlideIndex - 1];
+      setSelectedSlide(prevSlide);
+      navigateToSlide(prevSlide.id);
+    }
+  }, [currentSlideIndex, navigateToSlide]);
+
+  const handlePanelNext = useCallback(() => {
+    if (currentSlideIndex < slides.length - 1) {
+      const nextSlide = slides[currentSlideIndex + 1];
+      setSelectedSlide(nextSlide);
+      navigateToSlide(nextSlide.id);
+    }
+  }, [currentSlideIndex, navigateToSlide]);
 
   // Update active state on nodes
   const nodesWithActiveState = useMemo(() => {
@@ -159,6 +188,14 @@ function MetroCanvas() {
           clearPersistedPositions();
           window.location.reload();
         }}
+      />
+      <SlidePanel
+        slide={selectedSlide}
+        onClose={handleClosePanel}
+        onPrevious={handlePanelPrevious}
+        onNext={handlePanelNext}
+        hasPrevious={currentSlideIndex > 0}
+        hasNext={currentSlideIndex < slides.length - 1}
       />
     </div>
   );
