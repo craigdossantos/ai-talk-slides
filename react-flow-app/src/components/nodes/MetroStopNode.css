@@ -16,15 +16,15 @@
 }
 
 .metro-stop:hover .metro-stop__circle {
-  transform: scale(1.2);
+  transform: scale(1.15);
   box-shadow: 0 0 0 3px currentColor;
 }
 
 .metro-stop--active .metro-stop__circle {
-  transform: scale(1.3);
+  transform: scale(1.25);
   box-shadow:
     0 0 0 4px currentColor,
-    0 0 12px currentColor;
+    0 0 16px rgba(0, 0, 0, 0.2);
 }
 
 .metro-stop__label {
