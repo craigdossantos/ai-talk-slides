@@ -13,6 +13,26 @@ interface MetroLayoutResult {
   edges: Edge[];
 }
 
+// Section-specific Y positions
+const SECTION_Y_POSITIONS: Record<string, number> = {
+  intro: 100,
+  understanding: 200,
+  mapping: 300,
+  "levels-nontech": 200,
+  "levels-tech": 400,
+  closing: 300,
+};
+
+// Section-specific starting X positions
+const SECTION_X_STARTS: Record<string, number> = {
+  intro: 100,
+  understanding: 100,
+  mapping: 100,
+  "levels-nontech": 700,
+  "levels-tech": 700,
+  closing: 2200,
+};
+
 /**
  * Generates metro stop nodes and connecting edges from slides data.
  * Layout follows the reference design with horizontal lines and 45/90 degree angles.
@@ -33,9 +53,9 @@ export function generateMetroLayout(
     slidesBySection.set(slide.sectionId, sectionSlides);
   }
 
-  // Track positions for layout
-  let currentX = 100;
-  let currentY = 300;
+  // Track the last node of certain sections for inter-section connections
+  const lastNodeBySection: Record<string, string> = {};
+  const firstNodeBySection: Record<string, string> = {};
 
   // Layout each section as a metro line segment
   for (const section of sections) {
@@ -44,18 +64,23 @@ export function generateMetroLayout(
       METRO_LINE_COLORS[section.id as keyof typeof METRO_LINE_COLORS] ||
       "#6b7280";
 
-    // Determine Y position based on track type
-    if (section.id === "levels-nontech") {
-      currentY = 200; // Blue line higher
-    } else if (section.id === "levels-tech") {
-      currentY = 400; // Orange line lower
-    }
+    // Get starting position for this section
+    let currentX = SECTION_X_STARTS[section.id] || 100;
+    const currentY = SECTION_Y_POSITIONS[section.id] || 300;
 
     let prevNodeId: string | null = null;
 
     for (let i = 0; i < sectionSlides.length; i++) {
       const slide = sectionSlides[i];
       const nodeId = `metro-${slide.id}`;
+
+      // Track first and last nodes
+      if (i === 0) {
+        firstNodeBySection[section.id] = nodeId;
+      }
+      if (i === sectionSlides.length - 1) {
+        lastNodeBySection[section.id] = nodeId;
+      }
 
       // Get resources for this slide
       const slideResources = resources.filter((r) => r.slideId === slide.id);
@@ -126,9 +151,109 @@ export function generateMetroLayout(
       prevNodeId = nodeId;
       currentX += METRO_LAYOUT.stopSpacing;
     }
+  }
 
-    // Add spacing between sections
-    currentX += METRO_LAYOUT.stopSpacing / 2;
+  // Create inter-section connections
+  // Intro -> Understanding (diagonal connection)
+  if (lastNodeBySection["intro"] && firstNodeBySection["understanding"]) {
+    edges.push({
+      id: "edge-intro-to-understanding",
+      source: lastNodeBySection["intro"],
+      target: firstNodeBySection["understanding"],
+      sourceHandle: "right",
+      targetHandle: "left",
+      type: "smoothstep",
+      style: {
+        stroke: METRO_LINE_COLORS["understanding"],
+        strokeWidth: METRO_LAYOUT.lineThickness,
+        strokeLinecap: "round",
+      },
+    });
+  }
+
+  // Understanding -> Mapping
+  if (lastNodeBySection["understanding"] && firstNodeBySection["mapping"]) {
+    edges.push({
+      id: "edge-understanding-to-mapping",
+      source: lastNodeBySection["understanding"],
+      target: firstNodeBySection["mapping"],
+      sourceHandle: "right",
+      targetHandle: "left",
+      type: "smoothstep",
+      style: {
+        stroke: METRO_LINE_COLORS["mapping"],
+        strokeWidth: METRO_LAYOUT.lineThickness,
+        strokeLinecap: "round",
+      },
+    });
+  }
+
+  // Mapping -> Non-Tech Track (branch up)
+  if (lastNodeBySection["mapping"] && firstNodeBySection["levels-nontech"]) {
+    edges.push({
+      id: "edge-mapping-to-nontech",
+      source: lastNodeBySection["mapping"],
+      target: firstNodeBySection["levels-nontech"],
+      sourceHandle: "right",
+      targetHandle: "left",
+      type: "smoothstep",
+      style: {
+        stroke: METRO_LINE_COLORS["levels-nontech"],
+        strokeWidth: METRO_LAYOUT.lineThickness,
+        strokeLinecap: "round",
+      },
+    });
+  }
+
+  // Mapping -> Tech Track (branch down)
+  if (lastNodeBySection["mapping"] && firstNodeBySection["levels-tech"]) {
+    edges.push({
+      id: "edge-mapping-to-tech",
+      source: lastNodeBySection["mapping"],
+      target: firstNodeBySection["levels-tech"],
+      sourceHandle: "right",
+      targetHandle: "left",
+      type: "smoothstep",
+      style: {
+        stroke: METRO_LINE_COLORS["levels-tech"],
+        strokeWidth: METRO_LAYOUT.lineThickness,
+        strokeLinecap: "round",
+      },
+    });
+  }
+
+  // Non-Tech -> Closing
+  if (lastNodeBySection["levels-nontech"] && firstNodeBySection["closing"]) {
+    edges.push({
+      id: "edge-nontech-to-closing",
+      source: lastNodeBySection["levels-nontech"],
+      target: firstNodeBySection["closing"],
+      sourceHandle: "right",
+      targetHandle: "left",
+      type: "smoothstep",
+      style: {
+        stroke: METRO_LINE_COLORS["closing"],
+        strokeWidth: METRO_LAYOUT.lineThickness,
+        strokeLinecap: "round",
+      },
+    });
+  }
+
+  // Tech -> Closing
+  if (lastNodeBySection["levels-tech"] && firstNodeBySection["closing"]) {
+    edges.push({
+      id: "edge-tech-to-closing",
+      source: lastNodeBySection["levels-tech"],
+      target: firstNodeBySection["closing"],
+      sourceHandle: "right",
+      targetHandle: "left",
+      type: "smoothstep",
+      style: {
+        stroke: METRO_LINE_COLORS["closing"],
+        strokeWidth: METRO_LAYOUT.lineThickness,
+        strokeLinecap: "round",
+      },
+    });
   }
 
   return { nodes, edges };
