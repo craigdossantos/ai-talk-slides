@@ -9,6 +9,7 @@ import {
 } from "@xyflow/react";
 import MetroStopNode from "./nodes/MetroStopNode";
 import MetroBackgroundNode from "./nodes/MetroBackgroundNode";
+import ResourceIconNode from "./nodes/ResourceIconNode";
 import SlideNode from "./nodes/SlideNode";
 import NavigationControls from "./panels/NavigationControls";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
@@ -21,6 +22,7 @@ import type { PresentationNode } from "../types/presentation";
 const nodeTypes = {
   metroStop: MetroStopNode,
   metroBackground: MetroBackgroundNode,
+  resourceIcon: ResourceIconNode,
   slide: SlideNode,
 };
 

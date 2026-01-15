@@ -42,6 +42,7 @@ export interface Resource {
   title: string;
   url: string;
   image?: string; // Custom image URL or path for thumbnail display
+  featured?: boolean; // Show as icon branching from metro stop
 }
 
 // Node data interfaces for React Flow nodes
@@ -98,6 +99,11 @@ export interface MetroBackgroundNodeData {
   height: number;
 }
 
+export interface ResourceIconNodeData {
+  [key: string]: unknown;
+  resource: Resource;
+}
+
 // React Flow node types with their data
 export type SlideNode = Node<SlideNodeData, "slide">;
 export type SectionHeaderNode = Node<SectionHeaderNodeData, "sectionHeader">;
@@ -112,6 +118,7 @@ export type MetroBackgroundNode = Node<
   MetroBackgroundNodeData,
   "metroBackground"
 >;
+export type ResourceIconNode = Node<ResourceIconNodeData, "resourceIcon">;
 
 // Union type for all presentation nodes
 export type PresentationNode =
@@ -121,7 +128,8 @@ export type PresentationNode =
   | PaperBackgroundNode
   | LevelNode
   | MetroStopNode
-  | MetroBackgroundNode;
+  | MetroBackgroundNode
+  | ResourceIconNode;
 
 // Node props types for custom node components
 export type SlideNodeProps = NodeProps<SlideNode>;

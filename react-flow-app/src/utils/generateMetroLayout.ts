@@ -3,12 +3,14 @@ import type {
   Section,
   SlideContent,
   MetroStopNode,
+  ResourceIconNode,
   Resource,
+  PresentationNode,
 } from "../types/presentation";
 import { METRO_LINE_COLORS, METRO_LAYOUT } from "../types/presentation";
 
 interface MetroLayoutResult {
-  nodes: MetroStopNode[];
+  nodes: (MetroStopNode | ResourceIconNode)[];
   edges: Edge[];
 }
 
@@ -21,7 +23,7 @@ export function generateMetroLayout(
   slides: SlideContent[],
   resources: Resource[] = [],
 ): MetroLayoutResult {
-  const nodes: MetroStopNode[] = [];
+  const nodes: (MetroStopNode | ResourceIconNode)[] = [];
   const edges: Edge[] = [];
 
   // Group slides by section
@@ -73,6 +75,37 @@ export function generateMetroLayout(
         },
       };
       nodes.push(node);
+
+      // Create featured resource icon nodes
+      const featuredResources = slideResources.filter((r) => r.featured);
+      featuredResources.forEach((resource, resourceIndex) => {
+        const resourceNodeId = `resource-icon-${resource.id}`;
+        const resourceNode: ResourceIconNode = {
+          id: resourceNodeId,
+          type: "resourceIcon",
+          position: {
+            x: currentX + (resourceIndex - featuredResources.length / 2) * 30,
+            y: currentY + 50,
+          },
+          data: {
+            resource,
+          },
+        };
+        nodes.push(resourceNode);
+
+        // Create edge from metro stop to resource icon
+        edges.push({
+          id: `edge-${nodeId}-${resourceNodeId}`,
+          source: nodeId,
+          target: resourceNodeId,
+          sourceHandle: "bottom",
+          type: "straight",
+          style: {
+            stroke: "#e5e7eb",
+            strokeWidth: 2,
+          },
+        });
+      });
 
       // Create edge to previous node in same section
       if (prevNodeId) {
