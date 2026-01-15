@@ -3,6 +3,7 @@ import type {
   Section,
   SlideContent,
   MetroStopNode,
+  MetroStopNodeData,
   ResourceIconNode,
   Resource,
 } from "../types/presentation";
@@ -278,6 +279,40 @@ export function generateMetroLayout(
         strokeLinecap: "round",
       },
     });
+  }
+
+  // Mark junction nodes (where multiple lines converge)
+  const junctionNodeIds = new Set<string>();
+  const junctionColors = new Map<string, string[]>();
+
+  // Last node of mapping is a junction (branches to both tracks)
+  if (lastNodeBySection["mapping"]) {
+    junctionNodeIds.add(lastNodeBySection["mapping"]);
+    junctionColors.set(lastNodeBySection["mapping"], [
+      METRO_LINE_COLORS["mapping"],
+      METRO_LINE_COLORS["levels-nontech"],
+      METRO_LINE_COLORS["levels-tech"],
+    ]);
+  }
+
+  // First node of closing is a junction (receives from both tracks)
+  if (firstNodeBySection["closing"]) {
+    junctionNodeIds.add(firstNodeBySection["closing"]);
+    junctionColors.set(firstNodeBySection["closing"], [
+      METRO_LINE_COLORS["levels-nontech"],
+      METRO_LINE_COLORS["levels-tech"],
+      METRO_LINE_COLORS["closing"],
+    ]);
+  }
+
+  // Update nodes with junction info
+  for (const node of nodes) {
+    if (node.type === "metroStop" && junctionNodeIds.has(node.id)) {
+      (node.data as MetroStopNodeData).isJunction = true;
+      (node.data as MetroStopNodeData).junctionColors = junctionColors.get(
+        node.id,
+      );
+    }
   }
 
   return { nodes, edges };

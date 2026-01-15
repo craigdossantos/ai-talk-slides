@@ -91,6 +91,8 @@ export interface MetroStopNodeData {
   resources?: Resource[];
   isActive?: boolean;
   isHovered?: boolean;
+  isJunction?: boolean; // Node where multiple lines converge
+  junctionColors?: string[]; // Colors of converging lines
 }
 
 export interface MetroBackgroundNodeData {

@@ -4,7 +4,7 @@ import type { MetroStopNodeProps } from "../../types/presentation";
 import "./MetroStopNode.css";
 
 function MetroStopNode({ data }: MetroStopNodeProps) {
-  const { slide, lineColor, resources, isActive } = data;
+  const { slide, lineColor, isActive, isJunction } = data;
   const [isHovered, setIsHovered] = useState(false);
 
   const hasBullets = slide.bullets && slide.bullets.length > 0;
@@ -20,7 +20,9 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
       <Handle type="target" position={Position.Left} id="left" />
       <Handle type="target" position={Position.Top} id="top" />
 
-      <div className="metro-stop__circle" />
+      <div
+        className={`metro-stop__circle ${isJunction ? "metro-stop__circle--junction" : ""}`}
+      />
 
       <div className="metro-stop__label">{slide.title}</div>
 
