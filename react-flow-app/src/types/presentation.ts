@@ -134,3 +134,20 @@ export const TRACK_COLORS = {
   technical: "#3b82f6", // blue
   general: "#6b7280", // gray
 } as const;
+
+// Metro line colors matching the reference design
+export const METRO_LINE_COLORS = {
+  intro: "#dc2626", // red - The Widening Gulf (Introduction)
+  understanding: "#eab308", // yellow - Understanding AI
+  mapping: "#22c55e", // green - Mapping the Journey
+  "levels-nontech": "#3b82f6", // blue - Non-Technical Track
+  "levels-tech": "#f97316", // orange - Technical Track
+  closing: "#a855f7", // purple - Closing
+} as const;
+
+// Metro layout constants
+export const METRO_LAYOUT = {
+  stopSpacing: 160, // horizontal spacing between stops
+  lineThickness: 8, // thickness of metro lines
+  verticalOffset: 200, // vertical spacing between parallel lines
+} as const;
