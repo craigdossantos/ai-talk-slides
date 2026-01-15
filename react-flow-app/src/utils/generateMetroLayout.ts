@@ -151,6 +151,7 @@ export function generateMetroLayout(
             stroke: lineColor,
             strokeWidth: METRO_LAYOUT.lineThickness,
             strokeLinecap: "round",
+            strokeLinejoin: "round",
           },
         });
       }
@@ -177,6 +178,7 @@ export function generateMetroLayout(
         stroke: METRO_LINE_COLORS["understanding"],
         strokeWidth: METRO_LAYOUT.lineThickness,
         strokeLinecap: "round",
+        strokeLinejoin: "round",
       },
     });
   }
@@ -197,6 +199,7 @@ export function generateMetroLayout(
         stroke: METRO_LINE_COLORS["mapping"],
         strokeWidth: METRO_LAYOUT.lineThickness,
         strokeLinecap: "round",
+        strokeLinejoin: "round",
       },
     });
   }
@@ -217,6 +220,7 @@ export function generateMetroLayout(
         stroke: METRO_LINE_COLORS["levels-nontech"],
         strokeWidth: METRO_LAYOUT.lineThickness,
         strokeLinecap: "round",
+        strokeLinejoin: "round",
       },
     });
   }
@@ -237,6 +241,7 @@ export function generateMetroLayout(
         stroke: METRO_LINE_COLORS["levels-tech"],
         strokeWidth: METRO_LAYOUT.lineThickness,
         strokeLinecap: "round",
+        strokeLinejoin: "round",
       },
     });
   }
@@ -257,6 +262,7 @@ export function generateMetroLayout(
         stroke: METRO_LINE_COLORS["closing"],
         strokeWidth: METRO_LAYOUT.lineThickness,
         strokeLinecap: "round",
+        strokeLinejoin: "round",
       },
     });
   }
@@ -277,6 +283,7 @@ export function generateMetroLayout(
         stroke: METRO_LINE_COLORS["closing"],
         strokeWidth: METRO_LAYOUT.lineThickness,
         strokeLinecap: "round",
+        strokeLinejoin: "round",
       },
     });
   }

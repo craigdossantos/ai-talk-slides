@@ -130,9 +130,27 @@
   font-style: italic;
 }
 
-/* Handle positioning */
+/* Handle positioning - centered for line-through effect */
 .metro-stop .react-flow__handle {
   opacity: 0;
-  width: 10px;
-  height: 10px;
+  width: 1px;
+  height: 1px;
+  min-width: 1px;
+  min-height: 1px;
+}
+
+.metro-stop .react-flow__handle-left {
+  left: 50%;
+}
+
+.metro-stop .react-flow__handle-right {
+  right: 50%;
+}
+
+.metro-stop .react-flow__handle-top {
+  top: 50%;
+}
+
+.metro-stop .react-flow__handle-bottom {
+  bottom: 50%;
 }
