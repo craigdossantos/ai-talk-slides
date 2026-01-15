@@ -29,14 +29,14 @@
 
 .metro-stop__label {
   position: absolute;
-  top: 24px;
+  top: 28px;
   left: 50%;
   transform: translateX(-50%);
   white-space: normal;
   font-family:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  font-size: 12px;
-  font-weight: 600;
+  font-size: 13px;
+  font-weight: 700;
   color: #1f2937;
   text-align: center;
   max-width: 140px;
