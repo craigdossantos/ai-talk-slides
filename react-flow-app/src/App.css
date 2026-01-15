@@ -19,17 +19,20 @@
   max-width: none !important;
 }
 
-/* Smooth edge transitions */
+/* Metro line edge styles */
 .react-flow__edge-path {
+  stroke-linecap: round;
+  stroke-linejoin: round;
   transition:
     stroke-width 0.2s ease,
-    stroke 0.2s ease;
+    stroke 0.2s ease,
+    filter 0.2s ease;
 }
 
-/* Edge hover effect - slightly thicker */
+/* Hover effect - slightly thicker with glow */
 .react-flow__edge:hover .react-flow__edge-path {
-  stroke-width: 3px;
-  filter: drop-shadow(0 0 4px var(--color-accent));
+  stroke-width: 10px;
+  filter: brightness(1.1);
 }
 
 /*
