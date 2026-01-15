@@ -1,4 +1,4 @@
-import type { Edge } from "@xyflow/react";
+import type { BuiltInEdge } from "@xyflow/react";
 import type {
   Section,
   SlideContent,
@@ -10,28 +10,31 @@ import { METRO_LINE_COLORS, METRO_LAYOUT } from "../types/presentation";
 
 interface MetroLayoutResult {
   nodes: (MetroStopNode | ResourceIconNode)[];
-  edges: Edge[];
+  edges: BuiltInEdge[];
 }
 
-// Section-specific Y positions
+// Section-specific Y positions - creates dramatic curved topology
 const SECTION_Y_POSITIONS: Record<string, number> = {
-  intro: 100,
-  understanding: 200,
-  mapping: 300,
-  "levels-nontech": 200,
-  "levels-tech": 400,
-  closing: 300,
+  intro: 80, // Top-left start
+  understanding: 180, // Curves down
+  mapping: 320, // Center junction area
+  "levels-nontech": 260, // Upper parallel track
+  "levels-tech": 440, // Lower parallel track
+  closing: 350, // Right side convergence
 };
 
-// Section-specific starting X positions
+// Section-specific starting X positions - staggered for diagonal flow
 const SECTION_X_STARTS: Record<string, number> = {
-  intro: 100,
-  understanding: 100,
-  mapping: 100,
-  "levels-nontech": 700,
-  "levels-tech": 700,
-  closing: 2200,
+  intro: 80,
+  understanding: 180, // Staggered to create diagonal
+  mapping: 280,
+  "levels-nontech": 480,
+  "levels-tech": 480,
+  closing: 1800,
 };
+
+// Smooth curve radius for metro line bends
+const EDGE_BORDER_RADIUS = 20;
 
 /**
  * Generates metro stop nodes and connecting edges from slides data.
@@ -43,7 +46,7 @@ export function generateMetroLayout(
   resources: Resource[] = [],
 ): MetroLayoutResult {
   const nodes: (MetroStopNode | ResourceIconNode)[] = [];
-  const edges: Edge[] = [];
+  const edges: BuiltInEdge[] = [];
 
   // Group slides by section
   const slidesBySection = new Map<string, SlideContent[]>();
@@ -140,6 +143,9 @@ export function generateMetroLayout(
           sourceHandle: "right",
           targetHandle: "left",
           type: "smoothstep",
+          pathOptions: {
+            borderRadius: EDGE_BORDER_RADIUS,
+          },
           style: {
             stroke: lineColor,
             strokeWidth: METRO_LAYOUT.lineThickness,
@@ -163,6 +169,9 @@ export function generateMetroLayout(
       sourceHandle: "right",
       targetHandle: "left",
       type: "smoothstep",
+      pathOptions: {
+        borderRadius: EDGE_BORDER_RADIUS,
+      },
       style: {
         stroke: METRO_LINE_COLORS["understanding"],
         strokeWidth: METRO_LAYOUT.lineThickness,
@@ -180,6 +189,9 @@ export function generateMetroLayout(
       sourceHandle: "right",
       targetHandle: "left",
       type: "smoothstep",
+      pathOptions: {
+        borderRadius: EDGE_BORDER_RADIUS,
+      },
       style: {
         stroke: METRO_LINE_COLORS["mapping"],
         strokeWidth: METRO_LAYOUT.lineThickness,
@@ -197,6 +209,9 @@ export function generateMetroLayout(
       sourceHandle: "right",
       targetHandle: "left",
       type: "smoothstep",
+      pathOptions: {
+        borderRadius: EDGE_BORDER_RADIUS,
+      },
       style: {
         stroke: METRO_LINE_COLORS["levels-nontech"],
         strokeWidth: METRO_LAYOUT.lineThickness,
@@ -214,6 +229,9 @@ export function generateMetroLayout(
       sourceHandle: "right",
       targetHandle: "left",
       type: "smoothstep",
+      pathOptions: {
+        borderRadius: EDGE_BORDER_RADIUS,
+      },
       style: {
         stroke: METRO_LINE_COLORS["levels-tech"],
         strokeWidth: METRO_LAYOUT.lineThickness,
@@ -231,6 +249,9 @@ export function generateMetroLayout(
       sourceHandle: "right",
       targetHandle: "left",
       type: "smoothstep",
+      pathOptions: {
+        borderRadius: EDGE_BORDER_RADIUS,
+      },
       style: {
         stroke: METRO_LINE_COLORS["closing"],
         strokeWidth: METRO_LAYOUT.lineThickness,
@@ -248,6 +269,9 @@ export function generateMetroLayout(
       sourceHandle: "right",
       targetHandle: "left",
       type: "smoothstep",
+      pathOptions: {
+        borderRadius: EDGE_BORDER_RADIUS,
+      },
       style: {
         stroke: METRO_LINE_COLORS["closing"],
         strokeWidth: METRO_LAYOUT.lineThickness,
