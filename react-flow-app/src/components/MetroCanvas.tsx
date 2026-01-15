@@ -28,6 +28,7 @@ const nodeTypes = {
 
 function MetroCanvas() {
   const { fitView } = useReactFlow();
+  const [_zoomedSlideId, setZoomedSlideId] = useState<string | null>(null);
 
   // Generate metro layout
   const { nodes: metroNodes, edges: metroEdges } = useMemo(
@@ -78,14 +79,15 @@ function MetroCanvas() {
       if (node.type === "metroStop") {
         // Extract slide id from metro node id (metro-slide-01 -> slide-01)
         const slideId = node.id.replace("metro-", "");
+        setZoomedSlideId(slideId);
         navigateToSlide(slideId);
 
-        // Zoom to the clicked stop
+        // Zoom to the clicked stop with smooth animation
         fitView({
           nodes: [{ id: node.id }],
           duration: 500,
-          padding: 0.5,
-          maxZoom: 2,
+          padding: 0.2,
+          maxZoom: 2.5,
         });
       }
     },
@@ -104,6 +106,7 @@ function MetroCanvas() {
   const handleToggleOverview = useCallback(() => {
     toggleOverview();
     if (!isOverviewMode) {
+      setZoomedSlideId(null);
       fitView({
         duration: 500,
         padding: 0.1,
