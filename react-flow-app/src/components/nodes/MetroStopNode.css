@@ -7,9 +7,9 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: currentColor;
-  border: 5px solid white;
-  box-shadow: 0 0 0 2px currentColor;
+  background: white;
+  border: 6px solid currentColor;
+  box-shadow: none;
   transition:
     transform 0.15s ease,
     box-shadow 0.15s ease;
