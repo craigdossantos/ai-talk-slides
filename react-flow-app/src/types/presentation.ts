@@ -87,6 +87,7 @@ export interface MetroStopNodeData {
   slide: SlideContent;
   section: Section;
   lineColor: string;
+  resources?: Resource[];
   isActive?: boolean;
   isHovered?: boolean;
 }

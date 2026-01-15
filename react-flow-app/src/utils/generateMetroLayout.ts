@@ -3,6 +3,7 @@ import type {
   Section,
   SlideContent,
   MetroStopNode,
+  Resource,
 } from "../types/presentation";
 import { METRO_LINE_COLORS, METRO_LAYOUT } from "../types/presentation";
 
@@ -18,6 +19,7 @@ interface MetroLayoutResult {
 export function generateMetroLayout(
   sections: Section[],
   slides: SlideContent[],
+  resources: Resource[] = [],
 ): MetroLayoutResult {
   const nodes: MetroStopNode[] = [];
   const edges: Edge[] = [];
@@ -54,6 +56,9 @@ export function generateMetroLayout(
       const slide = sectionSlides[i];
       const nodeId = `metro-${slide.id}`;
 
+      // Get resources for this slide
+      const slideResources = resources.filter((r) => r.slideId === slide.id);
+
       // Create metro stop node
       const node: MetroStopNode = {
         id: nodeId,
@@ -63,6 +68,7 @@ export function generateMetroLayout(
           slide,
           section,
           lineColor,
+          resources: slideResources,
           isActive: false,
         },
       };

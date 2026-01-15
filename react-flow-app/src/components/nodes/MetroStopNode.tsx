@@ -4,8 +4,12 @@ import type { MetroStopNodeProps } from "../../types/presentation";
 import "./MetroStopNode.css";
 
 function MetroStopNode({ data }: MetroStopNodeProps) {
-  const { slide, lineColor, isActive } = data;
+  const { slide, lineColor, resources, isActive } = data;
   const [isHovered, setIsHovered] = useState(false);
+
+  const hasBullets = slide.bullets && slide.bullets.length > 0;
+  const hasResources = resources && resources.length > 0;
+  const showTooltip = isHovered && (hasBullets || hasResources);
 
   return (
     <div
@@ -21,14 +25,26 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
 
       <div className="metro-stop__label">{slide.title}</div>
 
-      {isHovered && slide.bullets && slide.bullets.length > 0 && (
+      {showTooltip && (
         <div className="metro-stop__tooltip">
           <h4 className="metro-stop__tooltip-title">{slide.title}</h4>
-          <ul className="metro-stop__tooltip-bullets">
-            {slide.bullets.map((bullet, index) => (
-              <li key={index}>{bullet}</li>
-            ))}
-          </ul>
+          {hasBullets && (
+            <ul className="metro-stop__tooltip-bullets">
+              {slide.bullets!.map((bullet, index) => (
+                <li key={index}>{bullet}</li>
+              ))}
+            </ul>
+          )}
+          {hasResources && (
+            <div className="metro-stop__tooltip-resources">
+              <div className="metro-stop__tooltip-resources-title">
+                Resources:
+              </div>
+              {resources!.map((resource) => (
+                <div key={resource.id}>{resource.title}</div>
+              ))}
+            </div>
+          )}
         </div>
       )}
 

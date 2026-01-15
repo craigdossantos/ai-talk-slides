@@ -14,7 +14,7 @@ import NavigationControls from "./panels/NavigationControls";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
 import { generateMetroLayout } from "../utils/generateMetroLayout";
 import { clearPersistedPositions } from "../utils/persistence";
-import { sections, slides } from "../data/slides";
+import { sections, slides, resources } from "../data/slides";
 import type { PresentationNode } from "../types/presentation";
 
 // Register custom node types
@@ -29,7 +29,7 @@ function MetroCanvas() {
 
   // Generate metro layout
   const { nodes: metroNodes, edges: metroEdges } = useMemo(
-    () => generateMetroLayout(sections, slides),
+    () => generateMetroLayout(sections, slides, resources),
     [],
   );
 
