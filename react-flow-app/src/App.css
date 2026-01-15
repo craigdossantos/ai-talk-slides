@@ -4,16 +4,9 @@
   background-color: var(--color-bg-primary);
 }
 
-/* React Flow overrides - neutral desk/table background behind the paper */
+/* React Flow overrides - metro map background */
 .react-flow__pane {
-  /* Subtle desk surface color - shows around the paper edges */
-  background-color: #e8e4dc;
-  /* Subtle texture/grain */
-  background-image: radial-gradient(
-    ellipse at center,
-    transparent 0%,
-    rgba(0, 0, 0, 0.02) 100%
-  );
+  background-color: #f5f5f0;
 }
 
 /* Ensure edges are visible - override any max-width constraints */

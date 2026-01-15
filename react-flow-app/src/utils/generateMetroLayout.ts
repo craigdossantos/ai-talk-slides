@@ -5,7 +5,6 @@ import type {
   MetroStopNode,
   ResourceIconNode,
   Resource,
-  PresentationNode,
 } from "../types/presentation";
 import { METRO_LINE_COLORS, METRO_LAYOUT } from "../types/presentation";
 

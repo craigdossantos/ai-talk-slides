@@ -58,7 +58,7 @@ function MetroCanvas() {
     return [backgroundNode, ...metroNodes];
   });
 
-  const [edges, setEdges] = useState<Edge[]>(metroEdges);
+  const [edges] = useState<Edge[]>(metroEdges);
 
   // Keyboard navigation
   const {
