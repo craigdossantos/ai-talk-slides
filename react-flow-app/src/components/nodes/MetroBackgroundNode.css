@@ -1,0 +1,8 @@
+.metro-background {
+  background-color: #f5f5f0;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  border-radius: 8px;
+}

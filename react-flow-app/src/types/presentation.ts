@@ -91,6 +91,12 @@ export interface MetroStopNodeData {
   isHovered?: boolean;
 }
 
+export interface MetroBackgroundNodeData {
+  [key: string]: unknown;
+  width: number;
+  height: number;
+}
+
 // React Flow node types with their data
 export type SlideNode = Node<SlideNodeData, "slide">;
 export type SectionHeaderNode = Node<SectionHeaderNodeData, "sectionHeader">;
@@ -101,6 +107,10 @@ export type PaperBackgroundNode = Node<
 >;
 export type LevelNode = Node<LevelNodeData, "level">;
 export type MetroStopNode = Node<MetroStopNodeData, "metroStop">;
+export type MetroBackgroundNode = Node<
+  MetroBackgroundNodeData,
+  "metroBackground"
+>;
 
 // Union type for all presentation nodes
 export type PresentationNode =
@@ -109,7 +119,8 @@ export type PresentationNode =
   | ResourceNode
   | PaperBackgroundNode
   | LevelNode
-  | MetroStopNode;
+  | MetroStopNode
+  | MetroBackgroundNode;
 
 // Node props types for custom node components
 export type SlideNodeProps = NodeProps<SlideNode>;
