@@ -93,6 +93,11 @@ export interface MetroStopNodeData {
   isHovered?: boolean;
   isJunction?: boolean; // Node where multiple lines converge
   junctionColors?: string[]; // Colors of converging lines
+  // Navigation callbacks for full slide view
+  onPrevious?: () => void;
+  onNext?: () => void;
+  hasPrevious?: boolean;
+  hasNext?: boolean;
 }
 
 export interface MetroBackgroundNodeData {
@@ -169,7 +174,7 @@ export const METRO_LINE_COLORS = {
 
 // Metro layout constants
 export const METRO_LAYOUT = {
-  stopSpacing: 180, // increased for thicker lines
+  stopSpacing: 280, // expanded to fit slide images above stops
   lineThickness: 16, // thicker metro lines like reference
-  verticalOffset: 200, // vertical spacing between parallel lines
+  verticalOffset: 350, // expanded for slide images + vertical spacing
 } as const;

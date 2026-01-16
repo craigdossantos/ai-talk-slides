@@ -13,12 +13,11 @@ import ResourceIconNode from "./nodes/ResourceIconNode";
 import SlideNode from "./nodes/SlideNode";
 import NavigationControls from "./panels/NavigationControls";
 import MetroLegend from "./panels/MetroLegend";
-import SlidePanel from "./panels/SlidePanel";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
 import { generateMetroLayout } from "../utils/generateMetroLayout";
 import { clearPersistedPositions } from "../utils/persistence";
 import { sections, slides, resources } from "../data/slides";
-import type { PresentationNode, SlideContent } from "../types/presentation";
+import type { PresentationNode } from "../types/presentation";
 
 // Register custom node types
 const nodeTypes = {
@@ -62,9 +61,6 @@ function MetroCanvas() {
 
   const [edges] = useState<Edge[]>(metroEdges);
 
-  // State for selected slide panel
-  const [selectedSlide, setSelectedSlide] = useState<SlideContent | null>(null);
-
   // Keyboard navigation
   const {
     currentSlideId,
@@ -77,17 +73,13 @@ function MetroCanvas() {
     toggleOverview,
   } = useKeyboardNavigation({ sections, slides });
 
-  // Handle node click - zoom to stop and open slide panel
+  // Handle node click - zoom to stop and navigate
   const handleNodeClick = useCallback<NodeMouseHandler>(
     (_, node) => {
       if (node.type === "metroStop") {
-        // Extract slide id from metro node id (metro-slide-01 -> slide-01)
+        // Extract slide id and navigate
         const slideId = node.id.replace("metro-", "");
-        const slide = slides.find((s) => s.id === slideId);
-        if (slide) {
-          setSelectedSlide(slide);
-          navigateToSlide(slideId);
-        }
+        navigateToSlide(slideId);
 
         // Zoom to the clicked stop with smooth animation
         fitView({
@@ -121,42 +113,37 @@ function MetroCanvas() {
     }
   }, [fitView, toggleOverview, isOverviewMode]);
 
-  // Slide panel handlers
-  const handleClosePanel = useCallback(() => {
-    setSelectedSlide(null);
-  }, []);
-
-  const handlePanelPrevious = useCallback(() => {
-    if (currentSlideIndex > 0) {
-      const prevSlide = slides[currentSlideIndex - 1];
-      setSelectedSlide(prevSlide);
-      navigateToSlide(prevSlide.id);
-    }
-  }, [currentSlideIndex, navigateToSlide]);
-
-  const handlePanelNext = useCallback(() => {
-    if (currentSlideIndex < slides.length - 1) {
-      const nextSlide = slides[currentSlideIndex + 1];
-      setSelectedSlide(nextSlide);
-      navigateToSlide(nextSlide.id);
-    }
-  }, [currentSlideIndex, navigateToSlide]);
-
-  // Update active state on nodes
+  // Update active state and navigation props on nodes
   const nodesWithActiveState = useMemo(() => {
     return nodes.map((node) => {
       if (node.type === "metroStop") {
         // metro-slide-01 -> slide-01, currentSlideId is "slide-01"
         const slideId = node.id.replace("metro-", "");
         const isActive = slideId === currentSlideId;
+        const slideIndex = slides.findIndex((s) => s.id === slideId);
+
         return {
           ...node,
-          data: { ...node.data, isActive },
+          data: {
+            ...node.data,
+            isActive,
+            // Navigation callbacks for full slide view
+            onPrevious:
+              slideIndex > 0
+                ? () => navigateToSlide(slides[slideIndex - 1].id)
+                : undefined,
+            onNext:
+              slideIndex < slides.length - 1
+                ? () => navigateToSlide(slides[slideIndex + 1].id)
+                : undefined,
+            hasPrevious: slideIndex > 0,
+            hasNext: slideIndex < slides.length - 1,
+          },
         };
       }
       return node;
     });
-  }, [nodes, currentSlideId]);
+  }, [nodes, currentSlideId, navigateToSlide]);
 
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
@@ -188,14 +175,6 @@ function MetroCanvas() {
           clearPersistedPositions();
           window.location.reload();
         }}
-      />
-      <SlidePanel
-        slide={selectedSlide}
-        onClose={handleClosePanel}
-        onPrevious={handlePanelPrevious}
-        onNext={handlePanelNext}
-        hasPrevious={currentSlideIndex > 0}
-        hasNext={currentSlideIndex < slides.length - 1}
       />
     </div>
   );

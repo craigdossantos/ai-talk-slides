@@ -14,24 +14,24 @@ interface MetroLayoutResult {
   edges: BuiltInEdge[];
 }
 
-// Section-specific Y positions - creates dramatic curved topology
+// Section-specific Y positions - expanded for slide images above stops
 const SECTION_Y_POSITIONS: Record<string, number> = {
-  intro: 80, // Top-left start
-  understanding: 180, // Curves down
-  mapping: 320, // Center junction area
-  "levels-nontech": 260, // Upper parallel track
-  "levels-tech": 440, // Lower parallel track
-  closing: 350, // Right side convergence
+  intro: 150, // Top-left start (increased for image space)
+  understanding: 350, // Curves down (was 180)
+  mapping: 600, // Center junction area (was 320)
+  "levels-nontech": 500, // Upper parallel track (was 260)
+  "levels-tech": 850, // Lower parallel track (was 440)
+  closing: 700, // Right side convergence (was 350)
 };
 
 // Section-specific starting X positions - staggered for diagonal flow
 const SECTION_X_STARTS: Record<string, number> = {
-  intro: 80,
-  understanding: 180, // Staggered to create diagonal
-  mapping: 280,
-  "levels-nontech": 480,
-  "levels-tech": 480,
-  closing: 1800,
+  intro: 100,
+  understanding: 250, // Staggered to create diagonal
+  mapping: 400,
+  "levels-nontech": 700,
+  "levels-tech": 700,
+  closing: 2600, // Adjusted for wider spacing
 };
 
 // Smooth curve radius for metro line bends
@@ -161,7 +161,7 @@ export function generateMetroLayout(
     }
   }
 
-  // Create inter-section connections
+  // Create inter-section connections with offset to route around labels
   // Intro -> Understanding (diagonal connection)
   if (lastNodeBySection["intro"] && firstNodeBySection["understanding"]) {
     edges.push({
@@ -173,6 +173,7 @@ export function generateMetroLayout(
       type: "smoothstep",
       pathOptions: {
         borderRadius: EDGE_BORDER_RADIUS,
+        offset: 80, // Route around labels
       },
       style: {
         stroke: METRO_LINE_COLORS["understanding"],
@@ -194,6 +195,7 @@ export function generateMetroLayout(
       type: "smoothstep",
       pathOptions: {
         borderRadius: EDGE_BORDER_RADIUS,
+        offset: 80, // Route around labels
       },
       style: {
         stroke: METRO_LINE_COLORS["mapping"],
@@ -215,6 +217,7 @@ export function generateMetroLayout(
       type: "smoothstep",
       pathOptions: {
         borderRadius: EDGE_BORDER_RADIUS,
+        offset: 80, // Route around labels
       },
       style: {
         stroke: METRO_LINE_COLORS["levels-nontech"],
@@ -236,6 +239,7 @@ export function generateMetroLayout(
       type: "smoothstep",
       pathOptions: {
         borderRadius: EDGE_BORDER_RADIUS,
+        offset: 80, // Route around labels
       },
       style: {
         stroke: METRO_LINE_COLORS["levels-tech"],
@@ -257,6 +261,7 @@ export function generateMetroLayout(
       type: "smoothstep",
       pathOptions: {
         borderRadius: EDGE_BORDER_RADIUS,
+        offset: 80, // Route around labels
       },
       style: {
         stroke: METRO_LINE_COLORS["closing"],
@@ -278,6 +283,7 @@ export function generateMetroLayout(
       type: "smoothstep",
       pathOptions: {
         borderRadius: EDGE_BORDER_RADIUS,
+        offset: 80, // Route around labels
       },
       style: {
         stroke: METRO_LINE_COLORS["closing"],

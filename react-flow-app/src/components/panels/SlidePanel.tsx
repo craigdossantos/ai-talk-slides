@@ -1,9 +1,10 @@
-import { memo, useEffect } from "react";
+import { memo, useEffect, useMemo } from "react";
 import type { SlideContent } from "../../types/presentation";
 import "./SlidePanel.css";
 
 interface SlidePanelProps {
   slide: SlideContent | null;
+  nodePosition: { x: number; y: number } | null;
   onClose: () => void;
   onPrevious: () => void;
   onNext: () => void;
@@ -13,6 +14,7 @@ interface SlidePanelProps {
 
 function SlidePanel({
   slide,
+  nodePosition,
   onClose,
   onPrevious,
   onNext,
@@ -47,11 +49,23 @@ function SlidePanel({
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [slide, onClose, onPrevious, onNext, hasPrevious, hasNext]);
 
+  // Calculate transform-origin based on node position for zoom-in effect
+  const panelStyle = useMemo(() => {
+    if (!nodePosition) return {};
+    return {
+      transformOrigin: `${nodePosition.x}px ${nodePosition.y}px`,
+    };
+  }, [nodePosition]);
+
   if (!slide) return null;
 
   return (
     <div className="slide-panel-overlay" onClick={onClose}>
-      <div className="slide-panel" onClick={(e) => e.stopPropagation()}>
+      <div
+        className="slide-panel"
+        style={panelStyle}
+        onClick={(e) => e.stopPropagation()}
+      >
         <button className="slide-panel__close" onClick={onClose}>
           ×
         </button>
