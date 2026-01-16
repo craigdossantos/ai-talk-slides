@@ -1,11 +1,11 @@
-import { memo, useState, useEffect } from "react";
+import { memo, useState, useEffect, useMemo } from "react";
 import { Handle, Position, useReactFlow } from "@xyflow/react";
 import type { MetroStopNodeProps } from "../../types/presentation";
 import "./MetroStopNode.css";
 
 // Zoom level thresholds
-const ZOOM_TOOLTIP = 1.5; // Below this: tooltip on hover
-const ZOOM_FULL = 2.5; // Above this: full slide content
+const ZOOM_MIN = 0.3; // Below this: thumbnails hidden
+const ZOOM_FULL = 1.8; // Above this: full slide content (active only)
 
 function MetroStopNode({ data }: MetroStopNodeProps) {
   const {
@@ -33,13 +33,19 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
   const hasBullets = slide.bullets && slide.bullets.length > 0;
   const hasContent = hasBullets || slide.backgroundImage;
 
-  // Three zoom levels - full slide only shows for active node
-  const showTooltip = zoom < ZOOM_TOOLTIP && isHovered && hasContent;
-  const isFullZoom = zoom >= ZOOM_FULL;
-  const showFullSlide = isFullZoom && isActive; // Only active node shows full content
-  const showInlineImage =
-    slide.backgroundImage &&
-    ((zoom >= ZOOM_TOOLTIP && zoom < ZOOM_FULL) || (isFullZoom && !isActive)); // Non-active nodes show inline at full zoom
+  // Calculate continuous scale factor for thumbnails
+  const thumbnailScale = useMemo(() => {
+    if (zoom < ZOOM_MIN) return 0; // Hidden
+    if (zoom >= ZOOM_FULL) return 1; // Full size
+    // Linear interpolation from 0 to 1 as zoom goes from ZOOM_MIN to ZOOM_FULL
+    return (zoom - ZOOM_MIN) / (ZOOM_FULL - ZOOM_MIN);
+  }, [zoom]);
+
+  // Zoom-based display logic
+  const showFullSlide = zoom >= ZOOM_FULL && isActive; // Only active node shows full content
+  const showThumbnail =
+    slide.backgroundImage && thumbnailScale > 0 && !showFullSlide;
+  const showTooltip = zoom < ZOOM_MIN && isHovered && hasContent;
 
   return (
     <div
@@ -95,9 +101,15 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
         </div>
       )}
 
-      {/* Inline image - shown at medium zoom */}
-      {showInlineImage && (
-        <div className="metro-stop__inline-image">
+      {/* Inline image - scales continuously with zoom */}
+      {showThumbnail && (
+        <div
+          className="metro-stop__inline-image"
+          style={{
+            transform: `translateX(-50%) scale(${thumbnailScale})`,
+            opacity: thumbnailScale,
+          }}
+        >
           <img src={slide.backgroundImage} alt={slide.title} />
           <div className="metro-stop__inline-title">{slide.title}</div>
         </div>

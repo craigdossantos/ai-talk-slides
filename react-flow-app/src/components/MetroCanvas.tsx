@@ -1,7 +1,8 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useRef } from "react";
 import {
   ReactFlow,
   useReactFlow,
+  useOnViewportChange,
   applyNodeChanges,
   type NodeMouseHandler,
   type NodeChange,
@@ -28,7 +29,10 @@ const nodeTypes = {
 };
 
 function MetroCanvas() {
-  const { fitView } = useReactFlow();
+  const { fitView, getViewport } = useReactFlow();
+
+  // Ref to track when we're programmatically navigating (prevents infinite loop)
+  const isNavigatingRef = useRef(false);
 
   // Generate metro layout
   const { nodes: metroNodes, edges: metroEdges } = useMemo(
@@ -73,24 +77,60 @@ function MetroCanvas() {
     toggleOverview,
   } = useKeyboardNavigation({ sections, slides });
 
+  // Find closest metro stop to viewport center
+  const findClosestSlide = useCallback(() => {
+    const viewport = getViewport();
+    const centerX =
+      -viewport.x / viewport.zoom + window.innerWidth / 2 / viewport.zoom;
+    const centerY =
+      -viewport.y / viewport.zoom + window.innerHeight / 2 / viewport.zoom;
+
+    let closest: string | null = null;
+    let minDist = Infinity;
+
+    for (const node of nodes) {
+      if (node.type === "metroStop") {
+        const dx = node.position.x - centerX;
+        const dy = node.position.y - centerY;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < minDist) {
+          minDist = dist;
+          closest = node.id.replace("metro-", "");
+        }
+      }
+    }
+    return closest;
+  }, [nodes, getViewport]);
+
+  // Auto-update active slide based on viewport center
+  useOnViewportChange({
+    onEnd: useCallback(() => {
+      // Skip if we initiated the viewport change (prevents infinite loop)
+      if (isNavigatingRef.current) {
+        isNavigatingRef.current = false;
+        return;
+      }
+      const closest = findClosestSlide();
+      if (closest && closest !== currentSlideId) {
+        isNavigatingRef.current = true;
+        navigateToSlide(closest);
+      }
+    }, [findClosestSlide, currentSlideId, navigateToSlide]),
+  });
+
   // Handle node click - zoom to stop and navigate
   const handleNodeClick = useCallback<NodeMouseHandler>(
     (_, node) => {
       if (node.type === "metroStop") {
         // Extract slide id and navigate
         const slideId = node.id.replace("metro-", "");
+        // Set navigating ref to prevent viewport change handler from firing
+        isNavigatingRef.current = true;
+        // navigateToSlide already calls fitView internally
         navigateToSlide(slideId);
-
-        // Zoom to the clicked stop with smooth animation
-        fitView({
-          nodes: [{ id: node.id }],
-          duration: 500,
-          padding: 0.2,
-          maxZoom: 2.5,
-        });
       }
     },
-    [fitView, navigateToSlide],
+    [navigateToSlide],
   );
 
   // Handle node changes (dragging)

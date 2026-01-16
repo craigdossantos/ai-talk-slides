@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo } from "react";
 import { useReactFlow } from "@xyflow/react";
 import type { Section, SlideContent } from "../types/presentation";
 
@@ -50,13 +50,16 @@ export function useKeyboardNavigation({
   const currentSectionId =
     slides.find((s) => s.id === currentSlideId)?.sectionId ?? null;
 
-  // Group slides by section for navigation
-  const slidesBySection = new Map<string, SlideContent[]>();
-  for (const slide of slides) {
-    const sectionSlides = slidesBySection.get(slide.sectionId) || [];
-    sectionSlides.push(slide);
-    slidesBySection.set(slide.sectionId, sectionSlides);
-  }
+  // Group slides by section for navigation (memoized to avoid stale closures)
+  const slidesBySection = useMemo(() => {
+    const map = new Map<string, SlideContent[]>();
+    for (const slide of slides) {
+      const sectionSlides = map.get(slide.sectionId) || [];
+      sectionSlides.push(slide);
+      map.set(slide.sectionId, sectionSlides);
+    }
+    return map;
+  }, [slides]);
 
   // Navigate to a specific slide (zoomed so slide takes 2/3 of window)
   const navigateToSlide = useCallback(
@@ -64,7 +67,7 @@ export function useKeyboardNavigation({
       setCurrentSlideId(slideId);
       setIsOverviewMode(false);
       fitView({
-        nodes: [{ id: `slide-${slideId}` }],
+        nodes: [{ id: `metro-${slideId}` }],
         duration: fitViewDuration,
         padding: 0.15,
         maxZoom: 2.5,
@@ -83,12 +86,15 @@ export function useKeyboardNavigation({
       }
 
       setIsOverviewMode(false);
-      fitView({
-        nodes: [{ id: `section-${sectionId}` }],
-        duration: fitViewDuration,
-        padding: 0.15,
-        maxZoom: 2.5,
-      });
+      // Navigate to the first slide of the section using its metro node ID
+      if (sectionSlides && sectionSlides.length > 0) {
+        fitView({
+          nodes: [{ id: `metro-${sectionSlides[0].id}` }],
+          duration: fitViewDuration,
+          padding: 0.15,
+          maxZoom: 2.5,
+        });
+      }
     },
     [fitView, fitViewDuration, slidesBySection],
   );
@@ -110,7 +116,7 @@ export function useKeyboardNavigation({
       // Zoom back to current slide (takes 2/3 of window)
       if (currentSlideId) {
         fitView({
-          nodes: [{ id: `slide-${currentSlideId}` }],
+          nodes: [{ id: `metro-${currentSlideId}` }],
           duration: fitViewDuration,
           padding: 0.15,
           maxZoom: 2.5,
@@ -124,7 +130,7 @@ export function useKeyboardNavigation({
     if (currentSlideId) {
       setIsOverviewMode(false);
       fitView({
-        nodes: [{ id: `slide-${currentSlideId}` }],
+        nodes: [{ id: `metro-${currentSlideId}` }],
         duration: fitViewDuration,
         padding: 0.15,
         maxZoom: 2.5,
