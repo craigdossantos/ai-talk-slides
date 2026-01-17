@@ -169,6 +169,7 @@ export const METRO_LINE_COLORS = {
   mapping: "#22c55e", // green - Mapping the Journey
   "levels-nontech": "#3b82f6", // blue - Non-Technical Track
   "levels-tech": "#f97316", // orange - Technical Track
+  projects: "#d946ef", // magenta/fuchsia - Projects showcase
   closing: "#a855f7", // purple - Closing
 } as const;
 

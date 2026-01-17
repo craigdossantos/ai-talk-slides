@@ -2,6 +2,10 @@ import { useCallback, useEffect, useState, useMemo } from "react";
 import { useReactFlow } from "@xyflow/react";
 import type { Section, SlideContent } from "../types/presentation";
 
+// Constants for slide card positioning (must match MetroStopNode.css)
+const CARD_OFFSET_ABOVE_NODE = 50; // bottom: 50px in CSS
+const CARD_HEIGHT_ESTIMATE = 350; // ~250px image + ~100px content
+
 interface UseKeyboardNavigationOptions {
   sections: Section[];
   slides: SlideContent[];
@@ -20,6 +24,7 @@ interface UseKeyboardNavigationReturn {
   goToPreviousSlide: () => void;
   toggleOverview: () => void;
   fitCurrentSlide: () => void;
+  setActiveSlide: (slideId: string) => void;
 }
 
 /**
@@ -36,7 +41,7 @@ export function useKeyboardNavigation({
   slides,
   fitViewDuration = 500,
 }: UseKeyboardNavigationOptions): UseKeyboardNavigationReturn {
-  const { fitView } = useReactFlow();
+  const { fitView, setViewport, getNode } = useReactFlow();
 
   // Track current slide and section
   const [currentSlideId, setCurrentSlideId] = useState<string | null>(
@@ -61,42 +66,67 @@ export function useKeyboardNavigation({
     return map;
   }, [slides]);
 
-  // Navigate to a specific slide (zoomed so slide takes 2/3 of window)
-  const navigateToSlide = useCallback(
+  // Set active slide state only (no fitView) - for viewport change detection
+  const setActiveSlide = useCallback((slideId: string) => {
+    setCurrentSlideId(slideId);
+  }, []);
+
+  // Helper: center viewport on a slide's card (not the node)
+  const centerOnSlideCard = useCallback(
     (slideId: string) => {
-      setCurrentSlideId(slideId);
-      setIsOverviewMode(false);
-      fitView({
-        nodes: [{ id: `metro-${slideId}` }],
-        duration: fitViewDuration,
-        padding: 0.15,
-        maxZoom: 2.5,
-      });
-    },
-    [fitView, fitViewDuration],
-  );
-
-  // Navigate to a specific section (focuses on section header)
-  const navigateToSection = useCallback(
-    (sectionId: string) => {
-      // Get first slide of section to set as current
-      const sectionSlides = slidesBySection.get(sectionId);
-      if (sectionSlides && sectionSlides.length > 0) {
-        setCurrentSlideId(sectionSlides[0].id);
-      }
-
-      setIsOverviewMode(false);
-      // Navigate to the first slide of the section using its metro node ID
-      if (sectionSlides && sectionSlides.length > 0) {
+      const node = getNode(`metro-${slideId}`);
+      if (!node) {
+        // Fallback to fitView if node not found
         fitView({
-          nodes: [{ id: `metro-${sectionSlides[0].id}` }],
+          nodes: [{ id: `metro-${slideId}` }],
           duration: fitViewDuration,
           padding: 0.15,
           maxZoom: 2.5,
         });
+        return;
+      }
+
+      const cardCenterY =
+        node.position.y - CARD_OFFSET_ABOVE_NODE - CARD_HEIGHT_ESTIMATE / 2;
+      const cardCenterX = node.position.x;
+      const zoom = 2.0;
+      const viewportX =
+        -cardCenterX * zoom +
+        (typeof window !== "undefined" ? window.innerWidth / 2 : 600);
+      const viewportY =
+        -cardCenterY * zoom +
+        (typeof window !== "undefined" ? window.innerHeight / 2 : 400);
+
+      setViewport(
+        { x: viewportX, y: viewportY, zoom },
+        { duration: fitViewDuration },
+      );
+    },
+    [fitView, fitViewDuration, getNode, setViewport],
+  );
+
+  // Navigate to a specific slide with viewport centered on slide card (not node)
+  const navigateToSlide = useCallback(
+    (slideId: string) => {
+      setCurrentSlideId(slideId);
+      setIsOverviewMode(false);
+      centerOnSlideCard(slideId);
+    },
+    [centerOnSlideCard],
+  );
+
+  // Navigate to a specific section (focuses on first slide of section)
+  const navigateToSection = useCallback(
+    (sectionId: string) => {
+      const sectionSlides = slidesBySection.get(sectionId);
+      if (sectionSlides && sectionSlides.length > 0) {
+        const firstSlideId = sectionSlides[0].id;
+        setCurrentSlideId(firstSlideId);
+        setIsOverviewMode(false);
+        centerOnSlideCard(firstSlideId);
       }
     },
-    [fitView, fitViewDuration, slidesBySection],
+    [slidesBySection, centerOnSlideCard],
   );
 
   // Toggle overview mode (fit all nodes into view)
@@ -113,30 +143,26 @@ export function useKeyboardNavigation({
         maxZoom: 1,
       });
     } else {
-      // Zoom back to current slide (takes 2/3 of window)
+      // Zoom back to current slide, centered on card
       if (currentSlideId) {
-        fitView({
-          nodes: [{ id: `metro-${currentSlideId}` }],
-          duration: fitViewDuration,
-          padding: 0.15,
-          maxZoom: 2.5,
-        });
+        centerOnSlideCard(currentSlideId);
       }
     }
-  }, [fitView, fitViewDuration, currentSlideId, isOverviewMode]);
+  }, [
+    fitView,
+    fitViewDuration,
+    currentSlideId,
+    isOverviewMode,
+    centerOnSlideCard,
+  ]);
 
-  // Fit current slide to view (takes 2/3 of window)
+  // Fit current slide to view, centered on card
   const fitCurrentSlide = useCallback(() => {
     if (currentSlideId) {
       setIsOverviewMode(false);
-      fitView({
-        nodes: [{ id: `metro-${currentSlideId}` }],
-        duration: fitViewDuration,
-        padding: 0.15,
-        maxZoom: 2.5,
-      });
+      centerOnSlideCard(currentSlideId);
     }
-  }, [fitView, fitViewDuration, currentSlideId]);
+  }, [currentSlideId, centerOnSlideCard]);
 
   // Get all slides in presentation order (flattened by section)
   const orderedSlides = sections.flatMap(
@@ -375,5 +401,6 @@ export function useKeyboardNavigation({
     goToPreviousSlide,
     toggleOverview,
     fitCurrentSlide,
+    setActiveSlide,
   };
 }

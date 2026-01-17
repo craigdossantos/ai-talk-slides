@@ -28,6 +28,11 @@ export const sections: Section[] = [
     track: "technical",
   },
   {
+    id: "projects",
+    title: "Projects",
+    track: "general",
+  },
+  {
     id: "closing",
     title: "Closing",
     track: "general",
@@ -125,14 +130,11 @@ export const slides: SlideContent[] = [
       "Resistance to change is the only barrier to entry",
     ],
   },
-
-  // Section: Non-Technical Levels (0-8)
   {
     id: "slide-07",
-    sectionId: "levels-nontech",
+    sectionId: "mapping",
     type: "quote",
     title: "Avoidance",
-    level: 0,
     backgroundImage: "/assets/images/slide-07-avoidance.jpg",
     quote: '"This won\'t affect my job."',
     bullets: [
@@ -140,6 +142,9 @@ export const slides: SlideContent[] = [
       "AI may require us to think at a higher level",
     ],
   },
+
+  // Avoidance moved to mapping section
+  // Section: Non-Technical Levels (1-8)
   {
     id: "slide-08",
     sectionId: "levels-nontech",
@@ -171,8 +176,8 @@ export const slides: SlideContent[] = [
     id: "slide-10",
     sectionId: "levels-nontech",
     type: "content",
-    title: "Context Engineering",
-    level: 3,
+    title: "Context Management",
+    level: 5,
     backgroundImage: "/assets/images/slide-10-context-engineering.jpg",
     bullets: [
       "Understanding how context works",
@@ -186,9 +191,10 @@ export const slides: SlideContent[] = [
     sectionId: "levels-nontech",
     type: "content",
     title: "Using AI Tools",
-    level: 4,
+    level: 3,
     backgroundImage: "/assets/images/slide-11-using-ai-tools.jpg",
     bullets: [
+      "Still getting unreliable results",
       "Wispr Flow - voice dictation",
       "Granola - automatic meeting notes",
       "Obsidian - AI-accessible notes in Markdown",
@@ -200,7 +206,7 @@ export const slides: SlideContent[] = [
     sectionId: "levels-nontech",
     type: "content",
     title: "AI-Powered Browsing",
-    level: 5,
+    level: 4,
     backgroundImage: "/assets/images/slide-12-ai-powered-browsing.jpg",
     bullets: [
       "Browsers are the modern workbench",
@@ -351,7 +357,7 @@ export const slides: SlideContent[] = [
     id: "slide-23",
     sectionId: "levels-tech",
     type: "content",
-    title: "Context Management",
+    title: "Context Engineering",
     subtitle: "The memory game",
     level: 7,
     backgroundImage: "/assets/images/slide-23-level-7-context-management.jpg",
@@ -393,6 +399,116 @@ export const slides: SlideContent[] = [
       "Token usage at this level: $100-200+/month plans",
       "Virtual Private Servers: agents running in the cloud 24/7",
       "Where infrastructure meets intelligence",
+    ],
+  },
+
+  // Section: Projects - Things I've Built
+  {
+    id: "project-01",
+    sectionId: "projects",
+    type: "content",
+    title: "CraigDosSantos.com",
+    subtitle: "Personal portfolio and blog",
+    backgroundImage: "/assets/images/project-01-craigdossantos.jpg",
+    bullets: ["Showcasing my work and writing", "Built with AI assistance"],
+  },
+  {
+    id: "project-02",
+    sectionId: "projects",
+    type: "content",
+    title: "The Secret Game",
+    subtitle: "Share secrets with friends",
+    backgroundImage: "/assets/images/project-02-secret-game.jpg",
+    bullets: [
+      "Pass a URL to a group of friends",
+      "Answer questions to reveal hidden answers",
+      "Social game for WhatsApp threads",
+    ],
+  },
+  {
+    id: "project-03",
+    sectionId: "projects",
+    type: "content",
+    title: "Freestyle Flow",
+    subtitle: "Learn to freestyle rap",
+    backgroundImage: "/assets/images/project-03-freestyle-flow.jpg",
+    bullets: [
+      "Mobile app for freestyle rap training",
+      "Also teaches improv singing",
+      "Practice at your own pace",
+    ],
+  },
+  {
+    id: "project-04",
+    sectionId: "projects",
+    type: "content",
+    title: "OurWeUnion.com",
+    subtitle: "Wedding website",
+    backgroundImage: "/assets/images/project-04-ourweunion.jpg",
+    bullets: [
+      "Wedding site for Craig and Stef",
+      "Single landing page with Google Form",
+    ],
+  },
+  {
+    id: "project-05",
+    sectionId: "projects",
+    type: "content",
+    title: "Dialogue Dojo",
+    subtitle: "Practice communication skills",
+    backgroundImage: "/assets/images/project-05-dialogue-dojo.jpg",
+    bullets: [
+      "Voice-to-voice practice sessions",
+      "Communication and negotiation training",
+      "Non-violent communication practice",
+    ],
+  },
+  {
+    id: "project-06",
+    sectionId: "projects",
+    type: "content",
+    title: "Instant Book",
+    subtitle: "Learn from books faster",
+    backgroundImage: "/assets/images/project-06-instant-book.jpg",
+    bullets: [
+      "Upload EPUB books",
+      "Breaks content into chapters",
+      "Zoom in and out of book content",
+    ],
+  },
+  {
+    id: "project-07",
+    sectionId: "projects",
+    type: "content",
+    title: "YouTube Summary",
+    subtitle: "Summarize YouTube videos",
+    backgroundImage: "/assets/images/project-07-youtube-summary.jpg",
+    bullets: [
+      "Drop in video or playlist links",
+      "Get summaries, key takeaways, action items",
+      "Chat with content via Gemini",
+    ],
+  },
+  {
+    id: "project-08",
+    sectionId: "projects",
+    type: "content",
+    title: "Video Sum",
+    subtitle: "Desktop video summarizer",
+    backgroundImage: "/assets/images/project-08-video-sum.jpg",
+    bullets: ["Mac desktop application", "Summarize video content locally"],
+  },
+  {
+    id: "project-09",
+    sectionId: "projects",
+    type: "content",
+    title: "UseQuota.app",
+    subtitle: "Credit-based AI billing",
+    backgroundImage: "/assets/images/project-09-usequota.jpg",
+    bullets: [
+      "Launch AI apps with credit billing",
+      "Users get a portable wallet",
+      "Works across multiple AI apps",
     ],
   },
 
@@ -586,6 +702,58 @@ export const resources: Resource[] = [
     title: "Supabase",
     url: "https://supabase.com",
     image: "https://supabase.com/favicon.ico",
+  },
+  // Project Resources
+  {
+    id: "res-project-01",
+    slideId: "project-01",
+    type: "tool",
+    title: "CraigDosSantos.com",
+    url: "https://craigdossantos.com",
+  },
+  {
+    id: "res-project-02",
+    slideId: "project-02",
+    type: "tool",
+    title: "The Secret Game",
+    url: "https://secretgame.lightersky.com",
+  },
+  // project-03 (Freestyle Flow) - mobile app, no URL
+  {
+    id: "res-project-04",
+    slideId: "project-04",
+    type: "tool",
+    title: "OurWeUnion.com",
+    url: "https://ourweunion.com",
+  },
+  {
+    id: "res-project-05",
+    slideId: "project-05",
+    type: "tool",
+    title: "Dialogue Dojo",
+    url: "https://dialoguedojo.lightersky.com",
+  },
+  {
+    id: "res-project-06",
+    slideId: "project-06",
+    type: "tool",
+    title: "Instant Book",
+    url: "https://instantbook.lightersky.com",
+  },
+  {
+    id: "res-project-07",
+    slideId: "project-07",
+    type: "tool",
+    title: "YouTube Summary",
+    url: "https://youtubesummary.lightersky.com",
+  },
+  // project-08 (Video Sum) - Mac app, no URL
+  {
+    id: "res-project-09",
+    slideId: "project-09",
+    type: "tool",
+    title: "UseQuota.app",
+    url: "https://usequota.app",
   },
 ];
 

@@ -21,6 +21,7 @@ const SECTION_Y_POSITIONS: Record<string, number> = {
   mapping: 600, // Center junction area (was 320)
   "levels-nontech": 500, // Upper parallel track (was 260)
   "levels-tech": 850, // Lower parallel track (was 440)
+  projects: 1150, // Below tech track - projects showcase line
   closing: 700, // Right side convergence (was 350)
 };
 
@@ -31,7 +32,8 @@ const SECTION_X_STARTS: Record<string, number> = {
   mapping: 400,
   "levels-nontech": 700,
   "levels-tech": 700,
-  closing: 2600, // Adjusted for wider spacing
+  projects: 700, // Starts at same X as CLI
+  closing: 3200, // Adjusted for wider spacing to accommodate projects
 };
 
 // Smooth curve radius for metro line bends
@@ -250,6 +252,31 @@ export function generateMetroLayout(
     });
   }
 
+  // Non-Tech -> Tech Track (bridge from Natural Language Software to CLI)
+  if (
+    lastNodeBySection["levels-nontech"] &&
+    firstNodeBySection["levels-tech"]
+  ) {
+    edges.push({
+      id: "edge-nontech-to-tech",
+      source: lastNodeBySection["levels-nontech"],
+      target: firstNodeBySection["levels-tech"],
+      sourceHandle: "bottom",
+      targetHandle: "top",
+      type: "smoothstep",
+      pathOptions: {
+        borderRadius: EDGE_BORDER_RADIUS,
+        offset: 40,
+      },
+      style: {
+        stroke: METRO_LINE_COLORS["levels-tech"],
+        strokeWidth: METRO_LAYOUT.lineThickness,
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+      },
+    });
+  }
+
   // Non-Tech -> Closing
   if (lastNodeBySection["levels-nontech"] && firstNodeBySection["closing"]) {
     edges.push({
@@ -294,6 +321,50 @@ export function generateMetroLayout(
     });
   }
 
+  // CLI (first tech node) -> Projects (branch down to projects line)
+  if (firstNodeBySection["levels-tech"] && firstNodeBySection["projects"]) {
+    edges.push({
+      id: "edge-cli-to-projects",
+      source: firstNodeBySection["levels-tech"],
+      target: firstNodeBySection["projects"],
+      sourceHandle: "bottom",
+      targetHandle: "top",
+      type: "smoothstep",
+      pathOptions: {
+        borderRadius: EDGE_BORDER_RADIUS,
+        offset: 40,
+      },
+      style: {
+        stroke: METRO_LINE_COLORS["projects"],
+        strokeWidth: METRO_LAYOUT.lineThickness,
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+      },
+    });
+  }
+
+  // Projects -> Closing
+  if (lastNodeBySection["projects"] && firstNodeBySection["closing"]) {
+    edges.push({
+      id: "edge-projects-to-closing",
+      source: lastNodeBySection["projects"],
+      target: firstNodeBySection["closing"],
+      sourceHandle: "right",
+      targetHandle: "left",
+      type: "smoothstep",
+      pathOptions: {
+        borderRadius: EDGE_BORDER_RADIUS,
+        offset: 80,
+      },
+      style: {
+        stroke: METRO_LINE_COLORS["projects"],
+        strokeWidth: METRO_LAYOUT.lineThickness,
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+      },
+    });
+  }
+
   // Mark junction nodes (where multiple lines converge)
   const junctionNodeIds = new Set<string>();
   const junctionColors = new Map<string, string[]>();
@@ -308,12 +379,22 @@ export function generateMetroLayout(
     ]);
   }
 
-  // First node of closing is a junction (receives from both tracks)
+  // First node of tech track (CLI) is a junction (branches to projects)
+  if (firstNodeBySection["levels-tech"]) {
+    junctionNodeIds.add(firstNodeBySection["levels-tech"]);
+    junctionColors.set(firstNodeBySection["levels-tech"], [
+      METRO_LINE_COLORS["levels-tech"],
+      METRO_LINE_COLORS["projects"],
+    ]);
+  }
+
+  // First node of closing is a junction (receives from multiple tracks)
   if (firstNodeBySection["closing"]) {
     junctionNodeIds.add(firstNodeBySection["closing"]);
     junctionColors.set(firstNodeBySection["closing"], [
       METRO_LINE_COLORS["levels-nontech"],
       METRO_LINE_COLORS["levels-tech"],
+      METRO_LINE_COLORS["projects"],
       METRO_LINE_COLORS["closing"],
     ]);
   }

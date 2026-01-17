@@ -75,6 +75,7 @@ function MetroCanvas() {
     goToNextSlide,
     goToPreviousSlide,
     toggleOverview,
+    setActiveSlide,
   } = useKeyboardNavigation({ sections, slides });
 
   // Find closest metro stop to viewport center
@@ -102,7 +103,7 @@ function MetroCanvas() {
     return closest;
   }, [nodes, getViewport]);
 
-  // Auto-update active slide based on viewport center
+  // Auto-update active slide based on viewport center (state only, no fitView)
   useOnViewportChange({
     onEnd: useCallback(() => {
       // Skip if we initiated the viewport change (prevents infinite loop)
@@ -110,12 +111,13 @@ function MetroCanvas() {
         isNavigatingRef.current = false;
         return;
       }
+      // Only update active slide state - do NOT trigger fitView
+      // This allows free manual zoom/pan without auto-centering
       const closest = findClosestSlide();
       if (closest && closest !== currentSlideId) {
-        isNavigatingRef.current = true;
-        navigateToSlide(closest);
+        setActiveSlide(closest);
       }
-    }, [findClosestSlide, currentSlideId, navigateToSlide]),
+    }, [findClosestSlide, currentSlideId, setActiveSlide]),
   });
 
   // Handle node click - zoom to stop and navigate
