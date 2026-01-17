@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Project Image Selection Gallery</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        min-height: 100vh;
+        padding: 2rem;
+        color: #fff;
+      }
+      h1 {
+        text-align: center;
+        margin-bottom: 1rem;
+        font-size: 2rem;
+        background: linear-gradient(135deg, #d946ef, #a855f7);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      .instructions {
+        text-align: center;
+        color: #94a3b8;
+        margin-bottom: 2rem;
+      }
+      .project-section {
+        margin-bottom: 3rem;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 16px;
+        padding: 1.5rem;
+      }
+      .project-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #d946ef;
+      }
+      .project-title {
+        font-size: 1.5rem;
+        color: #d946ef;
+      }
+      .project-url {
+        color: #94a3b8;
+        font-size: 0.9rem;
+      }
+      .project-url a {
+        color: #60a5fa;
+        text-decoration: none;
+      }
+      .project-url a:hover {
+        text-decoration: underline;
+      }
+      .variations {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1rem;
+      }
+      .variation {
+        position: relative;
+        cursor: pointer;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border: 3px solid transparent;
+      }
+      .variation:hover {
+        transform: scale(1.02);
+        border-color: #d946ef;
+      }
+      .variation.selected {
+        border-color: #22c55e;
+        box-shadow: 0 0 20px rgba(34, 197, 94, 0.5);
+      }
+      .variation img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      .variation-label {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+        padding: 2rem 1rem 1rem;
+        font-size: 0.9rem;
+      }
+      .style-name {
+        font-weight: 600;
+        color: #fff;
+      }
+      .selected-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #22c55e;
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        display: none;
+      }
+      .variation.selected .selected-badge {
+        display: block;
+      }
+      .submit-section {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(26, 26, 46, 0.95);
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+      }
+      .selection-count {
+        color: #94a3b8;
+      }
+      .submit-btn {
+        background: linear-gradient(135deg, #d946ef, #a855f7);
+        color: white;
+        border: none;
+        padding: 0.75rem 2rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+      .submit-btn:hover {
+        transform: scale(1.05);
+      }
+      .submit-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      #output {
+        background: #0f172a;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+        font-family: monospace;
+        font-size: 0.85rem;
+        max-height: 200px;
+        overflow-y: auto;
+        display: none;
+      }
+      .spacer {
+        height: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Project Image Selection</h1>
+    <p class="instructions">
+      Click on an image to select it for each project. Then copy the selection
+      to share with Claude.
+    </p>
+
+    <div class="project-section" data-project="project-01">
+      <div class="project-header">
+        <span class="project-title">1. CraigDosSantos.com</span>
+        <span class="project-url"
+          ><a href="https://craigdossantos.com" target="_blank"
+            >craigdossantos.com</a
+          ></span
+        >
+      </div>
+      <div class="variations">
+        <div
+          class="variation"
+          data-file="project-01-craigdossantos/variation_20260116_182657_01_vibrant-pop-art.jpg"
+        >
+          <img
+            src="project-01-craigdossantos/variation_20260116_182657_01_vibrant-pop-art.jpg"
+            alt="Vibrant Pop Art"
+          />
+          <div class="variation-label">
+            <span class="style-name">Vibrant Pop Art</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-01-craigdossantos/variation_20260116_182657_02_minimalist-tech.jpg"
+        >
+          <img
+            src="project-01-craigdossantos/variation_20260116_182657_02_minimalist-tech.jpg"
+            alt="Minimalist Tech"
+          />
+          <div class="variation-label">
+            <span class="style-name">Minimalist Tech</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-01-craigdossantos/variation_20260116_182657_03_documentary-authentic.jpg"
+        >
+          <img
+            src="project-01-craigdossantos/variation_20260116_182657_03_documentary-authentic.jpg"
+            alt="Documentary Authentic"
+          />
+          <div class="variation-label">
+            <span class="style-name">Documentary Authentic</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-01-craigdossantos/variation_20260116_182657_04_retro-futurism.jpg"
+        >
+          <img
+            src="project-01-craigdossantos/variation_20260116_182657_04_retro-futurism.jpg"
+            alt="Retro Futurism"
+          />
+          <div class="variation-label">
+            <span class="style-name">Retro Futurism</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-section" data-project="project-02">
+      <div class="project-header">
+        <span class="project-title">2. The Secret Game</span>
+        <span class="project-url"
+          ><a href="https://secretgame.lightersky.com" target="_blank"
+            >secretgame.lightersky.com</a
+          ></span
+        >
+      </div>
+      <div class="variations">
+        <div
+          class="variation"
+          data-file="project-02-secret-game/variation_20260116_182813_01_cinematic-photorealistic.jpg"
+        >
+          <img
+            src="project-02-secret-game/variation_20260116_182813_01_cinematic-photorealistic.jpg"
+            alt="Cinematic Photorealistic"
+          />
+          <div class="variation-label">
+            <span class="style-name">Cinematic Photorealistic</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-02-secret-game/variation_20260116_182813_02_documentary-authentic.jpg"
+        >
+          <img
+            src="project-02-secret-game/variation_20260116_182813_02_documentary-authentic.jpg"
+            alt="Documentary Authentic"
+          />
+          <div class="variation-label">
+            <span class="style-name">Documentary Authentic</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-02-secret-game/variation_20260116_182813_03_minimalist-tech.jpg"
+        >
+          <img
+            src="project-02-secret-game/variation_20260116_182813_03_minimalist-tech.jpg"
+            alt="Minimalist Tech"
+          />
+          <div class="variation-label">
+            <span class="style-name">Minimalist Tech</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-02-secret-game/variation_20260116_182813_04_vibrant-pop-art.jpg"
+        >
+          <img
+            src="project-02-secret-game/variation_20260116_182813_04_vibrant-pop-art.jpg"
+            alt="Vibrant Pop Art"
+          />
+          <div class="variation-label">
+            <span class="style-name">Vibrant Pop Art</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-section" data-project="project-03">
+      <div class="project-header">
+        <span class="project-title">3. Freestyle Flow</span>
+        <span class="project-url">(Mobile App - Video Demo)</span>
+      </div>
+      <div class="variations">
+        <div
+          class="variation"
+          data-file="project-03-freestyle-flow/variation_20260116_182913_01_abstract-conceptual.jpg"
+        >
+          <img
+            src="project-03-freestyle-flow/variation_20260116_182913_01_abstract-conceptual.jpg"
+            alt="Abstract Conceptual"
+          />
+          <div class="variation-label">
+            <span class="style-name">Abstract Conceptual</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-03-freestyle-flow/variation_20260116_182913_02_cinematic-photorealistic.jpg"
+        >
+          <img
+            src="project-03-freestyle-flow/variation_20260116_182913_02_cinematic-photorealistic.jpg"
+            alt="Cinematic Photorealistic"
+          />
+          <div class="variation-label">
+            <span class="style-name">Cinematic Photorealistic</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-03-freestyle-flow/variation_20260116_182913_03_modern-illustrated.jpg"
+        >
+          <img
+            src="project-03-freestyle-flow/variation_20260116_182913_03_modern-illustrated.jpg"
+            alt="Modern Illustrated"
+          />
+          <div class="variation-label">
+            <span class="style-name">Modern Illustrated</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-03-freestyle-flow/variation_20260116_182913_04_minimalist-tech.jpg"
+        >
+          <img
+            src="project-03-freestyle-flow/variation_20260116_182913_04_minimalist-tech.jpg"
+            alt="Minimalist Tech"
+          />
+          <div class="variation-label">
+            <span class="style-name">Minimalist Tech</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-section" data-project="project-04">
+      <div class="project-header">
+        <span class="project-title">4. OurWeUnion.com</span>
+        <span class="project-url"
+          ><a href="https://ourweunion.com" target="_blank"
+            >ourweunion.com</a
+          ></span
+        >
+      </div>
+      <div class="variations">
+        <div
+          class="variation"
+          data-file="project-04-ourweunion/variation_20260116_183014_01_vibrant-pop-art.jpg"
+        >
+          <img
+            src="project-04-ourweunion/variation_20260116_183014_01_vibrant-pop-art.jpg"
+            alt="Vibrant Pop Art"
+          />
+          <div class="variation-label">
+            <span class="style-name">Vibrant Pop Art</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-04-ourweunion/variation_20260116_183014_02_modern-illustrated.jpg"
+        >
+          <img
+            src="project-04-ourweunion/variation_20260116_183014_02_modern-illustrated.jpg"
+            alt="Modern Illustrated"
+          />
+          <div class="variation-label">
+            <span class="style-name">Modern Illustrated</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-04-ourweunion/variation_20260116_183014_03_abstract-conceptual.jpg"
+        >
+          <img
+            src="project-04-ourweunion/variation_20260116_183014_03_abstract-conceptual.jpg"
+            alt="Abstract Conceptual"
+          />
+          <div class="variation-label">
+            <span class="style-name">Abstract Conceptual</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-04-ourweunion/variation_20260116_183014_04_dark-cinematic.jpg"
+        >
+          <img
+            src="project-04-ourweunion/variation_20260116_183014_04_dark-cinematic.jpg"
+            alt="Dark Cinematic"
+          />
+          <div class="variation-label">
+            <span class="style-name">Dark Cinematic</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-section" data-project="project-05">
+      <div class="project-header">
+        <span class="project-title">5. Dialogue Dojo</span>
+        <span class="project-url"
+          ><a href="https://dialoguedojo.lightersky.com" target="_blank"
+            >dialoguedojo.lightersky.com</a
+          ></span
+        >
+      </div>
+      <div class="variations">
+        <div
+          class="variation"
+          data-file="project-05-dialogue-dojo/variation_20260116_183145_01_minimalist-tech.jpg"
+        >
+          <img
+            src="project-05-dialogue-dojo/variation_20260116_183145_01_minimalist-tech.jpg"
+            alt="Minimalist Tech"
+          />
+          <div class="variation-label">
+            <span class="style-name">Minimalist Tech</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-05-dialogue-dojo/variation_20260116_183145_02_abstract-conceptual.jpg"
+        >
+          <img
+            src="project-05-dialogue-dojo/variation_20260116_183145_02_abstract-conceptual.jpg"
+            alt="Abstract Conceptual"
+          />
+          <div class="variation-label">
+            <span class="style-name">Abstract Conceptual</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-05-dialogue-dojo/variation_20260116_183145_03_retro-futurism.jpg"
+        >
+          <img
+            src="project-05-dialogue-dojo/variation_20260116_183145_03_retro-futurism.jpg"
+            alt="Retro Futurism"
+          />
+          <div class="variation-label">
+            <span class="style-name">Retro Futurism</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-05-dialogue-dojo/variation_20260116_183145_04_dark-cinematic.jpg"
+        >
+          <img
+            src="project-05-dialogue-dojo/variation_20260116_183145_04_dark-cinematic.jpg"
+            alt="Dark Cinematic"
+          />
+          <div class="variation-label">
+            <span class="style-name">Dark Cinematic</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-section" data-project="project-06">
+      <div class="project-header">
+        <span class="project-title">6. Instant Book</span>
+        <span class="project-url"
+          ><a href="https://instantbook.lightersky.com" target="_blank"
+            >instantbook.lightersky.com</a
+          ></span
+        >
+      </div>
+      <div class="variations">
+        <div
+          class="variation"
+          data-file="project-06-instant-book/variation_20260116_183246_01_abstract-conceptual.jpg"
+        >
+          <img
+            src="project-06-instant-book/variation_20260116_183246_01_abstract-conceptual.jpg"
+            alt="Abstract Conceptual"
+          />
+          <div class="variation-label">
+            <span class="style-name">Abstract Conceptual</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-06-instant-book/variation_20260116_183246_02_minimalist-tech.jpg"
+        >
+          <img
+            src="project-06-instant-book/variation_20260116_183246_02_minimalist-tech.jpg"
+            alt="Minimalist Tech"
+          />
+          <div class="variation-label">
+            <span class="style-name">Minimalist Tech</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-06-instant-book/variation_20260116_183246_03_cinematic-photorealistic.jpg"
+        >
+          <img
+            src="project-06-instant-book/variation_20260116_183246_03_cinematic-photorealistic.jpg"
+            alt="Cinematic Photorealistic"
+          />
+          <div class="variation-label">
+            <span class="style-name">Cinematic Photorealistic</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-06-instant-book/variation_20260116_183246_04_dark-cinematic.jpg"
+        >
+          <img
+            src="project-06-instant-book/variation_20260116_183246_04_dark-cinematic.jpg"
+            alt="Dark Cinematic"
+          />
+          <div class="variation-label">
+            <span class="style-name">Dark Cinematic</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-section" data-project="project-07">
+      <div class="project-header">
+        <span class="project-title">7. YouTube Summary</span>
+        <span class="project-url"
+          ><a href="https://youtubesummary.lightersky.com" target="_blank"
+            >youtubesummary.lightersky.com</a
+          ></span
+        >
+      </div>
+      <div class="variations">
+        <div
+          class="variation"
+          data-file="project-07-youtube-summary/variation_20260116_183347_01_modern-illustrated.jpg"
+        >
+          <img
+            src="project-07-youtube-summary/variation_20260116_183347_01_modern-illustrated.jpg"
+            alt="Modern Illustrated"
+          />
+          <div class="variation-label">
+            <span class="style-name">Modern Illustrated</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-07-youtube-summary/variation_20260116_183347_02_cinematic-photorealistic.jpg"
+        >
+          <img
+            src="project-07-youtube-summary/variation_20260116_183347_02_cinematic-photorealistic.jpg"
+            alt="Cinematic Photorealistic"
+          />
+          <div class="variation-label">
+            <span class="style-name">Cinematic Photorealistic</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-07-youtube-summary/variation_20260116_183347_03_abstract-conceptual.jpg"
+        >
+          <img
+            src="project-07-youtube-summary/variation_20260116_183347_03_abstract-conceptual.jpg"
+            alt="Abstract Conceptual"
+          />
+          <div class="variation-label">
+            <span class="style-name">Abstract Conceptual</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-07-youtube-summary/variation_20260116_183347_04_retro-futurism.jpg"
+        >
+          <img
+            src="project-07-youtube-summary/variation_20260116_183347_04_retro-futurism.jpg"
+            alt="Retro Futurism"
+          />
+          <div class="variation-label">
+            <span class="style-name">Retro Futurism</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-section" data-project="project-08">
+      <div class="project-header">
+        <span class="project-title">8. Video Sum</span>
+        <span class="project-url">(Mac Desktop App)</span>
+      </div>
+      <div class="variations">
+        <div
+          class="variation"
+          data-file="project-08-video-sum/variation_20260116_183452_01_vibrant-pop-art.jpg"
+        >
+          <img
+            src="project-08-video-sum/variation_20260116_183452_01_vibrant-pop-art.jpg"
+            alt="Vibrant Pop Art"
+          />
+          <div class="variation-label">
+            <span class="style-name">Vibrant Pop Art</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-08-video-sum/variation_20260116_183452_02_cinematic-photorealistic.jpg"
+        >
+          <img
+            src="project-08-video-sum/variation_20260116_183452_02_cinematic-photorealistic.jpg"
+            alt="Cinematic Photorealistic"
+          />
+          <div class="variation-label">
+            <span class="style-name">Cinematic Photorealistic</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-08-video-sum/variation_20260116_183452_03_dark-cinematic.jpg"
+        >
+          <img
+            src="project-08-video-sum/variation_20260116_183452_03_dark-cinematic.jpg"
+            alt="Dark Cinematic"
+          />
+          <div class="variation-label">
+            <span class="style-name">Dark Cinematic</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-08-video-sum/variation_20260116_183452_04_documentary-authentic.jpg"
+        >
+          <img
+            src="project-08-video-sum/variation_20260116_183452_04_documentary-authentic.jpg"
+            alt="Documentary Authentic"
+          />
+          <div class="variation-label">
+            <span class="style-name">Documentary Authentic</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-section" data-project="project-09">
+      <div class="project-header">
+        <span class="project-title">9. UseQuota.app</span>
+        <span class="project-url"
+          ><a href="https://usequota.app" target="_blank">usequota.app</a></span
+        >
+      </div>
+      <div class="variations">
+        <div
+          class="variation"
+          data-file="project-09-usequota/variation_20260116_183553_01_vibrant-pop-art.jpg"
+        >
+          <img
+            src="project-09-usequota/variation_20260116_183553_01_vibrant-pop-art.jpg"
+            alt="Vibrant Pop Art"
+          />
+          <div class="variation-label">
+            <span class="style-name">Vibrant Pop Art</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-09-usequota/variation_20260116_183553_02_cinematic-photorealistic.jpg"
+        >
+          <img
+            src="project-09-usequota/variation_20260116_183553_02_cinematic-photorealistic.jpg"
+            alt="Cinematic Photorealistic"
+          />
+          <div class="variation-label">
+            <span class="style-name">Cinematic Photorealistic</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-09-usequota/variation_20260116_183553_03_documentary-authentic.jpg"
+        >
+          <img
+            src="project-09-usequota/variation_20260116_183553_03_documentary-authentic.jpg"
+            alt="Documentary Authentic"
+          />
+          <div class="variation-label">
+            <span class="style-name">Documentary Authentic</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+        <div
+          class="variation"
+          data-file="project-09-usequota/variation_20260116_183553_04_abstract-conceptual.jpg"
+        >
+          <img
+            src="project-09-usequota/variation_20260116_183553_04_abstract-conceptual.jpg"
+            alt="Abstract Conceptual"
+          />
+          <div class="variation-label">
+            <span class="style-name">Abstract Conceptual</span>
+          </div>
+          <div class="selected-badge">Selected</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="submit-section">
+      <span class="selection-count"
+        >Selected: <span id="count">0</span>/9 projects</span
+      >
+      <button class="submit-btn" id="copyBtn" disabled>Copy Selections</button>
+    </div>
+
+    <pre id="output"></pre>
+
+    <script>
+      const selections = {};
+
+      document.querySelectorAll(".variation").forEach((el) => {
+        el.addEventListener("click", () => {
+          const section = el.closest(".project-section");
+          const project = section.dataset.project;
+
+          // Deselect others in same section
+          section
+            .querySelectorAll(".variation")
+            .forEach((v) => v.classList.remove("selected"));
+
+          // Select this one
+          el.classList.add("selected");
+          selections[project] = el.dataset.file;
+
+          updateCount();
+        });
+      });
+
+      function updateCount() {
+        const count = Object.keys(selections).length;
+        document.getElementById("count").textContent = count;
+        document.getElementById("copyBtn").disabled = count < 9;
+      }
+
+      document.getElementById("copyBtn").addEventListener("click", () => {
+        const output = JSON.stringify(selections, null, 2);
+        navigator.clipboard.writeText(output);
+
+        const outputEl = document.getElementById("output");
+        outputEl.textContent = output;
+        outputEl.style.display = "block";
+
+        document.getElementById("copyBtn").textContent = "Copied!";
+        setTimeout(() => {
+          document.getElementById("copyBtn").textContent = "Copy Selections";
+        }, 2000);
+      });
+    </script>
+  </body>
+</html>

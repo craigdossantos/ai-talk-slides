@@ -5,12 +5,14 @@ import type {
   MetroStopNode,
   MetroStopNodeData,
   ResourceIconNode,
+  MetroLineLabelNode,
   Resource,
 } from "../types/presentation";
 import { METRO_LINE_COLORS, METRO_LAYOUT } from "../types/presentation";
+import { loadPersistedPositions } from "./persistence";
 
 interface MetroLayoutResult {
-  nodes: (MetroStopNode | ResourceIconNode)[];
+  nodes: (MetroStopNode | ResourceIconNode | MetroLineLabelNode)[];
   edges: BuiltInEdge[];
 }
 
@@ -39,6 +41,55 @@ const SECTION_X_STARTS: Record<string, number> = {
 // Smooth curve radius for metro line bends
 const EDGE_BORDER_RADIUS = 20;
 
+// Metro line label definitions matching the reference design
+const METRO_LINE_LABELS: Record<
+  string,
+  { lineName: string; subtitle: string; offsetX: number; offsetY: number }
+> = {
+  intro: {
+    lineName: "RED LINE",
+    subtitle: "The Widening Gulf (Introduction)",
+    offsetX: -50,
+    offsetY: -80,
+  },
+  understanding: {
+    lineName: "YELLOW LINE",
+    subtitle: "Understanding AI",
+    offsetX: -50,
+    offsetY: -80,
+  },
+  mapping: {
+    lineName: "GREEN LINE",
+    subtitle: "Mapping the Journey",
+    offsetX: -50,
+    offsetY: -80,
+  },
+  "levels-nontech": {
+    lineName: "BLUE LINE",
+    subtitle: "Non-Technical Track (Levels 0-8)",
+    offsetX: -50,
+    offsetY: -80,
+  },
+  "levels-tech": {
+    lineName: "ORANGE LINE",
+    subtitle: "Technical Track (Levels 1-9)",
+    offsetX: -50,
+    offsetY: -80,
+  },
+  projects: {
+    lineName: "MAGENTA LINE",
+    subtitle: "Projects",
+    offsetX: -50,
+    offsetY: -80,
+  },
+  closing: {
+    lineName: "PURPLE LINE",
+    subtitle: "Closing",
+    offsetX: -50,
+    offsetY: -80,
+  },
+};
+
 /**
  * Generates metro stop nodes and connecting edges from slides data.
  * Layout follows the reference design with horizontal lines and 45/90 degree angles.
@@ -48,8 +99,11 @@ export function generateMetroLayout(
   slides: SlideContent[],
   resources: Resource[] = [],
 ): MetroLayoutResult {
-  const nodes: (MetroStopNode | ResourceIconNode)[] = [];
+  const nodes: (MetroStopNode | ResourceIconNode | MetroLineLabelNode)[] = [];
   const edges: BuiltInEdge[] = [];
+
+  // Load any persisted label positions
+  const persistedPositions = loadPersistedPositions();
 
   // Group slides by section
   const slidesBySection = new Map<string, SlideContent[]>();
@@ -407,6 +461,45 @@ export function generateMetroLayout(
         node.id,
       );
     }
+  }
+
+  // Create metro line label nodes for each section
+  for (const section of sections) {
+    const labelConfig = METRO_LINE_LABELS[section.id];
+    if (!labelConfig) continue;
+
+    const firstNodeId = firstNodeBySection[section.id];
+    if (!firstNodeId) continue;
+
+    // Find the first node's position
+    const firstNode = nodes.find((n) => n.id === firstNodeId);
+    if (!firstNode) continue;
+
+    const labelNodeId = `metro-label-${section.id}`;
+    const lineColor =
+      METRO_LINE_COLORS[section.id as keyof typeof METRO_LINE_COLORS] ||
+      "#6b7280";
+
+    // Use persisted position if available, otherwise calculate from first node position
+    const persistedPos = persistedPositions?.[labelNodeId];
+    const position = persistedPos || {
+      x: firstNode.position.x + labelConfig.offsetX,
+      y: firstNode.position.y + labelConfig.offsetY,
+    };
+
+    const labelNode: MetroLineLabelNode = {
+      id: labelNodeId,
+      type: "metroLineLabel",
+      position,
+      draggable: true,
+      data: {
+        lineColor,
+        lineName: labelConfig.lineName,
+        subtitle: labelConfig.subtitle,
+      },
+    };
+
+    nodes.push(labelNode);
   }
 
   return { nodes, edges };

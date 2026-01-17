@@ -7,16 +7,22 @@ import {
   type NodeMouseHandler,
   type NodeChange,
   type Edge,
+  type Node,
 } from "@xyflow/react";
 import MetroStopNode from "./nodes/MetroStopNode";
 import MetroBackgroundNode from "./nodes/MetroBackgroundNode";
 import ResourceIconNode from "./nodes/ResourceIconNode";
 import SlideNode from "./nodes/SlideNode";
+import MetroLineLabelNode from "./nodes/MetroLineLabelNode";
 import NavigationControls from "./panels/NavigationControls";
 import MetroLegend from "./panels/MetroLegend";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
 import { generateMetroLayout } from "../utils/generateMetroLayout";
-import { clearPersistedPositions } from "../utils/persistence";
+import {
+  clearPersistedPositions,
+  loadPersistedPositions,
+  savePersistedPositions,
+} from "../utils/persistence";
 import { sections, slides, resources } from "../data/slides";
 import type { PresentationNode } from "../types/presentation";
 
@@ -26,6 +32,7 @@ const nodeTypes = {
   metroBackground: MetroBackgroundNode,
   resourceIcon: ResourceIconNode,
   slide: SlideNode,
+  metroLineLabel: MetroLineLabelNode,
 };
 
 function MetroCanvas() {
@@ -143,6 +150,26 @@ function MetroCanvas() {
     [],
   );
 
+  // Clear selection after drag and persist label positions
+  const onNodeDragStop = useCallback(
+    (_event: React.MouseEvent, node: Node, _nodes: Node[]) => {
+      // Persist position for label nodes
+      if (node.type === "metroLineLabel") {
+        const existingPositions = loadPersistedPositions() || {};
+        savePersistedPositions({
+          ...existingPositions,
+          [node.id]: { x: node.position.x, y: node.position.y },
+        });
+      }
+
+      // Deselect all nodes after drag completes to ensure independent movement
+      setNodes((nds) =>
+        nds.map((n) => (n.selected ? { ...n, selected: false } : n)),
+      );
+    },
+    [],
+  );
+
   // Reset to overview
   const handleToggleOverview = useCallback(() => {
     toggleOverview();
@@ -195,6 +222,7 @@ function MetroCanvas() {
         nodeTypes={nodeTypes}
         onNodeClick={handleNodeClick}
         onNodesChange={onNodesChange}
+        onNodeDragStop={onNodeDragStop}
         nodesDraggable={true}
         minZoom={0.1}
         maxZoom={3}

@@ -1,0 +1,891 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Slide Feedback - Leveling Up with AI</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        background: #f5f5f5;
+        color: #1a1a2e;
+        line-height: 1.5;
+      }
+
+      .header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: #1a1a2e;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .header h1 {
+        color: white;
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+
+      .copy-btn {
+        background: #0066ff;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .copy-btn:hover {
+        background: #0052cc;
+        transform: translateY(-1px);
+      }
+
+      .copy-btn.success {
+        background: #00a854;
+      }
+
+      .container {
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      .slide-card {
+        background: white;
+        border-radius: 16px;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+      }
+
+      .slide-header {
+        background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 100%);
+        color: white;
+        padding: 1rem 1.5rem;
+      }
+
+      .slide-header h2 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+      }
+
+      .slide-header .subtitle {
+        font-size: 0.9rem;
+        opacity: 0.8;
+      }
+
+      .slide-number {
+        display: inline-block;
+        background: #0066ff;
+        color: white;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-right: 0.75rem;
+      }
+
+      .slide-content {
+        display: grid;
+        grid-template-columns: 350px 1fr 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem;
+      }
+
+      .slide-image {
+        width: 350px;
+        height: auto;
+        border-radius: 8px;
+        border: 1px solid #e0e0e0;
+      }
+
+      .column {
+        min-height: 200px;
+      }
+
+      .column h3 {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #666;
+        margin-bottom: 0.75rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #e0e0e0;
+      }
+
+      .talking-points {
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: #333;
+        max-height: 400px;
+        overflow-y: auto;
+      }
+
+      .talking-points p {
+        margin-bottom: 0.75rem;
+      }
+
+      .bullets {
+        font-size: 0.95rem;
+      }
+
+      .bullets ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .bullets li {
+        position: relative;
+        padding-left: 1.25rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .bullets li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: #0066ff;
+        font-weight: bold;
+      }
+
+      .feedback-section {
+        border-top: 1px solid #e0e0e0;
+        padding: 1.5rem;
+        background: #fafafa;
+      }
+
+      .feedback-section label {
+        display: block;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #666;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+      }
+
+      .feedback-section textarea {
+        width: 100%;
+        min-height: 100px;
+        padding: 1rem;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 1rem;
+        resize: vertical;
+        transition: border-color 0.2s;
+      }
+
+      .feedback-section textarea:focus {
+        outline: none;
+        border-color: #0066ff;
+      }
+
+      .feedback-section textarea::placeholder {
+        color: #999;
+      }
+
+      @media (max-width: 1200px) {
+        .slide-content {
+          grid-template-columns: 1fr;
+        }
+        .slide-image {
+          width: 100%;
+          max-width: 500px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Slide Feedback - Leveling Up with AI</h1>
+      <button class="copy-btn" onclick="copyFeedback()">
+        Copy Feedback JSON
+      </button>
+    </div>
+
+    <div class="container" id="slides-container"></div>
+
+    <script>
+      // Slide data embedded directly
+      const slides = [
+        {
+          id: "slide-01",
+          title: "Technology and the Widening Gulf",
+          subtitle:
+            "The growing divide between tech-literate and non-tech-literate",
+          image: "../../images/slide-01-technology-widening-gulf.jpg",
+          bullets: [
+            "Technology makes us more efficient: bicycle, typewriter, Google",
+            "AI is creating a much larger gulf than previous tech",
+            "Think about it from a mental model perspective first",
+          ],
+          talkingPoints: `Technology has always made us more efficient as its main function. Examples of efficiency gains: Bicycle → travel faster, Typewriter/printing press → push communications farther, Google → access to information.
+
+We grew up with Google as part of our world, became accustomed to using it. Now AI tech is powerful enough that the gulf between tech-literate and non-tech-literate people is widening significantly. This literacy gap changes what you're able to do in your job.
+
+The most important thing: think about it from a mental model perspective first.
+
+Common worry: "AI will take your job." Some jobs will go away, but more importantly: there will be a separation between people who use AI and people who don't. Same pattern as previous tech divides (computers, internet, Google). This gulf may be much larger than previous ones.
+
+Near-term reality: Less about AI taking your job → More about someone using AI getting hired instead of you.`,
+        },
+        {
+          id: "slide-02",
+          title: "Mental Models Through Use",
+          subtitle: "Understanding comes from doing, not reading",
+          image: "../../images/slide-02-mental-models.jpg",
+          bullets: [
+            'First tried: "Please give me directions to the nearest ice cream store..."',
+            'Learned: "Molly Moon directions"',
+            "This understanding comes through use, not instruction",
+          ],
+          talkingPoints: `We already use mental models to understand technology. Example: Finding directions to an ice cream store.
+
+Less experienced user: "Please give me directions to the nearest ice cream store, which is called Molly Moon"
+Experienced user: "Directions to Molly Moon Google Maps"
+
+With experience, you learn: Google knows where you are, it will use Google Maps automatically, you adapt your input to what the technology needs.
+
+Key insight: This understanding didn't come from a course or reading about Google. It comes through use, not instruction. Exposure → see output → adjust input → see what works. The more you use a tool, the better you get.`,
+        },
+        {
+          id: "slide-03",
+          title: "New Tech, Old Mental Models",
+          subtitle: "The temptation to treat AI like enhanced Google",
+          image: "../../images/slide-03-new-tech-old-models.jpg",
+          bullets: [
+            "First instinct: ChatGPT is a better Google",
+            "Use it like a knowledgeable friend",
+            "Back and forth conversation",
+            "But it's inconsistent: sometimes brilliant, sometimes wrong",
+          ],
+          talkingPoints: `Tempting to use the same mental model with new technology. First instinct with ChatGPT: treat it as a better version of Google.
+
+Google finds anything on the internet → ChatGPT is an expert in anything on the internet.
+
+You use it like a friend: Back and forth conversation, knows the entire corpus of internet knowledge, can reason across domains (somewhat).
+
+But it's inconsistent: Sometimes really smart, sometimes gives wrong information (hallucinations), not always reliable.`,
+        },
+        {
+          id: "slide-04",
+          title: "From Confidant to Digital Employee",
+          subtitle: "The major mental leap",
+          image: "../../images/slide-04-confidant-to-employee.jpg",
+          bullets: [
+            "AI is not just an all-knowing friend",
+            "Think of it as a digital employee",
+            "Shift from getting advice to actual execution",
+            "You become a director/orchestrator",
+            "You can have as many as you can handle",
+          ],
+          talkingPoints: `Major mental leap: AI is not just an all-knowing friend. Think of it as a digital employee.
+
+Can do anything you can do on your computer (most knowledge work).
+
+Shift from: Getting advice/information in a chat interface → To: actual execution.
+
+You become a director/orchestrator: Making decisions, coordinating.
+
+Key difference: You don't have just one digital employee. You can have as many as you can handle.`,
+        },
+        {
+          id: "slide-05",
+          title: "Mapping the Journey",
+          subtitle: "A progressive approach to understanding AI",
+          image: "../../images/slide-05-mapping-journey.jpg",
+          bullets: [
+            "Overwhelming amount of information out there",
+            "Skipping steps makes nothing feel coherent",
+            "Confusion is a sequencing problem, not an identity problem",
+            "We now have the greatest learning tool ever",
+          ],
+          talkingPoints: `To update mental models: understand what's possible and how to think at that level. Partly through using tools, partly through understanding the landscape.
+
+Helpful to map out the journey so far and where it's going.
+
+Challenge: overwhelming amount of information out there. People talk at their own level of understanding. Context often unstated (technical, basic, non-technical but advanced).
+
+Problem with skipping steps: Tried to jump straight to bleeding edge, nothing feels coherent, gets too complex.
+
+Requires a progressive approach for tech this powerful, novel, and fast-changing.
+
+Key insight: Confusion about what to learn next is a sequencing problem, not an identity problem. Not "this isn't me because I'm not a developer."
+
+We now have the greatest learning tool ever. Can ask anything without embarrassment. No judgment for not knowing prerequisites. "I ask questions I wouldn't ask a human because it would be embarrassing to admit I don't know."`,
+        },
+        {
+          id: "slide-06",
+          title: "The Wrong Split",
+          subtitle: "Technical vs Non-Technical is a cultural issue",
+          image: "../../images/slide-06-wrong-split.jpg",
+          bullets: [
+            "The floor of what you can do without code is now incredibly high",
+            "Lines are blurring",
+            "The real question: How much resistance to change do you feel?",
+            "This is the real gulf",
+          ],
+          talkingPoints: `Tempting to split by identity: "technical person" vs "non-technical person." This is the wrong split — it's mostly a cultural issue.
+
+Historical pattern: Technology treated as a black box, people who understand it protect that knowledge as valuable, explain things in hand-wavy ways to "non-technical" people.
+
+What's changed: The floor of what you can do without ever looking at code is now incredibly high. Used to be binary: can you code or not? Now lines are blurring. Learn anything by talking to a chat model. Get AI to do the parts you don't want to do yourself.
+
+The real question: How much resistance to change do you feel? Are you willing to adopt foreign technology? Can you push through discomfort to get to the other side? Or do you resist when things change?
+
+This is the real gulf — not technical vs non-technical.`,
+        },
+        {
+          id: "slide-07",
+          title: "Level 0 — Avoidance",
+          subtitle: "",
+          image: "../../images/slide-07-level-0-avoidance.jpg",
+          bullets: [
+            "Historical echoes of famous people dismissing transformative technology",
+          ],
+          talkingPoints: `Level zero is avoidance. "This won't affect my job."
+
+Historical echoes: famous people dismissing transformative tech. Example: Find quotes from people like Bill Gates downplaying the internet.`,
+        },
+        {
+          id: "slide-08",
+          title: "Level 1 — AI as Uber Google",
+          subtitle: "",
+          image: "../../images/slide-08-level-1-uber-google.jpg",
+          bullets: [
+            "Questions and answers",
+            "Summaries and explanations",
+            "Brainstorming",
+            "Prompt engineering basics",
+            "This is where most daily ChatGPT users start",
+          ],
+          talkingPoints: `Using AI for: Question and answers, summaries, explanations, brainstorming.
+
+Includes prompt engineering. Built-in prompt improvement tools: Start with messy natural language, let the system clean it up.
+
+This is where most daily ChatGPT users start.`,
+        },
+        {
+          id: "slide-09",
+          title: "Level 2 — AI as Thought Partner",
+          subtitle: "",
+          image: "../../images/slide-09-level-2-thought-partner.jpg",
+          bullets: [
+            "Giving AI more context: PDFs, docs, images",
+            "Back and forth dialogue on complex topics",
+            "Trying different models: ChatGPT, Gemini, Claude",
+            "Each has strengths and weaknesses",
+          ],
+          talkingPoints: `Giving AI more context: PDFs, docs, images. Having it read through things, then go back and forth. Beyond what you'd use enhanced Google for.
+
+Learning what's different than text-based, turn-based chat.
+
+Also at this level: trying different models. ChatGPT, Google Gemini, Anthropic Claude. Like talking to three different types of people. Each has strengths and weaknesses.
+
+Example: Gemini (by Google) can natively take in YouTube videos, Google Docs. Technologies integrated within same company ecosystem.`,
+        },
+        {
+          id: "slide-10",
+          title: "Level 3 — Context Engineering",
+          subtitle: "",
+          image: "../../images/slide-10-level-3-context-engineering.jpg",
+          bullets: [
+            "Understanding how context helps or hurts",
+            "Longer chat = more memory used = degraded performance",
+            "Structured input (Markdown) yields better results",
+            "Using Projects to keep context clean",
+            "Choosing the right model for the task",
+            "Results start feeling reliable",
+          ],
+          talkingPoints: `Understanding how context helps or hurts. Mental model shift required: Longer chat window = more memory used up. Like holding too much in short-term memory. Performance and quality degrade as memory fills.
+
+Structured input → better results. Example: Give Markdown instead of PDF. Learning Markdown takes about an hour.
+
+Being explicit about desired output type.
+
+Using Projects (Claude, ChatGPT feature): Gives AI more context per conversation on same topic. Important: Chat interfaces don't show you when context is full. Unlike coding tools (Claude Code) that show context usage. Desktop Claude/ChatGPT won't warn you when memory is degrading. Solution: Use projects explicitly for different topics. Keeps conversations focused, context cleaner.
+
+Choosing the right model: Within Anthropic/Claude: different models for different tasks. Some good at thinking long and hard. Some faster. Some better at iteration.
+
+This is where results start feeling reliable instead of shooting in the dark. Requires understanding what makes input/output better and what "performance" looks like.`,
+        },
+        {
+          id: "slide-11",
+          title: "Level 4 — Tools in Your Workflow",
+          subtitle: "",
+          image: "../../images/slide-11-level-4-tools-workflow.jpg",
+          bullets: [
+            "Wispr Flow - voice dictation",
+            "Granola - automatic meeting notes",
+            "Obsidian - AI-accessible notes in Markdown",
+            "Figma, Canva, Notion, Slack with AI features",
+            "Making your data accessible and usable by AI",
+          ],
+          talkingPoints: `Starting to use AI-adjacent tools in daily workflow. Examples: Wispr Flow — voice dictation (this talk was created using it), Granola — automatic meeting notes, many other tools people are using.
+
+Personal example: Apple Notes → Obsidian. Similar tool but keeps everything in Markdown. AI can now look at all notes comprehensively. Can do things with notes that were impossible in Apple Notes (walled garden).
+
+Key shift: Making your data accessible and usable by AI.
+
+Other tools with AI functionality: Figma, Canva, Notion, Slack.`,
+        },
+        {
+          id: "slide-12",
+          title: "Level 5 — AI-Enabled Browsing",
+          subtitle: "",
+          image: "../../images/slide-12-level-5-ai-browsing.jpg",
+          bullets: [
+            "Google Gemini built into Chrome",
+            "ChatGPT Operator (Atlas) browser",
+            "Claude extension - takes actions in browser",
+            "Be mindful of security with sensitive sites",
+          ],
+          talkingPoints: `AI tools integrated with your browser.
+
+Google Gemini built into Chrome: Can look at whatever tab you're on, start a conversation right there in the tab, super useful for learning.
+
+ChatGPT's Operator browser (Atlas): Everything typed goes to ChatGPT instead of Google, ChatGPT understands everything you're browsing (more context), interesting but underwhelming as a browser (Chrome more functional).
+
+Claude Chrome extension: Can take actions just like you in the browser, look through sites, upload, download. Anything you can do in browser, it can theoretically do.
+
+Security considerations: Something looking at your browser = potential risks. Be careful with financial sites, sensitive data. But: don't let fear of what could go wrong stop you from figuring out what's possible.`,
+        },
+        {
+          id: "slide-13",
+          title: "Level 6 — Media & Creative Production",
+          subtitle: "",
+          image: "../../images/slide-13-level-6-media-creative.jpg",
+          bullets: [
+            "Image generation: Nano Banana, Midjourney",
+            "Video production: Veo, O3",
+            "The skill: Can you get it to give you what you want?",
+          ],
+          talkingPoints: `Tools that help you create things with AI.
+
+Image generation: Nano Banana (Gemini/Google) — best image tool currently, Midjourney.
+
+Video/media production: Veo, O3.
+
+The skill here: Can you get it to give you what you want? "I have this specific idea..."
+
+Haven't spent much time here personally, but lots of potential.
+
+Future opportunity: Creating a harness for media production. Higher fidelity than one-shotting everything. (Will discuss harnesses later)`,
+        },
+        {
+          id: "slide-14",
+          title: "Level 7 — Automation Tools",
+          subtitle: "",
+          image: "../../images/slide-14-level-7-automation.jpg",
+          bullets: [
+            "Zapier - most common automation tool",
+            "N8n - bridge to complex automations",
+            "Gumloop - built with AI in mind",
+            "Visual interfaces to doing things with code - without looking at code",
+          ],
+          talkingPoints: `Even non-technical people can do this easily without learning much. May not have dug in deeply yet.
+
+Tools: Zapier — most common, but not AI-centric. N8n — bridge from Zapier to more complex automations. Gumloop — built specifically with AI in mind.
+
+These are visual interfaces to doing things with code. Don't actually have to look at code much. What you do see can be created by an AI model.
+
+Important shift: Not just outputting media or text. Real workflow automation. Using tools to do work vs. getting information or creating assets.`,
+        },
+        {
+          id: "slide-15",
+          title: "Level 8 — Natural Language Software",
+          subtitle: "",
+          image: "../../images/slide-15-level-8-nl-software.jpg",
+          bullets: [
+            "Lovable, Bolt AI, Google AI Studio",
+            "Create software without knowing code syntax",
+            "Currently best for front-end / visual things",
+            "Great playground to get comfortable",
+            "Understanding the limits is part of the learning",
+          ],
+          talkingPoints: `Last level of completely non-technical path.
+
+Tools: Lovable, Bolt AI, Google AI Studio (free, easiest place to start).
+
+Great for showing you can use AI to create software easily.
+
+Good introduction to the limits: Currently mostly front-end stuff. Start understanding front-end vs. back-end difference. Great at creating things that look good. Limitations: user sign-in, session data, databases, back-end functionality.
+
+Key insight: You don't need to know code syntax to make something semi-functional.
+
+Good playground to get comfortable with the idea.`,
+        },
+        {
+          id: "slide-16",
+          title: "Entering the Technical Track",
+          subtitle: "Where AI meets full computer access",
+          image: "../../images/slide-16-entering-technical-track.jpg",
+          bullets: [
+            "Still using natural language as the interface",
+            "AI does the technical work — you direct it with words",
+            "Command line = text-based access to everything on your machine",
+            "AI now has full access to whatever you give it",
+          ],
+          talkingPoints: `Moving into what might be called the "technical track."
+
+Important reframe: Still using natural language as the interface. AI does the technical work — you direct it with words.
+
+Key difference from chat interfaces: Browser/desktop apps don't have full access. Like how Gmail doesn't know what's on your desktop.
+
+Command line = the underpinnings of everything on your computer. Before graphical interfaces (Windows, Mac OS), there was command line. Text-based access to everything on your machine. Works perfectly with language models.
+
+The shift: AI now has full access to whatever you give it access to on your computer.`,
+        },
+        {
+          id: "slide-17",
+          title: "Level 1 — Command Line Basics",
+          subtitle: "",
+          image: "../../images/slide-17-level-1-cli-basics.jpg",
+          bullets: [
+            "CLI = Command Line Interface",
+            "Learn basic navigation: cd, ls, pwd",
+            "Commands differ slightly between Mac and PC",
+            "Get comfortable with this text-based interface",
+            "Ask ChatGPT or Claude to teach you",
+          ],
+          talkingPoints: `CLI = Command Line Interface.
+
+First step: Learn basic navigation commands. How to move between folders. How to list what's in a folder. How to copy files around.
+
+These are short, simple commands. You can learn this by asking ChatGPT or Claude to teach you.
+
+Commands differ slightly between Mac and PC.
+
+The point: Get comfortable with this text-based interface to your computer. Once comfortable, you can use AI tools that operate at this level.`,
+        },
+        {
+          id: "slide-18",
+          title: "Level 2 — Version Control (Git & GitHub)",
+          subtitle: "",
+          image: "../../images/slide-18-level-2-git-github.jpg",
+          bullets: [
+            "Git = versioning system (like Google Docs history, but for code)",
+            "Take snapshots, rewind, merge work from multiple people",
+            "GitHub = Dropbox for code (store, share, collaborate)",
+            "Essential safety net when AI makes mistakes",
+            "Worth taking time to understand properly",
+          ],
+          talkingPoints: `Git = versioning system for code. Like version history in Google Docs, but for code. Take snapshots of your codebase. Rewind to previous states if something breaks. Merge work from multiple people on the same project.
+
+Why it matters now: When AI is writing code, mistakes happen. Need ability to go back to working versions. Essential safety net for experimentation.
+
+GitHub = Dropbox for code. Store your codebases in the cloud. Share with the world. Pull in other people's work.
+
+Learning note: Git is more complicated than it first appears. Initially seems simple: save, name, branch, merge back. Actually has fair amount of complexity. Worth taking time to understand properly. Incomplete understanding causes problems later (learned this the hard way).
+
+Can have AI teach you, watch YouTube videos. Important foundation before going deeper.`,
+        },
+        {
+          id: "slide-19",
+          title: "Level 3 — AI-Native IDEs",
+          subtitle: "Where code meets conversation",
+          image: "../../images/slide-19-level-3-ai-native-ides.jpg",
+          bullets: [
+            "IDE = Integrated Development Environment",
+            "Google's Anti-Gravity - easiest place to start",
+            "Cursor - chat window + code editor side by side",
+            "Inline execution: fast feedback loop",
+            "Agent writes → sees result → adjusts → improves",
+          ],
+          talkingPoints: `IDE = Integrated Development Environment. Like Word or Google Docs, but for code. Interface for writing and managing code files. Additional features: run code, test code, scripts, GitHub integration.
+
+You don't have to use an IDE (can use just command line). But eventually you'll want to see what the AI is doing. IDE gives you visibility into the work.
+
+Google's Anti-Gravity: Easiest place to start. Can create full applications. Has a window just for managing the agents writing code. You can literally never look at the code if you don't want to.
+
+Cursor: Very popular option. ChatGPT-style chat window on one side. Code files and documents on the other side. Friendly chat interface, not command line.
+
+Key concept: Inline execution. Instructions and results live on the same surface. Fast feedback loop. AI can see where code is going and what happens. Creates a continuous improvement loop. Agent writes → sees result → adjusts → improves.`,
+        },
+        {
+          id: "slide-20",
+          title: "Level 4 — Modes and Workflows",
+          subtitle: "Beyond back-and-forth chat",
+          image: "../../images/slide-20-level-4-modes-workflows.jpg",
+          bullets: [
+            "Plan → Build → Test → Review → Deploy → Bug Fix → Plan",
+            "One model in different modes for each step",
+            "Model shape-shifts depending on the task",
+            "You're executing an actual software development lifecycle",
+            "Structured workflow vs. freeform conversation",
+          ],
+          talkingPoints: `Moving beyond back-and-forth chat conversation. Now creating distinct steps, using the model in different ways.
+
+The workflow: Plan: Create a PRD (Product Requirements Document), scope the full project. Build: Model builds based on the requirements doc. Test: Verify what was built works. Review: Code review, quality check. Deploy: Ship it. Bug fix: Address issues. Plan again: Cycle continues.
+
+What's happening: You're executing an actual software development lifecycle. Instead of a team, you're using one model in different modes. Model shape-shifts depending on the step.
+
+Learning curve: Helps to understand how software is actually built. Continuously refine your process as you learn. Easy to start, progressively deepen with AI teaching you.
+
+Key shift: Structured workflow vs. freeform conversation.`,
+        },
+        {
+          id: "slide-21",
+          title: "Level 5 — Full Software Lifecycle",
+          subtitle: "Deployment, databases, hosting",
+          image: "../../images/slide-21-level-5-software-lifecycle.jpg",
+          bullets: [
+            "Supabase — databases",
+            "Vercel — hosting and deployment",
+            "Cloudflare — domains and DNS",
+            "AI-assisted deployment: MCP servers or CLI tools",
+            "Learn as the AI does it — don't just press buttons",
+          ],
+          talkingPoints: `Now handling the complete picture: Deployment, databases (saving data on backend), hosting, domains and DNS.
+
+Popular tools: Supabase — databases. Vercel — hosting and deployment. Cloudflare — hosting, domains, DNS.
+
+AI-assisted deployment: MCP servers or CLI tools can do setup and deployment for you. Huge level-up if you've never deployed before. Easy to get lost in settings without this help.
+
+Learning recommendation: Don't just press buttons — learn as the AI does it. Have it explain what it's doing, especially when errors happen. Look at the interfaces even if you're not directly touching them. Build a general idea of what's happening. Over time, repeated exposure → better understanding.
+
+This is where things go live and reach real users.`,
+        },
+        {
+          id: "slide-22",
+          title: "Level 6 — Customizing the Harness",
+          subtitle: "Skills, commands, and agents",
+          image: "../../images/slide-22-level-6-customizing-harness.jpg",
+          bullets: [
+            "Skills: Markdown files loaded when needed (like Neo in The Matrix)",
+            "Slash commands: shortcuts instead of repeating instructions",
+            "Sub-agents: mini-versions doing tasks in separate contexts",
+            "Guidance files (claude.md): system prompts for every interaction",
+            "Hooks: trigger actions based on events",
+          ],
+          talkingPoints: `At this point, AI is not just a chatbot with turn-based responses. It's an agent: chatting with itself, thinking, iterating. Loop: do something → look at result → do something else → come back to you.
+
+Analogy to delegating to a real person: Give custom instructions. Educate them on skills. Provide reference materials ("here's work done before").
+
+Same applies to AI — this is called tuning your harness.
+
+Components you can customize: Skills: Markdown files that say "this skill is available." AI loads skills only when needed (like Neo in The Matrix). Prevents context overload.
+
+Slash commands: Shortcuts in your CLI. Instead of repeating instructions, just /review triggers a whole process.
+
+Sub-agents: Mini-versions of the AI. Spin off to do specific tasks in separate context windows. Come back with results.
+
+Guidance files (agent.md, claude.md): Overarching instructions for every prompt. Like a system prompt for the agent.
+
+Hooks: Trigger actions based on events. Recently learned about these, using them a lot now.
+
+This is where you really start shaping how the AI works for you.`,
+        },
+        {
+          id: "slide-23",
+          title: "Level 7 — Context Management",
+          subtitle: "The memory game",
+          image: "../../images/slide-23-level-7-context-management.jpg",
+          bullets: [
+            "Context = everything you hand over with your instruction",
+            "Too bloated → model forgets things, quality degrades",
+            "New session = no context (like Memento amnesia)",
+            "Solutions: write to files, databases, or start fresh",
+            "Key skill: knowing when to reset your session",
+          ],
+          talkingPoints: `Context engineering was earlier — this goes deeper. At the basic level: You're taking written information, cutting it into tokens. Handing tokens to the model, getting tokens back.
+
+Context = everything you hand over alongside your specific instruction: Chat history, codebase searches, API documentation, reference materials.
+
+The goal: Get that lump of context as tuned as possible.
+
+The problem: Too bloated → not enough memory for AI to understand it all. Starts to forget things, like short-term memory overflow. Models get dumber the more full their memory gets.
+
+Session management challenge: New session = no context from previous session. Like the guy in Memento with amnesia.
+
+Solutions for persistent memory: Write to markdown files (file system memory). Write to a SQL database. Many approaches exist.
+
+Multiple terminals per project: Can have different sessions focused on different aspects. Each terminal = separate context window. Useful for compartmentalizing work.
+
+Key skill: Knowing when to reset your session. Sometimes a fresh start is better than a bloated context.`,
+        },
+        {
+          id: "slide-24",
+          title: "Level 8 — Parallel Agents",
+          subtitle: "Orchestration at scale",
+          image: "../../images/slide-24-level-8-parallel-agents.jpg",
+          bullets: [
+            "Multiple sub-agents and sessions simultaneously",
+            "GitHub Worktrees: separate working directories",
+            "Conductor.build, Beads: tools for parallel work",
+            "Sub-agents return answers, not their full process",
+            "You're coordinating, not executing",
+          ],
+          talkingPoints: `Using multiple sub-agents and multiple sessions simultaneously.
+
+New challenges: Managing context and memory across agents. Code checkout strategies — when agents put work back together. Avoiding collisions (like multiple people merging to main branch).
+
+Tools for parallel work: GitHub Worktrees: Separate working directories for same repo. Conductor.build: Popular tool that uses GitHub Worktrees. Beads: Memory/context management across sessions.
+
+Sub-agent strategy: Spin up agent to do a task. Comes back with just the answer, not all their work. Prevents filling up your context with their process.
+
+This is orchestration at scale. Multiple digital employees working simultaneously. You're coordinating, not executing.`,
+        },
+        {
+          id: "slide-25",
+          title: "Level 9 — Swarms and Infrastructure",
+          subtitle: "The edge of what's possible",
+          image: "../../images/slide-25-level-9-swarms.jpg",
+          bullets: [
+            "Large numbers of agents running simultaneously",
+            "Ralph Wiggum: spin up agents in serial overnight",
+            "Token usage at this level: $100-200+/month plans",
+            "Virtual Private Servers: agents running in the cloud 24/7",
+            "Where infrastructure meets intelligence",
+          ],
+          talkingPoints: `The edge of what's possible right now. Large numbers of agents running simultaneously.
+
+Tools like Ralph Wiggum: Spin up agents in serial, over and over. Let it run overnight. Massive automation potential.
+
+Token usage at this level: Using tons of tokens. Need the $100-$200/month plan or more.
+
+Beyond your local machine: Everything so far = agents running while your computer is open. Next step: Virtual Private Server (VPS). Agents running in the cloud. Or persistent agents on a home server. Doing things automatically, 24/7.
+
+This is the edge of my current knowledge. Have seen it, tried a little. Haven't fully worked at this level yet.
+
+Where the infrastructure meets the intelligence.`,
+        },
+        {
+          id: "slide-26",
+          title: "The Only Way Forward Is Through",
+          subtitle: "Become good at it by using it",
+          image: "../../images/slide-26-closing.jpg",
+          bullets: [
+            "Ask the models to teach you — no embarrassment about not knowing",
+            "Use tools → modify how you think → try again → richer understanding",
+            "It's changing so fast, you're not behind if you start now",
+            "The danger: putting it on the shelf for a couple years",
+            "Even if you think this doesn't apply to you — someone using this learns faster",
+          ],
+          talkingPoints: `The real solution: become good at it by using it. Part of that will be a struggle — that's normal.
+
+The superpower: Ask the models to teach you. No embarrassment about not knowing Git, GitHub, command line, anything. No matter how "silly" the question seems. You're never stopped. Just ask progressively simpler questions until you understand.
+
+Personal note: I've bought courses along the way too. That's how I like to learn. But the main thing is using it to improve your mental model.
+
+The mental model loop: Use the tools → modify how you think it works → try again. Your understanding gets richer, more accurate, more potential. Only happens through doing.
+
+Good news: It's changing so fast, you're not behind if you start now. You can stay afloat.
+
+The danger: Putting it on the shelf for a couple years. The world is moving faster and faster. To stay relevant, this is extremely necessary.
+
+"This doesn't apply to me" (therapist, negotiator, people-work): I'd love to think through that with you. This will apply in places not obvious right now. Even if the application is just: you can learn things faster. Someone using this learns faster than someone who's not.`,
+        },
+      ];
+
+      // Render all slides
+      function renderSlides() {
+        const container = document.getElementById("slides-container");
+
+        slides.forEach((slide, index) => {
+          const slideNum = String(index + 1).padStart(2, "0");
+          const card = document.createElement("div");
+          card.className = "slide-card";
+          card.innerHTML = `
+            <div class="slide-header">
+                <h2><span class="slide-number">Slide ${slideNum}</span>${slide.title}</h2>
+                ${slide.subtitle ? `<div class="subtitle">${slide.subtitle}</div>` : ""}
+            </div>
+            <div class="slide-content">
+                <div class="image-column">
+                    <img src="${slide.image}" alt="${slide.title}" class="slide-image" onerror="this.style.display='none'">
+                </div>
+                <div class="column talking-points-column">
+                    <h3>Talking Points</h3>
+                    <div class="talking-points">
+                        ${slide.talkingPoints
+                          .split("\n\n")
+                          .map((p) => `<p>${p}</p>`)
+                          .join("")}
+                    </div>
+                </div>
+                <div class="column bullets-column">
+                    <h3>Bullet Points</h3>
+                    <div class="bullets">
+                        <ul>
+                            ${slide.bullets.map((b) => `<li>${b}</li>`).join("")}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="feedback-section">
+                <label for="feedback-${slide.id}">Your Feedback / Changes</label>
+                <textarea
+                    id="feedback-${slide.id}"
+                    data-slide-id="${slide.id}"
+                    placeholder="Type or dictate your feedback for this slide..."
+                ></textarea>
+            </div>
+        `;
+          container.appendChild(card);
+        });
+      }
+
+      // Copy all feedback to clipboard as JSON
+      function copyFeedback() {
+        const feedback = {};
+
+        slides.forEach((slide) => {
+          const textarea = document.querySelector(
+            `textarea[data-slide-id="${slide.id}"]`,
+          );
+          const feedbackText = textarea ? textarea.value.trim() : "";
+
+          if (feedbackText) {
+            feedback[slide.id] = {
+              title: slide.title,
+              feedback: feedbackText,
+            };
+          }
+        });
+
+        const json = JSON.stringify(feedback, null, 2);
+
+        navigator.clipboard
+          .writeText(json)
+          .then(() => {
+            const btn = document.querySelector(".copy-btn");
+            btn.textContent = "Copied!";
+            btn.classList.add("success");
+
+            setTimeout(() => {
+              btn.textContent = "Copy Feedback JSON";
+              btn.classList.remove("success");
+            }, 2000);
+          })
+          .catch((err) => {
+            console.error("Failed to copy:", err);
+            alert("Failed to copy to clipboard. See console for details.");
+          });
+      }
+
+      // Initialize on page load
+      document.addEventListener("DOMContentLoaded", renderSlides);
+    </script>
+  </body>
+</html>

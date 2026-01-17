@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UI Design Directions - Spatial Presentation Canvas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg-primary: #0a0a0f;
+        --bg-secondary: #12121a;
+        --bg-card: #1a1a24;
+        --text-primary: #f5f5f7;
+        --text-secondary: #a0a0a8;
+        --text-muted: #606068;
+        --accent: #6366f1;
+        --accent-glow: rgba(99, 102, 241, 0.3);
+        --border: rgba(255, 255, 255, 0.08);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family:
+          "DM Sans",
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.6;
+        min-height: 100vh;
+      }
+
+      /* Subtle grid background */
+      body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        background-size: 60px 60px;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      header {
+        position: relative;
+        z-index: 1;
+        padding: 80px 40px 60px;
+        text-align: center;
+        border-bottom: 1px solid var(--border);
+        background: linear-gradient(
+          180deg,
+          var(--bg-secondary) 0%,
+          var(--bg-primary) 100%
+        );
+      }
+
+      header h1 {
+        font-family: "Instrument Serif", Georgia, serif;
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 400;
+        letter-spacing: -0.02em;
+        margin-bottom: 16px;
+        background: linear-gradient(
+          135deg,
+          var(--text-primary) 0%,
+          var(--text-secondary) 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      header p {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 6px 14px;
+        background: var(--accent);
+        color: white;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        border-radius: 100px;
+        margin-bottom: 20px;
+      }
+
+      main {
+        position: relative;
+        z-index: 1;
+        max-width: 1600px;
+        margin: 0 auto;
+        padding: 60px 40px;
+      }
+
+      .current-design {
+        margin-bottom: 80px;
+        padding: 40px;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+      }
+
+      .current-design h2 {
+        font-family: "Instrument Serif", Georgia, serif;
+        font-size: 1.5rem;
+        font-weight: 400;
+        margin-bottom: 8px;
+        color: var(--text-secondary);
+      }
+
+      .current-design p {
+        color: var(--text-muted);
+        margin-bottom: 24px;
+        font-size: 0.95rem;
+      }
+
+      .current-design img {
+        width: 100%;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+      }
+
+      .gallery-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .gallery-header h2 {
+        font-family: "Instrument Serif", Georgia, serif;
+        font-size: 2rem;
+        font-weight: 400;
+        margin-bottom: 12px;
+      }
+
+      .gallery-header p {
+        color: var(--text-secondary);
+      }
+
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        gap: 40px;
+      }
+
+      .card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .card:hover {
+        transform: translateY(-4px);
+        border-color: var(--accent);
+        box-shadow:
+          0 20px 60px rgba(0, 0, 0, 0.4),
+          0 0 40px var(--accent-glow);
+      }
+
+      .card-image {
+        position: relative;
+        aspect-ratio: 16/9;
+        overflow: hidden;
+      }
+
+      .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+      }
+
+      .card:hover .card-image img {
+        transform: scale(1.02);
+      }
+
+      .card-number {
+        position: absolute;
+        top: 16px;
+        left: 16px;
+        width: 36px;
+        height: 36px;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(10px);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        font-size: 0.9rem;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .card-content {
+        padding: 24px;
+      }
+
+      .card-content h3 {
+        font-family: "Instrument Serif", Georgia, serif;
+        font-size: 1.4rem;
+        font-weight: 400;
+        margin-bottom: 8px;
+      }
+
+      .card-aesthetic {
+        font-size: 0.8rem;
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 12px;
+      }
+
+      .card-content p {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        line-height: 1.7;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 16px;
+      }
+
+      .tag {
+        padding: 4px 10px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid var(--border);
+        border-radius: 100px;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+      }
+
+      /* Lightbox */
+      .lightbox {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        padding: 40px;
+      }
+
+      .lightbox.active {
+        display: flex;
+      }
+
+      .lightbox img {
+        max-width: 100%;
+        max-height: 100%;
+        border-radius: 8px;
+      }
+
+      .lightbox-close {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        width: 50px;
+        height: 50px;
+        background: rgba(255, 255, 255, 0.1);
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        transition: background 0.2s;
+      }
+
+      .lightbox-close:hover {
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      footer {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        padding: 60px 40px;
+        border-top: 1px solid var(--border);
+        color: var(--text-muted);
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 600px) {
+        .gallery {
+          grid-template-columns: 1fr;
+        }
+
+        header,
+        main {
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="badge">Design Exploration</div>
+      <h1>Spatial Presentation Canvas</h1>
+      <p>
+        10 distinct design directions for a zoomable, non-linear presentation
+        interface that serves as both a presentation tool and resource website.
+      </p>
+    </header>
+
+    <main>
+      <section class="current-design">
+        <h2>Current Design</h2>
+        <p>
+          The existing React Flow-based presentation with connected slides.
+          Functional but feels cramped when zoomed out and doesn't compel
+          exploration.
+        </p>
+        <img src="current-design.png" alt="Current presentation design" />
+      </section>
+
+      <section class="gallery-header">
+        <h2>Design Directions</h2>
+        <p>
+          Click any design to view full-size. Each represents a fundamentally
+          different visual approach.
+        </p>
+      </section>
+
+      <div class="gallery">
+        <article
+          class="card"
+          onclick="openLightbox('01-constellation-navigator.jpg')"
+        >
+          <div class="card-image">
+            <span class="card-number">01</span>
+            <img
+              src="01-constellation-navigator.jpg"
+              alt="Constellation Navigator"
+            />
+          </div>
+          <div class="card-content">
+            <h3>Constellation Navigator</h3>
+            <div class="card-aesthetic">
+              Cosmic dark mode with celestial cartography
+            </div>
+            <p>
+              Deep space background with slides as glowing celestial bodies.
+              Major sections are golden suns, individual slides are blue-white
+              stars connected by constellation lines. Generous spacing creates a
+              sense of exploration.
+            </p>
+            <div class="tags">
+              <span class="tag">Dark theme</span>
+              <span class="tag">Organic layout</span>
+              <span class="tag">Star map minimap</span>
+            </div>
+          </div>
+        </article>
+
+        <article
+          class="card"
+          onclick="openLightbox('02-topographic-journey.jpg')"
+        >
+          <div class="card-image">
+            <span class="card-number">02</span>
+            <img src="02-topographic-journey.jpg" alt="Topographic Journey" />
+          </div>
+          <div class="card-content">
+            <h3>Topographic Journey</h3>
+            <div class="card-aesthetic">
+              Vintage cartography meets data visualization
+            </div>
+            <p>
+              Warm parchment background with contour lines creating elevation
+              zones. Content flows like rivers through valleys, with milestone
+              slides on hilltops. Hand-drawn annotations add authenticity.
+            </p>
+            <div class="tags">
+              <span class="tag">Warm palette</span>
+              <span class="tag">Terrain flow</span>
+              <span class="tag">Vintage serif</span>
+            </div>
+          </div>
+        </article>
+
+        <article
+          class="card"
+          onclick="openLightbox('03-archipelago-atlas.jpg')"
+        >
+          <div class="card-image">
+            <span class="card-number">03</span>
+            <img src="03-archipelago-atlas.jpg" alt="Archipelago Atlas" />
+          </div>
+          <div class="card-content">
+            <h3>Archipelago Atlas</h3>
+            <div class="card-aesthetic">
+              Illustrated island chain with ocean depth
+            </div>
+            <p>
+              Deep blue ocean with content as islands of varying sizes. Large
+              continents for major topics, smaller islands for slides. Dotted
+              sailing routes connect islands with playful sea creatures.
+            </p>
+            <div class="tags">
+              <span class="tag">Ocean gradient</span>
+              <span class="tag">Illustrated</span>
+              <span class="tag">Nautical</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" onclick="openLightbox('04-neural-pathways.jpg')">
+          <div class="card-image">
+            <span class="card-number">04</span>
+            <img src="04-neural-pathways.jpg" alt="Neural Pathways" />
+          </div>
+          <div class="card-content">
+            <h3>Neural Pathways</h3>
+            <div class="card-aesthetic">
+              Bioluminescent organic brain-inspired network
+            </div>
+            <p>
+              Dark background with slides as organic, glowing nodes in electric
+              cyan and magenta. Connections flow as synaptic tendrils. The
+              layout feels alive and breathing with particle effects.
+            </p>
+            <div class="tags">
+              <span class="tag">Bioluminescent</span>
+              <span class="tag">Asymmetric</span>
+              <span class="tag">Animated</span>
+            </div>
+          </div>
+        </article>
+
+        <article
+          class="card"
+          onclick="openLightbox('05-blueprint-workshop.jpg')"
+        >
+          <div class="card-image">
+            <span class="card-number">05</span>
+            <img src="05-blueprint-workshop.jpg" alt="Blueprint Workshop" />
+          </div>
+          <div class="card-content">
+            <h3>Blueprint Workshop</h3>
+            <div class="card-aesthetic">
+              Technical architectural drafting aesthetic
+            </div>
+            <p>
+              Prussian blue background with white technical grid lines. Slides
+              appear as floor plan sections with dimension markers. Precise
+              orthogonal connections and monospace typography.
+            </p>
+            <div class="tags">
+              <span class="tag">Technical</span>
+              <span class="tag">Grid-based</span>
+              <span class="tag">Precise</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" onclick="openLightbox('06-botanical-garden.jpg')">
+          <div class="card-image">
+            <span class="card-number">06</span>
+            <img src="06-botanical-garden.jpg" alt="Botanical Garden" />
+          </div>
+          <div class="card-content">
+            <h3>Botanical Garden</h3>
+            <div class="card-aesthetic">
+              Organic growth patterns with illustrated botanics
+            </div>
+            <p>
+              Soft sage green with watercolor texture. Content grows like a tree
+              with slides as leaves and flowers. Elegant vine connections,
+              scientific labels, and abundant white space.
+            </p>
+            <div class="tags">
+              <span class="tag">Natural</span>
+              <span class="tag">Watercolor</span>
+              <span class="tag">Breathing space</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" onclick="openLightbox('07-metro-network.jpg')">
+          <div class="card-image">
+            <span class="card-number">07</span>
+            <img src="07-metro-network.jpg" alt="Metro Network" />
+          </div>
+          <div class="card-content">
+            <h3>Metro Network</h3>
+            <div class="card-aesthetic">
+              Clean transit system information design
+            </div>
+            <p>
+              Clean white background with bold colored transit lines. Slides are
+              stations along each line with clear interchange points. Minimal
+              decoration, maximum clarity inspired by London Underground.
+            </p>
+            <div class="tags">
+              <span class="tag">Minimal</span>
+              <span class="tag">Bold colors</span>
+              <span class="tag">Information design</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" onclick="openLightbox('08-comic-universe.jpg')">
+          <div class="card-image">
+            <span class="card-number">08</span>
+            <img src="08-comic-universe.jpg" alt="Comic Universe" />
+          </div>
+          <div class="card-content">
+            <h3>Comic Universe</h3>
+            <div class="card-aesthetic">Dynamic manga/comic panel energy</div>
+            <p>
+              Bright yellow background with halftone dots and speed lines.
+              Slides as dynamic comic panels of varying sizes with bold black
+              borders. POW/ZAP burst shapes and action lines throughout.
+            </p>
+            <div class="tags">
+              <span class="tag">High energy</span>
+              <span class="tag">Asymmetric</span>
+              <span class="tag">Playful</span>
+            </div>
+          </div>
+        </article>
+
+        <article
+          class="card"
+          onclick="openLightbox('09-gallery-exhibition.jpg')"
+        >
+          <div class="card-image">
+            <span class="card-number">09</span>
+            <img src="09-gallery-exhibition.jpg" alt="Gallery Exhibition" />
+          </div>
+          <div class="card-content">
+            <h3>Gallery Exhibition</h3>
+            <div class="card-aesthetic">
+              Floating museum gallery with dramatic lighting
+            </div>
+            <p>
+              Dark charcoal floor with slides as framed artworks floating in 3D
+              space. Dramatic spotlight effects and elegant brass placards.
+              Sophisticated, curated feel with generous negative space.
+            </p>
+            <div class="tags">
+              <span class="tag">3D depth</span>
+              <span class="tag">Sophisticated</span>
+              <span class="tag">Dramatic lighting</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" onclick="openLightbox('10-editorial-spread.jpg')">
+          <div class="card-image">
+            <span class="card-number">10</span>
+            <img src="10-editorial-spread.jpg" alt="Editorial Spread" />
+          </div>
+          <div class="card-content">
+            <h3>Editorial Spread</h3>
+            <div class="card-aesthetic">
+              Magazine/newspaper editorial design
+            </div>
+            <p>
+              Off-white textured paper with asymmetric editorial grid. Heavy use
+              of typography as design element with large drop caps and pull
+              quotes. Deep red and black accents with overlapping cards.
+            </p>
+            <div class="tags">
+              <span class="tag">Typography-driven</span>
+              <span class="tag">Editorial</span>
+              <span class="tag">Visual hierarchy</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <footer>
+      <p>
+        Generated with Nano Banana (Gemini 2.5 Flash Image API) &bull; Design
+        prompts crafted using frontend-aesthetics principles
+      </p>
+    </footer>
+
+    <div class="lightbox" id="lightbox">
+      <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+      <img id="lightbox-img" src="" alt="Full size preview" />
+    </div>
+
+    <script>
+      function openLightbox(src) {
+        document.getElementById("lightbox-img").src = src;
+        document.getElementById("lightbox").classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+
+      function closeLightbox() {
+        document.getElementById("lightbox").classList.remove("active");
+        document.body.style.overflow = "";
+      }
+
+      document
+        .getElementById("lightbox")
+        .addEventListener("click", function (e) {
+          if (e.target === this) closeLightbox();
+        });
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") closeLightbox();
+      });
+    </script>
+  </body>
+</html>

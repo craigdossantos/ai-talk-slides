@@ -1,11 +1,15 @@
-import { memo, useState, useEffect, useMemo } from "react";
-import { Handle, Position, useReactFlow } from "@xyflow/react";
+import { memo, useState, useMemo } from "react";
+import { Handle, Position, useStore } from "@xyflow/react";
 import type { MetroStopNodeProps } from "../../types/presentation";
 import "./MetroStopNode.css";
 
 // Zoom level thresholds
 const ZOOM_MIN = 0.3; // Below this: thumbnails hidden
 const ZOOM_FULL = 1.8; // Above this: full slide content (active only)
+
+// Selector for zoom from React Flow store - this is the most reliable way to get zoom
+const zoomSelector = (state: { transform: [number, number, number] }) =>
+  state.transform[2];
 
 function MetroStopNode({ data }: MetroStopNodeProps) {
   const {
@@ -19,16 +23,9 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
     hasNext,
   } = data;
   const [isHovered, setIsHovered] = useState(false);
-  const [zoom, setZoom] = useState(1);
-  const { getViewport } = useReactFlow();
 
-  // Track zoom level changes
-  useEffect(() => {
-    const checkZoom = () => setZoom(getViewport().zoom);
-    checkZoom(); // Initial check
-    const interval = setInterval(checkZoom, 100);
-    return () => clearInterval(interval);
-  }, [getViewport]);
+  // Get zoom directly from React Flow's internal store - always in sync
+  const zoom = useStore(zoomSelector);
 
   const hasBullets = slide.bullets && slide.bullets.length > 0;
   const hasContent = hasBullets || slide.backgroundImage;

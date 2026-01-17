@@ -72,6 +72,7 @@ export function useKeyboardNavigation({
   }, []);
 
   // Helper: center viewport on a slide's card (not the node)
+  // Card is positioned 15px from top of window and takes 80% of window height
   const centerOnSlideCard = useCallback(
     (slideId: string) => {
       const node = getNode(`metro-${slideId}`);
@@ -86,16 +87,23 @@ export function useKeyboardNavigation({
         return;
       }
 
-      const cardCenterY =
-        node.position.y - CARD_OFFSET_ABOVE_NODE - CARD_HEIGHT_ESTIMATE / 2;
+      // Card top is positioned above the node
+      const cardTopY =
+        node.position.y - CARD_OFFSET_ABOVE_NODE - CARD_HEIGHT_ESTIMATE;
       const cardCenterX = node.position.x;
-      const zoom = 2.0;
-      const viewportX =
-        -cardCenterX * zoom +
-        (typeof window !== "undefined" ? window.innerWidth / 2 : 600);
-      const viewportY =
-        -cardCenterY * zoom +
-        (typeof window !== "undefined" ? window.innerHeight / 2 : 400);
+
+      // Calculate zoom so card takes 80% of window height
+      // Ensure minimum zoom of 2.0 to trigger full slide display (ZOOM_FULL = 1.8 in MetroStopNode)
+      const windowHeight =
+        typeof window !== "undefined" ? window.innerHeight : 800;
+      const windowWidth =
+        typeof window !== "undefined" ? window.innerWidth : 1200;
+      const calculatedZoom = (windowHeight * 0.8) / CARD_HEIGHT_ESTIMATE;
+      const zoom = Math.max(calculatedZoom, 2.0); // Minimum 2.0 to show full slide
+
+      // Position so top of card is 15px below top of window
+      const viewportX = -cardCenterX * zoom + windowWidth / 2;
+      const viewportY = -cardTopY * zoom + 15;
 
       setViewport(
         { x: viewportX, y: viewportY, zoom },

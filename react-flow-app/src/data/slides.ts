@@ -511,6 +511,19 @@ export const slides: SlideContent[] = [
       "Works across multiple AI apps",
     ],
   },
+  {
+    id: "project-10",
+    sectionId: "projects",
+    type: "content",
+    title: "Stef's Birthday",
+    subtitle: "Audio card maker",
+    backgroundImage: "/assets/images/project-10-stefsbirthday.jpg",
+    bullets: [
+      "Create personalized audio birthday cards",
+      "Record and share voice messages",
+      "Built for my wife's birthday",
+    ],
+  },
 
   // Section: Closing
   {
@@ -754,6 +767,13 @@ export const resources: Resource[] = [
     type: "tool",
     title: "UseQuota.app",
     url: "https://usequota.app",
+  },
+  {
+    id: "res-project-10",
+    slideId: "project-10",
+    type: "tool",
+    title: "Stef's Birthday",
+    url: "https://stefsbirthday.com",
   },
 ];
 

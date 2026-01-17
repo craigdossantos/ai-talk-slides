@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leveling Up - Round 2 Styles</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            min-height: 100vh;
+            padding: 2rem;
+            color: #333;
+        }
+
+        .container { max-width: 1800px; margin: 0 auto; }
+
+        header { text-align: center; margin-bottom: 3rem; }
+
+        h1 { font-size: 2.5rem; font-weight: 700; color: #1a1a2e; margin-bottom: 0.5rem; }
+
+        .subtitle { font-size: 1.1rem; color: #666; margin-bottom: 1.5rem; }
+
+        .style-legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .legend-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+        }
+
+        .legend-dot.colored-pencil { background: linear-gradient(135deg, #e57373, #ef5350); }
+        .legend-dot.gouache-storybook { background: linear-gradient(135deg, #81c784, #66bb6a); }
+        .legend-dot.clean-vector { background: linear-gradient(135deg, #64b5f6, #42a5f5); }
+
+        .slide-section {
+            margin-bottom: 3rem;
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .slide-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .slide-id {
+            font-size: 0.85rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.25rem;
+        }
+
+        .slide-title { font-size: 1.4rem; font-weight: 600; color: #1a1a2e; }
+
+        .comparison-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .comparison-grid.three-col {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .image-card {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            background: #fafafa;
+        }
+
+        .image-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .image-card.selected {
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.3);
+        }
+
+        .image-card img { width: 100%; height: auto; display: block; }
+
+        .card-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 0.75rem;
+            background: linear-gradient(180deg, rgba(0,0,0,0.5) 0%, transparent 100%);
+        }
+
+        .style-badge {
+            display: inline-block;
+            padding: 0.35rem 0.7rem;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .style-badge.colored-pencil { background: linear-gradient(135deg, #e57373, #ef5350); }
+        .style-badge.gouache-storybook { background: linear-gradient(135deg, #81c784, #66bb6a); }
+        .style-badge.clean-vector { background: linear-gradient(135deg, #64b5f6, #42a5f5); }
+
+        .selected-badge {
+            position: absolute;
+            bottom: 0.75rem;
+            right: 0.75rem;
+            background: #4CAF50;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.2s ease;
+        }
+
+        .image-card.selected .selected-badge { opacity: 1; transform: scale(1); }
+
+        .actions {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 1rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 50px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+            z-index: 100;
+        }
+
+        button {
+            padding: 0.7rem 1.2rem;
+            border: none;
+            border-radius: 20px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4CAF50, #66BB6A);
+            color: white;
+        }
+
+        .btn-primary:hover { transform: scale(1.05); }
+
+        .btn-secondary { background: #f0f0f0; color: #333; }
+        .btn-secondary:hover { background: #e0e0e0; }
+
+        .selection-count { display: flex; align-items: center; font-weight: 500; color: #666; font-size: 0.9rem; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            padding: 2rem;
+        }
+
+        .modal.active { display: flex; align-items: center; justify-content: center; }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 700px;
+            width: 100%;
+            max-height: 80vh;
+            overflow: auto;
+        }
+
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+
+        .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #888; }
+
+        pre { background: #f5f5f5; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.85rem; }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1001;
+            cursor: pointer;
+        }
+
+        .lightbox.active { display: flex; align-items: center; justify-content: center; }
+        .lightbox img { max-width: 95%; max-height: 95%; object-fit: contain; }
+        .lightbox-close { position: absolute; top: 1rem; right: 1rem; color: white; font-size: 2rem; background: none; border: none; cursor: pointer; }
+
+        @media (max-width: 1200px) { .comparison-grid.three-col { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 700px) { .comparison-grid.three-col { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Round 2: New Style Explorations</h1>
+            <p class="subtitle">Keeping Ada consistent, exploring new rendering styles with cleaner backgrounds</p>
+            <div class="style-legend">
+                <div class="legend-item">
+                    <span class="legend-dot colored-pencil"></span>
+                    <span>Pixar Colored Pencil</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot gouache-storybook"></span>
+                    <span>Gouache Storybook</span>
+                </div>
+                <div class="legend-item">
+                    <span class="legend-dot clean-vector"></span>
+                    <span>Clean Vector Modern</span>
+                </div>
+            </div>
+        </header>
+
+        
+        <section class="slide-section">
+            <div class="slide-header">
+                <div class="slide-id">Slide 04</div>
+                <h2 class="slide-title">From Confidant to Digital Employee</h2>
+            </div>
+            <div class="comparison-grid three-col">
+                
+                <div class="image-card" data-slide="slide-04" data-style="colored-pencil" data-filename="slide-04_colored-pencil_20260111_192320.jpg">
+                    <img src="slide-04_colored-pencil_20260111_192320.jpg" alt="From Confidant to Digital Employee - Pixar Colored Pencil">
+                    <div class="card-overlay">
+                        <span class="style-badge colored-pencil">Pixar Colored Pencil</span>
+                    </div>
+                    <div class="selected-badge">Selected</div>
+                </div>
+                <div class="image-card" data-slide="slide-04" data-style="gouache-storybook" data-filename="slide-04_gouache-storybook_20260111_192320.jpg">
+                    <img src="slide-04_gouache-storybook_20260111_192320.jpg" alt="From Confidant to Digital Employee - Gouache Storybook">
+                    <div class="card-overlay">
+                        <span class="style-badge gouache-storybook">Gouache Storybook</span>
+                    </div>
+                    <div class="selected-badge">Selected</div>
+                </div>
+                <div class="image-card" data-slide="slide-04" data-style="clean-vector" data-filename="slide-04_clean-vector_20260111_192320.jpg">
+                    <img src="slide-04_clean-vector_20260111_192320.jpg" alt="From Confidant to Digital Employee - Clean Vector Modern">
+                    <div class="card-overlay">
+                        <span class="style-badge clean-vector">Clean Vector Modern</span>
+                    </div>
+                    <div class="selected-badge">Selected</div>
+                </div>
+            </div>
+        </section>
+        <section class="slide-section">
+            <div class="slide-header">
+                <div class="slide-id">Slide 08</div>
+                <h2 class="slide-title">Level 1: AI as Uber Google</h2>
+            </div>
+            <div class="comparison-grid three-col">
+                
+                <div class="image-card" data-slide="slide-08" data-style="colored-pencil" data-filename="slide-08_colored-pencil_20260111_192320.jpg">
+                    <img src="slide-08_colored-pencil_20260111_192320.jpg" alt="Level 1: AI as Uber Google - Pixar Colored Pencil">
+                    <div class="card-overlay">
+                        <span class="style-badge colored-pencil">Pixar Colored Pencil</span>
+                    </div>
+                    <div class="selected-badge">Selected</div>
+                </div>
+                <div class="image-card" data-slide="slide-08" data-style="gouache-storybook" data-filename="slide-08_gouache-storybook_20260111_192320.jpg">
+                    <img src="slide-08_gouache-storybook_20260111_192320.jpg" alt="Level 1: AI as Uber Google - Gouache Storybook">
+                    <div class="card-overlay">
+                        <span class="style-badge gouache-storybook">Gouache Storybook</span>
+                    </div>
+                    <div class="selected-badge">Selected</div>
+                </div>
+                <div class="image-card" data-slide="slide-08" data-style="clean-vector" data-filename="slide-08_clean-vector_20260111_192320.jpg">
+                    <img src="slide-08_clean-vector_20260111_192320.jpg" alt="Level 1: AI as Uber Google - Clean Vector Modern">
+                    <div class="card-overlay">
+                        <span class="style-badge clean-vector">Clean Vector Modern</span>
+                    </div>
+                    <div class="selected-badge">Selected</div>
+                </div>
+            </div>
+        </section>
+        <section class="slide-section">
+            <div class="slide-header">
+                <div class="slide-id">Slide 13</div>
+                <h2 class="slide-title">Level 6: Media & Creative Production</h2>
+            </div>
+            <div class="comparison-grid three-col">
+                
+                <div class="image-card" data-slide="slide-13" data-style="colored-pencil" data-filename="slide-13_colored-pencil_20260111_192320.jpg">
+                    <img src="slide-13_colored-pencil_20260111_192320.jpg" alt="Level 6: Media & Creative Production - Pixar Colored Pencil">
+                    <div class="card-overlay">
+                        <span class="style-badge colored-pencil">Pixar Colored Pencil</span>
+                    </div>
+                    <div class="selected-badge">Selected</div>
+                </div>
+                <div class="image-card" data-slide="slide-13" data-style="gouache-storybook" data-filename="slide-13_gouache-storybook_20260111_192320.jpg">
+                    <img src="slide-13_gouache-storybook_20260111_192320.jpg" alt="Level 6: Media & Creative Production - Gouache Storybook">
+                    <div class="card-overlay">
+                        <span class="style-badge gouache-storybook">Gouache Storybook</span>
+                    </div>
+                    <div class="selected-badge">Selected</div>
+                </div>
+                <div class="image-card" data-slide="slide-13" data-style="clean-vector" data-filename="slide-13_clean-vector_20260111_192320.jpg">
+                    <img src="slide-13_clean-vector_20260111_192320.jpg" alt="Level 6: Media & Creative Production - Clean Vector Modern">
+                    <div class="card-overlay">
+                        <span class="style-badge clean-vector">Clean Vector Modern</span>
+                    </div>
+                    <div class="selected-badge">Selected</div>
+                </div>
+            </div>
+        </section>
+        <section class="slide-section">
+            <div class="slide-header">
+                <div class="slide-id">Closing</div>
+                <h2 class="slide-title">You're Not Behind</h2>
+            </div>
+            <div class="comparison-grid three-col">
+                
+                <div class="image-card" data-slide="closing" data-style="colored-pencil" data-filename="closing_colored-pencil_20260111_192320.jpg">
+                    <img src="closing_colored-pencil_20260111_192320.jpg" alt="You're Not Behind - Pixar Colored Pencil">
+                    <div class="card-overlay">
+                        <span class="style-badge colored-pencil">Pixar Colored Pencil</span>
+                    </div>
+                    <div class="selected-badge">Selected</div>
+                </div>
+                <div class="image-card" data-slide="closing" data-style="gouache-storybook" data-filename="closing_gouache-storybook_20260111_192320.jpg">
+                    <img src="closing_gouache-storybook_20260111_192320.jpg" alt="You're Not Behind - Gouache Storybook">
+                    <div class="card-overlay">
+                        <span class="style-badge gouache-storybook">Gouache Storybook</span>
+                    </div>
+                    <div class="selected-badge">Selected</div>
+                </div>
+                <div class="image-card" data-slide="closing" data-style="clean-vector" data-filename="closing_clean-vector_20260111_192320.jpg">
+                    <img src="closing_clean-vector_20260111_192320.jpg" alt="You're Not Behind - Clean Vector Modern">
+                    <div class="card-overlay">
+                        <span class="style-badge clean-vector">Clean Vector Modern</span>
+                    </div>
+                    <div class="selected-badge">Selected</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="actions">
+        <span class="selection-count"><span id="count">0</span>/4 slides selected</span>
+        <button class="btn-secondary" onclick="clearSelections()">Clear All</button>
+        <button class="btn-primary" onclick="showSelections()">Confirm Selections</button>
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Your Selections</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <p style="margin-bottom: 1rem; color: #666;">Copy this JSON to record your style preferences:</p>
+            <pre id="selection-output"></pre>
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <button class="lightbox-close">&times;</button>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+    <script>
+        const selections = {};
+
+        document.querySelectorAll('.image-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                if (e.shiftKey) { openLightbox(card.querySelector('img').src); return; }
+
+                const slide = card.dataset.slide;
+                const style = card.dataset.style;
+                const filename = card.dataset.filename;
+
+                document.querySelectorAll(`.image-card[data-slide="${slide}"]`).forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                selections[slide] = { style, filename };
+                updateCount();
+            });
+
+            card.addEventListener('dblclick', () => openLightbox(card.querySelector('img').src));
+        });
+
+        function updateCount() { document.getElementById('count').textContent = Object.keys(selections).length; }
+
+        function clearSelections() {
+            document.querySelectorAll('.image-card').forEach(c => c.classList.remove('selected'));
+            for (const key in selections) delete selections[key];
+            updateCount();
+        }
+
+        function showSelections() {
+            const styleNames = {'colored-pencil': 'Pixar Colored Pencil', 'gouache-storybook': 'Gouache Storybook', 'clean-vector': 'Clean Vector Modern'};
+            const output = {
+                timestamp: new Date().toISOString(),
+                stylePreferences: Object.entries(selections).map(([slide, data]) => ({
+                    slide,
+                    selectedStyle: styleNames[data.style] || data.style,
+                    filename: data.filename
+                }))
+            };
+            document.getElementById('selection-output').textContent = JSON.stringify(output, null, 2);
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() { document.getElementById('modal').classList.remove('active'); }
+        function openLightbox(src) { document.getElementById('lightbox-img').src = src; document.getElementById('lightbox').classList.add('active'); }
+        function closeLightbox() { document.getElementById('lightbox').classList.remove('active'); }
+
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeModal(); closeLightbox(); } });
+    </script>
+</body>
+</html>

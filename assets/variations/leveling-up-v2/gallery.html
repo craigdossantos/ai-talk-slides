@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Leveling Up Visual Style Comparison</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family:
+          "Space Grotesk",
+          -apple-system,
+          BlinkMacSystemFont,
+          sans-serif;
+        background: linear-gradient(
+          135deg,
+          #fef3e2 0%,
+          #fce4ec 50%,
+          #e8f5e9 100%
+        );
+        min-height: 100vh;
+        padding: 2rem;
+        color: #333;
+      }
+
+      .container {
+        max-width: 1600px;
+        margin: 0 auto;
+      }
+
+      header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #1a1a2e;
+        margin-bottom: 0.5rem;
+      }
+
+      .subtitle {
+        font-size: 1.1rem;
+        color: #666;
+      }
+
+      .style-legend {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin: 2rem 0;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+      }
+
+      .legend-dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+      }
+
+      .legend-dot.ac-hero {
+        background: linear-gradient(135deg, #ff7f50, #ffa500);
+      }
+
+      .legend-dot.pixar {
+        background: linear-gradient(135deg, #00bcd4, #26c6da);
+      }
+
+      .slide-section {
+        margin-bottom: 4rem;
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      .slide-header {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid #f0f0f0;
+      }
+
+      .slide-id {
+        font-size: 0.9rem;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.25rem;
+      }
+
+      .slide-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1a1a2e;
+      }
+
+      .comparison-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      }
+
+      .image-card {
+        position: relative;
+        border-radius: 12px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 3px solid transparent;
+      }
+
+      .image-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+      }
+
+      .image-card.selected {
+        border-color: #4caf50;
+        box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.3);
+      }
+
+      .image-card img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .card-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 1rem;
+        background: linear-gradient(
+          180deg,
+          rgba(0, 0, 0, 0.6) 0%,
+          transparent 100%
+        );
+        color: white;
+      }
+
+      .style-badge {
+        display: inline-block;
+        padding: 0.4rem 0.8rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+      }
+
+      .style-badge.ac-hero {
+        background: linear-gradient(135deg, #ff7f50, #ffa500);
+      }
+
+      .style-badge.pixar {
+        background: linear-gradient(135deg, #00bcd4, #26c6da);
+      }
+
+      .selected-badge {
+        position: absolute;
+        bottom: 1rem;
+        right: 1rem;
+        background: #4caf50;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: 600;
+        opacity: 0;
+        transform: scale(0.8);
+        transition: all 0.2s ease;
+      }
+
+      .image-card.selected .selected-badge {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      .actions {
+        position: fixed;
+        bottom: 2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 1rem;
+        background: white;
+        padding: 1rem 2rem;
+        border-radius: 50px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+        z-index: 100;
+      }
+
+      button {
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 25px;
+        font-family: inherit;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #4caf50, #66bb6a);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+      }
+
+      .btn-secondary {
+        background: #f0f0f0;
+        color: #333;
+      }
+
+      .btn-secondary:hover {
+        background: #e0e0e0;
+      }
+
+      .selection-count {
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+        color: #666;
+      }
+
+      /* Modal */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 1000;
+        padding: 2rem;
+        overflow: auto;
+      }
+
+      .modal.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-content {
+        background: white;
+        border-radius: 20px;
+        padding: 2rem;
+        max-width: 800px;
+        width: 100%;
+        max-height: 80vh;
+        overflow: auto;
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+      }
+
+      .modal-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #888;
+      }
+
+      pre {
+        background: #f5f5f5;
+        padding: 1rem;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-size: 0.9rem;
+      }
+
+      /* Fullscreen image viewer */
+      .lightbox {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 1001;
+        cursor: pointer;
+      }
+
+      .lightbox.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .lightbox img {
+        max-width: 95%;
+        max-height: 95%;
+        object-fit: contain;
+      }
+
+      .lightbox-close {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        color: white;
+        font-size: 2rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+
+      @media (max-width: 900px) {
+        .comparison-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Leveling Up Visual Styles</h1>
+        <p class="subtitle">
+          Compare Animal Crossing Hero vs Pixar 3D for each slide
+        </p>
+        <div class="style-legend">
+          <div class="legend-item">
+            <span class="legend-dot ac-hero"></span>
+            <span>Animal Crossing Hero</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-dot pixar"></span>
+            <span>Pixar 3D</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Slide 04 -->
+      <section class="slide-section">
+        <div class="slide-header">
+          <div class="slide-id">Slide 04</div>
+          <h2 class="slide-title">From Confidant to Digital Employee</h2>
+        </div>
+        <div class="comparison-grid">
+          <div
+            class="image-card"
+            data-slide="slide-04"
+            data-style="ac-hero"
+            data-filename="slide-04_ac-hero_20260111_183718.jpg"
+          >
+            <img
+              src="slide-04_ac-hero_20260111_183718.jpg"
+              alt="Slide 04 - Animal Crossing Hero"
+            />
+            <div class="card-overlay">
+              <span class="style-badge ac-hero">Animal Crossing Hero</span>
+            </div>
+            <div class="selected-badge">Selected</div>
+          </div>
+          <div
+            class="image-card"
+            data-slide="slide-04"
+            data-style="pixar"
+            data-filename="slide-04_pixar_20260111_183718.jpg"
+          >
+            <img
+              src="slide-04_pixar_20260111_183718.jpg"
+              alt="Slide 04 - Pixar 3D"
+            />
+            <div class="card-overlay">
+              <span class="style-badge pixar">Pixar 3D</span>
+            </div>
+            <div class="selected-badge">Selected</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 08 -->
+      <section class="slide-section">
+        <div class="slide-header">
+          <div class="slide-id">Slide 08 - Level 1</div>
+          <h2 class="slide-title">AI as Uber Google</h2>
+        </div>
+        <div class="comparison-grid">
+          <div
+            class="image-card"
+            data-slide="slide-08"
+            data-style="ac-hero"
+            data-filename="slide-08_ac-hero_20260111_183718.jpg"
+          >
+            <img
+              src="slide-08_ac-hero_20260111_183718.jpg"
+              alt="Slide 08 - Animal Crossing Hero"
+            />
+            <div class="card-overlay">
+              <span class="style-badge ac-hero">Animal Crossing Hero</span>
+            </div>
+            <div class="selected-badge">Selected</div>
+          </div>
+          <div
+            class="image-card"
+            data-slide="slide-08"
+            data-style="pixar"
+            data-filename="slide-08_pixar_20260111_183718.jpg"
+          >
+            <img
+              src="slide-08_pixar_20260111_183718.jpg"
+              alt="Slide 08 - Pixar 3D"
+            />
+            <div class="card-overlay">
+              <span class="style-badge pixar">Pixar 3D</span>
+            </div>
+            <div class="selected-badge">Selected</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 13 -->
+      <section class="slide-section">
+        <div class="slide-header">
+          <div class="slide-id">Slide 13 - Level 6</div>
+          <h2 class="slide-title">Media & Creative Production</h2>
+        </div>
+        <div class="comparison-grid">
+          <div
+            class="image-card"
+            data-slide="slide-13"
+            data-style="ac-hero"
+            data-filename="slide-13_ac-hero_20260111_183718.jpg"
+          >
+            <img
+              src="slide-13_ac-hero_20260111_183718.jpg"
+              alt="Slide 13 - Animal Crossing Hero"
+            />
+            <div class="card-overlay">
+              <span class="style-badge ac-hero">Animal Crossing Hero</span>
+            </div>
+            <div class="selected-badge">Selected</div>
+          </div>
+          <div
+            class="image-card"
+            data-slide="slide-13"
+            data-style="pixar"
+            data-filename="slide-13_pixar_20260111_183718.jpg"
+          >
+            <img
+              src="slide-13_pixar_20260111_183718.jpg"
+              alt="Slide 13 - Pixar 3D"
+            />
+            <div class="card-overlay">
+              <span class="style-badge pixar">Pixar 3D</span>
+            </div>
+            <div class="selected-badge">Selected</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Closing -->
+      <section class="slide-section">
+        <div class="slide-header">
+          <div class="slide-id">Closing</div>
+          <h2 class="slide-title">You're Not Behind</h2>
+        </div>
+        <div class="comparison-grid">
+          <div
+            class="image-card"
+            data-slide="closing"
+            data-style="ac-hero"
+            data-filename="closing_ac-hero_20260111_183718.jpg"
+          >
+            <img
+              src="closing_ac-hero_20260111_183718.jpg"
+              alt="Closing - Animal Crossing Hero"
+            />
+            <div class="card-overlay">
+              <span class="style-badge ac-hero">Animal Crossing Hero</span>
+            </div>
+            <div class="selected-badge">Selected</div>
+          </div>
+          <div
+            class="image-card"
+            data-slide="closing"
+            data-style="pixar"
+            data-filename="closing_pixar_20260111_183718.jpg"
+          >
+            <img
+              src="closing_pixar_20260111_183718.jpg"
+              alt="Closing - Pixar 3D"
+            />
+            <div class="card-overlay">
+              <span class="style-badge pixar">Pixar 3D</span>
+            </div>
+            <div class="selected-badge">Selected</div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="actions">
+      <span class="selection-count"
+        ><span id="count">0</span>/4 slides selected</span
+      >
+      <button class="btn-secondary" onclick="clearSelections()">
+        Clear All
+      </button>
+      <button class="btn-primary" onclick="showSelections()">
+        Confirm Selections
+      </button>
+    </div>
+
+    <!-- Modal for showing selections -->
+    <div class="modal" id="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Your Selections</h3>
+          <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <p style="margin-bottom: 1rem; color: #666">
+          Copy this JSON to record your style preferences:
+        </p>
+        <pre id="selection-output"></pre>
+      </div>
+    </div>
+
+    <!-- Lightbox for fullscreen view -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+      <button class="lightbox-close">&times;</button>
+      <img id="lightbox-img" src="" alt="" />
+    </div>
+
+    <script>
+      const selections = {};
+
+      document.querySelectorAll(".image-card").forEach((card) => {
+        card.addEventListener("click", (e) => {
+          if (e.shiftKey) {
+            // Shift+click for fullscreen
+            openLightbox(card.querySelector("img").src);
+            return;
+          }
+
+          const slide = card.dataset.slide;
+          const style = card.dataset.style;
+          const filename = card.dataset.filename;
+
+          // Deselect other cards in same slide
+          document
+            .querySelectorAll(`.image-card[data-slide="${slide}"]`)
+            .forEach((c) => {
+              c.classList.remove("selected");
+            });
+
+          // Select this card
+          card.classList.add("selected");
+          selections[slide] = { style, filename };
+
+          updateCount();
+        });
+
+        // Double-click for fullscreen
+        card.addEventListener("dblclick", () => {
+          openLightbox(card.querySelector("img").src);
+        });
+      });
+
+      function updateCount() {
+        document.getElementById("count").textContent =
+          Object.keys(selections).length;
+      }
+
+      function clearSelections() {
+        document
+          .querySelectorAll(".image-card")
+          .forEach((c) => c.classList.remove("selected"));
+        for (const key in selections) delete selections[key];
+        updateCount();
+      }
+
+      function showSelections() {
+        const output = {
+          timestamp: new Date().toISOString(),
+          stylePreferences: Object.entries(selections).map(([slide, data]) => ({
+            slide,
+            selectedStyle:
+              data.style === "ac-hero" ? "Animal Crossing Hero" : "Pixar 3D",
+            filename: data.filename,
+          })),
+        };
+        document.getElementById("selection-output").textContent =
+          JSON.stringify(output, null, 2);
+        document.getElementById("modal").classList.add("active");
+      }
+
+      function closeModal() {
+        document.getElementById("modal").classList.remove("active");
+      }
+
+      function openLightbox(src) {
+        document.getElementById("lightbox-img").src = src;
+        document.getElementById("lightbox").classList.add("active");
+      }
+
+      function closeLightbox() {
+        document.getElementById("lightbox").classList.remove("active");
+      }
+
+      // Close modal/lightbox on escape
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closeModal();
+          closeLightbox();
+        }
+      });
+    </script>
+  </body>
+</html>

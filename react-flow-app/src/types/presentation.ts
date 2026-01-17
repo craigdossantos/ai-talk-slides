@@ -111,6 +111,13 @@ export interface ResourceIconNodeData {
   resource: Resource;
 }
 
+export interface MetroLineLabelNodeData {
+  [key: string]: unknown;
+  lineColor: string;
+  lineName: string;
+  subtitle: string;
+}
+
 // React Flow node types with their data
 export type SlideNode = Node<SlideNodeData, "slide">;
 export type SectionHeaderNode = Node<SectionHeaderNodeData, "sectionHeader">;
@@ -126,6 +133,7 @@ export type MetroBackgroundNode = Node<
   "metroBackground"
 >;
 export type ResourceIconNode = Node<ResourceIconNodeData, "resourceIcon">;
+export type MetroLineLabelNode = Node<MetroLineLabelNodeData, "metroLineLabel">;
 
 // Union type for all presentation nodes
 export type PresentationNode =
@@ -136,7 +144,8 @@ export type PresentationNode =
   | LevelNode
   | MetroStopNode
   | MetroBackgroundNode
-  | ResourceIconNode;
+  | ResourceIconNode
+  | MetroLineLabelNode;
 
 // Node props types for custom node components
 export type SlideNodeProps = NodeProps<SlideNode>;

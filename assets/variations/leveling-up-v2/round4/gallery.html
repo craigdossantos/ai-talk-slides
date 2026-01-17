@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Round 4: Comic Book Maximum Saturation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: linear-gradient(135deg, #ffe4e6 0%, #e0f2fe 50%, #fef9c3 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .container { max-width: 1400px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 2rem; }
+        h1 { font-size: 2rem; font-weight: 700; color: #1a1a2e; }
+        .subtitle { color: #666; margin-top: 0.5rem; }
+        .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+        .image-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .image-card:hover { transform: translateY(-4px); }
+        .image-card img { width: 100%; display: block; }
+        .card-info { padding: 1rem; }
+        .slide-id { font-size: 0.8rem; color: #888; text-transform: uppercase; }
+        .slide-title { font-size: 1.1rem; font-weight: 600; color: #1a1a2e; }
+        .lightbox {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.9); z-index: 1000; cursor: pointer;
+        }
+        .lightbox.active { display: flex; align-items: center; justify-content: center; }
+        .lightbox img { max-width: 95%; max-height: 95%; }
+        @media (max-width: 800px) { .gallery { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Comic Book Maximum Saturation</h1>
+            <p class="subtitle">Bold primary colors, colored pencil texture, consistent Ada</p>
+        </header>
+        <div class="gallery">
+        <div class="image-card">
+            <img src="slide-04_comic-saturated_20260112_121451.jpg" alt="From Confidant to Digital Employee">
+            <div class="card-info">
+                <div class="slide-id">Slide 04</div>
+                <div class="slide-title">From Confidant to Digital Employee</div>
+            </div>
+        </div>
+        <div class="image-card">
+            <img src="slide-08_comic-saturated_20260112_121451.jpg" alt="Level 1: AI as Uber Google">
+            <div class="card-info">
+                <div class="slide-id">Slide 08</div>
+                <div class="slide-title">Level 1: AI as Uber Google</div>
+            </div>
+        </div>
+        <div class="image-card">
+            <img src="slide-13_comic-saturated_20260112_121451.jpg" alt="Level 6: Media & Creative Production">
+            <div class="card-info">
+                <div class="slide-id">Slide 13</div>
+                <div class="slide-title">Level 6: Media & Creative Production</div>
+            </div>
+        </div>
+        <div class="image-card">
+            <img src="closing_comic-saturated_20260112_121451.jpg" alt="You're Not Behind">
+            <div class="card-info">
+                <div class="slide-id">Closing</div>
+                <div class="slide-title">You're Not Behind</div>
+            </div>
+        </div></div>
+    </div>
+    <div class="lightbox" id="lightbox" onclick="this.classList.remove('active')">
+        <img id="lightbox-img" src="">
+    </div>
+    <script>
+        document.querySelectorAll('.image-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.getElementById('lightbox-img').src = card.querySelector('img').src;
+                document.getElementById('lightbox').classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
