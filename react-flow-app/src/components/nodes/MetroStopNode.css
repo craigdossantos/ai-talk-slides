@@ -1,6 +1,12 @@
 .metro-stop {
   position: relative;
   cursor: pointer;
+  z-index: 1;
+}
+
+/* Active node should be above all other nodes */
+.metro-stop--active {
+  z-index: 1000;
 }
 
 .metro-stop__circle {
@@ -141,6 +147,7 @@
   background: #fff;
   transform-origin: center bottom;
   transition: box-shadow 0.2s ease;
+  z-index: 10;
 }
 
 .metro-stop:hover .metro-stop__inline-image {
@@ -181,7 +188,7 @@
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  z-index: 100;
+  z-index: 2000;
 }
 
 .metro-stop__full-slide img {

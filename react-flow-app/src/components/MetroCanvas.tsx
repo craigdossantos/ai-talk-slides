@@ -18,6 +18,7 @@ import NavigationControls from "./panels/NavigationControls";
 import MetroLegend from "./panels/MetroLegend";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
 import { generateMetroLayout } from "../utils/generateMetroLayout";
+import { buildNavigationGraph } from "../utils/navigationGraph";
 import {
   clearPersistedPositions,
   loadPersistedPositions,
@@ -182,6 +183,13 @@ function MetroCanvas() {
     }
   }, [fitView, toggleOverview, isOverviewMode]);
 
+  // Build navigation graph for track-aware Prev/Next navigation
+  // This follows the metro map edges rather than flat array index
+  const navigationGraph = useMemo(
+    () => buildNavigationGraph(sections, slides),
+    [],
+  );
+
   // Update active state and navigation props on nodes
   const nodesWithActiveState = useMemo(() => {
     return nodes.map((node) => {
@@ -189,30 +197,32 @@ function MetroCanvas() {
         // metro-slide-01 -> slide-01, currentSlideId is "slide-01"
         const slideId = node.id.replace("metro-", "");
         const isActive = slideId === currentSlideId;
-        const slideIndex = slides.findIndex((s) => s.id === slideId);
+
+        // Get previous/next from navigation graph (follows track connections)
+        const navLinks = navigationGraph.get(slideId);
+        const previousSlideId = navLinks?.previous ?? null;
+        const nextSlideId = navLinks?.next ?? null;
 
         return {
           ...node,
           data: {
             ...node.data,
             isActive,
-            // Navigation callbacks for full slide view
-            onPrevious:
-              slideIndex > 0
-                ? () => navigateToSlide(slides[slideIndex - 1].id)
-                : undefined,
-            onNext:
-              slideIndex < slides.length - 1
-                ? () => navigateToSlide(slides[slideIndex + 1].id)
-                : undefined,
-            hasPrevious: slideIndex > 0,
-            hasNext: slideIndex < slides.length - 1,
+            // Navigation callbacks for full slide view - now track-aware
+            onPrevious: previousSlideId
+              ? () => navigateToSlide(previousSlideId)
+              : undefined,
+            onNext: nextSlideId
+              ? () => navigateToSlide(nextSlideId)
+              : undefined,
+            hasPrevious: previousSlideId !== null,
+            hasNext: nextSlideId !== null,
           },
         };
       }
       return node;
     });
-  }, [nodes, currentSlideId, navigateToSlide]);
+  }, [nodes, currentSlideId, navigateToSlide, navigationGraph]);
 
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>

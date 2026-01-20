@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState, useMemo } from "react";
 import { useReactFlow } from "@xyflow/react";
 import type { Section, SlideContent } from "../types/presentation";
+import { buildNavigationGraph } from "../utils/navigationGraph";
 
 // Constants for slide card positioning (must match MetroStopNode.css)
 const CARD_OFFSET_ABOVE_NODE = 50; // bottom: 50px in CSS
@@ -66,6 +67,13 @@ export function useKeyboardNavigation({
     return map;
   }, [slides]);
 
+  // Build navigation graph for track-aware navigation
+  // This follows the metro map track connections rather than flat array index
+  const navigationGraph = useMemo(
+    () => buildNavigationGraph(sections, slides),
+    [sections, slides],
+  );
+
   // Set active slide state only (no fitView) - for viewport change detection
   const setActiveSlide = useCallback((slideId: string) => {
     setCurrentSlideId(slideId);
@@ -93,17 +101,19 @@ export function useKeyboardNavigation({
       const cardCenterX = node.position.x;
 
       // Calculate zoom so card takes 80% of window height
-      // Ensure minimum zoom of 2.0 to trigger full slide display (ZOOM_FULL = 1.8 in MetroStopNode)
+      // Ensure minimum zoom of 1.9 to trigger full slide display (ZOOM_FULL = 1.8 in MetroStopNode)
+      // Using 1.9 instead of 2.0 to prevent over-zooming that cuts off card tops
       const windowHeight =
         typeof window !== "undefined" ? window.innerHeight : 800;
       const windowWidth =
         typeof window !== "undefined" ? window.innerWidth : 1200;
-      const calculatedZoom = (windowHeight * 0.8) / CARD_HEIGHT_ESTIMATE;
-      const zoom = Math.max(calculatedZoom, 2.0); // Minimum 2.0 to show full slide
+      const calculatedZoom = (windowHeight * 0.75) / CARD_HEIGHT_ESTIMATE;
+      const zoom = Math.max(calculatedZoom, 1.9); // Minimum 1.9 (just above ZOOM_FULL of 1.8)
 
-      // Position so top of card is 15px below top of window
+      // Position so top of card is visible with padding below top of window
+      // Add extra padding (25px scaled by zoom) to ensure image top is not cut off
       const viewportX = -cardCenterX * zoom + windowWidth / 2;
-      const viewportY = -cardTopY * zoom + 15;
+      const viewportY = -cardTopY * zoom + 25;
 
       setViewport(
         { x: viewportX, y: viewportY, zoom },
@@ -183,19 +193,25 @@ export function useKeyboardNavigation({
     : -1;
   const totalSlides = orderedSlides.length;
 
-  // Navigate to next slide in order
+  // Navigate to next slide using track-aware navigation graph
+  // This follows the metro map track connections rather than flat array index
   const goToNextSlide = useCallback(() => {
-    if (currentSlideIndex < orderedSlides.length - 1) {
-      navigateToSlide(orderedSlides[currentSlideIndex + 1].id);
+    if (!currentSlideId) return;
+    const navLinks = navigationGraph.get(currentSlideId);
+    if (navLinks?.next) {
+      navigateToSlide(navLinks.next);
     }
-  }, [currentSlideIndex, orderedSlides, navigateToSlide]);
+  }, [currentSlideId, navigationGraph, navigateToSlide]);
 
-  // Navigate to previous slide in order
+  // Navigate to previous slide using track-aware navigation graph
+  // This follows the metro map track connections rather than flat array index
   const goToPreviousSlide = useCallback(() => {
-    if (currentSlideIndex > 0) {
-      navigateToSlide(orderedSlides[currentSlideIndex - 1].id);
+    if (!currentSlideId) return;
+    const navLinks = navigationGraph.get(currentSlideId);
+    if (navLinks?.previous) {
+      navigateToSlide(navLinks.previous);
     }
-  }, [currentSlideIndex, orderedSlides, navigateToSlide]);
+  }, [currentSlideId, navigationGraph, navigateToSlide]);
 
   // Find adjacent slides
   const findAdjacentSlide = useCallback(

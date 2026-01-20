@@ -524,6 +524,19 @@ export const slides: SlideContent[] = [
       "Built for my wife's birthday",
     ],
   },
+  {
+    id: "project-11",
+    sectionId: "projects",
+    type: "content",
+    title: "This Presentation",
+    subtitle: "AI-powered metro map",
+    backgroundImage: "/assets/images/project-11-presentation.jpg",
+    bullets: [
+      "Interactive metro map visualization",
+      "Built with React Flow and AI",
+      "The presentation you're watching right now",
+    ],
+  },
 
   // Section: Closing
   {
@@ -774,6 +787,13 @@ export const resources: Resource[] = [
     type: "tool",
     title: "Stef's Birthday",
     url: "https://stefsbirthday.com",
+  },
+  {
+    id: "res-project-11",
+    slideId: "project-11",
+    type: "tool",
+    title: "This Presentation",
+    url: "https://levelupwithai.lightersky.com",
   },
 ];
 
