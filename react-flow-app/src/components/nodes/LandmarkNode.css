@@ -1,0 +1,42 @@
+.landmark-node {
+  pointer-events: none;
+  user-select: none;
+}
+
+.landmark-node__image {
+  width: 500px;
+  height: auto;
+  max-height: 400px;
+  object-fit: contain;
+  opacity: 0.85;
+}
+
+/* Edit mode styles - make it easier to position */
+.landmark-node--edit {
+  pointer-events: auto;
+  cursor: move;
+}
+
+.landmark-node--edit .landmark-node__image {
+  outline: 2px dashed rgba(148, 163, 184, 0.4);
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+.landmark-node--edit:hover .landmark-node__image {
+  outline-color: rgba(148, 163, 184, 0.8);
+}
+
+.landmark-node__label {
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-secondary, system-ui);
+  font-size: 11px;
+  color: rgba(148, 163, 184, 0.7);
+  white-space: nowrap;
+  background: rgba(15, 23, 42, 0.8);
+  padding: 2px 8px;
+  border-radius: 4px;
+}

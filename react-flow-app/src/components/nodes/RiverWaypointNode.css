@@ -1,0 +1,64 @@
+.river-waypoint-node {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  pointer-events: none;
+}
+
+/* Edit mode styles - visible dot for positioning */
+.river-waypoint-node--edit {
+  pointer-events: auto;
+  cursor: move;
+}
+
+.river-waypoint-node__dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background: rgba(147, 197, 253, 0.6);
+  border: 2px solid rgba(147, 197, 253, 0.9);
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.river-waypoint-node--edit:hover .river-waypoint-node__dot {
+  background: rgba(147, 197, 253, 0.9);
+  transform: translate(-50%, -50%) scale(1.3);
+}
+
+.river-waypoint-node__label {
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono, monospace);
+  font-size: 9px;
+  color: rgba(147, 197, 253, 0.8);
+  background: rgba(15, 23, 42, 0.8);
+  padding: 1px 4px;
+  border-radius: 2px;
+}
+
+/* Hide handles in presentation mode */
+.river-waypoint-node__handle {
+  width: 1px !important;
+  height: 1px !important;
+  background: transparent !important;
+  border: none !important;
+  opacity: 0;
+}
+
+.river-waypoint-node--edit .river-waypoint-node__handle {
+  width: 8px !important;
+  height: 8px !important;
+  background: rgba(147, 197, 253, 0.5) !important;
+  border: 1px solid rgba(147, 197, 253, 0.8) !important;
+  opacity: 0.5;
+}
+
+.river-waypoint-node--edit .river-waypoint-node__handle:hover {
+  opacity: 1;
+}

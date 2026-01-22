@@ -119,6 +119,11 @@ export interface MetroStopNodeData {
   onNext?: () => void;
   hasPrevious?: boolean;
   hasNext?: boolean;
+  // Click-to-expand full slide view
+  isFullSlideOpen?: boolean;
+  onCloseFullSlide?: () => void;
+  // True when any slide has full view open (for constraining other thumbnails)
+  isAnySlideOpen?: boolean;
 }
 
 export interface MetroBackgroundNodeData {
@@ -142,6 +147,17 @@ export interface SubnodeNodeData {
   isExpanded: boolean; // Whether parent is expanded
 }
 
+export interface LandmarkNodeData {
+  [key: string]: unknown;
+  image: string;
+  label: string;
+}
+
+export interface RiverWaypointNodeData {
+  [key: string]: unknown;
+  waypointIndex: number;
+}
+
 // React Flow node types with their data
 export type SlideNode = Node<SlideNodeData, "slide">;
 export type SectionHeaderNode = Node<SectionHeaderNodeData, "sectionHeader">;
@@ -158,6 +174,8 @@ export type MetroBackgroundNode = Node<
 >;
 export type ResourceIconNode = Node<ResourceIconNodeData, "resourceIcon">;
 export type SubnodeNode = Node<SubnodeNodeData, "subnode">;
+export type LandmarkNode = Node<LandmarkNodeData, "landmark">;
+export type RiverWaypointNode = Node<RiverWaypointNodeData, "riverWaypoint">;
 
 // Union type for all presentation nodes
 export type PresentationNode =
@@ -169,7 +187,9 @@ export type PresentationNode =
   | MetroStopNode
   | MetroBackgroundNode
   | ResourceIconNode
-  | SubnodeNode;
+  | SubnodeNode
+  | LandmarkNode
+  | RiverWaypointNode;
 
 // Node props types for custom node components
 export type SlideNodeProps = NodeProps<SlideNode>;

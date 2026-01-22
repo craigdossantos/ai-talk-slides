@@ -5,10 +5,12 @@ interface NavigationControlsProps {
   currentSlideIndex: number;
   totalSlides: number;
   isOverviewMode: boolean;
+  isEditMode: boolean;
   onPrevious: () => void;
   onNext: () => void;
   onToggleOverview: () => void;
   onReset: () => void;
+  onExportPositions: () => void;
 }
 
 /**
@@ -19,10 +21,12 @@ function NavigationControls({
   currentSlideIndex,
   totalSlides,
   isOverviewMode,
+  isEditMode,
   onPrevious,
   onNext,
   onToggleOverview,
   onReset,
+  onExportPositions,
 }: NavigationControlsProps) {
   const isFirstSlide = currentSlideIndex <= 0;
   const isLastSlide = currentSlideIndex >= totalSlides - 1;
@@ -119,8 +123,33 @@ function NavigationControls({
         </svg>
       </button>
 
+      {isEditMode && (
+        <button
+          className="navigation-controls__button navigation-controls__button--export"
+          onClick={onExportPositions}
+          aria-label="Export node positions to JSON file"
+        >
+          <svg
+            className="navigation-controls__icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          <span className="navigation-controls__label">Export</span>
+        </button>
+      )}
+
       <span className="navigation-controls__help">
-        Drag handles to connect • Shift+click edge to delete
+        {isEditMode
+          ? "Edit mode: Drag to reposition • Export to save positions"
+          : "Drag handles to connect • Shift+click edge to delete"}
       </span>
     </div>
   );

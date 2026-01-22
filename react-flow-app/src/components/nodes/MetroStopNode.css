@@ -191,85 +191,133 @@
   line-height: 1.2;
 }
 
-/* Full slide content - shown at highest zoom */
+/* Full slide content - shown when clicked, viewport-relative */
 .metro-stop__full-slide {
-  position: absolute;
-  bottom: 50px;
+  position: fixed;
+  top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  width: 400px;
+  width: 875px;
+  max-width: 90vw;
+  height: 85vh;
+  max-height: calc(100vh - 40px);
   background: white;
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  z-index: 2000;
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, 0.3),
+    0 10px 30px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+}
+
+.metro-stop__close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border-radius: 50%;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.metro-stop__close-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
 }
 
 .metro-stop__full-slide img {
+  flex: 1; /* Fill remaining space after content and nav */
+  min-height: 0; /* Allow shrinking in flexbox */
   width: 100%;
-  height: auto;
-  max-height: 250px;
+  max-width: 100%;
   object-fit: contain;
   display: block;
-  background: #f5f5f5;
+  background: #f8f8f8;
+  margin: 0 auto;
+  border-radius: 16px;
 }
 
 .metro-stop__full-content {
-  padding: 16px 20px;
+  flex-shrink: 0; /* Don't shrink - keep fixed size */
+  padding: 20px 0 8px;
 }
 
 .metro-stop__full-content h3 {
   font-family: "Space Grotesk", sans-serif;
-  font-size: 18px;
+  font-size: 28px;
   font-weight: 700;
   color: #1a1a1a;
-  margin: 0 0 8px;
+  margin: 0 0 12px;
+  line-height: 1.2;
 }
 
 .metro-stop__full-subtitle {
-  font-size: 14px;
-  color: #666;
-  margin: 0 0 12px;
+  font-size: 18px;
+  color: #555;
+  margin: 0 0 16px;
+  line-height: 1.4;
 }
 
 .metro-stop__full-content ul {
-  margin: 12px 0 0;
-  padding-left: 20px;
+  margin: 16px 0 0;
+  padding-left: 24px;
   list-style: disc;
 }
 
 .metro-stop__full-content li {
-  font-size: 13px;
+  font-size: 18px;
   color: #333;
-  line-height: 1.5;
-  margin-bottom: 4px;
+  line-height: 1.6;
+  margin-bottom: 10px;
 }
 
 .metro-stop__nav {
+  flex-shrink: 0; /* Don't shrink - keep fixed size */
   display: flex;
   justify-content: space-between;
-  padding: 12px 20px;
-  border-top: 1px solid #eee;
+  gap: 16px;
+  padding: 16px 0 0;
+  margin-top: 8px;
+  border-top: 1px solid #e5e5e5;
 }
 
 .metro-stop__nav button {
-  padding: 8px 16px;
+  padding: 14px 32px;
   border: none;
-  background: #f5f5f5;
-  border-radius: 6px;
+  background: #f0f0f0;
+  border-radius: 10px;
   font-family: "Space Grotesk", sans-serif;
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.1s ease;
 }
 
 .metro-stop__nav button:hover:not(:disabled) {
-  background: #e5e5e5;
+  background: #e0e0e0;
+  transform: translateY(-1px);
+}
+
+.metro-stop__nav button:active:not(:disabled) {
+  transform: translateY(0);
 }
 
 .metro-stop__nav button:disabled {
-  opacity: 0.4;
+  opacity: 0.35;
   cursor: not-allowed;
 }
 
@@ -296,4 +344,15 @@
 
 .metro-stop .react-flow__handle-bottom {
   bottom: -70px; /* Move below the label area so edges connect lower */
+}
+
+/* Branch handles for subnode loop - positioned at top, offset from center */
+.metro-stop .react-flow__handle[id="branch-out"] {
+  top: 0;
+  left: calc(50% - 15px);
+}
+
+.metro-stop .react-flow__handle[id="branch-in"] {
+  top: 0;
+  left: calc(50% + 15px);
 }

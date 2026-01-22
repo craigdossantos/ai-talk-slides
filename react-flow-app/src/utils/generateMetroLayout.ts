@@ -9,11 +9,16 @@ import type {
   JunctionHandle,
   SubnodeNode,
   SubnodeContent,
+  LandmarkNode,
+  RiverWaypointNode,
 } from "../types/presentation";
 import { METRO_LINE_COLORS, METRO_LAYOUT } from "../types/presentation";
 import { loadPersistedPositions } from "./persistence";
 import type { MetroLineEdge } from "../components/edges/MetroLineEdge";
 import type { ArcEdge } from "../components/edges/ArcEdge";
+import type { RiverEdge } from "../components/edges/RiverEdge";
+import type { SubnodeBranchEdge } from "../components/edges/SubnodeBranchEdge";
+import { LANDMARKS, LANDMARK_INITIAL_POSITIONS } from "../data/landmarks";
 
 // Spacing between parallel lines at junctions (in pixels)
 const JUNCTION_LINE_SPACING = 12;
@@ -23,9 +28,35 @@ const SUBNODE_ARC_RADIUS = 120; // Distance from parent node center
 const SUBNODE_ARC_START_ANGLE = -150; // Start angle in degrees (upper left)
 const SUBNODE_ARC_END_ANGLE = -30; // End angle in degrees (upper right)
 
+// River waypoint initial positions - flows from top-left to bottom-right
+const RIVER_WAYPOINT_POSITIONS: { x: number; y: number }[] = [
+  { x: 50, y: 50 },
+  { x: 400, y: 200 },
+  { x: 900, y: 350 },
+  { x: 1500, y: 500 },
+  { x: 2200, y: 700 },
+  { x: 2900, y: 900 },
+  { x: 3600, y: 1100 },
+];
+
+// River configuration
+const RIVER_LABEL = "The River of AI Disillusionment";
+
 interface MetroLayoutResult {
-  nodes: (MetroStopNode | ResourceIconNode | SubnodeNode)[];
-  edges: (BuiltInEdge | MetroLineEdge | ArcEdge)[];
+  nodes: (
+    | MetroStopNode
+    | ResourceIconNode
+    | SubnodeNode
+    | LandmarkNode
+    | RiverWaypointNode
+  )[];
+  edges: (
+    | BuiltInEdge
+    | MetroLineEdge
+    | ArcEdge
+    | RiverEdge
+    | SubnodeBranchEdge
+  )[];
 }
 
 /**
@@ -150,8 +181,20 @@ export function generateMetroLayout(
   slides: SlideContent[],
   resources: Resource[] = [],
 ): MetroLayoutResult {
-  const nodes: (MetroStopNode | ResourceIconNode | SubnodeNode)[] = [];
-  const edges: (BuiltInEdge | MetroLineEdge | ArcEdge)[] = [];
+  const nodes: (
+    | MetroStopNode
+    | ResourceIconNode
+    | SubnodeNode
+    | LandmarkNode
+    | RiverWaypointNode
+  )[] = [];
+  const edges: (
+    | BuiltInEdge
+    | MetroLineEdge
+    | ArcEdge
+    | RiverEdge
+    | SubnodeBranchEdge
+  )[] = [];
 
   // Load any persisted label positions
   const persistedPositions = loadPersistedPositions();
@@ -243,7 +286,7 @@ export function generateMetroLayout(
         });
       });
 
-      // Create subnode nodes and arc edges if slide has subnodes
+      // Create subnode nodes and branch loop edges if slide has subnodes
       if (slide.subnodes && slide.subnodes.length > 0) {
         const nodePosition = persistedNodePos || { x: currentX, y: currentY };
         const subnodePositions = generateSubnodePositions(
@@ -252,8 +295,11 @@ export function generateMetroLayout(
           slide.subnodes,
         );
 
+        const subnodeNodeIds: string[] = [];
+
         slide.subnodes.forEach((subnode, subnodeIndex) => {
           const subnodeNodeId = `subnode-${subnode.id}`;
+          subnodeNodeIds.push(subnodeNodeId);
           const subnodePosition = subnodePositions[subnodeIndex];
 
           // Create subnode node
@@ -271,22 +317,58 @@ export function generateMetroLayout(
             },
           };
           nodes.push(subnodeNode);
+        });
 
-          // Create arc edge from subnode to metro stop
-          const arcEdge: ArcEdge = {
-            id: `arc-${nodeId}-${subnodeNodeId}`,
-            source: subnodeNodeId,
-            target: nodeId,
-            sourceHandle: "bottom",
-            targetHandle: "top",
-            type: "arcEdge",
+        // Create branch loop edges:
+        // 1. Metro stop (branch-out) → first subnode (left)
+        const branchOutEdge: SubnodeBranchEdge = {
+          id: `branch-out-${nodeId}-${subnodeNodeIds[0]}`,
+          source: nodeId,
+          target: subnodeNodeIds[0],
+          sourceHandle: "branch-out",
+          targetHandle: "left",
+          type: "subnodeBranch",
+          data: {
+            lineColor,
+            isExpanded: false,
+            parentSlideId: slide.id,
+          },
+        };
+        edges.push(branchOutEdge);
+
+        // 2. Chain subnodes left-to-right: subnode[i] (right) → subnode[i+1] (left)
+        for (let j = 0; j < subnodeNodeIds.length - 1; j++) {
+          const chainEdge: SubnodeBranchEdge = {
+            id: `branch-chain-${subnodeNodeIds[j]}-${subnodeNodeIds[j + 1]}`,
+            source: subnodeNodeIds[j],
+            target: subnodeNodeIds[j + 1],
+            sourceHandle: "right",
+            targetHandle: "left",
+            type: "subnodeBranch",
             data: {
               lineColor,
-              isExpanded: false, // Will be updated by MetroCanvas
+              isExpanded: false,
+              parentSlideId: slide.id,
             },
           };
-          edges.push(arcEdge);
-        });
+          edges.push(chainEdge);
+        }
+
+        // 3. Last subnode (right) → metro stop (branch-in)
+        const branchInEdge: SubnodeBranchEdge = {
+          id: `branch-in-${subnodeNodeIds[subnodeNodeIds.length - 1]}-${nodeId}`,
+          source: subnodeNodeIds[subnodeNodeIds.length - 1],
+          target: nodeId,
+          sourceHandle: "right",
+          targetHandle: "branch-in",
+          type: "subnodeBranch",
+          data: {
+            lineColor,
+            isExpanded: false,
+            parentSlideId: slide.id,
+          },
+        };
+        edges.push(branchInEdge);
       }
 
       // Create edge to previous node in same section
@@ -667,6 +749,73 @@ export function generateMetroLayout(
         node.id,
       );
     }
+  }
+
+  // Generate river waypoint nodes
+  const riverWaypointNodes: RiverWaypointNode[] = [];
+  for (let i = 0; i < RIVER_WAYPOINT_POSITIONS.length; i++) {
+    const waypointId = `river-waypoint-${i}`;
+    const persistedPos = persistedPositions?.[waypointId];
+    const defaultPos = RIVER_WAYPOINT_POSITIONS[i];
+
+    const waypointNode: RiverWaypointNode = {
+      id: waypointId,
+      type: "riverWaypoint",
+      position: persistedPos || defaultPos,
+      data: {
+        waypointIndex: i,
+      },
+      zIndex: -50, // Below metro lines but above background
+      draggable: true,
+    };
+    riverWaypointNodes.push(waypointNode);
+  }
+  nodes.push(...riverWaypointNodes);
+
+  // Generate river edges connecting waypoints
+  for (let i = 0; i < riverWaypointNodes.length - 1; i++) {
+    const sourceNode = riverWaypointNodes[i];
+    const targetNode = riverWaypointNodes[i + 1];
+
+    // Add label to the middle edge
+    const isMiddleEdge = i === Math.floor(riverWaypointNodes.length / 2) - 1;
+
+    const riverEdge: RiverEdge = {
+      id: `river-edge-${i}-${i + 1}`,
+      source: sourceNode.id,
+      target: targetNode.id,
+      sourceHandle: "right",
+      targetHandle: "left",
+      type: "riverEdge",
+      zIndex: -50,
+      data: {
+        label: isMiddleEdge ? RIVER_LABEL : undefined,
+        // strokeWidth uses default from RiverEdge.tsx (120)
+      },
+    };
+    edges.push(riverEdge);
+  }
+
+  // Generate landmark nodes
+  for (const landmark of LANDMARKS) {
+    const persistedPos = persistedPositions?.[landmark.id];
+    const defaultPos = LANDMARK_INITIAL_POSITIONS[landmark.id] || {
+      x: 0,
+      y: 0,
+    };
+
+    const landmarkNode: LandmarkNode = {
+      id: landmark.id,
+      type: "landmark",
+      position: persistedPos || defaultPos,
+      data: {
+        image: landmark.image,
+        label: landmark.label,
+      },
+      zIndex: -40, // Above river, below metro lines
+      draggable: true,
+    };
+    nodes.push(landmarkNode);
   }
 
   return { nodes, edges };

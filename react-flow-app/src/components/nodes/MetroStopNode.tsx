@@ -22,6 +22,9 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
     onNext,
     hasPrevious,
     hasNext,
+    isFullSlideOpen,
+    onCloseFullSlide,
+    isAnySlideOpen,
   } = data;
   const [isHovered, setIsHovered] = useState(false);
 
@@ -31,16 +34,30 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
   const hasBullets = slide.bullets && slide.bullets.length > 0;
   const hasContent = hasBullets || slide.backgroundImage;
 
-  // Calculate continuous scale factor for thumbnails
-  const thumbnailScale = useMemo(() => {
-    if (zoom < ZOOM_MIN) return 0; // Hidden
-    if (zoom >= ZOOM_FULL) return 1; // Full size
-    // Linear interpolation from 0 to 1 as zoom goes from ZOOM_MIN to ZOOM_FULL
-    return (zoom - ZOOM_MIN) / (ZOOM_FULL - ZOOM_MIN);
-  }, [zoom]);
+  // Thumbnail sizing constants (base width is 200px in CSS)
+  const THUMBNAIL_MAX_SCALE = 1.5; // 200px * 1.5 = 300px max
+  const THUMBNAIL_CONSTRAINED_SCALE = 1.25; // 200px * 1.25 = 250px when constrained
 
-  // Zoom-based display logic
-  const showFullSlide = zoom >= ZOOM_FULL && isActive; // Only active node shows full content
+  // Calculate continuous scale factor for thumbnails
+  // Scales from 0 at ZOOM_MIN, capped at max width
+  const thumbnailScale = useMemo(() => {
+    if (zoom < ZOOM_MIN) return 0; // Hidden below minimum zoom
+
+    // Linear scale based on zoom
+    const rawScale = (zoom - ZOOM_MIN) / (ZOOM_FULL - ZOOM_MIN);
+
+    // Determine max scale: constrain to 250px if another slide is open or zoomed in
+    const isZoomedIn = zoom >= ZOOM_FULL;
+    const shouldConstrain = !isFullSlideOpen && (isAnySlideOpen || isZoomedIn);
+    const maxScale = shouldConstrain
+      ? THUMBNAIL_CONSTRAINED_SCALE
+      : THUMBNAIL_MAX_SCALE;
+
+    return Math.min(rawScale, maxScale);
+  }, [zoom, isFullSlideOpen, isAnySlideOpen]);
+
+  // Display logic - full slide is now click-triggered, not zoom-triggered
+  const showFullSlide = isFullSlideOpen ?? false;
   const showThumbnail =
     slide.backgroundImage && thumbnailScale > 0 && !showFullSlide;
   const showTooltip = zoom < ZOOM_MIN && isHovered && hasContent;
@@ -55,6 +72,10 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
       {/* Default handles - always rendered for intra-section edges */}
       <Handle type="target" position={Position.Left} id="left" />
       <Handle type="target" position={Position.Top} id="top" />
+
+      {/* Branch handles for subnode loop connections */}
+      <Handle type="source" position={Position.Top} id="branch-out" />
+      <Handle type="target" position={Position.Top} id="branch-in" />
 
       {/* Additional junction handles with offsets for parallel inter-section lines */}
       {junctionHandles &&
@@ -81,9 +102,19 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
             />
           ))}
 
-      {/* Full slide content - shown at highest zoom */}
+      {/* Full slide content - shown when clicked */}
       {showFullSlide && (
         <div className="metro-stop__full-slide">
+          <button
+            className="metro-stop__close-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              onCloseFullSlide?.();
+            }}
+            aria-label="Close slide"
+          >
+            ×
+          </button>
           {slide.backgroundImage && (
             <img src={slide.backgroundImage} alt={slide.title} />
           )}

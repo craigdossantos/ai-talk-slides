@@ -81,3 +81,13 @@
 .subnode .react-flow__handle-bottom {
   bottom: 100%;
 }
+
+.subnode .react-flow__handle-left {
+  left: 0;
+  top: 50%;
+}
+
+.subnode .react-flow__handle-right {
+  right: 0;
+  top: 50%;
+}

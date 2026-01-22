@@ -81,6 +81,20 @@
   fill: var(--color-text-primary);
 }
 
+/* Hide React Flow default selection box for landmark and river waypoint nodes */
+.react-flow__node-landmark.selected,
+.react-flow__node-riverWaypoint.selected,
+.react-flow__node-landmark:focus,
+.react-flow__node-riverWaypoint:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.react-flow__node-landmark .react-flow__handle,
+.react-flow__node-riverWaypoint .react-flow__handle {
+  opacity: 0;
+}
+
 /* Responsive adjustments */
 @media (max-width: 1366px) {
   :root {

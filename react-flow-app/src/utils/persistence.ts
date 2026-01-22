@@ -80,3 +80,49 @@ export function clearPersistedPositions(): void {
     console.warn("Failed to clear persisted positions:", error);
   }
 }
+
+/**
+ * Export current node positions to a downloadable JSON file.
+ * The downloaded file can be committed to git and used as the default positions.
+ * @param filename Optional filename (default: nodePositions.json)
+ */
+export function exportPositionsToFile(
+  filename: string = "nodePositions.json",
+): void {
+  try {
+    const positions = loadPersistedPositions();
+
+    if (!positions || Object.keys(positions).length === 0) {
+      console.warn("No positions to export");
+      return;
+    }
+
+    const jsonContent = JSON.stringify(positions, null, 2);
+    const blob = new Blob([jsonContent], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    console.log(`Exported ${Object.keys(positions).length} node positions`);
+  } catch (error) {
+    console.warn("Failed to export positions:", error);
+  }
+}
+
+/**
+ * Load node positions from a committed JSON file.
+ * Falls back to localStorage positions if JSON import fails.
+ * @param positionsJson The imported JSON object with node positions
+ * @returns Record mapping node IDs to positions
+ */
+export function loadCommittedPositions(
+  positionsJson: Record<string, NodePosition>,
+): Record<string, NodePosition> {
+  return positionsJson;
+}

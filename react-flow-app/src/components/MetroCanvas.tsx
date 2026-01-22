@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useRef } from "react";
+import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import {
   ReactFlow,
   useReactFlow,
@@ -14,9 +14,14 @@ import MetroBackgroundNode from "./nodes/MetroBackgroundNode";
 import ResourceIconNode from "./nodes/ResourceIconNode";
 import SlideNode from "./nodes/SlideNode";
 import SubnodeNode from "./nodes/SubnodeNode";
+import LandmarkNode from "./nodes/LandmarkNode";
+import RiverWaypointNode from "./nodes/RiverWaypointNode";
 import MetroLineEdge from "./edges/MetroLineEdge";
 import ArcEdge from "./edges/ArcEdge";
+import RiverEdge from "./edges/RiverEdge";
+import SubnodeBranchEdge from "./edges/SubnodeBranchEdge";
 import NavigationControls from "./panels/NavigationControls";
+import { EDIT_MODE } from "../config";
 import MetroLegend from "./panels/MetroLegend";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
 import { generateMetroLayout } from "../utils/generateMetroLayout";
@@ -25,6 +30,7 @@ import {
   clearPersistedPositions,
   loadPersistedPositions,
   savePersistedPositions,
+  exportPositionsToFile,
 } from "../utils/persistence";
 import { sections, slides, resources } from "../data/slides";
 import type { PresentationNode } from "../types/presentation";
@@ -36,12 +42,16 @@ const nodeTypes = {
   resourceIcon: ResourceIconNode,
   slide: SlideNode,
   subnode: SubnodeNode,
+  landmark: LandmarkNode,
+  riverWaypoint: RiverWaypointNode,
 };
 
 // Register custom edge types
 const edgeTypes = {
   metroLine: MetroLineEdge,
   arcEdge: ArcEdge,
+  riverEdge: RiverEdge,
+  subnodeBranch: SubnodeBranchEdge,
 };
 
 function MetroCanvas() {
@@ -80,6 +90,20 @@ function MetroCanvas() {
   });
 
   const [edges] = useState<Edge[]>(metroEdges);
+
+  // Track which node has full slide view open (null = none)
+  const [fullSlideNodeId, setFullSlideNodeId] = useState<string | null>(null);
+
+  // Close full slide view on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && fullSlideNodeId) {
+        setFullSlideNodeId(null);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [fullSlideNodeId]);
 
   // Keyboard navigation
   const {
@@ -136,20 +160,33 @@ function MetroCanvas() {
     }, [findClosestSlide, currentSlideId, setActiveSlide]),
   });
 
-  // Handle node click - zoom to stop and navigate
+  // Handle node click - navigate and open full slide view
   const handleNodeClick = useCallback<NodeMouseHandler>(
     (_, node) => {
       if (node.type === "metroStop") {
-        // Extract slide id and navigate
-        const slideId = node.id.replace("metro-", "");
+        const nodeId = node.id;
+        const slideId = nodeId.replace("metro-", "");
+
         // Set navigating ref to prevent viewport change handler from firing
         isNavigatingRef.current = true;
-        // navigateToSlide already calls fitView internally
-        navigateToSlide(slideId);
+
+        // If clicking already active node, toggle full slide view
+        if (slideId === currentSlideId) {
+          setFullSlideNodeId((prev) => (prev === nodeId ? null : nodeId));
+        } else {
+          // Navigate to new slide and open full slide view
+          navigateToSlide(slideId);
+          setFullSlideNodeId(nodeId);
+        }
       }
     },
-    [navigateToSlide],
+    [navigateToSlide, currentSlideId],
   );
+
+  // Handle pane click (clicking on canvas background) - close full slide
+  const handlePaneClick = useCallback(() => {
+    setFullSlideNodeId(null);
+  }, []);
 
   // Handle node changes (dragging)
   const onNodesChange = useCallback(
@@ -162,8 +199,14 @@ function MetroCanvas() {
   // Clear selection after drag and persist node positions
   const onNodeDragStop = useCallback(
     (_event: React.MouseEvent, node: Node, _nodes: Node[]) => {
-      // Persist position for draggable nodes (metro stops and labels)
-      if (node.type === "metroLineLabel" || node.type === "metroStop") {
+      // Persist position for draggable nodes (metro stops, labels, landmarks, river waypoints)
+      const persistableTypes = [
+        "metroLineLabel",
+        "metroStop",
+        "landmark",
+        "riverWaypoint",
+      ];
+      if (persistableTypes.includes(node.type || "")) {
         const existingPositions = loadPersistedPositions() || {};
         savePersistedPositions({
           ...existingPositions,
@@ -205,6 +248,7 @@ function MetroCanvas() {
         // metro-slide-01 -> slide-01, currentSlideId is "slide-01"
         const slideId = node.id.replace("metro-", "");
         const isActive = slideId === currentSlideId;
+        const isFullSlideOpen = fullSlideNodeId === node.id;
 
         // Get previous/next from navigation graph (follows track connections)
         const navLinks = navigationGraph.get(slideId);
@@ -221,13 +265,24 @@ function MetroCanvas() {
             isActive,
             // Navigation callbacks for full slide view - now track-aware
             onPrevious: previousSlideId
-              ? () => navigateToSlide(previousSlideId)
+              ? () => {
+                  navigateToSlide(previousSlideId);
+                  setFullSlideNodeId(`metro-${previousSlideId}`);
+                }
               : undefined,
             onNext: nextSlideId
-              ? () => navigateToSlide(nextSlideId)
+              ? () => {
+                  navigateToSlide(nextSlideId);
+                  setFullSlideNodeId(`metro-${nextSlideId}`);
+                }
               : undefined,
             hasPrevious: previousSlideId !== null,
             hasNext: nextSlideId !== null,
+            // Click-to-expand full slide view
+            isFullSlideOpen,
+            onCloseFullSlide: () => setFullSlideNodeId(null),
+            // For constraining other thumbnails when any slide is open
+            isAnySlideOpen: fullSlideNodeId !== null,
           },
         };
       }
@@ -252,9 +307,15 @@ function MetroCanvas() {
 
       return node;
     });
-  }, [nodes, currentSlideId, navigateToSlide, navigationGraph]);
+  }, [
+    nodes,
+    currentSlideId,
+    navigateToSlide,
+    navigationGraph,
+    fullSlideNodeId,
+  ]);
 
-  // Update arc edges with expansion state based on their target metro stop being active
+  // Update subnode edges with expansion state based on their parent metro stop being active
   const edgesWithExpansionState = useMemo(() => {
     return edges.map((edge) => {
       if (edge.type === "arcEdge") {
@@ -262,6 +323,21 @@ function MetroCanvas() {
         // Target is like "metro-slide-03", currentSlideId is like "slide-03"
         const targetSlideId = edge.target.replace("metro-", "");
         const isExpanded = targetSlideId === currentSlideId;
+
+        return {
+          ...edge,
+          data: {
+            ...edge.data,
+            isExpanded,
+          },
+        };
+      }
+
+      if (edge.type === "subnodeBranch") {
+        // Branch edges store their parent slide ID in data
+        const parentSlideId = (edge.data as { parentSlideId?: string })
+          ?.parentSlideId;
+        const isExpanded = parentSlideId === currentSlideId;
 
         return {
           ...edge,
@@ -286,9 +362,10 @@ function MetroCanvas() {
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         onNodeClick={handleNodeClick}
+        onPaneClick={handlePaneClick}
         onNodesChange={onNodesChange}
         onNodeDragStop={onNodeDragStop}
-        nodesDraggable={true}
+        nodesDraggable={EDIT_MODE}
         minZoom={0.1}
         maxZoom={3}
         fitView
@@ -304,6 +381,7 @@ function MetroCanvas() {
         currentSlideIndex={currentSlideIndex}
         totalSlides={totalSlides}
         isOverviewMode={isOverviewMode}
+        isEditMode={EDIT_MODE}
         onPrevious={goToPreviousSlide}
         onNext={goToNextSlide}
         onToggleOverview={handleToggleOverview}
@@ -311,6 +389,7 @@ function MetroCanvas() {
           clearPersistedPositions();
           window.location.reload();
         }}
+        onExportPositions={() => exportPositionsToFile()}
       />
     </div>
   );
