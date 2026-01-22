@@ -100,20 +100,17 @@ export function useKeyboardNavigation({
         node.position.y - CARD_OFFSET_ABOVE_NODE - CARD_HEIGHT_ESTIMATE;
       const cardCenterX = node.position.x;
 
-      // Calculate zoom so card takes 80% of window height
-      // Ensure minimum zoom of 1.9 to trigger full slide display (ZOOM_FULL = 1.8 in MetroStopNode)
-      // Using 1.9 instead of 2.0 to prevent over-zooming that cuts off card tops
+      // Calculate zoom to show card with neighboring slides visible
+      // Use fixed zoom of 0.95 (just below ZOOM_FULL of 1.2 threshold but showing full content)
       const windowHeight =
         typeof window !== "undefined" ? window.innerHeight : 800;
       const windowWidth =
         typeof window !== "undefined" ? window.innerWidth : 1200;
-      const calculatedZoom = (windowHeight * 0.75) / CARD_HEIGHT_ESTIMATE;
-      const zoom = Math.max(calculatedZoom, 1.9); // Minimum 1.9 (just above ZOOM_FULL of 1.8)
+      const zoom = 0.95; // Lower zoom to show neighbors and metro line
 
-      // Position so top of card is visible with padding below top of window
-      // Add extra padding (25px scaled by zoom) to ensure image top is not cut off
+      // Position so card has top margin and metro line is visible at bottom
       const viewportX = -cardCenterX * zoom + windowWidth / 2;
-      const viewportY = -cardTopY * zoom + 25;
+      const viewportY = -cardTopY * zoom + 40;
 
       setViewport(
         { x: viewportX, y: viewportY, zoom },

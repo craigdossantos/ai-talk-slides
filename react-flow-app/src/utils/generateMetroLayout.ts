@@ -145,11 +145,12 @@ export function generateMetroLayout(
       // Get resources for this slide
       const slideResources = resources.filter((r) => r.slideId === slide.id);
 
-      // Create metro stop node
+      // Create metro stop node - use persisted position if available
+      const persistedNodePos = persistedPositions?.[nodeId];
       const node: MetroStopNode = {
         id: nodeId,
         type: "metroStop",
-        position: { x: currentX, y: currentY },
+        position: persistedNodePos || { x: currentX, y: currentY },
         data: {
           slide,
           section,

@@ -151,11 +151,11 @@ function MetroCanvas() {
     [],
   );
 
-  // Clear selection after drag and persist label positions
+  // Clear selection after drag and persist node positions
   const onNodeDragStop = useCallback(
     (_event: React.MouseEvent, node: Node, _nodes: Node[]) => {
-      // Persist position for label nodes
-      if (node.type === "metroLineLabel") {
+      // Persist position for draggable nodes (metro stops and labels)
+      if (node.type === "metroLineLabel" || node.type === "metroStop") {
         const existingPositions = loadPersistedPositions() || {};
         savePersistedPositions({
           ...existingPositions,

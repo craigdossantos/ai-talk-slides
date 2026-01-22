@@ -5,7 +5,7 @@ import "./MetroStopNode.css";
 
 // Zoom level thresholds
 const ZOOM_MIN = 0.3; // Below this: thumbnails hidden
-const ZOOM_FULL = 1.8; // Above this: full slide content (active only)
+const ZOOM_FULL = 0.9; // Above this: full slide content (active only)
 
 // Selector for zoom from React Flow store - this is the most reliable way to get zoom
 const zoomSelector = (state: { transform: [number, number, number] }) =>
