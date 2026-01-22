@@ -80,6 +80,14 @@ export const slides: SlideContent[] = [
     ],
     subnodes: [
       {
+        id: "subnode-03-billboard",
+        parentSlideId: "slide-03",
+        type: "slide",
+        title: "Billboard Example",
+        image:
+          "https://framerusercontent.com/images/wImRiJQUuEpMwbYOB5dUXUcrUk.png?width=2752&height=1536",
+      },
+      {
         id: "subnode-03-1",
         parentSlideId: "slide-03",
         type: "resource",
@@ -95,15 +103,6 @@ export const slides: SlideContent[] = [
         content: "AI is a reasoning engine, not a search engine",
       },
     ],
-  },
-  {
-    id: "slide-03b",
-    sectionId: "understanding",
-    type: "image",
-    title: "",
-    backgroundImage:
-      "https://framerusercontent.com/images/wImRiJQUuEpMwbYOB5dUXUcrUk.png?width=2752&height=1536",
-    bullets: [],
   },
   {
     id: "slide-04",
