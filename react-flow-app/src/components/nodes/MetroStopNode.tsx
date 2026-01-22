@@ -1,4 +1,5 @@
 import { memo, useState, useMemo } from "react";
+import { createPortal } from "react-dom";
 import { Handle, Position, useStore } from "@xyflow/react";
 import type { MetroStopNodeProps } from "../../types/presentation";
 import "./MetroStopNode.css";
@@ -102,59 +103,61 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
             />
           ))}
 
-      {/* Full slide content - shown when clicked */}
-      {showFullSlide && (
-        <div className="metro-stop__full-slide">
-          <button
-            className="metro-stop__close-btn"
-            onClick={(e) => {
-              e.stopPropagation();
-              onCloseFullSlide?.();
-            }}
-            aria-label="Close slide"
-          >
-            ×
-          </button>
-          {slide.backgroundImage && (
-            <img src={slide.backgroundImage} alt={slide.title} />
-          )}
-          <div className="metro-stop__full-content">
-            <h3>{slide.title}</h3>
-            {slide.subtitle && (
-              <p className="metro-stop__full-subtitle">{slide.subtitle}</p>
+      {/* Full slide content - rendered via portal to escape React Flow transforms */}
+      {showFullSlide &&
+        createPortal(
+          <div className="metro-stop__full-slide">
+            <button
+              className="metro-stop__close-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                onCloseFullSlide?.();
+              }}
+              aria-label="Close slide"
+            >
+              ×
+            </button>
+            {slide.backgroundImage && (
+              <img src={slide.backgroundImage} alt={slide.title} />
             )}
-            {hasBullets && (
-              <ul>
-                {slide.bullets!.map((bullet, index) => (
-                  <li key={index}>{bullet}</li>
-                ))}
-              </ul>
-            )}
-          </div>
-          {(onPrevious || onNext) && (
-            <div className="metro-stop__nav">
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onPrevious?.();
-                }}
-                disabled={!hasPrevious}
-              >
-                ← Prev
-              </button>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onNext?.();
-                }}
-                disabled={!hasNext}
-              >
-                Next →
-              </button>
+            <div className="metro-stop__full-content">
+              <h3>{slide.title}</h3>
+              {slide.subtitle && (
+                <p className="metro-stop__full-subtitle">{slide.subtitle}</p>
+              )}
+              {hasBullets && (
+                <ul>
+                  {slide.bullets!.map((bullet, index) => (
+                    <li key={index}>{bullet}</li>
+                  ))}
+                </ul>
+              )}
             </div>
-          )}
-        </div>
-      )}
+            {(onPrevious || onNext) && (
+              <div className="metro-stop__nav">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onPrevious?.();
+                  }}
+                  disabled={!hasPrevious}
+                >
+                  ← Prev
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onNext?.();
+                  }}
+                  disabled={!hasNext}
+                >
+                  Next →
+                </button>
+              </div>
+            )}
+          </div>,
+          document.body,
+        )}
 
       {/* Inline image - scales continuously with zoom */}
       {showThumbnail && (

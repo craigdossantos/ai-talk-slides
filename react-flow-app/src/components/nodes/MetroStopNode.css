@@ -197,12 +197,11 @@
   top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  width: 875px;
-  max-width: 90vw;
-  height: 85vh;
+  width: 1100px;
+  max-width: 95vw;
   max-height: calc(100vh - 40px);
   background: white;
-  border-radius: 16px;
+  border-radius: 20px;
   overflow: hidden;
   box-shadow:
     0 25px 80px rgba(0, 0, 0, 0.3),
@@ -210,20 +209,20 @@
   z-index: 9999;
   display: flex;
   flex-direction: column;
-  padding: 24px;
+  padding: 32px;
 }
 
 .metro-stop__close-btn {
   position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 36px;
-  height: 36px;
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
   border: none;
   background: rgba(0, 0, 0, 0.6);
   color: white;
   border-radius: 50%;
-  font-size: 22px;
+  font-size: 28px;
   line-height: 1;
   cursor: pointer;
   z-index: 10;
@@ -238,68 +237,68 @@
 }
 
 .metro-stop__full-slide img {
-  flex: 1; /* Fill remaining space after content and nav */
-  min-height: 0; /* Allow shrinking in flexbox */
   width: 100%;
-  max-width: 100%;
+  max-height: calc(
+    100vh - 380px
+  ); /* Leave room for larger content, nav, and margins */
   object-fit: contain;
   display: block;
-  background: #f8f8f8;
+  background: transparent;
   margin: 0 auto;
-  border-radius: 16px;
+  border-radius: 20px;
 }
 
 .metro-stop__full-content {
   flex-shrink: 0; /* Don't shrink - keep fixed size */
-  padding: 20px 0 8px;
+  padding: 28px 0 12px;
 }
 
 .metro-stop__full-content h3 {
   font-family: "Space Grotesk", sans-serif;
-  font-size: 28px;
+  font-size: 42px;
   font-weight: 700;
   color: #1a1a1a;
-  margin: 0 0 12px;
+  margin: 0 0 16px;
   line-height: 1.2;
 }
 
 .metro-stop__full-subtitle {
-  font-size: 18px;
+  font-size: 26px;
   color: #555;
-  margin: 0 0 16px;
+  margin: 0 0 20px;
   line-height: 1.4;
 }
 
 .metro-stop__full-content ul {
-  margin: 16px 0 0;
-  padding-left: 24px;
+  margin: 20px 0 0;
+  padding-left: 32px;
   list-style: disc;
 }
 
 .metro-stop__full-content li {
-  font-size: 18px;
+  font-size: 26px;
   color: #333;
   line-height: 1.6;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
 }
 
 .metro-stop__nav {
   flex-shrink: 0; /* Don't shrink - keep fixed size */
   display: flex;
   justify-content: space-between;
-  gap: 16px;
-  padding: 16px 0 0;
-  margin-top: 8px;
+  gap: 24px;
+  padding: 24px 0 0;
+  margin-top: 12px;
   border-top: 1px solid #e5e5e5;
 }
 
 .metro-stop__nav button {
-  padding: 14px 32px;
+  padding: 20px 48px;
   border: none;
   background: #f0f0f0;
-  border-radius: 10px;
+  border-radius: 12px;
   font-family: "Space Grotesk", sans-serif;
-  font-size: 18px;
+  font-size: 26px;
   font-weight: 600;
   cursor: pointer;
   transition:
