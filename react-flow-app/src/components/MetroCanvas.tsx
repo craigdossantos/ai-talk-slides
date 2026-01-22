@@ -205,6 +205,9 @@ function MetroCanvas() {
 
         return {
           ...node,
+          // Set zIndex on node itself - active node gets high z-index
+          // This is more reliable than CSS z-index for React Flow
+          zIndex: isActive ? 1000 : 1,
           data: {
             ...node.data,
             isActive,
@@ -224,6 +227,9 @@ function MetroCanvas() {
     });
   }, [nodes, currentSlideId, navigateToSlide, navigationGraph]);
 
+  // Check if we're in focused mode (zoomed into a slide)
+  const isFocusedMode = !isOverviewMode && currentSlideId !== null;
+
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
       <ReactFlow
@@ -242,6 +248,7 @@ function MetroCanvas() {
           maxZoom: 1,
         }}
         proOptions={{ hideAttribution: true }}
+        className={isFocusedMode ? "react-flow--focused" : ""}
       />
       <MetroLegend />
       <NavigationControls

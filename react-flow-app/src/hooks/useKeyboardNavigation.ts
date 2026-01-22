@@ -5,7 +5,9 @@ import { buildNavigationGraph } from "../utils/navigationGraph";
 
 // Constants for slide card positioning (must match MetroStopNode.css)
 const CARD_OFFSET_ABOVE_NODE = 50; // bottom: 50px in CSS
-const CARD_HEIGHT_ESTIMATE = 350; // ~250px image + ~100px content
+// Use max possible card height for positioning to ensure all cards fit
+// Image (250px) + title/subtitle (60px) + bullets (up to 200px) + nav (60px) + padding (30px)
+const MAX_CARD_HEIGHT = 600;
 
 interface UseKeyboardNavigationOptions {
   sections: Section[];
@@ -79,8 +81,8 @@ export function useKeyboardNavigation({
     setCurrentSlideId(slideId);
   }, []);
 
-  // Helper: center viewport on a slide's card (not the node)
-  // Card is positioned 15px from top of window and takes 80% of window height
+  // Helper: center viewport on a slide's card
+  // Positions the card with 20px top margin and node visible above nav bar
   const centerOnSlideCard = useCallback(
     (slideId: string) => {
       const node = getNode(`metro-${slideId}`);
@@ -95,22 +97,38 @@ export function useKeyboardNavigation({
         return;
       }
 
-      // Card top is positioned above the node
-      const cardTopY =
-        node.position.y - CARD_OFFSET_ABOVE_NODE - CARD_HEIGHT_ESTIMATE;
-      const cardCenterX = node.position.x;
-
-      // Calculate zoom to show card with neighboring slides visible
-      // Use fixed zoom of 0.95 (just below ZOOM_FULL of 1.2 threshold but showing full content)
       const windowHeight =
         typeof window !== "undefined" ? window.innerHeight : 800;
       const windowWidth =
         typeof window !== "undefined" ? window.innerWidth : 1200;
-      const zoom = 0.95; // Lower zoom to show neighbors and metro line
 
-      // Position so card has top margin and metro line is visible at bottom
-      const viewportX = -cardCenterX * zoom + windowWidth / 2;
-      const viewportY = -cardTopY * zoom + 40;
+      // We want:
+      // - Card top at 20px from window top
+      // - Node visible above the bottom nav bar (at least 120px from bottom)
+      const topMargin = 20;
+      const bottomMargin = 120; // Space for node + nav bar
+
+      // Available height for the card + node area
+      const availableHeight = windowHeight - topMargin - bottomMargin;
+
+      // Total vertical span in flow coords: from card top to node
+      // Card top = node.y - CARD_OFFSET_ABOVE_NODE - cardHeight
+      // Span = cardHeight + CARD_OFFSET_ABOVE_NODE
+      const totalSpan = MAX_CARD_HEIGHT + CARD_OFFSET_ABOVE_NODE;
+
+      // Calculate zoom so this span fits in available height
+      const zoom = availableHeight / totalSpan;
+
+      // Card top in flow coordinates
+      const cardTopY =
+        node.position.y - CARD_OFFSET_ABOVE_NODE - MAX_CARD_HEIGHT;
+
+      // Position viewport so card top is at topMargin (20px)
+      // screenY = flowY * zoom + viewportY
+      // topMargin = cardTopY * zoom + viewportY
+      // viewportY = topMargin - cardTopY * zoom
+      const viewportX = -node.position.x * zoom + windowWidth / 2;
+      const viewportY = topMargin - cardTopY * zoom;
 
       setViewport(
         { x: viewportX, y: viewportY, zoom },

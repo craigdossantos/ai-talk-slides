@@ -1,12 +1,19 @@
 .metro-stop {
   position: relative;
   cursor: pointer;
-  z-index: 1;
+  transition: opacity 0.3s ease;
+  /* Create a stacking context so parent node's z-index controls ordering */
+  isolation: isolate;
 }
 
-/* Active node should be above all other nodes */
+/* Active node styling - z-index is controlled at React Flow node level */
 .metro-stop--active {
-  z-index: 1000;
+  /* z-index handled by node.zIndex in MetroCanvas */
+}
+
+/* Dim non-active nodes when in focused mode */
+.react-flow--focused .metro-stop:not(.metro-stop--active) {
+  opacity: 0.7;
 }
 
 .metro-stop__circle {

@@ -35,6 +35,15 @@
   filter: brightness(1.1);
 }
 
+/* Focused mode - dim edges and background when zoomed into a slide */
+.react-flow--focused .react-flow__edge-path {
+  opacity: 0.5;
+}
+
+.react-flow--focused .react-flow__pane {
+  background-color: rgba(245, 245, 240, 0.7);
+}
+
 /*
  * IMPORTANT: Do NOT add CSS transitions to .react-flow__viewport!
  * This causes lag during manual panning because the viewport transform
