@@ -78,6 +78,23 @@ export const slides: SlideContent[] = [
       "Mental Model: ChatGPT as a better Google",
       "It has different flaws: hallucinations",
     ],
+    subnodes: [
+      {
+        id: "subnode-03-1",
+        parentSlideId: "slide-03",
+        type: "resource",
+        title: "Understanding Hallucinations",
+        url: "https://www.anthropic.com/news/claude-3-5-sonnet",
+        content: "Why AI sometimes makes things up",
+      },
+      {
+        id: "subnode-03-2",
+        parentSlideId: "slide-03",
+        type: "note",
+        title: "Key Insight",
+        content: "AI is a reasoning engine, not a search engine",
+      },
+    ],
   },
   {
     id: "slide-03b",

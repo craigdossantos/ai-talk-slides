@@ -17,6 +17,7 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
     lineColor,
     isActive,
     isJunction,
+    junctionHandles,
     onPrevious,
     onNext,
     hasPrevious,
@@ -51,8 +52,34 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
+      {/* Default handles - always rendered for intra-section edges */}
       <Handle type="target" position={Position.Left} id="left" />
       <Handle type="target" position={Position.Top} id="top" />
+
+      {/* Additional junction handles with offsets for parallel inter-section lines */}
+      {junctionHandles &&
+        junctionHandles
+          .filter((h) => h.position === "left" || h.position === "top")
+          .map((handle) => (
+            <Handle
+              key={handle.handleId}
+              type="target"
+              position={
+                handle.position === "left" ? Position.Left : Position.Top
+              }
+              id={handle.handleId}
+              style={{
+                top:
+                  handle.position === "left"
+                    ? `calc(50% + ${handle.offset}px)`
+                    : undefined,
+                left:
+                  handle.position === "top"
+                    ? `calc(50% + ${handle.offset}px)`
+                    : undefined,
+              }}
+            />
+          ))}
 
       {/* Full slide content - shown at highest zoom */}
       {showFullSlide && (
@@ -142,8 +169,34 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
         </div>
       )}
 
+      {/* Default handles - always rendered for intra-section edges */}
       <Handle type="source" position={Position.Right} id="right" />
       <Handle type="source" position={Position.Bottom} id="bottom" />
+
+      {/* Additional junction handles with offsets for parallel inter-section lines */}
+      {junctionHandles &&
+        junctionHandles
+          .filter((h) => h.position === "right" || h.position === "bottom")
+          .map((handle) => (
+            <Handle
+              key={handle.handleId}
+              type="source"
+              position={
+                handle.position === "right" ? Position.Right : Position.Bottom
+              }
+              id={handle.handleId}
+              style={{
+                top:
+                  handle.position === "right"
+                    ? `calc(50% + ${handle.offset}px)`
+                    : undefined,
+                left:
+                  handle.position === "bottom"
+                    ? `calc(50% + ${handle.offset}px)`
+                    : undefined,
+              }}
+            />
+          ))}
     </div>
   );
 }

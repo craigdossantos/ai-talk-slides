@@ -42,8 +42,15 @@
 
 .metro-stop__circle--junction {
   width: 24px;
-  height: 40px;
+  height: 56px; /* Taller to accommodate 3 parallel lines with spacing */
   border-radius: 12px;
+}
+
+/* Junction node handles with offset positioning */
+.metro-stop .react-flow__handle[id*="-0"],
+.metro-stop .react-flow__handle[id*="-1"],
+.metro-stop .react-flow__handle[id*="-2"] {
+  /* Override default positioning - actual position is set via inline style */
 }
 
 .metro-stop__label {

@@ -1,0 +1,5 @@
+.arc-edge {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  pointer-events: none;
+}

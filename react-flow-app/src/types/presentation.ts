@@ -18,6 +18,17 @@ export type SlideType =
   | "quote"
   | "image";
 
+// Subnode content for expandable child nodes
+export interface SubnodeContent {
+  id: string;
+  parentSlideId: string;
+  type: "resource" | "slide" | "note";
+  title: string;
+  url?: string; // For resource type
+  content?: string; // For note type
+  image?: string; // Optional thumbnail image
+}
+
 // Main slide content structure
 export interface SlideContent {
   id: string;
@@ -29,6 +40,7 @@ export interface SlideContent {
   quote?: string;
   level?: number; // For level-based slides (0-8)
   backgroundImage?: string; // Path to background image
+  subnodes?: SubnodeContent[]; // Expandable child nodes
 }
 
 // Resource types for linked resources
@@ -83,6 +95,14 @@ export interface LevelNodeData {
   track: Track;
 }
 
+// Handle configuration for junction nodes with parallel lines
+export interface JunctionHandle {
+  handleId: string; // e.g., "right-0", "right-1"
+  position: "left" | "right" | "top" | "bottom";
+  offset: number; // Y-offset in pixels from center (negative = up, positive = down)
+  lineColor: string;
+}
+
 export interface MetroStopNodeData {
   [key: string]: unknown;
   slide: SlideContent;
@@ -93,6 +113,7 @@ export interface MetroStopNodeData {
   isHovered?: boolean;
   isJunction?: boolean; // Node where multiple lines converge
   junctionColors?: string[]; // Colors of converging lines
+  junctionHandles?: JunctionHandle[]; // Handles for parallel lines at junctions
   // Navigation callbacks for full slide view
   onPrevious?: () => void;
   onNext?: () => void;
@@ -111,11 +132,14 @@ export interface ResourceIconNodeData {
   resource: Resource;
 }
 
-export interface MetroLineLabelNodeData {
+export interface SubnodeNodeData {
   [key: string]: unknown;
+  subnode: SubnodeContent;
+  parentNodeId: string;
   lineColor: string;
-  lineName: string;
-  subtitle: string;
+  arcIndex: number; // Position in arc (0, 1, 2...) for positioning
+  totalSubnodes: number; // Total subnodes for this parent
+  isExpanded: boolean; // Whether parent is expanded
 }
 
 // React Flow node types with their data
@@ -133,7 +157,7 @@ export type MetroBackgroundNode = Node<
   "metroBackground"
 >;
 export type ResourceIconNode = Node<ResourceIconNodeData, "resourceIcon">;
-export type MetroLineLabelNode = Node<MetroLineLabelNodeData, "metroLineLabel">;
+export type SubnodeNode = Node<SubnodeNodeData, "subnode">;
 
 // Union type for all presentation nodes
 export type PresentationNode =
@@ -145,7 +169,7 @@ export type PresentationNode =
   | MetroStopNode
   | MetroBackgroundNode
   | ResourceIconNode
-  | MetroLineLabelNode;
+  | SubnodeNode;
 
 // Node props types for custom node components
 export type SlideNodeProps = NodeProps<SlideNode>;

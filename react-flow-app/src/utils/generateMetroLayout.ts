@@ -5,15 +5,66 @@ import type {
   MetroStopNode,
   MetroStopNodeData,
   ResourceIconNode,
-  MetroLineLabelNode,
   Resource,
+  JunctionHandle,
+  SubnodeNode,
+  SubnodeContent,
 } from "../types/presentation";
 import { METRO_LINE_COLORS, METRO_LAYOUT } from "../types/presentation";
 import { loadPersistedPositions } from "./persistence";
+import type { MetroLineEdge } from "../components/edges/MetroLineEdge";
+import type { ArcEdge } from "../components/edges/ArcEdge";
+
+// Spacing between parallel lines at junctions (in pixels)
+const JUNCTION_LINE_SPACING = 12;
+
+// Subnode arc configuration
+const SUBNODE_ARC_RADIUS = 120; // Distance from parent node center
+const SUBNODE_ARC_START_ANGLE = -150; // Start angle in degrees (upper left)
+const SUBNODE_ARC_END_ANGLE = -30; // End angle in degrees (upper right)
 
 interface MetroLayoutResult {
-  nodes: (MetroStopNode | ResourceIconNode | MetroLineLabelNode)[];
-  edges: BuiltInEdge[];
+  nodes: (MetroStopNode | ResourceIconNode | SubnodeNode)[];
+  edges: (BuiltInEdge | MetroLineEdge | ArcEdge)[];
+}
+
+/**
+ * Generates subnode positions in an arc above the parent metro stop
+ */
+function generateSubnodePositions(
+  parentX: number,
+  parentY: number,
+  subnodes: SubnodeContent[],
+): { x: number; y: number }[] {
+  const positions: { x: number; y: number }[] = [];
+  const count = subnodes.length;
+
+  if (count === 0) return positions;
+
+  // Single subnode goes directly above
+  if (count === 1) {
+    positions.push({
+      x: parentX,
+      y: parentY - SUBNODE_ARC_RADIUS,
+    });
+    return positions;
+  }
+
+  // Multiple subnodes spread in an arc
+  const angleRange = SUBNODE_ARC_END_ANGLE - SUBNODE_ARC_START_ANGLE;
+  const angleStep = angleRange / (count - 1);
+
+  for (let i = 0; i < count; i++) {
+    const angleDeg = SUBNODE_ARC_START_ANGLE + i * angleStep;
+    const angleRad = (angleDeg * Math.PI) / 180;
+
+    positions.push({
+      x: parentX + SUBNODE_ARC_RADIUS * Math.cos(angleRad),
+      y: parentY + SUBNODE_ARC_RADIUS * Math.sin(angleRad),
+    });
+  }
+
+  return positions;
 }
 
 // Section-specific Y positions - expanded for slide images above stops
@@ -99,8 +150,8 @@ export function generateMetroLayout(
   slides: SlideContent[],
   resources: Resource[] = [],
 ): MetroLayoutResult {
-  const nodes: (MetroStopNode | ResourceIconNode | MetroLineLabelNode)[] = [];
-  const edges: BuiltInEdge[] = [];
+  const nodes: (MetroStopNode | ResourceIconNode | SubnodeNode)[] = [];
+  const edges: (BuiltInEdge | MetroLineEdge | ArcEdge)[] = [];
 
   // Load any persisted label positions
   const persistedPositions = loadPersistedPositions();
@@ -192,25 +243,99 @@ export function generateMetroLayout(
         });
       });
 
+      // Create subnode nodes and arc edges if slide has subnodes
+      if (slide.subnodes && slide.subnodes.length > 0) {
+        const nodePosition = persistedNodePos || { x: currentX, y: currentY };
+        const subnodePositions = generateSubnodePositions(
+          nodePosition.x,
+          nodePosition.y,
+          slide.subnodes,
+        );
+
+        slide.subnodes.forEach((subnode, subnodeIndex) => {
+          const subnodeNodeId = `subnode-${subnode.id}`;
+          const subnodePosition = subnodePositions[subnodeIndex];
+
+          // Create subnode node
+          const subnodeNode: SubnodeNode = {
+            id: subnodeNodeId,
+            type: "subnode",
+            position: subnodePosition,
+            data: {
+              subnode,
+              parentNodeId: nodeId,
+              lineColor,
+              arcIndex: subnodeIndex,
+              totalSubnodes: slide.subnodes!.length,
+              isExpanded: false, // Will be updated by MetroCanvas based on active state
+            },
+          };
+          nodes.push(subnodeNode);
+
+          // Create arc edge from subnode to metro stop
+          const arcEdge: ArcEdge = {
+            id: `arc-${nodeId}-${subnodeNodeId}`,
+            source: subnodeNodeId,
+            target: nodeId,
+            sourceHandle: "bottom",
+            targetHandle: "top",
+            type: "arcEdge",
+            data: {
+              lineColor,
+              isExpanded: false, // Will be updated by MetroCanvas
+            },
+          };
+          edges.push(arcEdge);
+        });
+      }
+
       // Create edge to previous node in same section
       if (prevNodeId) {
-        edges.push({
-          id: `edge-${prevNodeId}-${nodeId}`,
-          source: prevNodeId,
-          target: nodeId,
-          sourceHandle: "right",
-          targetHandle: "left",
-          type: "smoothstep",
-          pathOptions: {
-            borderRadius: EDGE_BORDER_RADIUS,
-          },
-          style: {
-            stroke: lineColor,
-            strokeWidth: METRO_LAYOUT.lineThickness,
-            strokeLinecap: "round",
-            strokeLinejoin: "round",
-          },
-        });
+        const labelConfig = METRO_LINE_LABELS[section.id];
+        const isFirstEdge = i === 1; // First edge in section (connects 1st and 2nd nodes)
+
+        if (isFirstEdge && labelConfig) {
+          // Use metroLine edge type with inline label
+          const labeledEdge: MetroLineEdge = {
+            id: `edge-${prevNodeId}-${nodeId}`,
+            source: prevNodeId,
+            target: nodeId,
+            sourceHandle: "right",
+            targetHandle: "left",
+            type: "metroLine",
+            data: {
+              lineLabel: labelConfig.lineName,
+              lineSubtitle: labelConfig.subtitle,
+              lineColor,
+            },
+            style: {
+              stroke: lineColor,
+              strokeWidth: METRO_LAYOUT.lineThickness,
+              strokeLinecap: "round",
+              strokeLinejoin: "round",
+            },
+          };
+          edges.push(labeledEdge);
+        } else {
+          // Regular smoothstep edge
+          edges.push({
+            id: `edge-${prevNodeId}-${nodeId}`,
+            source: prevNodeId,
+            target: nodeId,
+            sourceHandle: "right",
+            targetHandle: "left",
+            type: "smoothstep",
+            pathOptions: {
+              borderRadius: EDGE_BORDER_RADIUS,
+            },
+            style: {
+              stroke: lineColor,
+              strokeWidth: METRO_LAYOUT.lineThickness,
+              strokeLinecap: "round",
+              strokeLinejoin: "round",
+            },
+          });
+        }
       }
 
       prevNodeId = nodeId;
@@ -263,13 +388,13 @@ export function generateMetroLayout(
     });
   }
 
-  // Mapping -> Non-Tech Track (branch up)
+  // Mapping -> Non-Tech Track (branch up) - uses right-0 handle (upper offset)
   if (lastNodeBySection["mapping"] && firstNodeBySection["levels-nontech"]) {
     edges.push({
       id: "edge-mapping-to-nontech",
       source: lastNodeBySection["mapping"],
       target: firstNodeBySection["levels-nontech"],
-      sourceHandle: "right",
+      sourceHandle: "right-0", // Upper right handle on mapping junction
       targetHandle: "left",
       type: "smoothstep",
       pathOptions: {
@@ -285,14 +410,14 @@ export function generateMetroLayout(
     });
   }
 
-  // Mapping -> Tech Track (branch down)
+  // Mapping -> Tech Track (branch down) - uses right-1 handle (lower offset)
   if (lastNodeBySection["mapping"] && firstNodeBySection["levels-tech"]) {
     edges.push({
       id: "edge-mapping-to-tech",
       source: lastNodeBySection["mapping"],
       target: firstNodeBySection["levels-tech"],
-      sourceHandle: "right",
-      targetHandle: "left",
+      sourceHandle: "right-1", // Lower right handle on mapping junction
+      targetHandle: "left-0", // Left handle on CLI junction
       type: "smoothstep",
       pathOptions: {
         borderRadius: EDGE_BORDER_RADIUS,
@@ -317,7 +442,7 @@ export function generateMetroLayout(
       source: lastNodeBySection["levels-nontech"],
       target: firstNodeBySection["levels-tech"],
       sourceHandle: "bottom",
-      targetHandle: "top",
+      targetHandle: "top-0", // Top handle on CLI junction
       type: "smoothstep",
       pathOptions: {
         borderRadius: EDGE_BORDER_RADIUS,
@@ -332,21 +457,21 @@ export function generateMetroLayout(
     });
   }
 
-  // Non-Tech -> Closing
+  // Non-Tech -> Closing - uses left-0 handle (upper offset)
   if (lastNodeBySection["levels-nontech"] && firstNodeBySection["closing"]) {
     edges.push({
       id: "edge-nontech-to-closing",
       source: lastNodeBySection["levels-nontech"],
       target: firstNodeBySection["closing"],
       sourceHandle: "right",
-      targetHandle: "left",
+      targetHandle: "left-0", // Upper left handle on closing junction
       type: "smoothstep",
       pathOptions: {
         borderRadius: EDGE_BORDER_RADIUS,
         offset: 80, // Route around labels
       },
       style: {
-        stroke: METRO_LINE_COLORS["closing"],
+        stroke: METRO_LINE_COLORS["levels-nontech"],
         strokeWidth: METRO_LAYOUT.lineThickness,
         strokeLinecap: "round",
         strokeLinejoin: "round",
@@ -354,21 +479,21 @@ export function generateMetroLayout(
     });
   }
 
-  // Tech -> Closing
+  // Tech -> Closing - uses left-1 handle (center offset)
   if (lastNodeBySection["levels-tech"] && firstNodeBySection["closing"]) {
     edges.push({
       id: "edge-tech-to-closing",
       source: lastNodeBySection["levels-tech"],
       target: firstNodeBySection["closing"],
-      sourceHandle: "right",
-      targetHandle: "left",
+      sourceHandle: "right-0", // Right handle on CLI (last tech node uses default)
+      targetHandle: "left-1", // Center left handle on closing junction
       type: "smoothstep",
       pathOptions: {
         borderRadius: EDGE_BORDER_RADIUS,
         offset: 80, // Route around labels
       },
       style: {
-        stroke: METRO_LINE_COLORS["closing"],
+        stroke: METRO_LINE_COLORS["levels-tech"],
         strokeWidth: METRO_LAYOUT.lineThickness,
         strokeLinecap: "round",
         strokeLinejoin: "round",
@@ -382,7 +507,7 @@ export function generateMetroLayout(
       id: "edge-cli-to-projects",
       source: firstNodeBySection["levels-tech"],
       target: firstNodeBySection["projects"],
-      sourceHandle: "bottom",
+      sourceHandle: "bottom-0", // Bottom handle on CLI junction
       targetHandle: "top",
       type: "smoothstep",
       pathOptions: {
@@ -398,14 +523,14 @@ export function generateMetroLayout(
     });
   }
 
-  // Projects -> Closing
+  // Projects -> Closing - uses left-2 handle (lower offset)
   if (lastNodeBySection["projects"] && firstNodeBySection["closing"]) {
     edges.push({
       id: "edge-projects-to-closing",
       source: lastNodeBySection["projects"],
       target: firstNodeBySection["closing"],
       sourceHandle: "right",
-      targetHandle: "left",
+      targetHandle: "left-2", // Lower left handle on closing junction
       type: "smoothstep",
       pathOptions: {
         borderRadius: EDGE_BORDER_RADIUS,
@@ -420,37 +545,114 @@ export function generateMetroLayout(
     });
   }
 
-  // Mark junction nodes (where multiple lines converge)
+  // Mark junction nodes (where multiple lines converge) and create junction handles
   const junctionNodeIds = new Set<string>();
   const junctionColors = new Map<string, string[]>();
+  const junctionHandlesMap = new Map<string, JunctionHandle[]>();
 
   // Last node of mapping is a junction (branches to both tracks)
+  // Receives mapping line from left, sends to nontech (up-right) and tech (down-right)
   if (lastNodeBySection["mapping"]) {
-    junctionNodeIds.add(lastNodeBySection["mapping"]);
-    junctionColors.set(lastNodeBySection["mapping"], [
+    const nodeId = lastNodeBySection["mapping"];
+    junctionNodeIds.add(nodeId);
+    junctionColors.set(nodeId, [
       METRO_LINE_COLORS["mapping"],
       METRO_LINE_COLORS["levels-nontech"],
       METRO_LINE_COLORS["levels-tech"],
     ]);
-  }
-
-  // First node of tech track (CLI) is a junction (branches to projects)
-  if (firstNodeBySection["levels-tech"]) {
-    junctionNodeIds.add(firstNodeBySection["levels-tech"]);
-    junctionColors.set(firstNodeBySection["levels-tech"], [
-      METRO_LINE_COLORS["levels-tech"],
-      METRO_LINE_COLORS["projects"],
+    junctionHandlesMap.set(nodeId, [
+      {
+        handleId: "left-0",
+        position: "left",
+        offset: 0,
+        lineColor: METRO_LINE_COLORS["mapping"],
+      },
+      {
+        handleId: "right-0",
+        position: "right",
+        offset: -JUNCTION_LINE_SPACING,
+        lineColor: METRO_LINE_COLORS["levels-nontech"],
+      },
+      {
+        handleId: "right-1",
+        position: "right",
+        offset: JUNCTION_LINE_SPACING,
+        lineColor: METRO_LINE_COLORS["levels-tech"],
+      },
     ]);
   }
 
-  // First node of closing is a junction (receives from multiple tracks)
+  // First node of tech track (CLI) is a junction (receives from mapping + nontech bridge, sends to tech + projects)
+  if (firstNodeBySection["levels-tech"]) {
+    const nodeId = firstNodeBySection["levels-tech"];
+    junctionNodeIds.add(nodeId);
+    junctionColors.set(nodeId, [
+      METRO_LINE_COLORS["levels-tech"],
+      METRO_LINE_COLORS["projects"],
+    ]);
+    junctionHandlesMap.set(nodeId, [
+      {
+        handleId: "left-0",
+        position: "left",
+        offset: 0,
+        lineColor: METRO_LINE_COLORS["levels-tech"],
+      },
+      {
+        handleId: "top-0",
+        position: "top",
+        offset: 0,
+        lineColor: METRO_LINE_COLORS["levels-tech"],
+      },
+      {
+        handleId: "right-0",
+        position: "right",
+        offset: 0,
+        lineColor: METRO_LINE_COLORS["levels-tech"],
+      },
+      {
+        handleId: "bottom-0",
+        position: "bottom",
+        offset: 0,
+        lineColor: METRO_LINE_COLORS["projects"],
+      },
+    ]);
+  }
+
+  // First node of closing is a junction (receives from nontech, tech, and projects)
   if (firstNodeBySection["closing"]) {
-    junctionNodeIds.add(firstNodeBySection["closing"]);
-    junctionColors.set(firstNodeBySection["closing"], [
+    const nodeId = firstNodeBySection["closing"];
+    junctionNodeIds.add(nodeId);
+    junctionColors.set(nodeId, [
       METRO_LINE_COLORS["levels-nontech"],
       METRO_LINE_COLORS["levels-tech"],
       METRO_LINE_COLORS["projects"],
       METRO_LINE_COLORS["closing"],
+    ]);
+    junctionHandlesMap.set(nodeId, [
+      {
+        handleId: "left-0",
+        position: "left",
+        offset: -JUNCTION_LINE_SPACING,
+        lineColor: METRO_LINE_COLORS["levels-nontech"],
+      },
+      {
+        handleId: "left-1",
+        position: "left",
+        offset: 0,
+        lineColor: METRO_LINE_COLORS["levels-tech"],
+      },
+      {
+        handleId: "left-2",
+        position: "left",
+        offset: JUNCTION_LINE_SPACING,
+        lineColor: METRO_LINE_COLORS["projects"],
+      },
+      {
+        handleId: "right-0",
+        position: "right",
+        offset: 0,
+        lineColor: METRO_LINE_COLORS["closing"],
+      },
     ]);
   }
 
@@ -461,46 +663,10 @@ export function generateMetroLayout(
       (node.data as MetroStopNodeData).junctionColors = junctionColors.get(
         node.id,
       );
+      (node.data as MetroStopNodeData).junctionHandles = junctionHandlesMap.get(
+        node.id,
+      );
     }
-  }
-
-  // Create metro line label nodes for each section
-  for (const section of sections) {
-    const labelConfig = METRO_LINE_LABELS[section.id];
-    if (!labelConfig) continue;
-
-    const firstNodeId = firstNodeBySection[section.id];
-    if (!firstNodeId) continue;
-
-    // Find the first node's position
-    const firstNode = nodes.find((n) => n.id === firstNodeId);
-    if (!firstNode) continue;
-
-    const labelNodeId = `metro-label-${section.id}`;
-    const lineColor =
-      METRO_LINE_COLORS[section.id as keyof typeof METRO_LINE_COLORS] ||
-      "#6b7280";
-
-    // Use persisted position if available, otherwise calculate from first node position
-    const persistedPos = persistedPositions?.[labelNodeId];
-    const position = persistedPos || {
-      x: firstNode.position.x + labelConfig.offsetX,
-      y: firstNode.position.y + labelConfig.offsetY,
-    };
-
-    const labelNode: MetroLineLabelNode = {
-      id: labelNodeId,
-      type: "metroLineLabel",
-      position,
-      draggable: true,
-      data: {
-        lineColor,
-        lineName: labelConfig.lineName,
-        subtitle: labelConfig.subtitle,
-      },
-    };
-
-    nodes.push(labelNode);
   }
 
   return { nodes, edges };

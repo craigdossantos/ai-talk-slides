@@ -13,7 +13,9 @@ import MetroStopNode from "./nodes/MetroStopNode";
 import MetroBackgroundNode from "./nodes/MetroBackgroundNode";
 import ResourceIconNode from "./nodes/ResourceIconNode";
 import SlideNode from "./nodes/SlideNode";
-import MetroLineLabelNode from "./nodes/MetroLineLabelNode";
+import SubnodeNode from "./nodes/SubnodeNode";
+import MetroLineEdge from "./edges/MetroLineEdge";
+import ArcEdge from "./edges/ArcEdge";
 import NavigationControls from "./panels/NavigationControls";
 import MetroLegend from "./panels/MetroLegend";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
@@ -33,7 +35,13 @@ const nodeTypes = {
   metroBackground: MetroBackgroundNode,
   resourceIcon: ResourceIconNode,
   slide: SlideNode,
-  metroLineLabel: MetroLineLabelNode,
+  subnode: SubnodeNode,
+};
+
+// Register custom edge types
+const edgeTypes = {
+  metroLine: MetroLineEdge,
+  arcEdge: ArcEdge,
 };
 
 function MetroCanvas() {
@@ -223,9 +231,49 @@ function MetroCanvas() {
           },
         };
       }
+
+      // Handle subnode expansion based on parent metro stop being active
+      if (node.type === "subnode") {
+        // parentNodeId is like "metro-slide-03", currentSlideId is like "slide-03"
+        const parentSlideId = (
+          node.data as { parentNodeId: string }
+        ).parentNodeId.replace("metro-", "");
+        const isExpanded = parentSlideId === currentSlideId;
+
+        return {
+          ...node,
+          zIndex: isExpanded ? 999 : 0, // Above other nodes but below active metro stop
+          data: {
+            ...node.data,
+            isExpanded,
+          },
+        };
+      }
+
       return node;
     });
   }, [nodes, currentSlideId, navigateToSlide, navigationGraph]);
+
+  // Update arc edges with expansion state based on their target metro stop being active
+  const edgesWithExpansionState = useMemo(() => {
+    return edges.map((edge) => {
+      if (edge.type === "arcEdge") {
+        // Arc edges connect from subnode (source) to metro stop (target)
+        // Target is like "metro-slide-03", currentSlideId is like "slide-03"
+        const targetSlideId = edge.target.replace("metro-", "");
+        const isExpanded = targetSlideId === currentSlideId;
+
+        return {
+          ...edge,
+          data: {
+            ...edge.data,
+            isExpanded,
+          },
+        };
+      }
+      return edge;
+    });
+  }, [edges, currentSlideId]);
 
   // Check if we're in focused mode (zoomed into a slide)
   const isFocusedMode = !isOverviewMode && currentSlideId !== null;
@@ -234,8 +282,9 @@ function MetroCanvas() {
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
       <ReactFlow
         nodes={nodesWithActiveState}
-        edges={edges}
+        edges={edgesWithExpansionState}
         nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
         onNodeClick={handleNodeClick}
         onNodesChange={onNodesChange}
         onNodeDragStop={onNodeDragStop}
