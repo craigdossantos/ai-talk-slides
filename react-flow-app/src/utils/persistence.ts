@@ -13,6 +13,7 @@ const PERSISTENCE_VERSION = 1;
 export interface NodePosition {
   x: number;
   y: number;
+  scale?: number; // For landmarks with resizable scale
 }
 
 /** Structure of persisted data in localStorage */

@@ -28,15 +28,16 @@ const SUBNODE_ARC_RADIUS = 120; // Distance from parent node center
 const SUBNODE_ARC_START_ANGLE = -150; // Start angle in degrees (upper left)
 const SUBNODE_ARC_END_ANGLE = -30; // End angle in degrees (upper right)
 
-// River waypoint initial positions - flows from top-left to bottom-right
+// River waypoint initial positions - flows from lake (top-left) to ocean (bottom-right)
+// Coordinates adjusted to connect to water bodies on expanded canvas
 const RIVER_WAYPOINT_POSITIONS: { x: number; y: number }[] = [
-  { x: 50, y: 50 },
+  { x: 150, y: 150 }, // Start at lake center
   { x: 400, y: 200 },
   { x: 900, y: 350 },
   { x: 1500, y: 500 },
   { x: 2200, y: 700 },
   { x: 2900, y: 900 },
-  { x: 3600, y: 1100 },
+  { x: 3600, y: 1100 }, // End near ocean area
 ];
 
 // River configuration
@@ -105,7 +106,6 @@ const SECTION_Y_POSITIONS: Record<string, number> = {
   mapping: 600, // Center junction area (was 320)
   "levels-nontech": 500, // Upper parallel track (was 260)
   "levels-tech": 850, // Lower parallel track (was 440)
-  projects: 1150, // Below tech track - projects showcase line
   closing: 700, // Right side convergence (was 350)
 };
 
@@ -116,8 +116,7 @@ const SECTION_X_STARTS: Record<string, number> = {
   mapping: 400,
   "levels-nontech": 700,
   "levels-tech": 700,
-  projects: 700, // Starts at same X as CLI
-  closing: 3200, // Adjusted for wider spacing to accommodate projects
+  closing: 3200,
 };
 
 // Smooth curve radius for metro line bends
@@ -155,12 +154,6 @@ const METRO_LINE_LABELS: Record<
   "levels-tech": {
     lineName: "ORANGE LINE",
     subtitle: "Technical Track (Levels 1-9)",
-    offsetX: -50,
-    offsetY: -80,
-  },
-  projects: {
-    lineName: "MAGENTA LINE",
-    subtitle: "Projects",
     offsetX: -50,
     offsetY: -80,
   },
@@ -300,13 +293,15 @@ export function generateMetroLayout(
         slide.subnodes.forEach((subnode, subnodeIndex) => {
           const subnodeNodeId = `subnode-${subnode.id}`;
           subnodeNodeIds.push(subnodeNodeId);
-          const subnodePosition = subnodePositions[subnodeIndex];
+          const defaultPosition = subnodePositions[subnodeIndex];
+          // Use persisted position if available, otherwise use calculated arc position
+          const persistedSubnodePos = persistedPositions?.[subnodeNodeId];
 
           // Create subnode node
           const subnodeNode: SubnodeNode = {
             id: subnodeNodeId,
             type: "subnode",
-            position: subnodePosition,
+            position: persistedSubnodePos || defaultPosition,
             data: {
               subnode,
               parentNodeId: nodeId,
@@ -315,6 +310,7 @@ export function generateMetroLayout(
               totalSubnodes: slide.subnodes!.length,
               isExpanded: false, // Will be updated by MetroCanvas based on active state
             },
+            draggable: true, // Enable dragging to reposition subnodes
           };
           nodes.push(subnodeNode);
         });
@@ -583,50 +579,6 @@ export function generateMetroLayout(
     });
   }
 
-  // CLI (first tech node) -> Projects (branch down to projects line)
-  if (firstNodeBySection["levels-tech"] && firstNodeBySection["projects"]) {
-    edges.push({
-      id: "edge-cli-to-projects",
-      source: firstNodeBySection["levels-tech"],
-      target: firstNodeBySection["projects"],
-      sourceHandle: "bottom-0", // Bottom handle on CLI junction
-      targetHandle: "top",
-      type: "smoothstep",
-      pathOptions: {
-        borderRadius: EDGE_BORDER_RADIUS,
-        offset: 40,
-      },
-      style: {
-        stroke: METRO_LINE_COLORS["projects"],
-        strokeWidth: METRO_LAYOUT.lineThickness,
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-      },
-    });
-  }
-
-  // Projects -> Closing - uses left-2 handle (lower offset)
-  if (lastNodeBySection["projects"] && firstNodeBySection["closing"]) {
-    edges.push({
-      id: "edge-projects-to-closing",
-      source: lastNodeBySection["projects"],
-      target: firstNodeBySection["closing"],
-      sourceHandle: "right",
-      targetHandle: "left-2", // Lower left handle on closing junction
-      type: "smoothstep",
-      pathOptions: {
-        borderRadius: EDGE_BORDER_RADIUS,
-        offset: 80,
-      },
-      style: {
-        stroke: METRO_LINE_COLORS["projects"],
-        strokeWidth: METRO_LAYOUT.lineThickness,
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-      },
-    });
-  }
-
   // Mark junction nodes (where multiple lines converge) and create junction handles
   const junctionNodeIds = new Set<string>();
   const junctionColors = new Map<string, string[]>();
@@ -664,14 +616,11 @@ export function generateMetroLayout(
     ]);
   }
 
-  // First node of tech track (CLI) is a junction (receives from mapping + nontech bridge, sends to tech + projects)
+  // First node of tech track (CLI) is a junction (receives from mapping + nontech bridge, sends to tech)
   if (firstNodeBySection["levels-tech"]) {
     const nodeId = firstNodeBySection["levels-tech"];
     junctionNodeIds.add(nodeId);
-    junctionColors.set(nodeId, [
-      METRO_LINE_COLORS["levels-tech"],
-      METRO_LINE_COLORS["projects"],
-    ]);
+    junctionColors.set(nodeId, [METRO_LINE_COLORS["levels-tech"]]);
     junctionHandlesMap.set(nodeId, [
       {
         handleId: "left-0",
@@ -691,23 +640,16 @@ export function generateMetroLayout(
         offset: 0,
         lineColor: METRO_LINE_COLORS["levels-tech"],
       },
-      {
-        handleId: "bottom-0",
-        position: "bottom",
-        offset: 0,
-        lineColor: METRO_LINE_COLORS["projects"],
-      },
     ]);
   }
 
-  // First node of closing is a junction (receives from nontech, tech, and projects)
+  // First node of closing is a junction (receives from nontech and tech)
   if (firstNodeBySection["closing"]) {
     const nodeId = firstNodeBySection["closing"];
     junctionNodeIds.add(nodeId);
     junctionColors.set(nodeId, [
       METRO_LINE_COLORS["levels-nontech"],
       METRO_LINE_COLORS["levels-tech"],
-      METRO_LINE_COLORS["projects"],
       METRO_LINE_COLORS["closing"],
     ]);
     junctionHandlesMap.set(nodeId, [
@@ -722,12 +664,6 @@ export function generateMetroLayout(
         position: "left",
         offset: 0,
         lineColor: METRO_LINE_COLORS["levels-tech"],
-      },
-      {
-        handleId: "left-2",
-        position: "left",
-        offset: JUNCTION_LINE_SPACING,
-        lineColor: METRO_LINE_COLORS["projects"],
       },
       {
         handleId: "right-0",
@@ -804,15 +740,28 @@ export function generateMetroLayout(
       y: 0,
     };
 
+    // Geographic landmarks (water, landmass) render below river
+    const isGeographic =
+      landmark.id.includes("water") || landmark.id.includes("landmass");
+    const zIndex = isGeographic ? -60 : -40; // Geographic below river (-50), others above
+
+    // Get persisted scale or use default
+    const scale = persistedPos?.scale ?? landmark.defaultScale ?? 1;
+
     const landmarkNode: LandmarkNode = {
       id: landmark.id,
       type: "landmark",
-      position: persistedPos || defaultPos,
+      position: {
+        x: persistedPos?.x ?? defaultPos.x,
+        y: persistedPos?.y ?? defaultPos.y,
+      },
       data: {
         image: landmark.image,
+        svgType: landmark.svgType,
         label: landmark.label,
+        scale,
       },
-      zIndex: -40, // Above river, below metro lines
+      zIndex,
       draggable: true,
     };
     nodes.push(landmarkNode);

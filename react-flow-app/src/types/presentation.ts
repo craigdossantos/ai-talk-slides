@@ -38,7 +38,6 @@ export interface SlideContent {
   subtitle?: string;
   bullets?: string[];
   quote?: string;
-  level?: number; // For level-based slides (0-8)
   backgroundImage?: string; // Path to background image
   subnodes?: SubnodeContent[]; // Expandable child nodes
 }
@@ -86,13 +85,6 @@ export interface PaperBackgroundNodeData {
   [key: string]: unknown;
   width: number;
   height: number;
-}
-
-export interface LevelNodeData {
-  [key: string]: unknown;
-  level: number;
-  slideId: string;
-  track: Track;
 }
 
 // Handle configuration for junction nodes with parallel lines
@@ -149,8 +141,10 @@ export interface SubnodeNodeData {
 
 export interface LandmarkNodeData {
   [key: string]: unknown;
-  image: string;
+  image?: string; // Optional - for PNG landmarks
+  svgType?: "water" | "landmass"; // For inline SVG landmarks
   label: string;
+  scale?: number; // Persisted scale factor
 }
 
 export interface RiverWaypointNodeData {
@@ -166,7 +160,6 @@ export type PaperBackgroundNode = Node<
   PaperBackgroundNodeData,
   "paperBackground"
 >;
-export type LevelNode = Node<LevelNodeData, "level">;
 export type MetroStopNode = Node<MetroStopNodeData, "metroStop">;
 export type MetroBackgroundNode = Node<
   MetroBackgroundNodeData,
@@ -183,7 +176,6 @@ export type PresentationNode =
   | SectionHeaderNode
   | ResourceNode
   | PaperBackgroundNode
-  | LevelNode
   | MetroStopNode
   | MetroBackgroundNode
   | ResourceIconNode
@@ -222,7 +214,6 @@ export const METRO_LINE_COLORS = {
   mapping: "#22c55e", // green - Mapping the Journey
   "levels-nontech": "#3b82f6", // blue - Non-Technical Track
   "levels-tech": "#f97316", // orange - Technical Track
-  projects: "#d946ef", // magenta/fuchsia - Projects showcase
   closing: "#a855f7", // purple - Closing
 } as const;
 
