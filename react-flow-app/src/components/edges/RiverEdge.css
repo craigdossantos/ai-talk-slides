@@ -1,0 +1,27 @@
+.river-edge {
+  pointer-events: none;
+}
+
+.river-edge__path {
+  transition: stroke-opacity 0.3s ease;
+}
+
+.river-edge__path--base {
+  filter: blur(2px);
+}
+
+.river-edge__path--highlight {
+  filter: none;
+}
+
+.river-edge__label {
+  font-family: "Georgia", "Times New Roman", serif;
+  font-size: 28px;
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  fill: rgba(70, 130, 200, 0.95);
+  dominant-baseline: middle;
+  pointer-events: none;
+  user-select: none;
+}

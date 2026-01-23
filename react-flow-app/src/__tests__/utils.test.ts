@@ -188,7 +188,9 @@ describe("US-007 - generateNodes()", () => {
     });
   });
 
-  describe("US-049 - LevelNode creation", () => {
+  // US-049 - LevelNode feature was intentionally removed (see commit 1e4bb76)
+  // "Removed numbered level nodes (0-8 badges)"
+  describe.skip("US-049 - LevelNode creation (feature removed)", () => {
     it("creates LevelNode for slides with level property", () => {
       const sections = [createSection({ id: "section-1", track: "technical" })];
       const slides = [
@@ -408,7 +410,9 @@ describe("US-008 - generateEdges()", () => {
     });
   });
 
-  describe("US-050 - slide-to-level edges", () => {
+  // US-050 - LevelNode edges feature was intentionally removed (see commit 1e4bb76)
+  // "Removed numbered level nodes (0-8 badges)"
+  describe.skip("US-050 - slide-to-level edges (feature removed)", () => {
     it("uses 1.5px dashed gray stroke for slide-to-level edges", () => {
       const sections = [createSection({ id: "section-1" })];
       const slides = [

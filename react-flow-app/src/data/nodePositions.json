@@ -1,0 +1,12 @@
+{
+  "river-waypoint-0": { "x": 50, "y": 50 },
+  "river-waypoint-1": { "x": 400, "y": 200 },
+  "river-waypoint-2": { "x": 900, "y": 350 },
+  "river-waypoint-3": { "x": 1500, "y": 500 },
+  "river-waypoint-4": { "x": 2200, "y": 700 },
+  "river-waypoint-5": { "x": 2900, "y": 900 },
+  "river-waypoint-6": { "x": 3600, "y": 1100 },
+  "landmark-doomtown": { "x": 100, "y": 900 },
+  "landmark-slop-factory": { "x": 1800, "y": 100 },
+  "landmark-empowerment": { "x": 3500, "y": 500 }
+}

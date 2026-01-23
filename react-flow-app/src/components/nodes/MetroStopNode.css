@@ -1,0 +1,357 @@
+.metro-stop {
+  position: relative;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  /* Create a stacking context so parent node's z-index controls ordering */
+  isolation: isolate;
+}
+
+/* Active node styling - z-index is controlled at React Flow node level */
+.metro-stop--active {
+  /* z-index handled by node.zIndex in MetroCanvas */
+}
+
+/* Dim non-active nodes when in focused mode */
+.react-flow--focused .metro-stop:not(.metro-stop--active) {
+  opacity: 0.7;
+}
+
+.metro-stop__circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: white;
+  border: 6px solid currentColor;
+  box-shadow: none;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.metro-stop:hover .metro-stop__circle {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 3px currentColor;
+}
+
+.metro-stop--active .metro-stop__circle {
+  transform: scale(1.25);
+  box-shadow:
+    0 0 0 4px currentColor,
+    0 0 16px rgba(0, 0, 0, 0.2);
+}
+
+.metro-stop__circle--junction {
+  width: 24px;
+  height: 56px; /* Taller to accommodate 3 parallel lines with spacing */
+  border-radius: 12px;
+}
+
+/* Junction node handles with offset positioning */
+.metro-stop .react-flow__handle[id*="-0"],
+.metro-stop .react-flow__handle[id*="-1"],
+.metro-stop .react-flow__handle[id*="-2"] {
+  /* Override default positioning - actual position is set via inline style */
+}
+
+.metro-stop__label {
+  position: absolute;
+  top: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: normal;
+  font-family:
+    "Space Grotesk",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #1a1a1a;
+  text-align: center;
+  max-width: 180px;
+  line-height: 1.2;
+  word-wrap: break-word;
+}
+
+.metro-stop__tooltip {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(60, 60, 60, 0.95);
+  color: #ffffff;
+  border: none;
+  padding: 0;
+  border-radius: 8px;
+  width: 400px;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease;
+  z-index: 1000;
+  pointer-events: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.metro-stop:hover .metro-stop__tooltip {
+  opacity: 1;
+  visibility: visible;
+}
+
+.metro-stop__tooltip-image {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+.metro-stop__tooltip-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.metro-stop__tooltip-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  padding: 12px 16px 8px;
+}
+
+.metro-stop__tooltip-bullets {
+  list-style: none;
+  padding: 0 16px 12px;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.metro-stop__tooltip-bullets li {
+  padding-left: 16px;
+  position: relative;
+  margin-bottom: 4px;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.metro-stop__tooltip-bullets li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.metro-stop__tooltip-more {
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+}
+
+/* Inline image - shown when zoomed in, scales with zoom */
+.metro-stop__inline-image {
+  position: absolute;
+  bottom: 50px;
+  left: 50%;
+  width: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: #fff;
+  transform-origin: center bottom;
+  transition: box-shadow 0.2s ease;
+  z-index: 10;
+}
+
+.metro-stop:hover .metro-stop__inline-image {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.metro-stop__inline-image img {
+  width: 100%;
+  height: auto;
+  max-height: 150px;
+  object-fit: contain;
+  display: block;
+}
+
+.metro-stop__inline-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px 10px;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  color: white;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Full slide content - shown when clicked, viewport-relative */
+.metro-stop__full-slide {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1100px;
+  max-width: 95vw;
+  max-height: calc(100vh - 40px);
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, 0.3),
+    0 10px 30px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  padding: 32px;
+}
+
+.metro-stop__close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  border-radius: 50%;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+
+.metro-stop__close-btn:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.metro-stop__full-slide img {
+  width: 100%;
+  max-height: calc(
+    100vh - 380px
+  ); /* Leave room for larger content, nav, and margins */
+  object-fit: contain;
+  display: block;
+  background: transparent;
+  margin: 0 auto;
+  border-radius: 20px;
+}
+
+.metro-stop__full-content {
+  flex-shrink: 0; /* Don't shrink - keep fixed size */
+  padding: 28px 0 12px;
+}
+
+.metro-stop__full-content h3 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 16px;
+  line-height: 1.2;
+}
+
+.metro-stop__full-subtitle {
+  font-size: 26px;
+  color: #555;
+  margin: 0 0 20px;
+  line-height: 1.4;
+}
+
+.metro-stop__full-content ul {
+  margin: 20px 0 0;
+  padding-left: 32px;
+  list-style: disc;
+}
+
+.metro-stop__full-content li {
+  font-size: 26px;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.metro-stop__nav {
+  flex-shrink: 0; /* Don't shrink - keep fixed size */
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px 0 0;
+  margin-top: 12px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.metro-stop__nav button {
+  padding: 20px 48px;
+  border: none;
+  background: #f0f0f0;
+  border-radius: 12px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 26px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    transform 0.1s ease;
+}
+
+.metro-stop__nav button:hover:not(:disabled) {
+  background: #e0e0e0;
+  transform: translateY(-1px);
+}
+
+.metro-stop__nav button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.metro-stop__nav button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Handle positioning - centered for line-through effect */
+.metro-stop .react-flow__handle {
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  min-width: 1px;
+  min-height: 1px;
+}
+
+.metro-stop .react-flow__handle-left {
+  left: 50%;
+}
+
+.metro-stop .react-flow__handle-right {
+  right: 50%;
+}
+
+.metro-stop .react-flow__handle-top {
+  top: 50%;
+}
+
+.metro-stop .react-flow__handle-bottom {
+  bottom: -70px; /* Move below the label area so edges connect lower */
+}
+
+/* Branch handles for subnode loop - positioned at top, offset from center */
+.metro-stop .react-flow__handle[id="branch-out"] {
+  top: 0;
+  left: calc(50% - 15px);
+}
+
+.metro-stop .react-flow__handle[id="branch-in"] {
+  top: 0;
+  left: calc(50% + 15px);
+}

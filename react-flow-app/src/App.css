@@ -4,16 +4,9 @@
   background-color: var(--color-bg-primary);
 }
 
-/* React Flow overrides - neutral desk/table background behind the paper */
+/* React Flow overrides - metro map background */
 .react-flow__pane {
-  /* Subtle desk surface color - shows around the paper edges */
-  background-color: #e8e4dc;
-  /* Subtle texture/grain */
-  background-image: radial-gradient(
-    ellipse at center,
-    transparent 0%,
-    rgba(0, 0, 0, 0.02) 100%
-  );
+  background-color: #f5f5f0;
 }
 
 /* Ensure edges are visible - override any max-width constraints */
@@ -26,17 +19,29 @@
   max-width: none !important;
 }
 
-/* Smooth edge transitions */
+/* Metro line edge styles */
 .react-flow__edge-path {
+  stroke-linecap: round;
+  stroke-linejoin: round;
   transition:
     stroke-width 0.2s ease,
-    stroke 0.2s ease;
+    stroke 0.2s ease,
+    filter 0.2s ease;
 }
 
-/* Edge hover effect - slightly thicker */
+/* Hover effect - slightly thicker with glow */
 .react-flow__edge:hover .react-flow__edge-path {
-  stroke-width: 3px;
-  filter: drop-shadow(0 0 4px var(--color-accent));
+  stroke-width: 10px;
+  filter: brightness(1.1);
+}
+
+/* Focused mode - dim edges and background when zoomed into a slide */
+.react-flow--focused .react-flow__edge-path {
+  opacity: 0.5;
+}
+
+.react-flow--focused .react-flow__pane {
+  background-color: rgba(245, 245, 240, 0.7);
 }
 
 /*
@@ -74,6 +79,20 @@
 
 .react-flow__controls button svg {
   fill: var(--color-text-primary);
+}
+
+/* Hide React Flow default selection box for landmark and river waypoint nodes */
+.react-flow__node-landmark.selected,
+.react-flow__node-riverWaypoint.selected,
+.react-flow__node-landmark:focus,
+.react-flow__node-riverWaypoint:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.react-flow__node-landmark .react-flow__handle,
+.react-flow__node-riverWaypoint .react-flow__handle {
+  opacity: 0;
 }
 
 /* Responsive adjustments */

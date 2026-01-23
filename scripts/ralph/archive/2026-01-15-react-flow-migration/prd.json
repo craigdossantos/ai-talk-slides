@@ -1,0 +1,192 @@
+{
+  "project": "ai-talk-slides",
+  "branchName": "ralph/metro-map-fixes",
+  "description": "Fix metro map visual bugs - thicker lines that pass through dots, and improve font readability for labels and tooltips",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Commit current metro refinements",
+      "description": "As a developer, I need to commit the existing metro map refinements (curved lines, full labels, white tooltips) before making additional changes.",
+      "acceptanceCriteria": [
+        "Stage all changes in react-flow-app directory",
+        "Commit with message describing curved lines, layout topology, label text, and tooltip styling changes",
+        "Git status shows clean working directory"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-002",
+      "title": "Increase metro line thickness",
+      "description": "As a user, I want thicker metro lines so the map looks more like a real transit map.",
+      "acceptanceCriteria": [
+        "Update METRO_LAYOUT.lineThickness from 8 to 12 in presentation.ts",
+        "Typecheck passes"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-003",
+      "title": "Redesign metro stop circles for line-through effect",
+      "description": "As a user, I want the metro lines to visually pass through the station dots, not end before them.",
+      "acceptanceCriteria": [
+        "Update .metro-stop__circle in MetroStopNode.css",
+        "Circle has colored background (currentColor) instead of white",
+        "Circle has 5px white border creating inner ring",
+        "Circle has 2px box-shadow in currentColor creating outer ring",
+        "Circle size increased from 20px to 24px",
+        "Lines visually appear to pass through the station circles",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-004",
+      "title": "Update metro stop hover and active states",
+      "description": "As a user, I want hover and active states that work with the new circle design.",
+      "acceptanceCriteria": [
+        "Update .metro-stop:hover .metro-stop__circle in MetroStopNode.css",
+        "Hover: transform scale(1.2), box-shadow 3px currentColor",
+        "Active: transform scale(1.3), box-shadow 4px currentColor with glow",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 4,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-005",
+      "title": "Improve metro stop label font readability",
+      "description": "As a user, I want larger, bolder station labels so they are easier to read.",
+      "acceptanceCriteria": [
+        "Update .metro-stop__label in MetroStopNode.css",
+        "Increase font-size from 12px to 13px",
+        "Increase font-weight from 600 to 700",
+        "Increase top from 24px to 28px to accommodate larger circles",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 5,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-006",
+      "title": "Improve tooltip title font readability",
+      "description": "As a user, I want a larger, bolder tooltip title so it is easier to read.",
+      "acceptanceCriteria": [
+        "Update .metro-stop__tooltip-title in MetroStopNode.css",
+        "Increase font-size from 14px to 16px",
+        "Increase font-weight from 600 to 700",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 6,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-007",
+      "title": "Improve tooltip content font readability",
+      "description": "As a user, I want larger tooltip content text so bullet points and resources are easier to read.",
+      "acceptanceCriteria": [
+        "Update .metro-stop__tooltip-bullets font-size from 12px to 13px",
+        "Update .metro-stop__tooltip-resources font-size from 11px to 12px",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 7,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-008",
+      "title": "Visual comparison: Line styling matches reference",
+      "description": "As a QA reviewer, I need to verify line styling matches the reference design (metro-network-realistic.jpg).",
+      "acceptanceCriteria": [
+        "Compare UI-plans/metro-network-realistic.jpg to running app",
+        "Lines are thick and visually prominent like reference",
+        "Lines have rounded corners at bends like reference",
+        "Line colors match: red (intro), yellow (understanding), green (mapping), blue (non-tech), orange (tech), purple (closing)",
+        "Lines smoothly connect between sections with curved transitions",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 8,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-009",
+      "title": "Visual comparison: Station circles match reference",
+      "description": "As a QA reviewer, I need to verify station circle styling matches the reference design.",
+      "acceptanceCriteria": [
+        "Compare UI-plans/metro-network-realistic.jpg to running app",
+        "Station circles have colored outer ring matching their line color",
+        "Station circles have white inner ring",
+        "Station circles appear to have the line passing through them, not stopping at them",
+        "Circle size is proportional to line thickness",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 9,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-010",
+      "title": "Visual comparison: Layout topology matches reference",
+      "description": "As a QA reviewer, I need to verify the overall map layout matches the reference design.",
+      "acceptanceCriteria": [
+        "Compare UI-plans/metro-network-realistic.jpg to running app",
+        "Red line starts top-left and curves down diagonally",
+        "Yellow line continues the diagonal descent",
+        "Green line continues down then branches into blue and orange",
+        "Blue (non-tech) and orange (tech) tracks run as parallel horizontal lines",
+        "Both tracks converge to purple (closing) on the right",
+        "Overall shape creates the iconic metro map 'branching' appearance",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 10,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-011",
+      "title": "Visual comparison: Typography and tooltips match reference",
+      "description": "As a QA reviewer, I need to verify text styling matches the reference design.",
+      "acceptanceCriteria": [
+        "Compare UI-plans/metro-network-realistic.jpg to running app",
+        "Station labels are clearly readable below each circle",
+        "Labels use bold weight similar to reference",
+        "Tooltips appear on hover with white background and shadow",
+        "Tooltip title is prominent and bold",
+        "Tooltip bullets are clearly readable",
+        "Resources section visible in tooltip",
+        "Verify in browser using dev-browser skill"
+      ],
+      "priority": 11,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-012",
+      "title": "Final build verification and commit",
+      "description": "As a developer, I need to verify the build passes and commit all bug fixes.",
+      "acceptanceCriteria": [
+        "npm run build succeeds with no errors",
+        "All visual comparison stories (US-008 through US-011) pass",
+        "Commit all changes with descriptive message",
+        "Typecheck passes"
+      ],
+      "priority": 12,
+      "passes": false,
+      "notes": ""
+    }
+  ]
+}

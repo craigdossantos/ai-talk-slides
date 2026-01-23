@@ -1,73 +1,148 @@
-# AI Native Skills Presentation Project
+# Leveling Up with AI - Presentation Project
 
 ## Project Overview
-This is a presentation creation project for building reveal.js slideshows with enhanced capabilities through Claude Code skills. The presentation is about "Using AI as a Native Skill" - a practical map for learning, working, and building with AI.
+
+An interactive metro map presentation about "Leveling Up with AI" - a visual journey for learning, working, and building with AI. The presentation uses a metro/subway map metaphor where different "lines" represent learning tracks and "stops" represent key concepts and skills.
+
+The metro map architecture is designed to be **reusable** across different presentations.
 
 ## Core Technology Stack
-- **Presentation Framework**: reveal.js 5.x (loaded via CDN)
-- **Styling**: Custom CSS with modern design principles (avoiding "AI slop" aesthetics)
-- **Interactive Elements**: React components bundled for embedding
-- **Images**: Generated via Nano Banana (Gemini 2.5 Flash Image API)
-- **Videos**: Generated via Veo3 for illustrative content (future capability)
+
+- **Framework**: React 19 + TypeScript + Vite
+- **Visualization**: @xyflow/react (React Flow) for the interactive metro map canvas
+- **Styling**: Custom CSS with metro map design language
+- **Testing**: Vitest + React Testing Library + Playwright
+- **Deployment**: Vercel
+- **Images**: Generated via slide-image-variations skill (Gemini 2.5 Flash Image API)
 
 ## Project Structure
+
 ```
 .
 ├── CLAUDE.md                    # This file - project instructions
-├── index.html                   # Main reveal.js presentation
-├── slides/                      # Individual slide content (markdown)
-├── assets/
-│   ├── images/                  # Generated and static images
-│   ├── videos/                  # Generated videos
-│   └── artifacts/               # Bundled interactive components
+├── docs/                        # All documentation & status
+│   ├── architecture/            # Technical decisions, metro map design
+│   │   └── talk-outline.md      # Full talk outline
+│   ├── plans/                   # Implementation plans
+│   │   ├── 2026-01-14-metro-redesign.md
+│   │   └── 2026-01-15-metro-map-visual-refinements.md
+│   └── prd/                     # Product requirements docs
+│       └── prd-react-flow-migration.md
+├── drafts/                      # Working assets (not production)
+│   ├── images/                  # WIP slide images
+│   ├── approved/                # Staging area for production
+│   ├── variations/              # .gitignored - Nano Banana outputs
+│   ├── mockups/                 # UI concepts and reference images
+│   ├── scripts/                 # Image generation scripts (Python)
+│   └── data/                    # Slide content drafts
+├── react-flow-app/              # Production application
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── MetroCanvas.tsx      # Main metro map view
+│   │   │   ├── PresentationCanvas.tsx
+│   │   │   ├── nodes/               # Custom node components
+│   │   │   │   ├── MetroStopNode.tsx
+│   │   │   │   ├── MetroLineLabelNode.tsx
+│   │   │   │   ├── MetroBackgroundNode.tsx
+│   │   │   │   ├── SlideNode.tsx
+│   │   │   │   ├── SectionHeaderNode.tsx
+│   │   │   │   └── ResourceNode.tsx
+│   │   │   └── panels/
+│   │   │       ├── MetroLegend.tsx
+│   │   │       ├── NavigationControls.tsx
+│   │   │       ├── SlidePanel.tsx
+│   │   │       ├── SectionNavigator.tsx
+│   │   │       └── EditorPanel.tsx
+│   │   ├── hooks/
+│   │   │   ├── useKeyboardNavigation.ts
+│   │   │   ├── useEdgeEdits.ts
+│   │   │   └── useSlideNotes.ts
+│   │   ├── utils/
+│   │   │   ├── generateMetroLayout.ts
+│   │   │   ├── navigationGraph.ts
+│   │   │   ├── generateNodes.ts
+│   │   │   ├── generateEdges.ts
+│   │   │   └── persistence.ts
+│   │   ├── data/
+│   │   │   ├── slides.ts            # Slide content and metadata
+│   │   │   └── slides.md
+│   │   └── types/
+│   ├── public/assets/images/        # Production-ready images
+│   └── dist/                        # Build output
+├── scripts/                     # Project-wide tooling
+│   └── ralph/                   # Ralph autonomous agent setup
 ├── .claude/
 │   └── skills/                  # Claude Code skills
-│       ├── presentation-builder/ # Main skill with init & bundle scripts
-│       ├── presentation-core/   # Design guidelines for reveal.js
-│       ├── interactive-artifacts/ # React artifact templates
-│       ├── nano-banana-images/  # Image generation skill
-│       └── veo3-videos/         # Video generation skill (future)
-└── scripts/                     # Build and utility scripts
+│       ├── slide-image-prompts/
+│       └── slide-image-variations/
+└── .gitignore
 ```
 
+## Key Concepts
+
+### Two Orthogonal Workflows
+
+1. **Visual Asset Creation** (`/drafts`)
+   - Creating slide images with Nano Banana / Gemini
+   - Iterating on variations
+   - Approving images for production
+   - Workflow: `drafts/variations/` → `drafts/approved/` → `react-flow-app/public/assets/images/`
+
+2. **Metro Map Architecture** (`/react-flow-app/src`)
+   - Reusable metro map components
+   - Navigation, layout, and interaction logic
+   - Can be extracted for other presentations
+
+### Asset Pipeline
+
+```
+drafts/variations/     # Raw Nano Banana outputs (.gitignored)
+       ↓ (select best)
+drafts/approved/       # Curated, ready for production
+       ↓ (copy)
+react-flow-app/public/assets/images/   # Production
+```
+
+## Key Features
+
+- **Metro Map Visualization**: Subway-style map where lines represent learning tracks
+- **Zoom-Adaptive Display**: Three zoom levels showing different detail amounts
+- **Track-Aware Navigation**: Arrow keys follow metro lines logically
+- **Click-to-Open Slides**: Click metro stops to view slide content
+- **Hover Tooltips**: Preview slide images on hover
+- **Edge Editing**: Create/delete connections with drag and Shift+click
+
 ## Available Skills
-When working on this project, Claude should use the following skills:
 
-1. **presentation-builder**: Main skill for creating presentations with two modes:
-   - **Simple Mode**: Single HTML with embedded CSS/JS (quick, minimal)
-   - **Modern Mode**: React + Tailwind → bundled to single HTML (complex artifacts)
-   - Includes scripts: `init-project.sh` and `bundle-artifact.sh`
+When working on this project, use these skills:
 
-2. **presentation-core**: Design guidelines for reveal.js (typography, colors, avoiding AI slop)
+1. **superpowers:brainstorming**: Use before any creative work - designing features, building components, or modifying behavior
 
-3. **interactive-artifacts**: Templates for specific artifact types (explorers, flowcharts, etc.)
+2. **slide-image-prompts**: Generate tailored image prompts for slides featuring Ada (consistent character) in pop art comic style
 
-4. **nano-banana-images**: For generating presentation graphics via Gemini 2.5 Flash Image
+3. **slide-image-variations**: Create 4-8 image variations using Gemini, present in HTML gallery for selection
 
-5. **veo3-videos**: For creating illustrative videos (when implemented)
+## Development Commands
+
+```bash
+cd react-flow-app
+npm run dev      # Start dev server
+npm run build    # Production build
+npm run test     # Run tests
+npm run lint     # Lint code
+```
 
 ## Design Principles
-- **Avoid Generic AI Aesthetics**: No Inter/Roboto fonts, no purple gradients on white
-- **Use Distinctive Typography**: Prefer fonts like Space Grotesk, JetBrains Mono, Playfair Display
-- **Rich Backgrounds**: Use gradients, patterns, atmospheric effects - not solid colors
-- **Purposeful Animation**: Meaningful transitions, not gratuitous effects
-- **Cohesive Themes**: Match the talk's tone - professional but approachable
 
-## Workflow Commands
-- `/build` - Bundle artifacts and prepare presentation for serving
-- `/preview` - Start local server to preview presentation
-- `/generate-image [prompt]` - Use Nano Banana skill to create image
-- `/add-artifact [name]` - Create new interactive artifact for slides
+- **Metro Map Aesthetic**: Clean lines, station circles, color-coded tracks
+- **Zoom Levels**: Show/hide detail based on zoom (labels, previews, full slides)
+- **Intuitive Navigation**: Arrow keys follow tracks, not just grid positions
+- **Responsive Interactions**: Hover previews, click-to-expand, smooth transitions
 
-## Key Presentation Sections
-1. Mental Models, Not Magic - Opening thesis
-2. From Chatting to Labor - The shift to execution
-3. Why Mapping the Journey Matters - Sequencing vs intelligence
-4. The Map Itself - Non-technical and technical tracks
-5. Examples and Closing
+## Metro Lines (Learning Tracks)
 
-## Notes
-- The talk outline is available in the project for reference
-- Each major section should have engaging visuals
-- Interactive artifacts can demonstrate concepts (e.g., a mini "mental model" visualizer)
-- Keep slides minimal - the presenter does the explaining
+The map uses colored lines to represent different learning paths:
+
+- Each line connects related concepts
+- Stops can be on multiple lines (junction nodes)
+- Navigation follows the track you're currently on

@@ -1,15 +1,16 @@
 import { ReactFlowProvider } from "@xyflow/react";
+import MetroCanvas from "./components/MetroCanvas";
 import "@xyflow/react/dist/style.css";
+import "./index.css";
 import "./App.css";
-import PresentationCanvas from "./components/PresentationCanvas";
 
 function App() {
   return (
-    <ReactFlowProvider>
-      <div className="app">
-        <PresentationCanvas />
-      </div>
-    </ReactFlowProvider>
+    <div className="app">
+      <ReactFlowProvider>
+        <MetroCanvas />
+      </ReactFlowProvider>
+    </div>
   );
 }
 

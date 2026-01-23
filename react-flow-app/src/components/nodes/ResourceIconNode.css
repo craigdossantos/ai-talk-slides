@@ -1,0 +1,30 @@
+.resource-icon {
+  width: 24px;
+  height: 24px;
+  background: white;
+  border-radius: 4px;
+  border: 2px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.resource-icon:hover {
+  transform: scale(1.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.resource-icon__image {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+}
+
+.resource-icon__fallback {
+  font-size: 12px;
+  color: #6b7280;
+}

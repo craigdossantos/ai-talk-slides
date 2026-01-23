@@ -1,18 +1,16 @@
 {
   "project": "ai-talk-slides",
-  "branchName": "ralph/react-flow-migration",
-  "description": "Migrate the 15-slide reveal.js presentation to an interactive React Flow-based experience with visible graph structure, resource link nodes, and Slate Canvas design",
+  "branchName": "ralph/metro-map-fixes",
+  "description": "Fix metro map visual bugs - thicker lines that pass through dots, and improve font readability for labels and tooltips",
   "userStories": [
     {
       "id": "US-001",
-      "title": "Initialize Vite + React + TypeScript project",
-      "description": "As a developer, I need a properly configured React project so I can build the presentation app.",
+      "title": "Commit current metro refinements",
+      "description": "As a developer, I need to commit the existing metro map refinements (curved lines, full labels, white tooltips) before making additional changes.",
       "acceptanceCriteria": [
-        "Create react-flow-app/ directory with Vite + React + TypeScript template",
-        "Configure vite.config.ts with appropriate settings",
-        "Add base CSS reset and font imports (Space Grotesk, Inter, JetBrains Mono)",
-        "npm run dev starts dev server successfully",
-        "Typecheck passes"
+        "Stage all changes in react-flow-app directory",
+        "Commit with message describing curved lines, layout topology, label text, and tooltip styling changes",
+        "Git status shows clean working directory"
       ],
       "priority": 1,
       "passes": true,
@@ -20,15 +18,11 @@
     },
     {
       "id": "US-002",
-      "title": "Install and configure @xyflow/react",
-      "description": "As a developer, I need React Flow installed and configured so I can render nodes and edges.",
+      "title": "Increase metro line thickness",
+      "description": "As a user, I want thicker metro lines so the map looks more like a real transit map.",
       "acceptanceCriteria": [
-        "Install @xyflow/react package",
-        "Install react-remark for markdown rendering in slides",
-        "Create basic App.tsx with ReactFlowProvider wrapper",
-        "Render empty React Flow canvas with dark background (#0f172a)",
-        "Typecheck passes",
-        "Verify in browser using dev-browser skill: empty dark canvas displays"
+        "Update METRO_LAYOUT.lineThickness from 8 to 12 in presentation.ts",
+        "Typecheck passes"
       ],
       "priority": 2,
       "passes": true,
@@ -36,15 +30,17 @@
     },
     {
       "id": "US-003",
-      "title": "Create TypeScript type definitions",
-      "description": "As a developer, I need type definitions for presentation data so the codebase is type-safe.",
+      "title": "Redesign metro stop circles for line-through effect",
+      "description": "As a user, I want the metro lines to visually pass through the station dots, not end before them.",
       "acceptanceCriteria": [
-        "Create src/types/presentation.ts",
-        "Define Section type with id, title, track fields",
-        "Define SlideContent type with id, sectionId, type, title, subtitle, bullets, quote fields",
-        "Define Resource type with id, slideId, type, title, url fields",
-        "Define node data interfaces for SlideNode, SectionHeaderNode, ResourceNode",
-        "Typecheck passes"
+        "Update .metro-stop__circle in MetroStopNode.css",
+        "Circle has colored background (currentColor) instead of white",
+        "Circle has 5px white border creating inner ring",
+        "Circle has 2px box-shadow in currentColor creating outer ring",
+        "Circle size increased from 20px to 24px",
+        "Lines visually appear to pass through the station circles",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
       ],
       "priority": 3,
       "passes": true,
@@ -52,18 +48,14 @@
     },
     {
       "id": "US-004",
-      "title": "Build SlideNode component",
-      "description": "As a user, I want to see slide content rendered in nodes so I can read the presentation.",
+      "title": "Update metro stop hover and active states",
+      "description": "As a user, I want hover and active states that work with the new circle design.",
       "acceptanceCriteria": [
-        "Create src/components/nodes/SlideNode.tsx",
-        "Render title with Space Grotesk font",
-        "Render subtitle if present with Playfair Display italic",
-        "Render bullet point preview (max 3 items)",
-        "Apply track-colored left border (emerald #10b981 for non-tech, blue #3b82f6 for tech)",
-        "Node dimensions: 280x180px",
-        "Handle title, section-header, content, quote variants",
+        "Update .metro-stop:hover .metro-stop__circle in MetroStopNode.css",
+        "Hover: transform scale(1.2), box-shadow 3px currentColor",
+        "Active: transform scale(1.3), box-shadow 4px currentColor with glow",
         "Typecheck passes",
-        "Verify in browser using dev-browser skill: sample SlideNode renders with correct styling"
+        "Verify in browser using dev-browser skill"
       ],
       "priority": 4,
       "passes": true,
@@ -71,15 +63,15 @@
     },
     {
       "id": "US-005",
-      "title": "Build SectionHeaderNode component",
-      "description": "As a user, I want section headers to be visually distinct so I can orient myself in the presentation.",
+      "title": "Improve metro stop label font readability",
+      "description": "As a user, I want larger, bolder station labels so they are easier to read.",
       "acceptanceCriteria": [
-        "Create src/components/nodes/SectionHeaderNode.tsx",
-        "Node dimensions: 320x120px",
-        "Display section title prominently with Space Grotesk 600 weight",
-        "Apply track-specific gradient background",
+        "Update .metro-stop__label in MetroStopNode.css",
+        "Increase font-size from 12px to 13px",
+        "Increase font-weight from 600 to 700",
+        "Increase top from 24px to 28px to accommodate larger circles",
         "Typecheck passes",
-        "Verify in browser using dev-browser skill: sample SectionHeaderNode renders distinctly"
+        "Verify in browser using dev-browser skill"
       ],
       "priority": 5,
       "passes": true,
@@ -87,17 +79,14 @@
     },
     {
       "id": "US-006",
-      "title": "Build ResourceNode component",
-      "description": "As a user, I want to see resource links attached to slides so I can access related content.",
+      "title": "Improve tooltip title font readability",
+      "description": "As a user, I want a larger, bolder tooltip title so it is easier to read.",
       "acceptanceCriteria": [
-        "Create src/components/nodes/ResourceNode.tsx",
-        "Node dimensions: 140x80px",
-        "Dashed border styling to distinguish from main slides",
-        "Display icon based on resource type (article, tool, video, docs, github)",
-        "Display truncated resource title",
-        "Click opens URL in new browser tab using window.open",
+        "Update .metro-stop__tooltip-title in MetroStopNode.css",
+        "Increase font-size from 14px to 16px",
+        "Increase font-weight from 600 to 700",
         "Typecheck passes",
-        "Verify in browser using dev-browser skill: ResourceNode click opens external link"
+        "Verify in browser using dev-browser skill"
       ],
       "priority": 6,
       "passes": true,
@@ -105,15 +94,13 @@
     },
     {
       "id": "US-007",
-      "title": "Implement generateNodes() with clustered positioning",
-      "description": "As a developer, I need automatic node positioning so slides are arranged in a readable layout.",
+      "title": "Improve tooltip content font readability",
+      "description": "As a user, I want larger tooltip content text so bullet points and resources are easier to read.",
       "acceptanceCriteria": [
-        "Create src/utils/generateNodes.ts",
-        "Position section headers horizontally with 600px spacing",
-        "Position slides vertically within sections with 220px spacing",
-        "Position resource nodes 160px offset from parent slide",
-        "Return array of React Flow Node objects with correct x,y positions",
-        "Typecheck passes"
+        "Update .metro-stop__tooltip-bullets font-size from 12px to 13px",
+        "Update .metro-stop__tooltip-resources font-size from 11px to 12px",
+        "Typecheck passes",
+        "Verify in browser using dev-browser skill"
       ],
       "priority": 7,
       "passes": true,
@@ -121,928 +108,85 @@
     },
     {
       "id": "US-008",
-      "title": "Implement generateEdges() with styled connections",
-      "description": "As a developer, I need edges connecting nodes so users can see the presentation flow.",
+      "title": "Visual comparison: Line styling matches reference",
+      "description": "As a QA reviewer, I need to verify line styling matches the reference design (metro-network-realistic.jpg).",
       "acceptanceCriteria": [
-        "Create src/utils/generateEdges.ts",
-        "Section-to-section edges: 3px stroke, indigo color #6366f1, animated",
-        "Slide-to-slide edges: 1.5px solid stroke, gray color",
-        "Slide-to-resource edges: 1px dashed stroke, muted color",
-        "Return array of React Flow Edge objects",
-        "Typecheck passes"
+        "Compare UI-plans/metro-network-realistic.jpg to running app",
+        "Lines are thick and visually prominent like reference",
+        "Lines have rounded corners at bends like reference",
+        "Line colors match: red (intro), yellow (understanding), green (mapping), blue (non-tech), orange (tech), purple (closing)",
+        "Lines smoothly connect between sections with curved transitions",
+        "Verify in browser using dev-browser skill"
       ],
       "priority": 8,
       "passes": true,
-      "notes": ""
+      "notes": "Verified: Lines 12px thick, borderRadius 20px for curved bends, colors match (red/yellow/green/blue/orange/purple), smoothstep edges with strokeLinecap round"
     },
     {
       "id": "US-009",
-      "title": "Add useKeyboardNavigation hook",
-      "description": "As a user, I want to navigate with keyboard so I can present without using the mouse.",
+      "title": "Visual comparison: Station circles match reference",
+      "description": "As a QA reviewer, I need to verify station circle styling matches the reference design.",
       "acceptanceCriteria": [
-        "Create src/hooks/useKeyboardNavigation.ts",
-        "Arrow keys (up/down/left/right) move to adjacent slides",
-        "PageUp/PageDown jump to previous/next section",
-        "Number keys 1-9 jump to numbered section",
-        "Hook integrates with React Flow fitView for smooth transitions",
-        "Typecheck passes",
-        "Verify in browser using dev-browser skill: arrow keys navigate between slides"
+        "Compare UI-plans/metro-network-realistic.jpg to running app",
+        "Station circles have colored outer ring matching their line color",
+        "Station circles have white inner ring",
+        "Station circles appear to have the line passing through them, not stopping at them",
+        "Circle size is proportional to line thickness",
+        "Verify in browser using dev-browser skill"
       ],
       "priority": 9,
       "passes": true,
-      "notes": ""
+      "notes": "Verified: Circles 24px with colored background, 5px white border (inner ring), 2px currentColor box-shadow (outer ring). Creates line-through visual effect."
     },
     {
       "id": "US-010",
-      "title": "Implement fitView transitions and overview mode",
-      "description": "As a user, I want smooth zoom transitions and an overview mode so I can see the full presentation map.",
+      "title": "Visual comparison: Layout topology matches reference",
+      "description": "As a QA reviewer, I need to verify the overall map layout matches the reference design.",
       "acceptanceCriteria": [
-        "Escape key toggles overview mode (zoom to fit all nodes)",
-        "0 key fits current slide to view",
-        "Smooth animation on all fitView calls (500ms duration)",
-        "Click on slide in overview mode focuses that slide",
-        "Typecheck passes",
-        "Verify in browser using dev-browser skill: Escape zooms out to show all, click on node focuses it"
+        "Compare UI-plans/metro-network-realistic.jpg to running app",
+        "Red line starts top-left and curves down diagonally",
+        "Yellow line continues the diagonal descent",
+        "Green line continues down then branches into blue and orange",
+        "Blue (non-tech) and orange (tech) tracks run as parallel horizontal lines",
+        "Both tracks converge to purple (closing) on the right",
+        "Overall shape creates the iconic metro map 'branching' appearance",
+        "Verify in browser using dev-browser skill"
       ],
       "priority": 10,
       "passes": true,
-      "notes": ""
+      "notes": "Verified: Staggered X positions create diagonal flow. Y positions: intro(80)->understanding(180)->mapping(320)->branches to nontech(260)/tech(440)->closing(350). Both tracks converge via smoothstep edges."
     },
     {
       "id": "US-011",
-      "title": "Add minimap panel",
-      "description": "As a user, I want a minimap so I can see my position in the overall presentation.",
+      "title": "Visual comparison: Typography and tooltips match reference",
+      "description": "As a QA reviewer, I need to verify text styling matches the reference design.",
       "acceptanceCriteria": [
-        "Add React Flow MiniMap component",
-        "Position in bottom-right corner",
-        "Color nodes by track (emerald #10b981 for non-tech, blue #3b82f6 for tech, gray for general)",
-        "Current viewport highlighted",
-        "Typecheck passes",
-        "Verify in browser using dev-browser skill: minimap shows current position"
+        "Compare UI-plans/metro-network-realistic.jpg to running app",
+        "Station labels are clearly readable below each circle",
+        "Labels use bold weight similar to reference",
+        "Tooltips appear on hover with white background and shadow",
+        "Tooltip title is prominent and bold",
+        "Tooltip bullets are clearly readable",
+        "Resources section visible in tooltip",
+        "Verify in browser using dev-browser skill"
       ],
       "priority": 11,
       "passes": true,
-      "notes": ""
+      "notes": "Verified: Labels 13px/700 weight centered below circles. Tooltips have white background with shadow, title 16px/700, bullets 13px, resources section 12px."
     },
     {
       "id": "US-012",
-      "title": "Add section navigator panel",
-      "description": "As a user, I want a section navigator so I can quickly jump to any section.",
+      "title": "Final build verification and commit",
+      "description": "As a developer, I need to verify the build passes and commit all bug fixes.",
       "acceptanceCriteria": [
-        "Create src/components/panels/SectionNavigator.tsx",
-        "Display list of all sections with titles",
-        "Highlight current section",
-        "Click on section jumps to that section header node",
-        "Position on left side of screen",
-        "Typecheck passes",
-        "Verify in browser using dev-browser skill: clicking section in navigator jumps to it"
+        "npm run build succeeds with no errors",
+        "All visual comparison stories (US-008 through US-011) pass",
+        "Commit all changes with descriptive message",
+        "Typecheck passes"
       ],
       "priority": 12,
       "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-013",
-      "title": "Migrate slide content from index.html",
-      "description": "As a developer, I need all 15 slides extracted into the data structure so the presentation is complete.",
-      "acceptanceCriteria": [
-        "Create src/data/slides.ts",
-        "Extract all 15 slides from index.html into typed Section[] and SlideContent[] arrays",
-        "Preserve section groupings and order",
-        "Include slide titles, subtitles, and bullet points",
-        "All slides render correctly in React Flow",
-        "Typecheck passes",
-        "Verify in browser using dev-browser skill: all 15 slides visible and readable"
-      ],
-      "priority": 13,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-014",
-      "title": "Add resource link nodes to key slides",
-      "description": "As a user, I want resource links on relevant slides so I can explore related content.",
-      "acceptanceCriteria": [
-        "Add at least 5 resource nodes across the presentation",
-        "Each resource has appropriate type (article/tool/video/docs/github)",
-        "Resources positioned correctly relative to parent slides (160px offset)",
-        "All resource links open correctly in new tabs",
-        "Typecheck passes",
-        "Verify in browser using dev-browser skill: resource nodes visible and clickable"
-      ],
-      "priority": 14,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-015",
-      "title": "Polish animations and responsive behavior",
-      "description": "As a user, I want smooth animations and responsive layout so the presentation feels professional.",
-      "acceptanceCriteria": [
-        "Add CSS transitions for node hover states",
-        "Smooth edge animations on navigation",
-        "Handle window resize gracefully",
-        "Test at viewport sizes: 1920x1080, 1366x768, 1280x720",
-        "No visual glitches during navigation",
-        "Typecheck passes",
-        "Verify in browser using dev-browser skill: resize window, confirm no layout issues"
-      ],
-      "priority": 15,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-016",
-      "title": "Add handle IDs to SlideNode component",
-      "description": "As a developer, I need handles with explicit IDs so edges connect properly.",
-      "acceptanceCriteria": [
-        "Add id=\"top\" to target Handle in SlideNode.tsx",
-        "Add id=\"bottom\" to source Handle in SlideNode.tsx",
-        "Add NEW right-side Handle with id=\"right\" and position={Position.Right} for resource connections",
-        "Console warnings 'Couldn't create edge for source handle id' are reduced",
-        "Typecheck passes"
-      ],
-      "priority": 16,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-017",
-      "title": "Add handle IDs to SectionHeaderNode and ResourceNode",
-      "description": "As a developer, I need all nodes to have explicit handle IDs for consistent edge connections.",
-      "acceptanceCriteria": [
-        "Add id=\"left\" to target Handle in SectionHeaderNode.tsx",
-        "Add id=\"right\" to source Handle in SectionHeaderNode.tsx",
-        "Add id=\"left\" to target Handle in ResourceNode.tsx",
-        "All edge-related console warnings eliminated",
-        "Edges visibly render between nodes",
-        "Typecheck passes",
-        "Verify in browser using dev-browser skill: edges visible between slides"
-      ],
-      "priority": 17,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-018",
-      "title": "Memoize node components with React.memo",
-      "description": "As a user, I want smooth panning without lag caused by unnecessary re-renders.",
-      "acceptanceCriteria": [
-        "Wrap SlideNode with React.memo() - export default memo(SlideNode)",
-        "Wrap SectionHeaderNode with React.memo() - export default memo(SectionHeaderNode)",
-        "Wrap ResourceNode with React.memo() - export default memo(ResourceNode)",
-        "Import memo from 'react' in each file",
-        "Typecheck passes"
-      ],
-      "priority": 18,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-019",
-      "title": "Optimize PresentationCanvas performance",
-      "description": "As a user, I want responsive canvas interactions without lag.",
-      "acceptanceCriteria": [
-        "Fix nodesWithActiveState useMemo to only create new objects when isActive changes",
-        "Wrap MiniMap nodeColor callback in useCallback",
-        "Import useCallback from 'react' if not already imported",
-        "Typecheck passes"
-      ],
-      "priority": 19,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-020",
-      "title": "Disable animated edges",
-      "description": "As a user, I want smoother performance by removing continuous edge animations.",
-      "acceptanceCriteria": [
-        "In generateEdges.ts, change EDGE_STYLES.sectionToSection.animated from true to false",
-        "Typecheck passes",
-        "Verify in browser using dev-browser skill: panning feels responsive"
-      ],
-      "priority": 20,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-021",
-      "title": "Update NODE_DIMENSIONS for larger slides",
-      "description": "As a user, I want larger slide nodes so content is more readable.",
-      "acceptanceCriteria": [
-        "Update slide dimensions from 280x180 to 520x400 in types/presentation.ts",
-        "Update sectionHeader dimensions from 320x120 to 400x140",
-        "Update resource dimensions from 140x80 to 160x90",
-        "Typecheck passes"
-      ],
-      "priority": 21,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-022",
-      "title": "Redesign SlideNode for hero image layout",
-      "description": "As a user, I want slides with prominent images at top and text below.",
-      "acceptanceCriteria": [
-        "Restructure SlideNode to have hero image area (60% height) at top",
-        "Add slide-node__hero div for image container",
-        "Move content (title, subtitle, bullets) to bottom 40%",
-        "Level badge positioned on hero image area",
-        "Remove background image overlay approach, use dedicated image container",
-        "Typecheck passes"
-      ],
-      "priority": 22,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-023",
-      "title": "Update SlideNode CSS for hero layout",
-      "description": "As a user, I want visually appealing slides with the new hero layout.",
-      "acceptanceCriteria": [
-        "Add .slide-node__hero class with background-size: cover",
-        "Update .slide-node__content for compact bottom area",
-        "Update .slide-node__level to overlay on hero image",
-        "Change border from left-side to top (borderTopColor instead of borderLeftColor)",
-        "Increase font sizes: title 18px, subtitle 14px, bullets 13px",
-        "Typecheck passes",
-        "Verify in browser using dev-browser skill: slides show image at top, text below"
-      ],
-      "priority": 23,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-024",
-      "title": "Adjust layout spacing for larger slides",
-      "description": "As a developer, I need node spacing adjusted for the larger slide dimensions.",
-      "acceptanceCriteria": [
-        "Update SECTION_HORIZONTAL_SPACING from 600 to 800 in generateNodes.ts",
-        "Update SLIDE_VERTICAL_SPACING from 220 to 450 in generateNodes.ts",
-        "Typecheck passes"
-      ],
-      "priority": 24,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-025",
-      "title": "Add sequential navigation to useKeyboardNavigation hook",
-      "description": "As a developer, I need functions to support next/previous button navigation.",
-      "acceptanceCriteria": [
-        "Add goToNextSlide() function that navigates to next slide in order",
-        "Add goToPreviousSlide() function that navigates to previous slide",
-        "Export currentSlideIndex (0-indexed position in orderedSlides)",
-        "Export totalSlides count",
-        "Typecheck passes"
-      ],
-      "priority": 25,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-026",
-      "title": "Create NavigationControls component",
-      "description": "As a user, I want Next/Previous buttons to navigate the presentation.",
-      "acceptanceCriteria": [
-        "Create NavigationControls.tsx in src/components/panels/",
-        "Previous button on left (gray styling)",
-        "Progress indicator showing 'X / Y' format",
-        "Next button on right (orange/coral color like reference site)",
-        "Overview toggle button with grid icon",
-        "Buttons disabled at first/last slide appropriately",
-        "Create NavigationControls.css with floating pill design, backdrop blur",
-        "Wrap component in React.memo",
-        "Typecheck passes"
-      ],
-      "priority": 26,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-027",
-      "title": "Integrate NavigationControls into PresentationCanvas",
-      "description": "As a user, I want to see and use navigation controls on the presentation.",
-      "acceptanceCriteria": [
-        "Import NavigationControls component in PresentationCanvas.tsx",
-        "Pass currentSlideIndex, totalSlides, goToNextSlide, goToPreviousSlide, toggleOverview, isOverviewMode as props",
-        "Position NavigationControls at bottom center of canvas",
-        "Typecheck passes",
-        "Verify in browser using dev-browser skill: Next/Previous buttons visible and functional"
-      ],
-      "priority": 27,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-028",
-      "title": "Enable node dragging in PresentationCanvas",
-      "description": "As a user, I want to drag slides to rearrange them on the canvas.",
-      "acceptanceCriteria": [
-        "Convert nodes from useMemo to useState in PresentationCanvas.tsx",
-        "Add onNodesChange handler using applyNodeChanges from @xyflow/react",
-        "Set nodesDraggable={true} on ReactFlow component",
-        "Import applyNodeChanges and NodeChange types",
-        "Edges automatically follow dragged nodes",
-        "Typecheck passes",
-        "Verify in browser using dev-browser skill: can drag a slide to new position"
-      ],
-      "priority": 28,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-029",
-      "title": "Update color variables for brighter theme",
-      "description": "As a user, I want a brighter, more vibrant visual design.",
-      "acceptanceCriteria": [
-        "Update --color-bg-primary to #ffffff in index.css",
-        "Update --color-text-primary to #0f172a for better contrast",
-        "Update --color-text-secondary to #334155",
-        "Typecheck passes"
-      ],
-      "priority": 29,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-030",
-      "title": "Update SectionNavigator to light theme",
-      "description": "As a user, I want the section navigator to match the brighter theme.",
-      "acceptanceCriteria": [
-        "Change SectionNavigator background from dark to white/light (rgba(255,255,255,0.95))",
-        "Update border to dark (rgba(0,0,0,0.1))",
-        "Update text colors from light to dark",
-        "Typecheck passes",
-        "Verify in browser using dev-browser skill: section navigator has light theme"
-      ],
-      "priority": 30,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-031",
-      "title": "Add image lazy loading",
-      "description": "As a user, I want faster initial load by deferring offscreen images.",
-      "acceptanceCriteria": [
-        "Add loading=\"lazy\" attribute to hero images in SlideNode",
-        "Images load as they come into viewport",
-        "Typecheck passes"
-      ],
-      "priority": 31,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-032",
-      "title": "Fix slide image sizing for full display",
-      "description": "As a user, I want slide images to display at full size and be consistent across all slides.",
-      "acceptanceCriteria": [
-        "Slide node dimensions should match the full image aspect ratio",
-        "All slide images should be landscape mode and uniform size",
-        "Images should display in their entirety without cropping",
-        "Use object-fit: contain instead of cover where appropriate",
-        "Typecheck passes",
-        "Verify in browser using dev-browser skill: all slide images show fully and are consistent size"
-      ],
-      "priority": 32,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-033",
-      "title": "Remove panning lag for instant canvas movement",
-      "description": "As a user, I want the canvas to move exactly with my mouse when I grab and drag, with no lag or delay.",
-      "acceptanceCriteria": [
-        "Canvas moves instantly with mouse during pan operation (no animation delay)",
-        "Reference React Flow tutorial: https://reactflow.dev/learn/tutorials/slide-shows-with-react-flow for settings",
-        "Consider adding panOnDrag settings or disabling animated transitions during drag",
-        "May need to remove fitView animations during manual panning",
-        "Typecheck passes",
-        "Verify in browser using dev-browser skill: panning feels immediate and responsive"
-      ],
-      "priority": 33,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-034",
-      "title": "Add lined notepad paper background",
-      "description": "As a user, I want the canvas background to look like an old school lined notepad instead of plain white.",
-      "acceptanceCriteria": [
-        "Background should display horizontal ruled lines like notebook paper",
-        "Lines should be blue or black, subtle but visible",
-        "Include a red/pink vertical margin line on the left side (like college ruled paper)",
-        "Paper should have a slightly off-white/cream color for authenticity",
-        "Use CSS or SVG pattern for the lined effect",
-        "Typecheck passes",
-        "Verify in browser using dev-browser skill: background looks like lined notebook paper"
-      ],
-      "priority": 34,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-035",
-      "title": "Add visible connections between slides",
-      "description": "As a user, I want visible edges/connections drawn between related slides showing the presentation flow.",
-      "acceptanceCriteria": [
-        "Edges should connect slides in sequential order within each section",
-        "Edges should connect section headers to their first slide",
-        "Edges should be visually clear and styled appropriately",
-        "Edges should follow React Flow connection patterns",
-        "Reference React Flow tutorial for proper edge styling: https://reactflow.dev/learn/tutorials/slide-shows-with-react-flow",
-        "Typecheck passes",
-        "Verify in browser using dev-browser skill: edges visible connecting slides in logical order"
-      ],
-      "priority": 35,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-036",
-      "title": "Add custom or fetched images for resource link nodes",
-      "description": "As a user, I want resource link nodes to display either a custom image or the og:image from the linked webpage.",
-      "acceptanceCriteria": [
-        "Resource type should support optional 'image' field for custom image URL",
-        "If no custom image, attempt to fetch og:image metadata from the URL",
-        "Display thumbnail image on ResourceNode component",
-        "Graceful fallback if no image available (show icon or placeholder)",
-        "Consider caching fetched metadata to avoid repeated requests",
-        "Typecheck passes",
-        "Verify in browser using dev-browser skill: resource nodes show images"
-      ],
-      "priority": 36,
-      "passes": true,
-      "notes": "Implemented with custom image URLs. og:image fetching requires CORS proxy so used static URLs instead."
-    },
-    {
-      "id": "US-037",
-      "title": "Create editable markdown file for slide content",
-      "description": "As a user, I want all slide content in a single markdown file so I can easily edit titles, text, and images.",
-      "acceptanceCriteria": [
-        "Create a markdown file (e.g., slides.md or content.md) with all slide content",
-        "Include slide images with markdown image syntax",
-        "Include original talk outline text from talk-outline.md",
-        "Include current slide titles, subtitles, and bullet points",
-        "Format should be clear and easy to edit",
-        "Document how the markdown maps to slide data structure",
-        "Consider using frontmatter or structured sections per slide",
-        "Typecheck passes (if build pipeline changes)"
-      ],
-      "priority": 37,
-      "passes": true,
-      "notes": "Created slides.md with all slide content in editable markdown format. Includes format documentation, section table, and original talk outline for reference."
-    },
-    {
-      "id": "US-038",
-      "title": "Create persistence utility for localStorage",
-      "description": "As a developer, I need a utility module to save and load data from localStorage so node positions and other state can persist.",
-      "acceptanceCriteria": [
-        "Create src/utils/persistence.ts",
-        "Implement loadPersistedPositions() function that returns Record<string, {x, y}> or null",
-        "Implement savePersistedPositions(positions) function that saves with version and timestamp",
-        "Implement clearPersistedPositions() function to reset",
-        "Use localStorage key 'presentation-node-positions'",
-        "Handle JSON parse errors gracefully (return null)",
-        "Typecheck passes"
-      ],
-      "priority": 38,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-039",
-      "title": "Load persisted node positions on app start",
-      "description": "As a user, I want my node arrangement to be restored when I reload the page.",
-      "acceptanceCriteria": [
-        "Import persistence utilities in PresentationCanvas.tsx",
-        "In useState initializer, load persisted positions",
-        "Merge persisted positions with generated node positions",
-        "If no persisted data, use default generated positions",
-        "Typecheck passes",
-        "Verify in browser: drag a node, refresh page, node is in same position"
-      ],
-      "priority": 39,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-040",
-      "title": "Save node positions on drag with debounce",
-      "description": "As a user, I want my node movements to be saved automatically without affecting performance.",
-      "acceptanceCriteria": [
-        "Add debounced save function (500ms delay) in PresentationCanvas.tsx",
-        "On onNodesChange, detect position changes and trigger debounced save",
-        "Only save position data, not full node objects",
-        "Typecheck passes"
-      ],
-      "priority": 40,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-041",
-      "title": "Add Reset Layout button to NavigationControls",
-      "description": "As a user, I want a button to reset all nodes to their default positions.",
-      "acceptanceCriteria": [
-        "Add 'Reset' button to NavigationControls component",
-        "Button calls clearPersistedPositions() and regenerates nodes",
-        "Style button to match existing controls (gray, icon)",
-        "Add reset icon (↺ or similar)",
-        "Typecheck passes",
-        "Verify in browser: clicking Reset restores default layout"
-      ],
-      "priority": 41,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-042",
-      "title": "Add navigation props to SlideNodeData type",
-      "description": "As a developer, I need type definitions for per-slide navigation callbacks.",
-      "acceptanceCriteria": [
-        "Add hasPrev?: boolean to SlideNodeData interface",
-        "Add hasNext?: boolean to SlideNodeData interface",
-        "Add onNavigatePrev?: () => void to SlideNodeData interface",
-        "Add onNavigateNext?: () => void to SlideNodeData interface",
-        "Typecheck passes"
-      ],
-      "priority": 42,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-043",
-      "title": "Add navigation caret buttons to SlideNode component",
-      "description": "As a user, I want forward/backward buttons on each slide for quick navigation.",
-      "acceptanceCriteria": [
-        "Add navigation container div at bottom of SlideNode",
-        "Add ‹ button for previous slide navigation",
-        "Add › button for next slide navigation",
-        "Buttons call onNavigatePrev/onNavigateNext from data props",
-        "Use e.stopPropagation() to prevent node click events",
-        "Disable buttons when hasPrev/hasNext is false",
-        "Typecheck passes"
-      ],
-      "priority": 43,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-044",
-      "title": "Style SlideNode navigation buttons",
-      "description": "As a user, I want the navigation buttons to look clean and minimal.",
-      "acceptanceCriteria": [
-        "Add .slide-node__navigation class for button container",
-        "Position buttons at bottom center of slide (absolute, translateX -50%)",
-        "Style buttons: 28px circular, light background, subtle border",
-        "Add hover effect: accent color background",
-        "Add disabled state: reduced opacity, no-cursor",
-        "Typecheck passes",
-        "Verify in browser: caret buttons visible at bottom of each slide"
-      ],
-      "priority": 44,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-045",
-      "title": "Pass navigation callbacks to SlideNode from PresentationCanvas",
-      "description": "As a developer, I need to wire up navigation data to each slide node.",
-      "acceptanceCriteria": [
-        "In nodesWithActiveState memo, calculate hasPrev/hasNext for each slide",
-        "Create navigation callback functions using orderedSlides array",
-        "Pass hasPrev, hasNext, onNavigatePrev, onNavigateNext in node data",
-        "Callbacks should use existing navigateToSlide function",
-        "Typecheck passes",
-        "Verify in browser: clicking ‹ › buttons navigates between slides"
-      ],
-      "priority": 45,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-046",
-      "title": "Create LevelNodeData type definition",
-      "description": "As a developer, I need type definitions for the new LevelNode component.",
-      "acceptanceCriteria": [
-        "Add LevelNodeData interface to types/presentation.ts",
-        "Include level: number field",
-        "Include slideId: string field",
-        "Include track: Track field",
-        "Add LevelNode type as Node<LevelNodeData, 'level'>",
-        "Add LevelNode to PresentationNode union type",
-        "Typecheck passes"
-      ],
-      "priority": 46,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-047",
-      "title": "Create LevelNode component",
-      "description": "As a user, I want to see circular level badges connected to slides.",
-      "acceptanceCriteria": [
-        "Create src/components/nodes/LevelNode.tsx",
-        "Render 80x80px circular div",
-        "Display level number centered in circle",
-        "Apply track-based gradient background color",
-        "Add Handle on left side (target) for edge connection",
-        "Wrap in React.memo for performance",
-        "Typecheck passes"
-      ],
-      "priority": 47,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-048",
-      "title": "Style LevelNode component",
-      "description": "As a user, I want level nodes to be visually appealing and consistent with the design.",
-      "acceptanceCriteria": [
-        "Create src/components/nodes/LevelNode.css",
-        "80px diameter with border-radius: 50%",
-        "Gradient background using track color",
-        "White border (3px) and drop shadow",
-        "Level number: JetBrains Mono font, 32px, bold, white",
-        "Center content with flexbox",
-        "Typecheck passes",
-        "Verify in browser: level nodes appear as styled circles"
-      ],
-      "priority": 48,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-049",
-      "title": "Generate LevelNode for each slide with level property",
-      "description": "As a developer, I need level nodes created automatically for slides that have levels.",
-      "acceptanceCriteria": [
-        "Modify generateNodes.ts to create LevelNode for slides with level !== undefined",
-        "Position level node 450px right and 20px above the slide",
-        "Set level node ID as 'level-{slideId}'",
-        "Pass level, slideId, and track in node data",
-        "Level nodes should be draggable",
-        "Typecheck passes"
-      ],
-      "priority": 49,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-050",
-      "title": "Add edges from slides to level nodes",
-      "description": "As a user, I want to see connections between slides and their level indicators.",
-      "acceptanceCriteria": [
-        "Modify generateEdges.ts to create edges from slides to level nodes",
-        "Edge from slide (right handle) to level node (left handle)",
-        "Style: 1.5px dashed gray stroke",
-        "Edge ID: 'edge-slide-{slideId}-to-level'",
-        "Typecheck passes",
-        "Verify in browser: dashed lines connect slides to their level badges"
-      ],
-      "priority": 50,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-051",
-      "title": "Register LevelNode type in PresentationCanvas",
-      "description": "As a developer, I need React Flow to recognize the new LevelNode component.",
-      "acceptanceCriteria": [
-        "Import LevelNode component in PresentationCanvas.tsx",
-        "Add 'level': LevelNode to nodeTypes object",
-        "Typecheck passes"
-      ],
-      "priority": 51,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-052",
-      "title": "Remove level badge from SlideNode hero image",
-      "description": "As a user, I want levels shown as separate nodes, not overlaid on slides.",
-      "acceptanceCriteria": [
-        "Remove .slide-node__level span from SlideNode.tsx",
-        "Remove .slide-node__level CSS from SlideNode.css",
-        "Level display now handled by separate LevelNode",
-        "Typecheck passes",
-        "Verify in browser: no level badge on slide hero images"
-      ],
-      "priority": 52,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-053",
-      "title": "Create useSlideNotes hook for note persistence",
-      "description": "As a developer, I need a hook to load and save slide notes to localStorage.",
-      "acceptanceCriteria": [
-        "Create src/hooks/useSlideNotes.ts",
-        "Define SlideNotes interface: { notes: string, customResources: Array<{title, url}> }",
-        "Hook takes slideId parameter",
-        "Load notes from localStorage on slideId change",
-        "Provide saveNotes function that persists to localStorage",
-        "Use key format 'presentation-slide-notes-{slideId}'",
-        "Typecheck passes"
-      ],
-      "priority": 53,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-054",
-      "title": "Create EditorPanel component structure",
-      "description": "As a user, I want a panel to appear when I select a slide so I can add notes.",
-      "acceptanceCriteria": [
-        "Create src/components/panels/EditorPanel.tsx",
-        "Props: slideId, slideData, isOpen, onClose",
-        "Return null if !isOpen or !slideId",
-        "Render panel container with header (slide title + close button)",
-        "Render content area placeholder",
-        "Wrap in React.memo",
-        "Typecheck passes"
-      ],
-      "priority": 54,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-055",
-      "title": "Add notes textarea to EditorPanel",
-      "description": "As a user, I want to type markdown notes for a slide.",
-      "acceptanceCriteria": [
-        "Use useSlideNotes hook in EditorPanel",
-        "Add labeled textarea for notes (Markdown)",
-        "Textarea value bound to notes.notes",
-        "On change, call saveNotes with updated notes object",
-        "Auto-save on every change (no save button needed)",
-        "Typecheck passes"
-      ],
-      "priority": 55,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-056",
-      "title": "Add resource URL list to EditorPanel",
-      "description": "As a user, I want to add custom resource URLs to a slide.",
-      "acceptanceCriteria": [
-        "Display list of customResources with title and URL",
-        "Add button to add new resource (prompts for title + URL)",
-        "Delete button on each resource item",
-        "Resources saved via saveNotes function",
-        "Typecheck passes"
-      ],
-      "priority": 56,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-057",
-      "title": "Style EditorPanel component",
-      "description": "As a user, I want the editor panel to look clean and functional.",
-      "acceptanceCriteria": [
-        "Create src/components/panels/EditorPanel.css",
-        "Position: fixed left side, full height",
-        "Width: 320px",
-        "Background: white with subtle shadow",
-        "Header: slide title, close button (X)",
-        "Textarea: full width, 200px min height, monospace font",
-        "Resource list: compact styling with delete buttons",
-        "Typecheck passes",
-        "Verify in browser: panel slides in from left when opened"
-      ],
-      "priority": 57,
-      "passes": true,
-      "notes": "Added slide-in animation keyframes, backdrop-filter blur, and verified all styling is complete."
-    },
-    {
-      "id": "US-058",
-      "title": "Integrate EditorPanel into PresentationCanvas",
-      "description": "As a developer, I need to wire up the editor panel to the canvas.",
-      "acceptanceCriteria": [
-        "Add selectedSlideId state (separate from currentSlideId for navigation)",
-        "Add isEditorOpen state",
-        "Import and render EditorPanel component",
-        "Pass required props: slideId, slideData, isOpen, onClose",
-        "onClose sets isEditorOpen to false",
-        "Typecheck passes"
-      ],
-      "priority": 58,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-059",
-      "title": "Open EditorPanel on slide double-click",
-      "description": "As a user, I want to double-click a slide to open the editor panel.",
-      "acceptanceCriteria": [
-        "Add onNodeDoubleClick handler to ReactFlow component",
-        "On slide node double-click, set selectedSlideId and isEditorOpen=true",
-        "Only open for slide nodes, not other node types",
-        "Typecheck passes",
-        "Verify in browser: double-click slide opens editor panel on left"
-      ],
-      "priority": 59,
-      "passes": true,
-      "notes": ""
-    },
-    {
-      "id": "US-060",
-      "title": "Create useEdgeEdits hook for edge persistence",
-      "description": "As a developer, I need a hook to track added and deleted edges.",
-      "acceptanceCriteria": [
-        "Create src/hooks/useEdgeEdits.ts",
-        "Define EdgeEdits interface: { addedEdges: Edge[], deletedEdgeIds: string[] }",
-        "Load edge edits from localStorage on mount",
-        "Provide addEdge function that adds to addedEdges and saves",
-        "Provide deleteEdge function that adds to deletedEdgeIds and saves",
-        "Use key 'presentation-edge-edits'",
-        "Typecheck passes"
-      ],
-      "priority": 60,
-      "passes": false,
-      "notes": ""
-    },
-    {
-      "id": "US-061",
-      "title": "Apply edge edits to generated edges",
-      "description": "As a user, I want my edge changes to persist after page reload.",
-      "acceptanceCriteria": [
-        "Convert edges from useMemo to useState in PresentationCanvas",
-        "Import and use useEdgeEdits hook",
-        "In useState initializer, generate edges and apply edits",
-        "Filter out deletedEdgeIds from generated edges",
-        "Append addedEdges to the edge array",
-        "Typecheck passes"
-      ],
-      "priority": 61,
-      "passes": false,
-      "notes": ""
-    },
-    {
-      "id": "US-062",
-      "title": "Enable creating new edges by dragging",
-      "description": "As a user, I want to drag from one node handle to another to create a connection.",
-      "acceptanceCriteria": [
-        "Add onConnect handler to ReactFlow component",
-        "Generate unique edge ID: 'edge-custom-{timestamp}'",
-        "Style custom edges: 2px indigo stroke",
-        "Call addEdge from useEdgeEdits hook",
-        "Add new edge to edges state",
-        "Typecheck passes",
-        "Verify in browser: dragging between handles creates new edge"
-      ],
-      "priority": 62,
-      "passes": false,
-      "notes": ""
-    },
-    {
-      "id": "US-063",
-      "title": "Enable deleting edges with Shift+click",
-      "description": "As a user, I want to Shift+click an edge to delete it.",
-      "acceptanceCriteria": [
-        "Add onEdgeClick handler to ReactFlow component",
-        "Check if event.shiftKey is true",
-        "If shift-clicked, call deleteEdge from useEdgeEdits hook",
-        "Remove edge from edges state",
-        "Typecheck passes",
-        "Verify in browser: Shift+click on edge removes it"
-      ],
-      "priority": 63,
-      "passes": false,
-      "notes": ""
-    },
-    {
-      "id": "US-064",
-      "title": "Add edge editing help tooltip",
-      "description": "As a user, I want to know how to create and delete edges.",
-      "acceptanceCriteria": [
-        "Add small help text or tooltip in NavigationControls or corner of canvas",
-        "Text: 'Drag handles to connect • Shift+click edge to delete'",
-        "Style: subtle, small font, low opacity",
-        "Typecheck passes"
-      ],
-      "priority": 64,
-      "passes": false,
-      "notes": ""
-    },
-    {
-      "id": "US-065",
-      "title": "Add reset edge edits to Reset Layout button",
-      "description": "As a user, I want the Reset Layout button to also clear my edge changes.",
-      "acceptanceCriteria": [
-        "Modify reset handler to also clear edge edits from localStorage",
-        "Regenerate edges from scratch (no edits applied)",
-        "Update edges state with fresh generated edges",
-        "Typecheck passes",
-        "Verify in browser: Reset Layout restores default edges too"
-      ],
-      "priority": 65,
-      "passes": false,
-      "notes": ""
+      "notes": "Build succeeded with tsc -b && vite build. All visual comparison stories (US-008 through US-011) verified against reference design."
     }
   ]
 }

@@ -570,10 +570,12 @@ function PresentationCanvas() {
         currentSlideIndex={currentSlideIndex}
         totalSlides={totalSlides}
         isOverviewMode={isOverviewMode}
+        isEditMode={false}
         onPrevious={goToPreviousSlide}
         onNext={goToNextSlide}
         onToggleOverview={toggleOverview}
         onReset={resetLayout}
+        onExportPositions={() => {}}
       />
       <EditorPanel
         slideId={selectedSlideId}
