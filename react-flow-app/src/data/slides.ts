@@ -28,11 +28,6 @@ export const sections: Section[] = [
     track: "technical",
   },
   {
-    id: "projects",
-    title: "Projects",
-    track: "general",
-  },
-  {
     id: "closing",
     title: "Closing",
     track: "general",
@@ -48,8 +43,7 @@ export const slides: SlideContent[] = [
     type: "title",
     title: "The Widening Gulf of Technology",
     subtitle: "The growing divide between tech-literate and non-tech-literate",
-    backgroundImage:
-      "/assets/images/slide-01-the-widening-gulf-of-technology.jpg",
+    backgroundImage: "/assets/images/slide-01_billboard_v2_20260123_110517.jpg",
     bullets: [
       "Technology gives us speed and capabilities: fire, bicycles, cars, Internet",
       "AI might create a larger gulf than previous tech",
@@ -62,7 +56,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Mental Models Through Use",
     subtitle: "Understanding comes from doing, not reading",
-    backgroundImage: "/assets/images/slide-02-mental-models-through-use.jpg",
+    backgroundImage: "/assets/images/slide-02_billboard_v4_20260123_110517.jpg",
     bullets: ["Mental models improve more through use, not instruction"],
   },
 
@@ -73,7 +67,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "New Tech, Old Mental Model",
     subtitle: "The temptation to treat AI like enhanced Google",
-    backgroundImage: "/assets/images/slide-03-new-tech,-old-mental-model.jpg",
+    backgroundImage: "/assets/images/slide-03_billboard_v1_20260123_110517.jpg",
     bullets: [
       "Mental Model: ChatGPT as a better Google",
       "It has different flaws: hallucinations",
@@ -110,8 +104,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "From Savant to Digital Employee",
     subtitle: "The major mental leap",
-    backgroundImage:
-      "/assets/images/slide-04-from-savant-to-digital-employee.jpg",
+    backgroundImage: "/assets/images/slide-04_billboard_v3_20260123_110517.jpg",
     bullets: [
       "AI is not an all-knowing savant with advice",
       "It's a digital employee who can execute work",
@@ -126,7 +119,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Mapping the Journey",
     subtitle: "A progressive approach to understanding AI",
-    backgroundImage: "/assets/images/slide-05-mapping-the-journey.jpg",
+    backgroundImage: "/assets/images/slide-05_billboard_v2_20260123_110517.jpg",
     bullets: [
       "Overwhelming amount of information",
       "Skipping steps makes nothing feel coherent",
@@ -140,7 +133,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "What It Takes",
     subtitle: "Resistance to change is the real barrier",
-    backgroundImage: "/assets/images/slide-06-what-it-takes.jpg",
+    backgroundImage: "/assets/images/slide-06_billboard_v1_20260123_110517.jpg",
     bullets: [
       'What does it mean to be "technical"',
       "Resistance to change is the only barrier to entry",
@@ -151,7 +144,7 @@ export const slides: SlideContent[] = [
     sectionId: "mapping",
     type: "quote",
     title: "Avoidance",
-    backgroundImage: "/assets/images/slide-07-avoidance.jpg",
+    backgroundImage: "/assets/images/slide-07_billboard_v1_20260123_114739.jpg",
     quote: '"This won\'t affect my job."',
     bullets: [
       "Avoidance is just fear showing its head",
@@ -166,9 +159,7 @@ export const slides: SlideContent[] = [
     sectionId: "levels-nontech",
     type: "content",
     title: "AI = Portal to Internet Research",
-    level: 1,
-    backgroundImage:
-      "/assets/images/slide-08-ai--portal-to-internet-research.jpg",
+    backgroundImage: "/assets/images/slide-08_billboard_v1_20260123_114739.jpg",
     bullets: [
       "Use AI for Q&A, summaries and explanations, brainstorming",
       "Learn prompt engineering basics",
@@ -180,8 +171,7 @@ export const slides: SlideContent[] = [
     sectionId: "levels-nontech",
     type: "content",
     title: "AI as Thought Partner",
-    level: 2,
-    backgroundImage: "/assets/images/slide-09-ai-as-thought-partner.jpg",
+    backgroundImage: "/assets/images/slide-09_billboard_v2_20260123_114739.jpg",
     bullets: [
       "Giving AI more context: PDFs, docs, images",
       "Back and forth dialogue on complex topics like health",
@@ -189,26 +179,11 @@ export const slides: SlideContent[] = [
     ],
   },
   {
-    id: "slide-10",
-    sectionId: "levels-nontech",
-    type: "content",
-    title: "Context Management",
-    level: 5,
-    backgroundImage: "/assets/images/slide-10-context-engineering.jpg",
-    bullets: [
-      "Understanding how context works",
-      "Structured input (Markdown) yields better results",
-      "Using Projects to manage context",
-      "Results start feeling reliable",
-    ],
-  },
-  {
     id: "slide-11",
     sectionId: "levels-nontech",
     type: "content",
     title: "Using AI Tools",
-    level: 3,
-    backgroundImage: "/assets/images/slide-11-using-ai-tools.jpg",
+    backgroundImage: "/assets/images/slide-11_billboard_v2_20260123_114739.jpg",
     bullets: [
       "Still getting unreliable results",
       "Wispr Flow - voice dictation",
@@ -218,12 +193,24 @@ export const slides: SlideContent[] = [
     ],
   },
   {
+    id: "slide-10",
+    sectionId: "levels-nontech",
+    type: "content",
+    title: "Context Management",
+    backgroundImage: "/assets/images/slide-10_billboard_v1_20260123_114739.jpg",
+    bullets: [
+      "Understanding how context works",
+      "Structured input (Markdown) yields better results",
+      "Using Projects to manage context",
+      "Results start feeling reliable",
+    ],
+  },
+  {
     id: "slide-12",
     sectionId: "levels-nontech",
     type: "content",
     title: "AI-Powered Browsing",
-    level: 4,
-    backgroundImage: "/assets/images/slide-12-ai-powered-browsing.jpg",
+    backgroundImage: "/assets/images/slide-12_billboard_v1_20260123_114739.jpg",
     bullets: [
       "Browsers are the modern workbench",
       "Google Gemini built into Chrome",
@@ -236,8 +223,7 @@ export const slides: SlideContent[] = [
     sectionId: "levels-nontech",
     type: "content",
     title: "Creating Media with AI",
-    level: 6,
-    backgroundImage: "/assets/images/slide-13-placeholder.jpg",
+    backgroundImage: "/assets/images/slide-13_billboard_v1_20260123_114739.jpg",
     bullets: [
       "Image generation: Nano Banana, Midjourney, ChatGPT",
       "Video production: Veo3",
@@ -249,13 +235,23 @@ export const slides: SlideContent[] = [
     sectionId: "levels-nontech",
     type: "content",
     title: "AI for Automation",
-    level: 7,
-    backgroundImage: "/assets/images/slide-14-ai-for-automation.jpg",
+    backgroundImage: "/assets/images/slide-14_billboard_v3_20260123_114739.jpg",
     bullets: [
       "Zapier - most common automation tool",
       "N8n - bridge to complex automations",
       "Gumloop - built with AI in mind",
       "Visual interfaces to doing things with code - without looking at code",
+    ],
+    subnodes: [
+      {
+        id: "subnode-14-craigdossantos",
+        parentSlideId: "slide-14",
+        type: "resource",
+        title: "CraigDosSantos.com",
+        url: "https://craigdossantos.com",
+        content:
+          "Personal portfolio and blog - showcasing my work and writing, built with AI assistance",
+      },
     ],
   },
   {
@@ -263,15 +259,33 @@ export const slides: SlideContent[] = [
     sectionId: "levels-nontech",
     type: "content",
     title: "Natural Language Software Tools",
-    level: 8,
-    backgroundImage:
-      "/assets/images/slide-15-natural-language-software-tools.jpg",
+    backgroundImage: "/assets/images/slide-15_billboard_v1_20260123_114739.jpg",
     bullets: [
       "Lovable, Bolt AI, Google AI Studio",
       "Create software without knowing code syntax",
       "Great playground to get comfortable with using AI for software",
       "Understanding the limits is part of the learning",
     ],
+    subnodes: [
+      {
+        id: "subnode-15-ourweunion",
+        parentSlideId: "slide-15",
+        type: "resource",
+        title: "OurWeUnion.com",
+        url: "https://ourweunion.com",
+        content:
+          "Wedding website - single landing page with Google Form, built for Craig and Stef",
+      },
+    ],
+  },
+  {
+    id: "slide-15b",
+    sectionId: "levels-nontech",
+    type: "content",
+    title: "Claude Co-work",
+    backgroundImage:
+      "/assets/images/slide-15b_billboard_v2_20260123_123045.jpg",
+    bullets: [],
   },
 
   // Section: Technical Levels (1-9) - Note: slide-17 removed, content merged into slide-16
@@ -281,7 +295,7 @@ export const slides: SlideContent[] = [
     type: "section-header",
     title: "Command Line Interface (CLI)",
     subtitle: "Where AI meets full computer access",
-    backgroundImage: "/assets/images/slide-16-command-line-interface-cli.jpg",
+    backgroundImage: "/assets/images/slide-16_billboard_v2_20260123_114739.jpg",
     bullets: [
       "Still using natural language as the interface",
       "Command line = text-based access to everything on your machine",
@@ -295,14 +309,33 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Using Git and GitHub",
     subtitle: "Version control for AI-assisted development",
-    level: 2,
-    backgroundImage: "/assets/images/slide-18-using-git-and-github.jpg",
+    backgroundImage: "/assets/images/slide-18_billboard_v2_20260123_123045.jpg",
     bullets: [
       "Git = versioning system (like Google Docs history, but for code)",
       "Take snapshots, rewind, merge work from multiple people",
       "GitHub = Dropbox for code (store, share, collaborate)",
       "Essential safety net when AI makes mistakes",
       "Worth taking time to understand properly",
+    ],
+    subnodes: [
+      {
+        id: "subnode-18-secretgame",
+        parentSlideId: "slide-18",
+        type: "resource",
+        title: "The Secret Game",
+        url: "https://secretgame.lightersky.com",
+        content:
+          "Share secrets with friends - pass a URL to a group, answer questions to reveal hidden answers",
+      },
+      {
+        id: "subnode-18-dialoguedojo",
+        parentSlideId: "slide-18",
+        type: "resource",
+        title: "Dialogue Dojo",
+        url: "https://dialoguedojo.lightersky.com",
+        content:
+          "Practice communication skills - voice-to-voice sessions for negotiation and non-violent communication",
+      },
     ],
   },
   {
@@ -311,8 +344,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Agents and AI Coding",
     subtitle: "Where code meets conversation",
-    level: 3,
-    backgroundImage: "/assets/images/slide-19-agents-and-ai-coding.jpg",
+    backgroundImage: "/assets/images/slide-19_billboard_v2_20260123_114739.jpg",
     bullets: [
       "IDE = Integrated Development Environment",
       "Google's Anti-Gravity - easiest place to start",
@@ -327,8 +359,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Modes and Workflows",
     subtitle: "Beyond back-and-forth chat",
-    level: 4,
-    backgroundImage: "/assets/images/slide-20-modes-and-workflows.jpg",
+    backgroundImage: "/assets/images/slide-20_billboard_v1_20260123_114739.jpg",
     bullets: [
       "Plan → Build → Test → Review → Deploy → Bug Fix → Plan",
       "One model in different modes for each step",
@@ -336,6 +367,25 @@ export const slides: SlideContent[] = [
       "You're executing an actual software development lifecycle",
       "Structured workflow vs. freeform conversation",
     ],
+    subnodes: [
+      {
+        id: "subnode-20-freestyleflow",
+        parentSlideId: "slide-20",
+        type: "resource",
+        title: "Freestyle Flow",
+        content:
+          "Mobile app for freestyle rap and improv singing training - practice at your own pace",
+      },
+    ],
+  },
+  {
+    id: "slide-20b",
+    sectionId: "levels-tech",
+    type: "content",
+    title: "Meta Level Meta Thinking",
+    backgroundImage:
+      "/assets/images/slide-20b_billboard_v2_20260123_123045.jpg",
+    bullets: [],
   },
   {
     id: "slide-21",
@@ -343,14 +393,24 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Using AI to Go Live",
     subtitle: "Deployment, databases, hosting",
-    level: 5,
-    backgroundImage: "/assets/images/slide-21-level-5-software-lifecycle.jpg",
+    backgroundImage: "/assets/images/slide-21_billboard_v1_20260123_114739.jpg",
     bullets: [
       "Supabase — databases",
       "Vercel — hosting and deployment",
       "Cloudflare — domains and DNS",
       "AI-assisted deployment: MCP servers or CLI tools",
       "Learn as the AI does it — don't just press buttons",
+    ],
+    subnodes: [
+      {
+        id: "subnode-21-instantbook",
+        parentSlideId: "slide-21",
+        type: "resource",
+        title: "Instant Book",
+        url: "https://instantbook.lightersky.com",
+        content:
+          "Learn from books faster - upload EPUB books, break into chapters, zoom in and out of content",
+      },
     ],
   },
   {
@@ -359,8 +419,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Customizing the Harness",
     subtitle: "Skills, commands, and agents",
-    level: 6,
-    backgroundImage: "/assets/images/slide-22-level-6-customizing-harness.jpg",
+    backgroundImage: "/assets/images/slide-22_billboard_v1_20260123_114739.jpg",
     bullets: [
       "Skills: Markdown files loaded when needed (like Neo in The Matrix)",
       "Slash commands: shortcuts instead of repeating instructions",
@@ -375,14 +434,41 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Context Engineering",
     subtitle: "The memory game",
-    level: 7,
-    backgroundImage: "/assets/images/slide-23-level-7-context-management.jpg",
+    backgroundImage: "/assets/images/slide-23_billboard_v1_20260123_114739.jpg",
     bullets: [
       "Context = everything you hand over with your instruction",
       "Too bloated → model forgets things, quality degrades",
       "New session = no context (like Memento amnesia)",
       "Solutions: write to files, databases, or start fresh",
       "Key skill: knowing when to reset your session",
+    ],
+    subnodes: [
+      {
+        id: "subnode-23-youtubesummary",
+        parentSlideId: "slide-23",
+        type: "resource",
+        title: "YouTube Summary",
+        url: "https://youtubesummary.lightersky.com",
+        content:
+          "Summarize YouTube videos - drop in video or playlist links, get summaries and key takeaways",
+      },
+      {
+        id: "subnode-23-videosum",
+        parentSlideId: "slide-23",
+        type: "resource",
+        title: "Video Sum",
+        content:
+          "Mac desktop application for summarizing video content locally",
+      },
+      {
+        id: "subnode-23-stefsbirthday",
+        parentSlideId: "slide-23",
+        type: "resource",
+        title: "Stef's Birthday",
+        url: "https://stefsbirthday.com",
+        content:
+          "Audio card maker - create personalized audio birthday cards, built for my wife's birthday",
+      },
     ],
   },
   {
@@ -391,14 +477,33 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Parallel Agents and Sub-agent Orchestration",
     subtitle: "Orchestration at scale",
-    level: 8,
-    backgroundImage: "/assets/images/slide-24-level-8-parallel-agents.jpg",
+    backgroundImage: "/assets/images/slide-24_billboard_v3_20260123_124346.jpg",
     bullets: [
       "Multiple sub-agents and sessions simultaneously",
       "GitHub Worktrees: separate working directories",
       "Conductor.build, Beads: tools for parallel work",
       "Sub-agents return answers, not their full process",
       "You're coordinating, not executing",
+    ],
+    subnodes: [
+      {
+        id: "subnode-24-quota",
+        parentSlideId: "slide-24",
+        type: "resource",
+        title: "Quota",
+        url: "https://usequota.app",
+        content:
+          "Credit-based AI billing - launch AI apps with portable wallet system across multiple apps",
+      },
+      {
+        id: "subnode-24-presentation",
+        parentSlideId: "slide-24",
+        type: "resource",
+        title: "Level Up with AI Prez",
+        url: "https://levelupwithai.lightersky.com",
+        content:
+          "This presentation - interactive metro map visualization built with React Flow and AI",
+      },
     ],
   },
   {
@@ -407,150 +512,13 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Swarms and Infrastructure",
     subtitle: "The edge of what's possible",
-    level: 9,
-    backgroundImage: "/assets/images/slide-25-level-9-swarms.jpg",
+    backgroundImage: "/assets/images/slide-25_billboard_v2_20260123_114739.jpg",
     bullets: [
       "Large numbers of agents running simultaneously",
       "Ralph Wiggum: spin up agents in serial overnight",
       "Token usage at this level: $100-200+/month plans",
       "Virtual Private Servers: agents running in the cloud 24/7",
       "Where infrastructure meets intelligence",
-    ],
-  },
-
-  // Section: Projects - Things I've Built
-  {
-    id: "project-01",
-    sectionId: "projects",
-    type: "content",
-    title: "CraigDosSantos.com",
-    subtitle: "Personal portfolio and blog",
-    backgroundImage: "/assets/images/project-01-craigdossantos.jpg",
-    bullets: ["Showcasing my work and writing", "Built with AI assistance"],
-  },
-  {
-    id: "project-02",
-    sectionId: "projects",
-    type: "content",
-    title: "The Secret Game",
-    subtitle: "Share secrets with friends",
-    backgroundImage: "/assets/images/project-02-secret-game.jpg",
-    bullets: [
-      "Pass a URL to a group of friends",
-      "Answer questions to reveal hidden answers",
-      "Social game for WhatsApp threads",
-    ],
-  },
-  {
-    id: "project-03",
-    sectionId: "projects",
-    type: "content",
-    title: "Freestyle Flow",
-    subtitle: "Learn to freestyle rap",
-    backgroundImage: "/assets/images/project-03-freestyle-flow.jpg",
-    bullets: [
-      "Mobile app for freestyle rap training",
-      "Also teaches improv singing",
-      "Practice at your own pace",
-    ],
-  },
-  {
-    id: "project-04",
-    sectionId: "projects",
-    type: "content",
-    title: "OurWeUnion.com",
-    subtitle: "Wedding website",
-    backgroundImage: "/assets/images/project-04-ourweunion.jpg",
-    bullets: [
-      "Wedding site for Craig and Stef",
-      "Single landing page with Google Form",
-    ],
-  },
-  {
-    id: "project-05",
-    sectionId: "projects",
-    type: "content",
-    title: "Dialogue Dojo",
-    subtitle: "Practice communication skills",
-    backgroundImage: "/assets/images/project-05-dialogue-dojo.jpg",
-    bullets: [
-      "Voice-to-voice practice sessions",
-      "Communication and negotiation training",
-      "Non-violent communication practice",
-    ],
-  },
-  {
-    id: "project-06",
-    sectionId: "projects",
-    type: "content",
-    title: "Instant Book",
-    subtitle: "Learn from books faster",
-    backgroundImage: "/assets/images/project-06-instant-book.jpg",
-    bullets: [
-      "Upload EPUB books",
-      "Breaks content into chapters",
-      "Zoom in and out of book content",
-    ],
-  },
-  {
-    id: "project-07",
-    sectionId: "projects",
-    type: "content",
-    title: "YouTube Summary",
-    subtitle: "Summarize YouTube videos",
-    backgroundImage: "/assets/images/project-07-youtube-summary.jpg",
-    bullets: [
-      "Drop in video or playlist links",
-      "Get summaries, key takeaways, action items",
-      "Chat with content via Gemini",
-    ],
-  },
-  {
-    id: "project-08",
-    sectionId: "projects",
-    type: "content",
-    title: "Video Sum",
-    subtitle: "Desktop video summarizer",
-    backgroundImage: "/assets/images/project-08-video-sum.jpg",
-    bullets: ["Mac desktop application", "Summarize video content locally"],
-  },
-  {
-    id: "project-09",
-    sectionId: "projects",
-    type: "content",
-    title: "UseQuota.app",
-    subtitle: "Credit-based AI billing",
-    backgroundImage: "/assets/images/project-09-usequota.jpg",
-    bullets: [
-      "Launch AI apps with credit billing",
-      "Users get a portable wallet",
-      "Works across multiple AI apps",
-    ],
-  },
-  {
-    id: "project-10",
-    sectionId: "projects",
-    type: "content",
-    title: "Stef's Birthday",
-    subtitle: "Audio card maker",
-    backgroundImage: "/assets/images/project-10-stefsbirthday.jpg",
-    bullets: [
-      "Create personalized audio birthday cards",
-      "Record and share voice messages",
-      "Built for my wife's birthday",
-    ],
-  },
-  {
-    id: "project-11",
-    sectionId: "projects",
-    type: "content",
-    title: "This Presentation",
-    subtitle: "AI-powered metro map",
-    backgroundImage: "/assets/images/project-11-presentation.jpg",
-    bullets: [
-      "Interactive metro map visualization",
-      "Built with React Flow and AI",
-      "The presentation you're watching right now",
     ],
   },
 
@@ -561,7 +529,7 @@ export const slides: SlideContent[] = [
     type: "title",
     title: "The Only Way Forward Is Through",
     subtitle: "Become good at it by using it",
-    backgroundImage: "/assets/images/slide-26-closing.jpg",
+    backgroundImage: "/assets/images/slide-26_billboard_v1_20260123_114739.jpg",
     bullets: [
       "Use AI as your learning tool!",
       "It's changing so fast, no one is that far ahead",
@@ -744,72 +712,6 @@ export const resources: Resource[] = [
     title: "Supabase",
     url: "https://supabase.com",
     image: "https://supabase.com/favicon.ico",
-  },
-  // Project Resources
-  {
-    id: "res-project-01",
-    slideId: "project-01",
-    type: "tool",
-    title: "CraigDosSantos.com",
-    url: "https://craigdossantos.com",
-  },
-  {
-    id: "res-project-02",
-    slideId: "project-02",
-    type: "tool",
-    title: "The Secret Game",
-    url: "https://secretgame.lightersky.com",
-  },
-  // project-03 (Freestyle Flow) - mobile app, no URL
-  {
-    id: "res-project-04",
-    slideId: "project-04",
-    type: "tool",
-    title: "OurWeUnion.com",
-    url: "https://ourweunion.com",
-  },
-  {
-    id: "res-project-05",
-    slideId: "project-05",
-    type: "tool",
-    title: "Dialogue Dojo",
-    url: "https://dialoguedojo.lightersky.com",
-  },
-  {
-    id: "res-project-06",
-    slideId: "project-06",
-    type: "tool",
-    title: "Instant Book",
-    url: "https://instantbook.lightersky.com",
-  },
-  {
-    id: "res-project-07",
-    slideId: "project-07",
-    type: "tool",
-    title: "YouTube Summary",
-    url: "https://youtubesummary.lightersky.com",
-  },
-  // project-08 (Video Sum) - Mac app, no URL
-  {
-    id: "res-project-09",
-    slideId: "project-09",
-    type: "tool",
-    title: "UseQuota.app",
-    url: "https://usequota.app",
-  },
-  {
-    id: "res-project-10",
-    slideId: "project-10",
-    type: "tool",
-    title: "Stef's Birthday",
-    url: "https://stefsbirthday.com",
-  },
-  {
-    id: "res-project-11",
-    slideId: "project-11",
-    type: "tool",
-    title: "This Presentation",
-    url: "https://levelupwithai.lightersky.com",
   },
 ];
 
