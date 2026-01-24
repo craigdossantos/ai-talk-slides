@@ -24,95 +24,129 @@ export type LandmarkNode = Node<LandmarkNodeData, "landmark">;
  */
 function LandmarkNode({ id, data }: NodeProps<LandmarkNode>) {
   const [scale, setScale] = useState(data.scale ?? 1);
+  const scaleRef = useRef(scale); // Track current scale for event handlers
   const isResizing = useRef(false);
   const startX = useRef(0);
   const startScale = useRef(1);
 
+  // Keep scaleRef in sync
+  scaleRef.current = scale;
+
+  // River color - matches RiverEdge.tsx
+  const RIVER_COLOR = "#93c5fd";
+
   // Render inline SVG for geographic features
   const renderContent = () => {
     if (data.svgType === "water") {
-      // Irregular lake blob shapes - very non-circular
+      // Smooth organic water shapes matching river color
       const waterVariant = id.includes("water-2") ? 2 : 1;
+
+      // Each water body has a distinct shape
+      const waterConfigs: Record<
+        number,
+        { path: string; viewBox: string; width: number; height: number }
+      > = {
+        // Water 1 - wide round lake with gentle bays
+        1: {
+          path: `M50,200
+                 Q30,120 100,80 Q180,50 280,60 Q380,70 440,120
+                 Q500,180 480,260 Q450,340 360,370
+                 Q260,400 160,380 Q80,350 40,280
+                 Q20,240 50,200 Z`,
+          viewBox: "0 0 520 420",
+          width: 520,
+          height: 420,
+        },
+        // Water 2 - long winding river/fjord shape
+        2: {
+          path: `M30,120
+                 Q60,80 120,90 Q180,70 240,100 Q300,80 360,110
+                 Q420,90 480,130 Q540,170 520,220
+                 Q500,270 440,260 Q380,290 320,270
+                 Q260,300 200,280 Q140,310 80,280
+                 Q20,250 30,180 Q20,150 30,120 Z`,
+          viewBox: "0 0 560 340",
+          width: 560,
+          height: 340,
+        },
+      };
+
+      const config = waterConfigs[waterVariant];
+
       return (
         <svg
-          width="450"
-          height="350"
+          width={config.width}
+          height={config.height}
           className="landmark-node__svg"
-          viewBox="0 0 450 350"
+          viewBox={config.viewBox}
         >
           <defs>
             <filter id={`blur-${id}`}>
-              <feGaussianBlur stdDeviation="10" />
+              <feGaussianBlur stdDeviation="6" />
             </filter>
           </defs>
-          {waterVariant === 2 ? (
-            // Lake 2 - elongated irregular blob with inlets
-            <path
-              d="M30,180
-                 C40,120 80,100 130,80
-                 C180,60 220,90 260,70
-                 C320,45 380,80 410,130
-                 C430,180 420,220 390,260
-                 C350,300 280,310 220,290
-                 C160,270 140,300 90,280
-                 C40,260 20,220 30,180 Z"
-              fill="#7dd3fc"
-              opacity="0.45"
-              filter={`url(#blur-${id})`}
-            />
-          ) : (
-            // Lake 1 - sprawling irregular shape with peninsula
-            <path
-              d="M60,200
-                 C50,140 90,100 150,90
-                 C190,85 210,60 270,70
-                 C330,80 350,50 400,90
-                 C440,130 420,180 400,220
-                 C380,260 340,250 300,280
-                 C250,310 200,290 160,310
-                 C100,330 70,280 60,200 Z"
-              fill="#93c5fd"
-              opacity="0.5"
-              filter={`url(#blur-${id})`}
-            />
-          )}
+          <path
+            d={config.path}
+            fill={RIVER_COLOR}
+            opacity="0.5"
+            filter={`url(#blur-${id})`}
+          />
         </svg>
       );
     }
     if (data.svgType === "landmass") {
-      // Three different irregular angular landmasses
+      // Three very different angular landmass shapes
       const landmassVariant = id.includes("landmass-2")
         ? 2
         : id.includes("landmass-3")
           ? 3
           : 1;
 
-      const landmassPaths: Record<number, string> = {
-        // Landmass 1 - jagged peninsula shape
-        1: `M40,160 L90,60 L180,40 L240,80 L320,50 L400,90 L450,160
-            L470,250 L420,320 L340,350 L260,310 L180,340 L100,300
-            L50,240 Z`,
-        // Landmass 2 - angular archipelago-like shape
-        2: `M60,120 L130,50 L220,70 L280,30 L360,60 L420,120
-            L440,200 L400,260 L320,240 L280,290 L200,270 L140,310
-            L80,260 L40,180 Z`,
-        // Landmass 3 - irregular fjord-like shape
-        3: `M50,180 L100,80 L170,100 L230,50 L310,80 L380,40 L450,100
-            L470,180 L440,260 L360,290 L280,260 L220,300 L140,280
-            L80,320 L30,250 Z`,
+      // Each landmass has a distinctly different silhouette
+      const landmassConfigs: Record<
+        number,
+        { path: string; viewBox: string; width: number; height: number }
+      > = {
+        // Landmass 1 - tall narrow vertical shape like a peninsula
+        1: {
+          path: `M80,30 L140,10 L200,50 L180,120 L220,180 L200,260
+                 L240,320 L200,400 L140,450 L80,420 L40,350 L60,280
+                 L20,200 L50,120 L30,60 Z`,
+          viewBox: "0 0 260 470",
+          width: 260,
+          height: 470,
+        },
+        // Landmass 2 - wide flat horizontal shape like an island chain
+        2: {
+          path: `M20,100 L80,60 L160,80 L240,40 L340,70 L420,30 L500,60
+                 L560,100 L540,160 L480,140 L400,180 L320,150 L240,190
+                 L160,160 L80,200 L20,160 Z`,
+          viewBox: "0 0 580 220",
+          width: 580,
+          height: 220,
+        },
+        // Landmass 3 - complex irregular shape with deep inlets
+        3: {
+          path: `M60,160 L100,60 L180,100 L220,40 L300,80 L280,160
+                 L360,140 L420,60 L480,120 L460,200 L500,280 L440,320
+                 L480,380 L400,420 L320,380 L260,420 L180,380 L120,420
+                 L60,360 L100,280 L40,220 Z`,
+          viewBox: "0 0 520 440",
+          width: 520,
+          height: 440,
+        },
       };
+
+      const config = landmassConfigs[landmassVariant];
 
       return (
         <svg
-          width="500"
-          height="380"
+          width={config.width}
+          height={config.height}
           className="landmark-node__svg"
-          viewBox="0 0 500 380"
+          viewBox={config.viewBox}
         >
-          <path
-            d={landmassPaths[landmassVariant]}
-            fill="rgba(139, 90, 43, 0.12)"
-          />
+          <path d={config.path} fill="rgba(139, 90, 43, 0.12)" />
         </svg>
       );
     }
@@ -137,25 +171,28 @@ function LandmarkNode({ id, data }: NodeProps<LandmarkNode>) {
       e.preventDefault();
       isResizing.current = true;
       startX.current = e.clientX;
-      startScale.current = scale;
+      startScale.current = scaleRef.current;
 
       const handleMouseMove = (moveEvent: MouseEvent) => {
         if (!isResizing.current) return;
+        moveEvent.stopPropagation();
+        moveEvent.preventDefault();
         const deltaX = moveEvent.clientX - startX.current;
         // Scale sensitivity: 100px drag = 0.5 scale change
         const newScale = Math.max(0.2, startScale.current + deltaX / 200);
         setScale(newScale);
+        scaleRef.current = newScale;
       };
 
       const handleMouseUp = () => {
         if (isResizing.current) {
           isResizing.current = false;
-          // Persist scale to localStorage
+          // Persist scale to localStorage using ref for current value
           const existingPositions = loadPersistedPositions() || {};
           const existingNodeData = existingPositions[id] || { x: 0, y: 0 };
           savePersistedPositions({
             ...existingPositions,
-            [id]: { ...existingNodeData, scale },
+            [id]: { ...existingNodeData, scale: scaleRef.current },
           });
         }
         window.removeEventListener("mousemove", handleMouseMove);
@@ -165,7 +202,7 @@ function LandmarkNode({ id, data }: NodeProps<LandmarkNode>) {
       window.addEventListener("mousemove", handleMouseMove);
       window.addEventListener("mouseup", handleMouseUp);
     },
-    [id, scale],
+    [id],
   );
 
   return (
@@ -177,8 +214,9 @@ function LandmarkNode({ id, data }: NodeProps<LandmarkNode>) {
       {EDIT_MODE && (
         <>
           <div className="landmark-node__label">{data.label}</div>
+          {/* nodrag nopan classes prevent React Flow from intercepting drag events */}
           <div
-            className="landmark-node__resize-handle"
+            className="landmark-node__resize-handle nodrag nopan"
             onMouseDown={handleResizeStart}
           />
         </>
