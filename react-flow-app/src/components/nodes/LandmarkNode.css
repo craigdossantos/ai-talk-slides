@@ -40,3 +40,30 @@
   padding: 2px 8px;
   border-radius: 4px;
 }
+
+/* Resize handle for edit mode */
+.landmark-node__resize-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 16px;
+  height: 16px;
+  background: rgba(59, 130, 246, 0.8);
+  cursor: nwse-resize;
+  border-radius: 4px 0 0 0;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.landmark-node--edit:hover .landmark-node__resize-handle {
+  opacity: 1;
+}
+
+.landmark-node__resize-handle:hover {
+  background: rgba(59, 130, 246, 1);
+}
+
+/* SVG landmark styles */
+.landmark-node__svg {
+  pointer-events: none;
+}
