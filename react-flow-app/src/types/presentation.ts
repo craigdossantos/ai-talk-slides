@@ -215,6 +215,7 @@ export const METRO_LINE_COLORS = {
   "levels-nontech": "#3b82f6", // blue - Non-Technical Track
   "levels-tech": "#f97316", // orange - Technical Track
   closing: "#a855f7", // purple - Closing
+  projects: "#ec4899", // magenta - The Project Path
 } as const;
 
 // Metro layout constants

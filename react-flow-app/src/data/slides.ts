@@ -32,6 +32,11 @@ export const sections: Section[] = [
     title: "Closing",
     track: "general",
   },
+  {
+    id: "projects",
+    title: "The Project Path",
+    track: "general",
+  },
 ];
 
 // Define all slides with their content (slide 17 removed - integrated into slide 16)
@@ -48,6 +53,18 @@ export const slides: SlideContent[] = [
       "Technology gives us speed and capabilities: fire, bicycles, cars, Internet",
       "AI might create a larger gulf than previous tech",
       "People with AI tools will outperform people without",
+    ],
+  },
+  {
+    id: "slide-06",
+    sectionId: "intro",
+    type: "content",
+    title: "What It Takes",
+    subtitle: "Resistance to change is the real barrier",
+    backgroundImage: "/assets/images/slide-06_billboard_v1_20260123_110517.jpg",
+    bullets: [
+      'What does it mean to be "technical"',
+      "Resistance to change is the only barrier to entry",
     ],
   },
   {
@@ -125,18 +142,6 @@ export const slides: SlideContent[] = [
       "Skipping steps makes nothing feel coherent",
       "Feeling confused is a sequencing problem, not a capability",
       "We have the greatest self learning tool ever",
-    ],
-  },
-  {
-    id: "slide-06",
-    sectionId: "mapping",
-    type: "content",
-    title: "What It Takes",
-    subtitle: "Resistance to change is the real barrier",
-    backgroundImage: "/assets/images/slide-06_billboard_v1_20260123_110517.jpg",
-    bullets: [
-      'What does it mean to be "technical"',
-      "Resistance to change is the only barrier to entry",
     ],
   },
   {
@@ -242,17 +247,6 @@ export const slides: SlideContent[] = [
       "Gumloop - built with AI in mind",
       "Visual interfaces to doing things with code - without looking at code",
     ],
-    subnodes: [
-      {
-        id: "subnode-14-craigdossantos",
-        parentSlideId: "slide-14",
-        type: "resource",
-        title: "CraigDosSantos.com",
-        url: "https://craigdossantos.com",
-        content:
-          "Personal portfolio and blog - showcasing my work and writing, built with AI assistance",
-      },
-    ],
   },
   {
     id: "slide-15",
@@ -265,17 +259,6 @@ export const slides: SlideContent[] = [
       "Create software without knowing code syntax",
       "Great playground to get comfortable with using AI for software",
       "Understanding the limits is part of the learning",
-    ],
-    subnodes: [
-      {
-        id: "subnode-15-ourweunion",
-        parentSlideId: "slide-15",
-        type: "resource",
-        title: "OurWeUnion.com",
-        url: "https://ourweunion.com",
-        content:
-          "Wedding website - single landing page with Google Form, built for Craig and Stef",
-      },
     ],
   },
   {
@@ -317,26 +300,6 @@ export const slides: SlideContent[] = [
       "Essential safety net when AI makes mistakes",
       "Worth taking time to understand properly",
     ],
-    subnodes: [
-      {
-        id: "subnode-18-secretgame",
-        parentSlideId: "slide-18",
-        type: "resource",
-        title: "The Secret Game",
-        url: "https://secretgame.lightersky.com",
-        content:
-          "Share secrets with friends - pass a URL to a group, answer questions to reveal hidden answers",
-      },
-      {
-        id: "subnode-18-dialoguedojo",
-        parentSlideId: "slide-18",
-        type: "resource",
-        title: "Dialogue Dojo",
-        url: "https://dialoguedojo.lightersky.com",
-        content:
-          "Practice communication skills - voice-to-voice sessions for negotiation and non-violent communication",
-      },
-    ],
   },
   {
     id: "slide-19",
@@ -367,16 +330,6 @@ export const slides: SlideContent[] = [
       "You're executing an actual software development lifecycle",
       "Structured workflow vs. freeform conversation",
     ],
-    subnodes: [
-      {
-        id: "subnode-20-freestyleflow",
-        parentSlideId: "slide-20",
-        type: "resource",
-        title: "Freestyle Flow",
-        content:
-          "Mobile app for freestyle rap and improv singing training - practice at your own pace",
-      },
-    ],
   },
   {
     id: "slide-20b",
@@ -400,17 +353,6 @@ export const slides: SlideContent[] = [
       "Cloudflare — domains and DNS",
       "AI-assisted deployment: MCP servers or CLI tools",
       "Learn as the AI does it — don't just press buttons",
-    ],
-    subnodes: [
-      {
-        id: "subnode-21-instantbook",
-        parentSlideId: "slide-21",
-        type: "resource",
-        title: "Instant Book",
-        url: "https://instantbook.lightersky.com",
-        content:
-          "Learn from books faster - upload EPUB books, break into chapters, zoom in and out of content",
-      },
     ],
   },
   {
@@ -442,34 +384,6 @@ export const slides: SlideContent[] = [
       "Solutions: write to files, databases, or start fresh",
       "Key skill: knowing when to reset your session",
     ],
-    subnodes: [
-      {
-        id: "subnode-23-youtubesummary",
-        parentSlideId: "slide-23",
-        type: "resource",
-        title: "YouTube Summary",
-        url: "https://youtubesummary.lightersky.com",
-        content:
-          "Summarize YouTube videos - drop in video or playlist links, get summaries and key takeaways",
-      },
-      {
-        id: "subnode-23-videosum",
-        parentSlideId: "slide-23",
-        type: "resource",
-        title: "Video Sum",
-        content:
-          "Mac desktop application for summarizing video content locally",
-      },
-      {
-        id: "subnode-23-stefsbirthday",
-        parentSlideId: "slide-23",
-        type: "resource",
-        title: "Stef's Birthday",
-        url: "https://stefsbirthday.com",
-        content:
-          "Audio card maker - create personalized audio birthday cards, built for my wife's birthday",
-      },
-    ],
   },
   {
     id: "slide-24",
@@ -484,26 +398,6 @@ export const slides: SlideContent[] = [
       "Conductor.build, Beads: tools for parallel work",
       "Sub-agents return answers, not their full process",
       "You're coordinating, not executing",
-    ],
-    subnodes: [
-      {
-        id: "subnode-24-quota",
-        parentSlideId: "slide-24",
-        type: "resource",
-        title: "Quota",
-        url: "https://usequota.app",
-        content:
-          "Credit-based AI billing - launch AI apps with portable wallet system across multiple apps",
-      },
-      {
-        id: "subnode-24-presentation",
-        parentSlideId: "slide-24",
-        type: "resource",
-        title: "Level Up with AI Prez",
-        url: "https://levelupwithai.lightersky.com",
-        content:
-          "This presentation - interactive metro map visualization built with React Flow and AI",
-      },
     ],
   },
   {
@@ -533,6 +427,117 @@ export const slides: SlideContent[] = [
     bullets: [
       "Use AI as your learning tool!",
       "It's changing so fast, no one is that far ahead",
+    ],
+  },
+
+  // Section: The Project Path (magenta line - standalone examples)
+  {
+    id: "project-craigdossantos",
+    sectionId: "projects",
+    type: "content",
+    title: "CraigDosSantos.com",
+    subtitle: "Personal portfolio and blog",
+    bullets: [
+      "Showcasing my work and writing",
+      "Built with AI assistance",
+    ],
+  },
+  {
+    id: "project-secretgame",
+    sectionId: "projects",
+    type: "content",
+    title: "The Secret Game",
+    subtitle: "Share secrets with friends",
+    bullets: [
+      "Pass a URL to a group",
+      "Answer questions to reveal hidden answers",
+    ],
+  },
+  {
+    id: "project-freestyleflow",
+    sectionId: "projects",
+    type: "content",
+    title: "Freestyle Flow",
+    subtitle: "Mobile app for freestyle rap training",
+    bullets: [
+      "Improv singing and rap practice",
+      "Practice at your own pace",
+    ],
+  },
+  {
+    id: "project-ourweunion",
+    sectionId: "projects",
+    type: "content",
+    title: "OurWeUnion.com",
+    subtitle: "Wedding website",
+    bullets: [
+      "Single landing page with Google Form",
+      "Built for Craig and Stef",
+    ],
+  },
+  {
+    id: "project-dialoguedojo",
+    sectionId: "projects",
+    type: "content",
+    title: "Dialogue Dojo",
+    subtitle: "Practice communication skills",
+    bullets: [
+      "Voice-to-voice sessions",
+      "Negotiation and non-violent communication",
+    ],
+  },
+  {
+    id: "project-instantbook",
+    sectionId: "projects",
+    type: "content",
+    title: "Instant Book",
+    subtitle: "Learn from books faster",
+    bullets: [
+      "Upload EPUB books, break into chapters",
+      "Zoom in and out of content",
+    ],
+  },
+  {
+    id: "project-youtubesummary",
+    sectionId: "projects",
+    type: "content",
+    title: "YouTube Summary",
+    subtitle: "Summarize YouTube videos",
+    bullets: [
+      "Drop in video or playlist links",
+      "Get summaries and key takeaways",
+    ],
+  },
+  {
+    id: "project-videosum",
+    sectionId: "projects",
+    type: "content",
+    title: "Video Sum",
+    subtitle: "Mac desktop application",
+    bullets: [
+      "Summarizing video content locally",
+    ],
+  },
+  {
+    id: "project-quota",
+    sectionId: "projects",
+    type: "content",
+    title: "Quota",
+    subtitle: "Credit-based AI billing",
+    bullets: [
+      "Launch AI apps with portable wallet system",
+      "Works across multiple apps",
+    ],
+  },
+  {
+    id: "project-levelupai",
+    sectionId: "projects",
+    type: "content",
+    title: "Level Up with AI Prez",
+    subtitle: "This presentation",
+    bullets: [
+      "Interactive metro map visualization",
+      "Built with React Flow and AI",
     ],
   },
 ];
