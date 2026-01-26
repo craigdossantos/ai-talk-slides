@@ -28,6 +28,7 @@ interface UseKeyboardNavigationReturn {
   toggleOverview: () => void;
   fitCurrentSlide: () => void;
   setActiveSlide: (slideId: string) => void;
+  exitOverviewMode: () => void;
 }
 
 /**
@@ -51,8 +52,8 @@ export function useKeyboardNavigation({
     slides.length > 0 ? slides[0].id : null,
   );
 
-  // Track overview mode state
-  const [isOverviewMode, setIsOverviewMode] = useState(false);
+  // Track overview mode state - start in overview mode by default
+  const [isOverviewMode, setIsOverviewMode] = useState(true);
 
   // Derive current section from current slide
   const currentSectionId =
@@ -79,6 +80,11 @@ export function useKeyboardNavigation({
   // Set active slide state only (no fitView) - for viewport change detection
   const setActiveSlide = useCallback((slideId: string) => {
     setCurrentSlideId(slideId);
+  }, []);
+
+  // Exit overview mode without triggering fitView - for custom viewport handling
+  const exitOverviewMode = useCallback(() => {
+    setIsOverviewMode(false);
   }, []);
 
   // Helper: center viewport on a slide's card
@@ -441,5 +447,6 @@ export function useKeyboardNavigation({
     toggleOverview,
     fitCurrentSlide,
     setActiveSlide,
+    exitOverviewMode,
   };
 }

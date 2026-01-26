@@ -91,3 +91,8 @@
   right: 0;
   top: 50%;
 }
+
+/* Keep expanded subnodes fully visible in focused mode */
+.react-flow--focused .subnode--expanded {
+  opacity: 1 !important;
+}

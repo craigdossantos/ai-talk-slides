@@ -3,3 +3,8 @@
   stroke-linejoin: round;
   pointer-events: none;
 }
+
+/* Keep expanded branch edges visible in focused mode */
+.react-flow--focused .subnode-branch-edge--expanded {
+  opacity: 1 !important;
+}

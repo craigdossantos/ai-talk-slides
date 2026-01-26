@@ -19,14 +19,15 @@ import type { ArcEdge } from "../components/edges/ArcEdge";
 import type { RiverEdge } from "../components/edges/RiverEdge";
 import type { SubnodeBranchEdge } from "../components/edges/SubnodeBranchEdge";
 import { LANDMARKS, LANDMARK_INITIAL_POSITIONS } from "../data/landmarks";
+import committedPositions from "../data/nodePositions.json";
 
 // Spacing between parallel lines at junctions (in pixels)
 const JUNCTION_LINE_SPACING = 12;
 
-// Subnode arc configuration
-const SUBNODE_ARC_RADIUS = 120; // Distance from parent node center
-const SUBNODE_ARC_START_ANGLE = -150; // Start angle in degrees (upper left)
-const SUBNODE_ARC_END_ANGLE = -30; // End angle in degrees (upper right)
+// Subnode arc configuration - positioned below the parent node
+const SUBNODE_ARC_RADIUS = 180; // Distance from parent node center
+const SUBNODE_ARC_START_ANGLE = 30; // Start angle in degrees (lower right)
+const SUBNODE_ARC_END_ANGLE = 150; // End angle in degrees (lower left)
 
 // River waypoint initial positions - flows from lake (top-left) to ocean (bottom-right)
 // Coordinates adjusted to connect to water bodies on expanded canvas
@@ -73,11 +74,11 @@ function generateSubnodePositions(
 
   if (count === 0) return positions;
 
-  // Single subnode goes directly above
+  // Single subnode goes directly below (90 degrees)
   if (count === 1) {
     positions.push({
       x: parentX,
-      y: parentY - SUBNODE_ARC_RADIUS,
+      y: parentY + SUBNODE_ARC_RADIUS,
     });
     return positions;
   }
@@ -107,6 +108,7 @@ const SECTION_Y_POSITIONS: Record<string, number> = {
   "levels-nontech": 500, // Upper parallel track (was 260)
   "levels-tech": 850, // Lower parallel track (was 440)
   closing: 700, // Right side convergence (was 350)
+  projects: 1400, // Below all other tracks - standalone magenta line
 };
 
 // Section-specific starting X positions - staggered for diagonal flow
@@ -117,6 +119,7 @@ const SECTION_X_STARTS: Record<string, number> = {
   "levels-nontech": 700,
   "levels-tech": 700,
   closing: 3200,
+  projects: 700, // Start aligned with CLI (levels-tech) for connection
 };
 
 // Smooth curve radius for metro line bends
@@ -163,6 +166,12 @@ const METRO_LINE_LABELS: Record<
     offsetX: -50,
     offsetY: -80,
   },
+  projects: {
+    lineName: "MAGENTA LINE",
+    subtitle: "The Project Path",
+    offsetX: -50,
+    offsetY: -80,
+  },
 };
 
 /**
@@ -189,8 +198,12 @@ export function generateMetroLayout(
     | SubnodeBranchEdge
   )[] = [];
 
-  // Load any persisted label positions
-  const persistedPositions = loadPersistedPositions();
+  // Load positions: committed JSON as base, localStorage overrides
+  const localStoragePositions = loadPersistedPositions();
+  const persistedPositions = {
+    ...committedPositions,
+    ...localStoragePositions,
+  } as Record<string, { x: number; y: number; scale?: number }>;
 
   // Group slides by section
   const slidesBySection = new Map<string, SlideContent[]>();
@@ -579,6 +592,75 @@ export function generateMetroLayout(
     });
   }
 
+  // Project Path connections (magenta line - standalone with specific connections)
+  // CraigDosSantos.com (first project) -> CLI (levels-tech first node)
+  if (firstNodeBySection["projects"] && firstNodeBySection["levels-tech"]) {
+    edges.push({
+      id: "edge-projects-to-cli",
+      source: firstNodeBySection["projects"],
+      target: firstNodeBySection["levels-tech"],
+      sourceHandle: "top",
+      targetHandle: "bottom",
+      type: "smoothstep",
+      pathOptions: {
+        borderRadius: EDGE_BORDER_RADIUS,
+        offset: 40,
+      },
+      style: {
+        stroke: METRO_LINE_COLORS["projects"],
+        strokeWidth: METRO_LAYOUT.lineThickness,
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+      },
+    });
+  }
+
+  // Level Up with AI Prez (last project) -> The Only Way Forward (closing)
+  if (lastNodeBySection["projects"] && firstNodeBySection["closing"]) {
+    edges.push({
+      id: "edge-levelupai-to-closing",
+      source: lastNodeBySection["projects"],
+      target: firstNodeBySection["closing"],
+      sourceHandle: "top",
+      targetHandle: "bottom",
+      type: "smoothstep",
+      pathOptions: {
+        borderRadius: EDGE_BORDER_RADIUS,
+        offset: 40,
+      },
+      style: {
+        stroke: METRO_LINE_COLORS["projects"],
+        strokeWidth: METRO_LAYOUT.lineThickness,
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+      },
+    });
+  }
+
+  // Swarms and Infrastructure (slide-25) -> The Only Way Forward (closing)
+  // Find the swarms node specifically
+  const swarmsNodeId = "metro-slide-25";
+  if (firstNodeBySection["closing"]) {
+    edges.push({
+      id: "edge-swarms-to-closing",
+      source: swarmsNodeId,
+      target: firstNodeBySection["closing"],
+      sourceHandle: "right",
+      targetHandle: "left-2", // Additional left handle for swarms connection
+      type: "smoothstep",
+      pathOptions: {
+        borderRadius: EDGE_BORDER_RADIUS,
+        offset: 80,
+      },
+      style: {
+        stroke: METRO_LINE_COLORS["levels-tech"],
+        strokeWidth: METRO_LAYOUT.lineThickness,
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+      },
+    });
+  }
+
   // Mark junction nodes (where multiple lines converge) and create junction handles
   const junctionNodeIds = new Set<string>();
   const junctionColors = new Map<string, string[]>();
@@ -616,11 +698,14 @@ export function generateMetroLayout(
     ]);
   }
 
-  // First node of tech track (CLI) is a junction (receives from mapping + nontech bridge, sends to tech)
+  // First node of tech track (CLI) is a junction (receives from mapping + nontech bridge + projects, sends to tech)
   if (firstNodeBySection["levels-tech"]) {
     const nodeId = firstNodeBySection["levels-tech"];
     junctionNodeIds.add(nodeId);
-    junctionColors.set(nodeId, [METRO_LINE_COLORS["levels-tech"]]);
+    junctionColors.set(nodeId, [
+      METRO_LINE_COLORS["levels-tech"],
+      METRO_LINE_COLORS["projects"],
+    ]);
     junctionHandlesMap.set(nodeId, [
       {
         handleId: "left-0",
@@ -635,6 +720,12 @@ export function generateMetroLayout(
         lineColor: METRO_LINE_COLORS["levels-tech"],
       },
       {
+        handleId: "bottom",
+        position: "bottom",
+        offset: 0,
+        lineColor: METRO_LINE_COLORS["projects"],
+      },
+      {
         handleId: "right-0",
         position: "right",
         offset: 0,
@@ -643,7 +734,7 @@ export function generateMetroLayout(
     ]);
   }
 
-  // First node of closing is a junction (receives from nontech and tech)
+  // First node of closing is a junction (receives from nontech, tech, swarms, and projects)
   if (firstNodeBySection["closing"]) {
     const nodeId = firstNodeBySection["closing"];
     junctionNodeIds.add(nodeId);
@@ -651,6 +742,7 @@ export function generateMetroLayout(
       METRO_LINE_COLORS["levels-nontech"],
       METRO_LINE_COLORS["levels-tech"],
       METRO_LINE_COLORS["closing"],
+      METRO_LINE_COLORS["projects"],
     ]);
     junctionHandlesMap.set(nodeId, [
       {
@@ -664,6 +756,18 @@ export function generateMetroLayout(
         position: "left",
         offset: 0,
         lineColor: METRO_LINE_COLORS["levels-tech"],
+      },
+      {
+        handleId: "left-2",
+        position: "left",
+        offset: JUNCTION_LINE_SPACING,
+        lineColor: METRO_LINE_COLORS["levels-tech"],
+      },
+      {
+        handleId: "bottom",
+        position: "bottom",
+        offset: 0,
+        lineColor: METRO_LINE_COLORS["projects"],
       },
       {
         handleId: "right-0",

@@ -116,7 +116,33 @@ function MetroCanvas() {
     goToPreviousSlide,
     toggleOverview,
     setActiveSlide,
+    exitOverviewMode,
   } = useKeyboardNavigation({ sections, slides });
+
+  // Helper to fit viewport to slide + subnodes
+  const fitSlideWithSubnodes = useCallback(
+    (slideId: string) => {
+      const slide = slides.find((s) => s.id === slideId);
+      if (!slide?.subnodes || slide.subnodes.length === 0) return false;
+
+      // Collect the node IDs to fit: metro stop + all its subnodes
+      const nodeIdsToFit = [
+        `metro-${slideId}`,
+        ...slide.subnodes.map((subnode) => `subnode-${subnode.id}`),
+      ];
+
+      // Fit view to include the slide and all its subnodes
+      fitView({
+        nodes: nodes.filter((n) => nodeIdsToFit.includes(n.id)),
+        duration: 500,
+        padding: 0.2,
+        minZoom: 0.5, // Ensure subnodes are visible per ZOOM_THRESHOLD
+      });
+
+      return true;
+    },
+    [nodes, fitView, slides],
+  );
 
   // Find closest metro stop to viewport center
   const findClosestSlide = useCallback(() => {
@@ -174,13 +200,28 @@ function MetroCanvas() {
         if (slideId === currentSlideId) {
           setFullSlideNodeId((prev) => (prev === nodeId ? null : nodeId));
         } else {
-          // Navigate to new slide and open full slide view
-          navigateToSlide(slideId);
+          // Check if slide has subnodes - use custom fitting instead of navigateToSlide
+          const slide = slides.find((s) => s.id === slideId);
+          if (slide?.subnodes && slide.subnodes.length > 0) {
+            // For slides with subnodes: set state directly and use custom fitView
+            setActiveSlide(slideId);
+            exitOverviewMode();
+            fitSlideWithSubnodes(slideId);
+          } else {
+            // For regular slides: use standard navigation
+            navigateToSlide(slideId);
+          }
           setFullSlideNodeId(nodeId);
         }
       }
     },
-    [navigateToSlide, currentSlideId],
+    [
+      navigateToSlide,
+      currentSlideId,
+      setActiveSlide,
+      exitOverviewMode,
+      fitSlideWithSubnodes,
+    ],
   );
 
   // Handle pane click (clicking on canvas background) - close full slide

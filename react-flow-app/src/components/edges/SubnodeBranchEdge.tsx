@@ -56,7 +56,8 @@ function SubnodeBranchEdge({
     <path
       id={id}
       d={edgePath}
-      className="subnode-branch-edge"
+      className={`subnode-branch-edge ${isExpanded ? "subnode-branch-edge--expanded" : ""}`}
+      data-expanded={isExpanded}
       style={{
         stroke: lineColor,
         strokeWidth: 4,

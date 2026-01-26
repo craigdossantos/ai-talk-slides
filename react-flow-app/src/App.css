@@ -35,13 +35,19 @@
   filter: brightness(1.1);
 }
 
-/* Focused mode - dim edges and background when zoomed into a slide */
+/* Focused mode - dramatic darkening when zoomed into a slide */
 .react-flow--focused .react-flow__edge-path {
-  opacity: 0.5;
+  opacity: 0.08;
 }
 
 .react-flow--focused .react-flow__pane {
-  background-color: rgba(245, 245, 240, 0.7);
+  background-color: rgba(30, 30, 28, 0.85);
+}
+
+/* Dim landmarks and river in focused mode */
+.react-flow--focused .react-flow__node-landmark,
+.react-flow--focused .react-flow__node-riverWaypoint {
+  opacity: 0.05;
 }
 
 /*

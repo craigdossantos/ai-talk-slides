@@ -51,7 +51,7 @@ function SubnodeNode({ data }: SubnodeNodeProps) {
 
   return (
     <div
-      className={`subnode ${isVisible ? "subnode--visible" : ""}`}
+      className={`subnode ${isVisible ? "subnode--visible" : ""} ${isExpanded ? "subnode--expanded" : ""}`}
       style={{
         opacity,
         transform: `scale(${isVisible ? 1 : 0.8})`,

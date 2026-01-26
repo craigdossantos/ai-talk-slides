@@ -13,7 +13,7 @@
 
 /* Dim non-active nodes when in focused mode */
 .react-flow--focused .metro-stop:not(.metro-stop--active) {
-  opacity: 0.7;
+  opacity: 0.08;
 }
 
 .metro-stop__circle {
@@ -345,13 +345,15 @@
   bottom: -70px; /* Move below the label area so edges connect lower */
 }
 
-/* Branch handles for subnode loop - positioned at top, offset from center */
+/* Branch handles for subnode loop - positioned at bottom for below-positioned subnodes */
 .metro-stop .react-flow__handle[id="branch-out"] {
-  top: 0;
+  bottom: -70px; /* Below the label area */
   left: calc(50% - 15px);
+  top: auto;
 }
 
 .metro-stop .react-flow__handle[id="branch-in"] {
-  top: 0;
+  bottom: -70px; /* Below the label area */
   left: calc(50% + 15px);
+  top: auto;
 }
