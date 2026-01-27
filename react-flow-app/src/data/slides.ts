@@ -437,10 +437,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "CraigDosSantos.com",
     subtitle: "Personal portfolio and blog",
-    bullets: [
-      "Showcasing my work and writing",
-      "Built with AI assistance",
-    ],
+    bullets: ["Showcasing my work and writing", "Built with AI assistance"],
   },
   {
     id: "project-secretgame",
@@ -459,10 +456,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Freestyle Flow",
     subtitle: "Mobile app for freestyle rap training",
-    bullets: [
-      "Improv singing and rap practice",
-      "Practice at your own pace",
-    ],
+    bullets: ["Improv singing and rap practice", "Practice at your own pace"],
   },
   {
     id: "project-ourweunion",
@@ -514,9 +508,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Video Sum",
     subtitle: "Mac desktop application",
-    bullets: [
-      "Summarizing video content locally",
-    ],
+    bullets: ["Summarizing video content locally"],
   },
   {
     id: "project-quota",
@@ -717,6 +709,63 @@ export const resources: Resource[] = [
     title: "Supabase",
     url: "https://supabase.com",
     image: "https://supabase.com/favicon.ico",
+  },
+  // Sample Prompt Resources
+  {
+    id: "prompt-01",
+    slideId: "slide-08",
+    type: "prompt",
+    title: "Getting Started with AI Research",
+    url: "#",
+    prompt: `I want to learn about [TOPIC]. Please:
+
+1. Give me a brief overview (2-3 paragraphs)
+2. List the key concepts I should understand
+3. Suggest 3 beginner-friendly resources
+4. What questions should I be asking as a beginner?
+
+Please use simple language and avoid jargon.`,
+  },
+  {
+    id: "prompt-02",
+    slideId: "slide-09",
+    type: "prompt",
+    title: "Deep Dive Conversation Starter",
+    url: "#",
+    prompt: `I'm trying to understand [TOPIC] more deeply.
+
+Here's what I already know:
+- [Your current understanding]
+
+Here's what confuses me:
+- [Specific questions or confusion points]
+
+Can you help me build a better mental model? Please:
+1. Correct any misconceptions
+2. Fill in gaps in my understanding
+3. Use analogies to explain complex parts
+4. Ask me clarifying questions if needed`,
+  },
+  {
+    id: "prompt-03",
+    slideId: "slide-10",
+    type: "prompt",
+    title: "Structured Context Template",
+    url: "#",
+    prompt: `## Context
+[Describe the situation or background]
+
+## Goal
+[What you're trying to achieve]
+
+## Constraints
+- [Any limitations or requirements]
+
+## What I've Tried
+- [Previous attempts if any]
+
+## Question
+[Your specific question or request]`,
   },
 ];
 

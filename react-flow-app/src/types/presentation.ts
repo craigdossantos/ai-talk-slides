@@ -43,7 +43,13 @@ export interface SlideContent {
 }
 
 // Resource types for linked resources
-export type ResourceType = "article" | "tool" | "video" | "docs" | "github";
+export type ResourceType =
+  | "article"
+  | "tool"
+  | "video"
+  | "docs"
+  | "github"
+  | "prompt";
 
 // Resource linked to a slide
 export interface Resource {
@@ -54,6 +60,7 @@ export interface Resource {
   url: string;
   image?: string; // Custom image URL or path for thumbnail display
   featured?: boolean; // Show as icon branching from metro stop
+  prompt?: string; // For prompt type resources - the actual prompt text
 }
 
 // Node data interfaces for React Flow nodes
@@ -79,6 +86,12 @@ export interface ResourceNodeData {
   [key: string]: unknown;
   resource: Resource;
   isActive?: boolean;
+}
+
+export interface LevelNodeData {
+  [key: string]: unknown;
+  level: number;
+  track: Track;
 }
 
 export interface PaperBackgroundNodeData {

@@ -117,13 +117,14 @@ describe("US-014 - Resource link nodes", () => {
     });
   });
 
-  it("should have valid resource types (article, tool, video, docs, github)", () => {
+  it("should have valid resource types (article, tool, video, docs, github, prompt)", () => {
     const validTypes: ResourceType[] = [
       "article",
       "tool",
       "video",
       "docs",
       "github",
+      "prompt",
     ];
     resources.forEach((resource) => {
       expect(validTypes).toContain(resource.type);
@@ -137,8 +138,12 @@ describe("US-014 - Resource link nodes", () => {
     });
   });
 
-  it("should have valid URLs", () => {
+  it("should have valid URLs (except prompt types)", () => {
     resources.forEach((resource) => {
+      // Prompt resources don't require external URLs
+      if (resource.type === "prompt") {
+        return;
+      }
       expect(() => new URL(resource.url)).not.toThrow();
     });
   });
