@@ -283,12 +283,10 @@ function PresentationCanvas() {
   // Initialize keyboard navigation
   const {
     currentSlideId,
-    currentSectionId,
     currentSlideIndex,
     totalSlides,
     isOverviewMode,
     navigateToSlide,
-    navigateToSection,
     goToNextSlide,
     goToPreviousSlide,
     toggleOverview,
@@ -296,6 +294,21 @@ function PresentationCanvas() {
     sections,
     slides,
   });
+
+  // Derive current section from current slide
+  const currentSectionId =
+    slides.find((s) => s.id === currentSlideId)?.sectionId ?? null;
+
+  // Navigate to section by going to its first slide
+  const navigateToSection = useCallback(
+    (sectionId: string) => {
+      const sectionSlides = slides.filter((s) => s.sectionId === sectionId);
+      if (sectionSlides.length > 0) {
+        navigateToSlide(sectionSlides[0].id);
+      }
+    },
+    [navigateToSlide],
+  );
 
   // Handle window resize gracefully - refocus current slide after resize
   useEffect(() => {

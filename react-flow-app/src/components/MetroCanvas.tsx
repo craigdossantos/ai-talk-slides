@@ -25,7 +25,6 @@ import { EDIT_MODE } from "../config";
 import MetroLegend from "./panels/MetroLegend";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
 import { generateMetroLayout } from "../utils/generateMetroLayout";
-import { buildNavigationGraph } from "../utils/navigationGraph";
 import {
   clearPersistedPositions,
   loadPersistedPositions,
@@ -111,12 +110,12 @@ function MetroCanvas() {
     currentSlideIndex,
     totalSlides,
     isOverviewMode,
+    orderedSlides,
     navigateToSlide,
     goToNextSlide,
     goToPreviousSlide,
     toggleOverview,
     setActiveSlide,
-    exitOverviewMode,
   } = useKeyboardNavigation({ sections, slides });
 
   // Helper to fit viewport to slide + subnodes
@@ -141,7 +140,7 @@ function MetroCanvas() {
 
       return true;
     },
-    [nodes, fitView, slides],
+    [nodes, fitView],
   );
 
   // Find closest metro stop to viewport center
@@ -169,6 +168,9 @@ function MetroCanvas() {
     return closest;
   }, [nodes, getViewport]);
 
+  // Threshold below which we close the full slide overlay
+  const ZOOM_CLOSE_THRESHOLD = 0.5;
+
   // Auto-update active slide based on viewport center (state only, no fitView)
   useOnViewportChange({
     onEnd: useCallback(() => {
@@ -177,13 +179,26 @@ function MetroCanvas() {
         isNavigatingRef.current = false;
         return;
       }
+
+      // Close full slide overlay when user zooms out
+      const viewport = getViewport();
+      if (viewport.zoom < ZOOM_CLOSE_THRESHOLD && fullSlideNodeId) {
+        setFullSlideNodeId(null);
+      }
+
       // Only update active slide state - do NOT trigger fitView
       // This allows free manual zoom/pan without auto-centering
       const closest = findClosestSlide();
       if (closest && closest !== currentSlideId) {
         setActiveSlide(closest);
       }
-    }, [findClosestSlide, currentSlideId, setActiveSlide]),
+    }, [
+      findClosestSlide,
+      currentSlideId,
+      setActiveSlide,
+      getViewport,
+      fullSlideNodeId,
+    ]),
   });
 
   // Handle node click - navigate and open full slide view
@@ -200,12 +215,11 @@ function MetroCanvas() {
         if (slideId === currentSlideId) {
           setFullSlideNodeId((prev) => (prev === nodeId ? null : nodeId));
         } else {
-          // Check if slide has subnodes - use custom fitting instead of navigateToSlide
+          // Check if slide has subnodes - use custom fitting
           const slide = slides.find((s) => s.id === slideId);
           if (slide?.subnodes && slide.subnodes.length > 0) {
             // For slides with subnodes: set state directly and use custom fitView
             setActiveSlide(slideId);
-            exitOverviewMode();
             fitSlideWithSubnodes(slideId);
           } else {
             // For regular slides: use standard navigation
@@ -215,13 +229,7 @@ function MetroCanvas() {
         }
       }
     },
-    [
-      navigateToSlide,
-      currentSlideId,
-      setActiveSlide,
-      exitOverviewMode,
-      fitSlideWithSubnodes,
-    ],
+    [navigateToSlide, currentSlideId, setActiveSlide, fitSlideWithSubnodes],
   );
 
   // Handle pane click (clicking on canvas background) - close full slide
@@ -275,15 +283,12 @@ function MetroCanvas() {
     }
   }, [fitView, toggleOverview, isOverviewMode]);
 
-  // Build navigation graph for track-aware Prev/Next navigation
-  // This follows the metro map edges rather than flat array index
-  const navigationGraph = useMemo(
-    () => buildNavigationGraph(sections, slides),
-    [],
-  );
-
   // Update active state and navigation props on nodes
   const nodesWithActiveState = useMemo(() => {
+    // Simple array-based prev/next
+    const hasPrevious = currentSlideIndex > 0;
+    const hasNext = currentSlideIndex < totalSlides - 1;
+
     return nodes.map((node) => {
       if (node.type === "metroStop") {
         // metro-slide-01 -> slide-01, currentSlideId is "slide-01"
@@ -291,34 +296,30 @@ function MetroCanvas() {
         const isActive = slideId === currentSlideId;
         const isFullSlideOpen = fullSlideNodeId === node.id;
 
-        // Get previous/next from navigation graph (follows track connections)
-        const navLinks = navigationGraph.get(slideId);
-        const previousSlideId = navLinks?.previous ?? null;
-        const nextSlideId = navLinks?.next ?? null;
-
         return {
           ...node,
           // Set zIndex on node itself - active node gets high z-index
-          // This is more reliable than CSS z-index for React Flow
           zIndex: isActive ? 1000 : 1,
           data: {
             ...node.data,
             isActive,
-            // Navigation callbacks for full slide view - now track-aware
-            onPrevious: previousSlideId
+            // Simple sequential navigation callbacks
+            onPrevious: hasPrevious
               ? () => {
-                  navigateToSlide(previousSlideId);
-                  setFullSlideNodeId(`metro-${previousSlideId}`);
+                  const prevSlide = orderedSlides[currentSlideIndex - 1];
+                  navigateToSlide(prevSlide.id);
+                  setFullSlideNodeId(`metro-${prevSlide.id}`);
                 }
               : undefined,
-            onNext: nextSlideId
+            onNext: hasNext
               ? () => {
-                  navigateToSlide(nextSlideId);
-                  setFullSlideNodeId(`metro-${nextSlideId}`);
+                  const nextSlide = orderedSlides[currentSlideIndex + 1];
+                  navigateToSlide(nextSlide.id);
+                  setFullSlideNodeId(`metro-${nextSlide.id}`);
                 }
               : undefined,
-            hasPrevious: previousSlideId !== null,
-            hasNext: nextSlideId !== null,
+            hasPrevious,
+            hasNext,
             // Click-to-expand full slide view
             isFullSlideOpen,
             onCloseFullSlide: () => setFullSlideNodeId(null),
@@ -351,8 +352,10 @@ function MetroCanvas() {
   }, [
     nodes,
     currentSlideId,
+    currentSlideIndex,
+    totalSlides,
+    orderedSlides,
     navigateToSlide,
-    navigationGraph,
     fullSlideNodeId,
   ]);
 
@@ -392,9 +395,6 @@ function MetroCanvas() {
     });
   }, [edges, currentSlideId]);
 
-  // Check if we're in focused mode (zoomed into a slide)
-  const isFocusedMode = !isOverviewMode && currentSlideId !== null;
-
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
       <ReactFlow
@@ -415,7 +415,6 @@ function MetroCanvas() {
           maxZoom: 1,
         }}
         proOptions={{ hideAttribution: true }}
-        className={isFocusedMode ? "react-flow--focused" : ""}
       />
       <MetroLegend />
       <NavigationControls
