@@ -150,7 +150,47 @@
   color: var(--color-text-secondary);
 }
 
-/* Slide Writeup */
+/* Slide Writeup Toggle */
+.slide-writeup-section {
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.slide-writeup-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  font-family: var(--font-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-align: left;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.slide-writeup-toggle:hover {
+  color: var(--color-text-primary);
+}
+
+.slide-writeup-toggle-label {
+  flex: 1;
+}
+
+.slide-writeup-toggle-arrow {
+  font-size: 0.6rem;
+  transition: transform 0.2s;
+}
+
+.slide-writeup-toggle-arrow.expanded {
+  transform: rotate(180deg);
+}
+
+/* Slide Writeup Content */
 .slide-writeup {
   padding: 0 1.5rem 1.5rem;
   color: var(--color-text-secondary);

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Remark } from "react-remark";
 import type { SlideContent, Resource } from "../../types/presentation";
 import { slideWriteups } from "../../data/slideWriteups";
@@ -10,6 +11,9 @@ interface SlideEntryProps {
 }
 
 function SlideEntry({ slide, resources, lineColor }: SlideEntryProps) {
+  const writeup = slideWriteups[slide.id];
+  const [writeupExpanded, setWriteupExpanded] = useState(false);
+
   return (
     <article id={slide.id} className="slide-entry">
       <div className="slide-entry-content">
@@ -47,6 +51,28 @@ function SlideEntry({ slide, resources, lineColor }: SlideEntryProps) {
           )}
         </div>
       </div>
+
+      {writeup && (
+        <div className="slide-writeup-section">
+          <button
+            className="slide-writeup-toggle"
+            onClick={() => setWriteupExpanded(!writeupExpanded)}
+            aria-expanded={writeupExpanded}
+          >
+            <span className="slide-writeup-toggle-label">Read more</span>
+            <span
+              className={`slide-writeup-toggle-arrow${writeupExpanded ? " expanded" : ""}`}
+            >
+              &#9660;
+            </span>
+          </button>
+          {writeupExpanded && (
+            <div className="slide-writeup">
+              <Remark>{writeup}</Remark>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Resources section below */}
       {resources.length > 0 && (

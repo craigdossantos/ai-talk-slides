@@ -1,0 +1,1152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resource Feedback - Leveling Up with AI</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Space Grotesk", system-ui, sans-serif;
+        background: #1a1a2e;
+        color: #e0e0e0;
+        line-height: 1.5;
+      }
+
+      .header {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: #0d0d1a;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        gap: 1rem;
+      }
+
+      .header h1 {
+        color: white;
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .counter {
+        font-size: 0.9rem;
+        color: #888;
+      }
+
+      .counter .count {
+        color: #0066ff;
+        font-weight: 600;
+      }
+
+      .copy-btn {
+        background: #0066ff;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+      }
+
+      .copy-btn:hover {
+        background: #0052cc;
+        transform: translateY(-1px);
+      }
+
+      .copy-btn.success {
+        background: #00a854;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      /* Section grouping */
+      .section-group {
+        margin-bottom: 3rem;
+      }
+
+      .section-header {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.5rem;
+        margin: 0 0 1.5rem;
+        background: #22223a;
+        border-left: 4px solid;
+        border-radius: 0 8px 8px 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #fff;
+      }
+
+      .section-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        flex-shrink: 0;
+      }
+
+      /* Slide card */
+      .slide-card {
+        background: #22223a;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+      }
+
+      .slide-top {
+        display: grid;
+        grid-template-columns: 320px 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem;
+      }
+
+      .slide-image {
+        width: 100%;
+        border-radius: 8px;
+        aspect-ratio: 16/9;
+        object-fit: cover;
+        background: #1a1a2e;
+      }
+
+      .slide-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      .slide-id {
+        display: inline-block;
+        background: #0066ff;
+        color: white;
+        padding: 0.2rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        width: fit-content;
+      }
+
+      .slide-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #fff;
+      }
+
+      .slide-subtitle {
+        font-size: 0.9rem;
+        color: #888;
+      }
+
+      .slide-bullets {
+        margin: 0.5rem 0 0;
+        padding-left: 1.25rem;
+        color: #ccc;
+        font-size: 0.9rem;
+        line-height: 1.6;
+      }
+
+      .slide-bullets li {
+        margin-bottom: 0.3rem;
+      }
+
+      /* Existing resources */
+      .existing-resources {
+        padding: 1rem 1.5rem;
+        border-top: 1px solid #2a2a4e;
+      }
+
+      .existing-resources-label {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #666;
+        margin-bottom: 0.75rem;
+        font-weight: 600;
+      }
+
+      .existing-resource-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+      }
+
+      .existing-resource-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.3rem 0.7rem;
+        background: #1a1a2e;
+        border-radius: 6px;
+        font-size: 0.8rem;
+        color: #aaa;
+      }
+
+      .existing-resource-tag .type-badge {
+        font-size: 0.65rem;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        padding: 0.1rem 0.35rem;
+        border-radius: 3px;
+        background: #2a2a4e;
+        color: #888;
+      }
+
+      .no-resources {
+        font-size: 0.85rem;
+        color: #555;
+        font-style: italic;
+      }
+
+      /* Feedback textarea section */
+      .feedback-section {
+        padding: 1rem 1.5rem 1.5rem;
+        border-top: 1px solid #2a2a4e;
+        background: #1e1e34;
+      }
+
+      .feedback-section label {
+        display: block;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #666;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+      }
+
+      .feedback-section textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 0.75rem 1rem;
+        background: #16162b;
+        border: 1px solid #333;
+        border-radius: 8px;
+        color: #e0e0e0;
+        font-family: inherit;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        resize: vertical;
+        transition: border-color 0.2s;
+      }
+
+      .feedback-section textarea:focus {
+        outline: none;
+        border-color: #0066ff;
+      }
+
+      .feedback-section textarea::placeholder {
+        color: #555;
+      }
+
+      /* Responsive */
+      @media (max-width: 900px) {
+        .slide-top {
+          grid-template-columns: 1fr;
+        }
+
+        .slide-image {
+          max-width: 400px;
+        }
+
+        .header {
+          flex-direction: column;
+          gap: 0.75rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Resource Feedback - Leveling Up with AI</h1>
+      <div class="header-right">
+        <span class="counter"
+          ><span class="count" id="changed-count">0</span> slides with
+          feedback</span
+        >
+        <button class="copy-btn" onclick="copyResources()">
+          Copy Resources JSON
+        </button>
+      </div>
+    </div>
+
+    <div class="container" id="slides-container"></div>
+
+    <script>
+      // ========================================
+      // DATA - Embedded from slides.ts
+      // ========================================
+
+      const sections = [
+        { id: "intro", title: "The Widening Gulf", color: "#dc2626" },
+        { id: "understanding", title: "Understanding AI", color: "#eab308" },
+        { id: "mapping", title: "Mapping the Journey", color: "#22c55e" },
+        {
+          id: "levels-nontech",
+          title: "Non-Technical Levels",
+          color: "#3b82f6",
+        },
+        { id: "levels-tech", title: "Technical Levels", color: "#f97316" },
+        { id: "closing", title: "Closing", color: "#a855f7" },
+        { id: "projects", title: "The Project Path", color: "#ec4899" },
+      ];
+
+      const slides = [
+        {
+          id: "slide-01",
+          sectionId: "intro",
+          title: "The Widening Gulf of Technology",
+          subtitle:
+            "The growing divide between tech-literate and non-tech-literate",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-01_billboard_v2_20260123_110517.jpg",
+          bullets: [
+            "Technology gives us speed and capabilities: fire, bicycles, cars, Internet",
+            "AI might create a larger gulf than previous tech",
+            "People with AI tools will outperform people without",
+          ],
+        },
+        {
+          id: "slide-06",
+          sectionId: "intro",
+          title: "What It Takes",
+          subtitle: "Resistance to change is the real barrier",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-06_billboard_v1_20260123_110517.jpg",
+          bullets: [
+            'What does it mean to be "technical"',
+            "Resistance to change is the only barrier to entry",
+          ],
+        },
+        {
+          id: "slide-02",
+          sectionId: "intro",
+          title: "Mental Models Through Use",
+          subtitle: "Understanding comes from doing, not reading",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-02_billboard_v4_20260123_110517.jpg",
+          bullets: ["Mental models improve more through use, not instruction"],
+        },
+        {
+          id: "slide-03",
+          sectionId: "understanding",
+          title: "New Tech, Old Mental Model",
+          subtitle: "The temptation to treat AI like enhanced Google",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-03_billboard_v1_20260123_110517.jpg",
+          bullets: [
+            "Mental Model: ChatGPT as a better Google",
+            "It has different flaws: hallucinations",
+          ],
+        },
+        {
+          id: "slide-04",
+          sectionId: "understanding",
+          title: "From Savant to Digital Employee",
+          subtitle: "The major mental leap",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-04_billboard_v3_20260123_110517.jpg",
+          bullets: [
+            "AI is not an all-knowing savant with advice",
+            "It's a digital employee who can execute work",
+            "You can become a team lead",
+          ],
+        },
+        {
+          id: "slide-05",
+          sectionId: "mapping",
+          title: "Mapping the Journey",
+          subtitle: "A progressive approach to understanding AI",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-05_billboard_v2_20260123_110517.jpg",
+          bullets: [
+            "Overwhelming amount of information",
+            "Skipping steps makes nothing feel coherent",
+            "Feeling confused is a sequencing problem, not a capability",
+            "We have the greatest self learning tool ever",
+          ],
+        },
+        {
+          id: "slide-07",
+          sectionId: "mapping",
+          title: "Avoidance",
+          subtitle: "",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-07_billboard_v1_20260123_114739.jpg",
+          bullets: [
+            "Avoidance is just fear showing its head",
+            "AI may require us to think at a higher level",
+          ],
+        },
+        {
+          id: "slide-08",
+          sectionId: "levels-nontech",
+          title: "AI = Portal to Internet Research",
+          subtitle: "",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-08_billboard_v1_20260123_114739.jpg",
+          bullets: [
+            "Use AI for Q&A, summaries and explanations, brainstorming",
+            "Learn prompt engineering basics",
+            "Where most daily ChatGPT users are",
+          ],
+        },
+        {
+          id: "slide-09",
+          sectionId: "levels-nontech",
+          title: "AI as Thought Partner",
+          subtitle: "",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-09_billboard_v2_20260123_114739.jpg",
+          bullets: [
+            "Giving AI more context: PDFs, docs, images",
+            "Back and forth dialogue on complex topics like health",
+            "Trying different models: ChatGPT, Gemini, Claude",
+          ],
+        },
+        {
+          id: "slide-11",
+          sectionId: "levels-nontech",
+          title: "Using AI Tools",
+          subtitle: "",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-11_billboard_v2_20260123_114739.jpg",
+          bullets: [
+            "Still getting unreliable results",
+            "Wispr Flow - voice dictation",
+            "Granola - automatic meeting notes",
+            "Obsidian - AI-accessible notes in Markdown",
+            "Figma, Canva, Notion, Slack with AI features",
+          ],
+        },
+        {
+          id: "slide-10",
+          sectionId: "levels-nontech",
+          title: "Context Management",
+          subtitle: "",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-10_billboard_v1_20260123_114739.jpg",
+          bullets: [
+            "Understanding how context works",
+            "Structured input (Markdown) yields better results",
+            "Using Projects to manage context",
+            "Results start feeling reliable",
+          ],
+        },
+        {
+          id: "slide-12",
+          sectionId: "levels-nontech",
+          title: "AI-Powered Browsing",
+          subtitle: "",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-12_billboard_v1_20260123_114739.jpg",
+          bullets: [
+            "Browsers are the modern workbench",
+            "Google Gemini built into Chrome",
+            "ChatGPT Operator (Atlas) browser",
+            "Claude extension - takes actions in browser",
+          ],
+        },
+        {
+          id: "slide-13",
+          sectionId: "levels-nontech",
+          title: "Creating Media with AI",
+          subtitle: "",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-13_billboard_v1_20260123_114739.jpg",
+          bullets: [
+            "Image generation: Nano Banana, Midjourney, ChatGPT",
+            "Video production: Veo3",
+            "The skill is can you get it to give you what you want?",
+          ],
+        },
+        {
+          id: "slide-14",
+          sectionId: "levels-nontech",
+          title: "AI for Automation",
+          subtitle: "",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-14_billboard_v3_20260123_114739.jpg",
+          bullets: [
+            "Zapier - most common automation tool",
+            "N8n - bridge to complex automations",
+            "Gumloop - built with AI in mind",
+            "Visual interfaces to doing things with code - without looking at code",
+          ],
+        },
+        {
+          id: "slide-14b",
+          sectionId: "levels-nontech",
+          title: "Meta Level Meta Thinking",
+          subtitle: "",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-20b_billboard_v2_20260123_123045.jpg",
+          bullets: [],
+        },
+        {
+          id: "slide-15",
+          sectionId: "levels-nontech",
+          title: "Natural Language Software Tools",
+          subtitle: "",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-15_billboard_v1_20260123_114739.jpg",
+          bullets: [
+            "Lovable, Bolt AI, Google AI Studio",
+            "Create software without knowing code syntax",
+            "Great playground to get comfortable with using AI for software",
+            "Understanding the limits is part of the learning",
+          ],
+        },
+        {
+          id: "slide-15b",
+          sectionId: "levels-nontech",
+          title: "Claude Co-work",
+          subtitle: "",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-15b_billboard_v2_20260123_123045.jpg",
+          bullets: [],
+        },
+        {
+          id: "slide-16",
+          sectionId: "levels-tech",
+          title: "Command Line Interface (CLI)",
+          subtitle: "Where AI meets full computer access",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-16_billboard_v2_20260123_114739.jpg",
+          bullets: [
+            "Still using natural language as the interface",
+            "Command line = text-based access to everything on your machine",
+            "Learn command line basics - cd, ls, pwd",
+          ],
+        },
+        {
+          id: "slide-18",
+          sectionId: "levels-tech",
+          title: "Using Git and GitHub",
+          subtitle: "Version control for AI-assisted development",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-18_billboard_v2_20260123_123045.jpg",
+          bullets: [
+            "Git = versioning system (like Google Docs history, but for code)",
+            "Take snapshots, rewind, merge work from multiple people",
+            "GitHub = Dropbox for code (store, share, collaborate)",
+            "Essential safety net when AI makes mistakes",
+            "Worth taking time to understand properly",
+          ],
+        },
+        {
+          id: "slide-19",
+          sectionId: "levels-tech",
+          title: "Agents and AI Coding",
+          subtitle: "Where code meets conversation",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-19_billboard_v2_20260123_114739.jpg",
+          bullets: [
+            "IDE = Integrated Development Environment",
+            "Google's Anti-Gravity - easiest place to start",
+            "Cursor = chat window + code editor side by side",
+            "Inline execution: fast feedback loop",
+            "Agent writes > sees result > adjusts > improves",
+          ],
+        },
+        {
+          id: "slide-20",
+          sectionId: "levels-tech",
+          title: "Modes and Workflows",
+          subtitle: "Beyond back-and-forth chat",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-20_billboard_v1_20260123_114739.jpg",
+          bullets: [
+            "Plan > Build > Test > Review > Deploy > Bug Fix > Plan",
+            "One model in different modes for each step",
+            "Model shape-shifts depending on the task",
+            "You're executing an actual software development lifecycle",
+            "Structured workflow vs. freeform conversation",
+          ],
+        },
+        {
+          id: "slide-20b",
+          sectionId: "levels-tech",
+          title: "Meta Level Meta Thinking",
+          subtitle: "",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-20b_billboard_v2_20260123_123045.jpg",
+          bullets: [],
+        },
+        {
+          id: "slide-21",
+          sectionId: "levels-tech",
+          title: "Using AI to Go Live",
+          subtitle: "Deployment, databases, hosting",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-21_billboard_v1_20260123_114739.jpg",
+          bullets: [
+            "Supabase - databases",
+            "Vercel - hosting and deployment",
+            "Cloudflare - domains and DNS",
+            "AI-assisted deployment: MCP servers or CLI tools",
+            "Learn as the AI does it - don't just press buttons",
+          ],
+        },
+        {
+          id: "slide-22",
+          sectionId: "levels-tech",
+          title: "Customizing the Harness",
+          subtitle: "Skills, commands, and agents",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-22_billboard_v1_20260123_114739.jpg",
+          bullets: [
+            "Skills: Markdown files loaded when needed (like Neo in The Matrix)",
+            "Slash commands: shortcuts instead of repeating instructions",
+            "Sub-agents: mini-versions doing tasks in separate contexts",
+            "Guidance files (claude.md): system prompts for every interaction",
+            "Hooks: trigger actions based on events",
+          ],
+        },
+        {
+          id: "slide-23",
+          sectionId: "levels-tech",
+          title: "Context Engineering",
+          subtitle: "The memory game",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-23_billboard_v1_20260123_114739.jpg",
+          bullets: [
+            "Context = everything you hand over with your instruction",
+            "Too bloated > model forgets things, quality degrades",
+            "New session = no context (like Memento amnesia)",
+            "Solutions: write to files, databases, or start fresh",
+            "Key skill: knowing when to reset your session",
+          ],
+        },
+        {
+          id: "slide-24",
+          sectionId: "levels-tech",
+          title: "Parallel Agents and Sub-agent Orchestration",
+          subtitle: "Orchestration at scale",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-24_billboard_v3_20260123_124346.jpg",
+          bullets: [
+            "Multiple sub-agents and sessions simultaneously",
+            "GitHub Worktrees: separate working directories",
+            "Conductor.build, Beads: tools for parallel work",
+            "Sub-agents return answers, not their full process",
+            "You're coordinating, not executing",
+          ],
+        },
+        {
+          id: "slide-25",
+          sectionId: "levels-tech",
+          title: "Swarms and Infrastructure",
+          subtitle: "The edge of what's possible",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-25_billboard_v2_20260123_114739.jpg",
+          bullets: [
+            "Large numbers of agents running simultaneously",
+            "Ralph Wiggum: spin up agents in serial overnight",
+            "Token usage at this level: $100-200+/month plans",
+            "Virtual Private Servers: agents running in the cloud 24/7",
+            "Where infrastructure meets intelligence",
+          ],
+        },
+        {
+          id: "slide-26",
+          sectionId: "closing",
+          title: "The Only Way Forward Is Through",
+          subtitle: "Become good at it by using it",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/slide-26_billboard_v1_20260123_114739.jpg",
+          bullets: [
+            "Use AI as your learning tool!",
+            "It's changing so fast, no one is that far ahead",
+          ],
+        },
+        {
+          id: "project-craigdossantos",
+          sectionId: "projects",
+          title: "CraigDosSantos.com",
+          subtitle: "Personal portfolio and blog",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/project-01-craigdossantos.jpg",
+          bullets: [
+            "Showcasing my work and writing",
+            "Built with AI assistance",
+          ],
+        },
+        {
+          id: "project-secretgame",
+          sectionId: "projects",
+          title: "The Secret Game",
+          subtitle: "Share secrets with friends",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/project-02-secret-game.jpg",
+          bullets: [
+            "Pass a URL to a group",
+            "Answer questions to reveal hidden answers",
+          ],
+        },
+        {
+          id: "project-freestyleflow",
+          sectionId: "projects",
+          title: "Freestyle Flow",
+          subtitle: "Mobile app for freestyle rap training",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/project-03-freestyle-flow.jpg",
+          bullets: [
+            "Improv singing and rap practice",
+            "Practice at your own pace",
+          ],
+        },
+        {
+          id: "project-ourweunion",
+          sectionId: "projects",
+          title: "OurWeUnion.com",
+          subtitle: "Wedding website",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/project-04-ourweunion.jpg",
+          bullets: [
+            "Single landing page with Google Form",
+            "Built for Craig and Stef",
+          ],
+        },
+        {
+          id: "project-dialoguedojo",
+          sectionId: "projects",
+          title: "Dialogue Dojo",
+          subtitle: "Practice communication skills",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/project-05-dialogue-dojo.jpg",
+          bullets: [
+            "Voice-to-voice sessions",
+            "Negotiation and non-violent communication",
+          ],
+        },
+        {
+          id: "project-instantbook",
+          sectionId: "projects",
+          title: "Instant Book",
+          subtitle: "Learn from books faster",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/project-06-instant-book.jpg",
+          bullets: [
+            "Upload EPUB books, break into chapters",
+            "Zoom in and out of content",
+          ],
+        },
+        {
+          id: "project-youtubesummary",
+          sectionId: "projects",
+          title: "YouTube Summary",
+          subtitle: "Summarize YouTube videos",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/project-07-youtube-summary.jpg",
+          bullets: [
+            "Drop in video or playlist links",
+            "Get summaries and key takeaways",
+          ],
+        },
+        {
+          id: "project-videosum",
+          sectionId: "projects",
+          title: "Video Sum",
+          subtitle: "Mac desktop application",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/project-08-video-sum.jpg",
+          bullets: ["Summarizing video content locally"],
+        },
+        {
+          id: "project-stefsbirthday",
+          sectionId: "projects",
+          title: "Stef's Birthday",
+          subtitle: "Interactive birthday audio card",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/project-10-stefsbirthday.jpg",
+          bullets: [
+            "stefsbirthday.com",
+            "Friends record voice messages for Stef's 40th",
+          ],
+        },
+        {
+          id: "project-quota",
+          sectionId: "projects",
+          title: "Quota",
+          subtitle: "Credit-based AI billing",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/project-09-usequota.jpg",
+          bullets: [
+            "Launch AI apps with portable wallet system",
+            "Works across multiple apps",
+          ],
+        },
+        {
+          id: "project-levelupai",
+          sectionId: "projects",
+          title: "Level Up with AI Prez",
+          subtitle: "This presentation",
+          backgroundImage:
+            "../../react-flow-app/public/assets/images/project-11-presentation.jpg",
+          bullets: [
+            "Interactive metro map visualization",
+            "Built with React Flow and AI",
+          ],
+        },
+      ];
+
+      const existingResources = [
+        {
+          id: "res-01",
+          slideId: "slide-08",
+          type: "tool",
+          title: "ChatGPT",
+          url: "https://chat.openai.com",
+        },
+        {
+          id: "res-02",
+          slideId: "slide-09",
+          type: "tool",
+          title: "Claude AI",
+          url: "https://claude.ai",
+        },
+        {
+          id: "res-02b",
+          slideId: "slide-10",
+          type: "docs",
+          title: "Markdown Guide",
+          url: "https://www.markdownguide.org/basic-syntax/",
+        },
+        {
+          id: "res-03",
+          slideId: "slide-11",
+          type: "tool",
+          title: "Wispr Flow",
+          url: "https://www.wispr.ai",
+        },
+        {
+          id: "res-04",
+          slideId: "slide-11",
+          type: "tool",
+          title: "Granola Notes",
+          url: "https://www.granola.so",
+        },
+        {
+          id: "res-04b",
+          slideId: "slide-12",
+          type: "tool",
+          title: "Claude Chrome Extension",
+          url: "https://claude.ai/download",
+        },
+        {
+          id: "res-04c",
+          slideId: "slide-12",
+          type: "tool",
+          title: "ChatGPT Operator",
+          url: "https://openai.com/index/introducing-operator/",
+        },
+        {
+          id: "res-04d",
+          slideId: "slide-12",
+          type: "tool",
+          title: "Gemini in Chrome",
+          url: "https://support.google.com/chrome/answer/14286918",
+        },
+        {
+          id: "res-05",
+          slideId: "slide-13",
+          type: "tool",
+          title: "Midjourney",
+          url: "https://www.midjourney.com",
+        },
+        {
+          id: "res-06",
+          slideId: "slide-14",
+          type: "docs",
+          title: "Zapier Guide",
+          url: "https://zapier.com/learn",
+        },
+        {
+          id: "res-06b",
+          slideId: "slide-14",
+          type: "tool",
+          title: "N8n",
+          url: "https://n8n.io",
+        },
+        {
+          id: "res-07",
+          slideId: "slide-15",
+          type: "tool",
+          title: "Lovable Dev",
+          url: "https://lovable.dev",
+        },
+        {
+          id: "res-07b",
+          slideId: "slide-16",
+          type: "docs",
+          title: "Claude Code Installation",
+          url: "https://docs.anthropic.com/en/docs/claude-code",
+        },
+        {
+          id: "res-07c",
+          slideId: "slide-16",
+          type: "docs",
+          title: "OpenAI Codex CLI",
+          url: "https://github.com/openai/codex",
+        },
+        {
+          id: "res-07d",
+          slideId: "slide-16",
+          type: "docs",
+          title: "Gemini CLI",
+          url: "https://github.com/google-gemini/gemini-cli",
+        },
+        {
+          id: "res-08",
+          slideId: "slide-18",
+          type: "docs",
+          title: "GitHub Docs",
+          url: "https://docs.github.com",
+        },
+        {
+          id: "res-09",
+          slideId: "slide-19",
+          type: "tool",
+          title: "Cursor IDE",
+          url: "https://cursor.sh",
+        },
+        {
+          id: "res-10",
+          slideId: "slide-21",
+          type: "tool",
+          title: "Vercel",
+          url: "https://vercel.com",
+        },
+        {
+          id: "res-11",
+          slideId: "slide-21",
+          type: "tool",
+          title: "Supabase",
+          url: "https://supabase.com",
+        },
+        {
+          id: "prompt-01",
+          slideId: "slide-08",
+          type: "prompt",
+          title: "Getting Started with AI Research",
+          url: "#",
+        },
+        {
+          id: "prompt-02",
+          slideId: "slide-09",
+          type: "prompt",
+          title: "Deep Dive Conversation Starter",
+          url: "#",
+        },
+        {
+          id: "prompt-03",
+          slideId: "slide-10",
+          type: "prompt",
+          title: "Structured Context Template",
+          url: "#",
+        },
+      ];
+
+      // ========================================
+      // RENDERING
+      // ========================================
+
+      function renderSlides() {
+        const container = document.getElementById("slides-container");
+
+        sections.forEach((section) => {
+          const sectionSlides = slides.filter(
+            (s) => s.sectionId === section.id,
+          );
+          if (sectionSlides.length === 0) return;
+
+          const group = document.createElement("div");
+          group.className = "section-group";
+
+          group.innerHTML = `
+            <div class="section-header" style="border-left-color: ${section.color}">
+              <span class="section-dot" style="background: ${section.color}"></span>
+              ${section.title}
+            </div>
+          `;
+
+          sectionSlides.forEach((slide) => {
+            const card = createSlideCard(slide);
+            group.appendChild(card);
+          });
+
+          container.appendChild(group);
+        });
+      }
+
+      function createSlideCard(slide) {
+        const card = document.createElement("div");
+        card.className = "slide-card";
+
+        const slideResources = existingResources.filter(
+          (r) => r.slideId === slide.id,
+        );
+
+        card.innerHTML = `
+          <div class="slide-top">
+            <img
+              src="${slide.backgroundImage}"
+              alt="${escapeHtml(slide.title)}"
+              class="slide-image"
+              onerror="this.style.display='none'"
+            />
+            <div class="slide-info">
+              <span class="slide-id">${slide.id}</span>
+              <div class="slide-title">${escapeHtml(slide.title)}</div>
+              ${slide.subtitle ? `<div class="slide-subtitle">${escapeHtml(slide.subtitle)}</div>` : ""}
+              ${
+                slide.bullets && slide.bullets.length > 0
+                  ? `<ul class="slide-bullets">${slide.bullets.map((b) => `<li>${escapeHtml(b)}</li>`).join("")}</ul>`
+                  : ""
+              }
+            </div>
+          </div>
+
+          ${
+            slideResources.length > 0
+              ? `
+            <div class="existing-resources">
+              <div class="existing-resources-label">Existing Resources</div>
+              <div class="existing-resource-list">
+                ${slideResources
+                  .map(
+                    (r) => `
+                  <span class="existing-resource-tag">
+                    <span class="type-badge">${r.type}</span>
+                    ${escapeHtml(r.title)}
+                  </span>
+                `,
+                  )
+                  .join("")}
+              </div>
+            </div>
+          `
+              : `
+            <div class="existing-resources">
+              <div class="existing-resources-label">Existing Resources</div>
+              <div class="no-resources">No resources yet</div>
+            </div>
+          `
+          }
+
+          <div class="feedback-section">
+            <label for="feedback-${slide.id}">Resources to add</label>
+            <textarea
+              id="feedback-${slide.id}"
+              data-slide-id="${slide.id}"
+              placeholder="Describe resources for this slide... tools, links, prompts, articles, etc."
+              oninput="updateCounter()"
+            ></textarea>
+          </div>
+        `;
+
+        return card;
+      }
+
+      // ========================================
+      // COUNTER & COPY
+      // ========================================
+
+      function updateCounter() {
+        const textareas = document.querySelectorAll("textarea[data-slide-id]");
+        let count = 0;
+        textareas.forEach((ta) => {
+          if (ta.value.trim()) count++;
+        });
+        document.getElementById("changed-count").textContent = count;
+      }
+
+      function copyResources() {
+        const output = {
+          timestamp: new Date().toISOString(),
+          feedback: {},
+        };
+
+        const textareas = document.querySelectorAll("textarea[data-slide-id]");
+        textareas.forEach((ta) => {
+          const text = ta.value.trim();
+          if (text) {
+            const slideId = ta.dataset.slideId;
+            const slide = slides.find((s) => s.id === slideId);
+            output.feedback[slideId] = {
+              slideTitle: slide ? slide.title : slideId,
+              text: text,
+            };
+          }
+        });
+
+        const json = JSON.stringify(output, null, 2);
+
+        navigator.clipboard
+          .writeText(json)
+          .then(() => {
+            const btn = document.querySelector(".copy-btn");
+            btn.textContent = "Copied!";
+            btn.classList.add("success");
+
+            setTimeout(() => {
+              btn.textContent = "Copy Resources JSON";
+              btn.classList.remove("success");
+            }, 2000);
+          })
+          .catch((err) => {
+            console.error("Failed to copy:", err);
+            const ta = document.createElement("textarea");
+            ta.value = json;
+            ta.style.cssText =
+              "position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:80%;height:60%;z-index:9999;font-family:monospace;font-size:0.85rem;padding:1rem;background:#16162b;color:#e0e0e0;border:2px solid #0066ff;border-radius:8px;";
+            document.body.appendChild(ta);
+            ta.select();
+            ta.addEventListener("blur", () => ta.remove());
+          });
+      }
+
+      // ========================================
+      // UTILITIES
+      // ========================================
+
+      function escapeHtml(str) {
+        const div = document.createElement("div");
+        div.textContent = str;
+        return div.innerHTML;
+      }
+
+      // ========================================
+      // INIT
+      // ========================================
+
+      document.addEventListener("DOMContentLoaded", renderSlides);
+    </script>
+  </body>
+</html>

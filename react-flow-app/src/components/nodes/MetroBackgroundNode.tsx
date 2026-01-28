@@ -20,7 +20,14 @@ function MetroBackgroundNode({ data }: NodeProps<MetroBackgroundNodeType>) {
         width: `${width}px`,
         height: `${height}px`,
       }}
-    />
+    >
+      <img
+        src="/assets/images/metro-background.jpg"
+        alt=""
+        className="metro-background-image"
+        draggable={false}
+      />
+    </div>
   );
 }
 

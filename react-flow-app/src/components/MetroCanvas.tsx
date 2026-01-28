@@ -67,19 +67,20 @@ function MetroCanvas() {
 
   // State for nodes and edges
   const [nodes, setNodes] = useState<PresentationNode[]>(() => {
-    // Calculate bounds for background
+    // Calculate bounds for background with extra padding for city border imagery
     let maxX = 0;
     let maxY = 0;
     for (const node of metroNodes) {
       maxX = Math.max(maxX, node.position.x + 200);
       maxY = Math.max(maxY, node.position.y + 200);
     }
+    const bgPad = 600;
 
     const backgroundNode: PresentationNode = {
       id: "metro-background",
       type: "metroBackground",
-      position: { x: -100, y: -100 },
-      data: { width: maxX + 200, height: maxY + 200 },
+      position: { x: -100 - bgPad, y: -100 - bgPad },
+      data: { width: maxX + 200 + bgPad * 2, height: maxY + 200 + bgPad * 2 },
       zIndex: -100,
       selectable: false,
       draggable: false,
