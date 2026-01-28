@@ -164,7 +164,7 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
             {linkResources.length > 0 && (
               <div className="metro-stop__resources">
                 <a
-                  href={`/resources#slide-${slide.id}`}
+                  href={`/resources#${slide.id}`}
                   className="metro-stop__resources-heading"
                 >
                   Resources
@@ -183,7 +183,7 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
                 </ul>
                 {linkResources.length > 4 && (
                   <a
-                    href={`/resources#slide-${slide.id}`}
+                    href={`/resources#${slide.id}`}
                     className="metro-stop__resources-more"
                   >
                     See all {linkResources.length} resources →

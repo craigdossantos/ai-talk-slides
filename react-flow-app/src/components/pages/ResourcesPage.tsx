@@ -1,9 +1,17 @@
+import { useEffect } from "react";
 import { sections, slides, resources } from "../../data/slides";
 import { METRO_LINE_COLORS } from "../../types/presentation";
 import SlideEntry from "../resources/SlideEntry";
 import "../../styles/resources.css";
 
 function ResourcesPage() {
+  // Scroll to hash target after React renders the DOM
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      document.getElementById(hash)?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
   // Group slides by section
   const slidesBySection = sections.map((section) => ({
     section,
