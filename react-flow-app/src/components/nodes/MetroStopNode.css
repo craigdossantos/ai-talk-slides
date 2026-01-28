@@ -60,17 +60,17 @@
   transform: translateX(-50%);
   white-space: normal;
   font-family:
-    "Space Grotesk",
+    "Inter",
     -apple-system,
     BlinkMacSystemFont,
     sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
   color: #1a1a1a;
   text-align: center;
-  max-width: 180px;
-  line-height: 1.2;
+  max-width: 200px;
+  line-height: 1.25;
   word-wrap: break-word;
 }
 
@@ -318,6 +318,86 @@
 .metro-stop__nav button:disabled {
   opacity: 0.35;
   cursor: not-allowed;
+}
+
+/* Resource links in focused slide view */
+.metro-stop__resources {
+  border-top: 1px solid #e5e5e5;
+  padding: 16px 0 0;
+  margin-top: 12px;
+  text-align: center;
+}
+
+.metro-stop__resources-heading {
+  display: block;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-decoration: none;
+  margin-bottom: 12px;
+}
+
+.metro-stop__resources-heading:hover {
+  color: #2563eb;
+}
+
+.metro-stop__resources ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.metro-stop__resources li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.metro-stop__resources a {
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  font-size: 16px;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.metro-stop__resources a:hover {
+  text-decoration: underline;
+}
+
+.metro-stop__resource-type {
+  font-size: 12px;
+  color: #888;
+  background: #f0f0f0;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+  text-transform: lowercase;
+}
+
+.metro-stop__resources-more {
+  display: block;
+  margin-top: 10px;
+  font-family:
+    "Inter",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif;
+  font-size: 14px;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.metro-stop__resources-more:hover {
+  text-decoration: underline;
 }
 
 /* Handle positioning - centered for line-through effect */

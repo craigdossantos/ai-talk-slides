@@ -26,8 +26,14 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
     isFullSlideOpen,
     onCloseFullSlide,
     isAnySlideOpen,
+    resources,
   } = data;
   const [isHovered, setIsHovered] = useState(false);
+
+  const linkResources = useMemo(
+    () => (resources ?? []).filter((r) => r.type !== "prompt"),
+    [resources],
+  );
 
   // Get zoom directly from React Flow's internal store - always in sync
   const zoom = useStore(zoomSelector);
@@ -153,6 +159,36 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
                 >
                   Next →
                 </button>
+              </div>
+            )}
+            {linkResources.length > 0 && (
+              <div className="metro-stop__resources">
+                <a
+                  href={`/resources#slide-${slide.id}`}
+                  className="metro-stop__resources-heading"
+                >
+                  Resources
+                </a>
+                <ul>
+                  {linkResources.slice(0, 4).map((r) => (
+                    <li key={r.id}>
+                      <a href={r.url} target="_blank" rel="noopener noreferrer">
+                        {r.title}
+                      </a>
+                      <span className="metro-stop__resource-type">
+                        {r.type}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+                {linkResources.length > 4 && (
+                  <a
+                    href={`/resources#slide-${slide.id}`}
+                    className="metro-stop__resources-more"
+                  >
+                    See all {linkResources.length} resources →
+                  </a>
+                )}
               </div>
             )}
           </div>,

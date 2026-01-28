@@ -9,7 +9,7 @@ interface SlideEntryProps {
 
 function SlideEntry({ slide, resources, lineColor }: SlideEntryProps) {
   return (
-    <article className="slide-entry">
+    <article id={`slide-${slide.id}`} className="slide-entry">
       <div className="slide-entry-content">
         {/* Left column: Image */}
         <div className="slide-image-container">
