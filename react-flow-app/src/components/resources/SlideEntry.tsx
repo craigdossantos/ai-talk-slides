@@ -1,4 +1,6 @@
+import { Remark } from "react-remark";
 import type { SlideContent, Resource } from "../../types/presentation";
+import { slideWriteups } from "../../data/slideWriteups";
 import ResourceList from "./ResourceList";
 
 interface SlideEntryProps {

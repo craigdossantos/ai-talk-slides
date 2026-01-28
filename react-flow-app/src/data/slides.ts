@@ -585,6 +585,41 @@ export const resources: Resource[] = [
     url: "https://claude.ai",
     image: "https://claude.ai/images/claude_app_icon.png",
   },
+  {
+    id: "res-12",
+    slideId: "slide-09",
+    type: "tool",
+    title: "Google Gemini",
+    url: "https://gemini.google.com",
+  },
+  {
+    id: "res-13",
+    slideId: "slide-09",
+    type: "tool",
+    title: "ChatGPT",
+    url: "https://chat.openai.com",
+  },
+  {
+    id: "res-14",
+    slideId: "slide-09",
+    type: "tool",
+    title: "ChatGPT Desktop App",
+    url: "https://openai.com/chatgpt/download/",
+  },
+  {
+    id: "res-15",
+    slideId: "slide-09",
+    type: "tool",
+    title: "Claude Desktop App",
+    url: "https://claude.ai/download",
+  },
+  {
+    id: "res-16",
+    slideId: "slide-09",
+    type: "article",
+    title: "ChatGPT for Health",
+    url: "https://openai.com/index/introducing-chatgpt-health/",
+  },
   // Level 3: Context Engineering - Markdown Guide
   {
     id: "res-02b",
@@ -611,6 +646,27 @@ export const resources: Resource[] = [
     title: "Granola Notes",
     url: "https://www.granola.so",
     image: "https://www.granola.so/icon.svg",
+  },
+  {
+    id: "res-17",
+    slideId: "slide-11",
+    type: "tool",
+    title: "Obsidian",
+    url: "https://obsidian.md",
+  },
+  {
+    id: "res-18",
+    slideId: "slide-11",
+    type: "tool",
+    title: "NotebookLM",
+    url: "https://notebooklm.google.com",
+  },
+  {
+    id: "res-19",
+    slideId: "slide-11",
+    type: "tool",
+    title: "Perplexity",
+    url: "https://www.perplexity.ai",
   },
   // Level 5: AI-Powered Browsing - Claude Extension
   {
@@ -649,6 +705,20 @@ export const resources: Resource[] = [
     url: "https://www.midjourney.com",
     image: "https://www.midjourney.com/apple-touch-icon.png",
   },
+  {
+    id: "res-20",
+    slideId: "slide-13",
+    type: "tool",
+    title: "Nano Banana (Google Image Generation)",
+    url: "https://gemini.google/overview/image-generation/",
+  },
+  {
+    id: "res-21",
+    slideId: "slide-13",
+    type: "tool",
+    title: "Veo3 (Google Video Generation)",
+    url: "https://gemini.google/overview/video-generation/",
+  },
   // Level 7: AI for Automation - link to Zapier docs
   {
     id: "res-06",
@@ -667,6 +737,29 @@ export const resources: Resource[] = [
     url: "https://n8n.io",
     image: "https://n8n.io/favicon.ico",
   },
+  {
+    id: "res-22",
+    slideId: "slide-14",
+    type: "tool",
+    title: "Gumloop",
+    url: "https://www.gumloop.com",
+  },
+  {
+    id: "res-23",
+    slideId: "slide-14",
+    type: "article",
+    title: "N8n Workflow Example",
+    url: "https://n8n.io/workflows/4658-automate-instagram-content-discovery-and-repurposing-w-apify-gpt-4o-and-perplexity/",
+    description: "Example of a medium-complexity N8n automation",
+  },
+  {
+    id: "res-24",
+    slideId: "slide-14",
+    type: "article",
+    title: "Gumloop Automation Examples",
+    url: "https://www.gumloop.com/blog/ai-workflow-automation-examples",
+    description: "Examples of AI workflow automations with Gumloop",
+  },
   // Level 8: Natural Language Software - link to Lovable
   {
     id: "res-07",
@@ -675,6 +768,35 @@ export const resources: Resource[] = [
     title: "Lovable Dev",
     url: "https://lovable.dev",
     image: "https://lovable.dev/icon.svg",
+  },
+  {
+    id: "res-25",
+    slideId: "slide-15",
+    type: "tool",
+    title: "Bolt AI",
+    url: "https://bolt.new",
+  },
+  {
+    id: "res-26",
+    slideId: "slide-15",
+    type: "tool",
+    title: "Google AI Studio",
+    url: "https://aistudio.google.com",
+  },
+  // Claude Co-work
+  {
+    id: "res-27",
+    slideId: "slide-15b",
+    type: "tool",
+    title: "Claude Co-work",
+    url: "https://claude.ai",
+  },
+  {
+    id: "res-28",
+    slideId: "slide-15b",
+    type: "docs",
+    title: "Claude Co-work Documentation",
+    url: "https://docs.anthropic.com/en/docs/claude-code",
   },
   // Technical Track Resources
   // CLI Tools - Claude Code
@@ -705,6 +827,14 @@ export const resources: Resource[] = [
     image:
       "https://www.gstatic.com/lamda/images/gemini_favicon_f069958c85030456e93de685481c559f160ea06b.png",
   },
+  {
+    id: "res-29",
+    slideId: "slide-16",
+    type: "tool",
+    title: "Ghostty Terminal",
+    url: "https://ghostty.org/",
+    description: "A better terminal emulator for Mac and Linux",
+  },
   // Git & GitHub
   {
     id: "res-08",
@@ -713,6 +843,13 @@ export const resources: Resource[] = [
     title: "GitHub Docs",
     url: "https://docs.github.com",
     image: "https://github.githubassets.com/favicons/favicon.svg",
+  },
+  {
+    id: "res-30",
+    slideId: "slide-18",
+    type: "tool",
+    title: "GitHub",
+    url: "https://github.com",
   },
   // AI-Native IDEs - Cursor
   {
@@ -723,6 +860,35 @@ export const resources: Resource[] = [
     url: "https://cursor.sh",
     image: "https://cursor.sh/favicon.ico",
   },
+  {
+    id: "res-31",
+    slideId: "slide-19",
+    type: "tool",
+    title: "Google Antigravity",
+    url: "https://antigravity.dev/",
+  },
+  {
+    id: "res-32",
+    slideId: "slide-19",
+    type: "tool",
+    title: "Visual Studio Code",
+    url: "https://code.visualstudio.com",
+  },
+  {
+    id: "res-33",
+    slideId: "slide-19",
+    type: "tool",
+    title: "Windsurf IDE",
+    url: "https://windsurf.com",
+  },
+  // Meta Level / Skill Creator
+  {
+    id: "res-34",
+    slideId: "slide-20b",
+    type: "github",
+    title: "Anthropic Skill Creator",
+    url: "https://github.com/anthropics/skills/tree/main/skills/skill-creator",
+  },
   // Full Software Lifecycle - Vercel
   {
     id: "res-10",
@@ -731,6 +897,7 @@ export const resources: Resource[] = [
     title: "Vercel",
     url: "https://vercel.com",
     image: "https://vercel.com/favicon.ico",
+    description: "Hosting and deployment platform for web applications",
   },
   // Full Software Lifecycle - Supabase
   {
@@ -740,6 +907,101 @@ export const resources: Resource[] = [
     title: "Supabase",
     url: "https://supabase.com",
     image: "https://supabase.com/favicon.ico",
+    description: "Open-source database and authentication platform",
+  },
+  {
+    id: "res-35",
+    slideId: "slide-21",
+    type: "tool",
+    title: "Cloudflare",
+    url: "https://www.cloudflare.com",
+    description: "Domains, DNS, and web security",
+  },
+  // Customizing the Harness
+  {
+    id: "res-36",
+    slideId: "slide-22",
+    type: "tool",
+    title: "Smithery AI Skills",
+    url: "https://smithery.ai/skills",
+  },
+  {
+    id: "res-37",
+    slideId: "slide-22",
+    type: "tool",
+    title: "Skills Directory",
+    url: "https://www.skillsdirectory.org/",
+  },
+  {
+    id: "res-38",
+    slideId: "slide-22",
+    type: "github",
+    title: "Compound Engineering Plugin",
+    url: "https://github.com/EveryInc/compound-engineering-plugin/blob/main/plugins/compound-engineering/commands/workflows/plan.md",
+  },
+  {
+    id: "res-39",
+    slideId: "slide-22",
+    type: "article",
+    title: "Superpowers Plugin for Dev Lifecycle",
+    url: "https://blog.fsck.com/2025/10/09/superpowers/",
+    description: "Great brainstorming skill for software development lifecycle",
+  },
+  {
+    id: "res-40",
+    slideId: "slide-22",
+    type: "video",
+    title: "Claude Code Creator Describes His Setup",
+    url: "https://youtu.be/aqtseECSdtY?si=McKdLNsgVLnDA63K",
+  },
+  {
+    id: "res-41",
+    slideId: "slide-22",
+    type: "github",
+    title: "CC Statusline Customization",
+    url: "https://github.com/chongdashu/cc-statusline",
+  },
+  // Context Engineering
+  {
+    id: "res-42",
+    slideId: "slide-23",
+    type: "article",
+    title: "Steve Yegge's Beads",
+    url: "https://steve-yegge.medium.com/introducing-beads-a-coding-agent-memory-system-637d7d92514a",
+    description: "A coding agent memory system for context management",
+  },
+  {
+    id: "res-46",
+    slideId: "slide-23",
+    type: "docs",
+    title: "Claude Code Tasks",
+    url: "https://docs.claude.com/en/docs/claude-code/sdk/todo-tracking",
+    description: "Persistent, cross-session task management replacing Todos",
+  },
+  // Parallel Agents
+  {
+    id: "res-43",
+    slideId: "slide-24",
+    type: "tool",
+    title: "Conductor.build",
+    url: "https://conductor.build",
+  },
+  // Swarms and Infrastructure
+  {
+    id: "res-44",
+    slideId: "slide-25",
+    type: "article",
+    title: "Welcome to Gas Town",
+    url: "https://steve-yegge.medium.com/welcome-to-gas-town-4f25ee16dd04",
+    description: "Steve Yegge on scaling AI agent infrastructure",
+  },
+  {
+    id: "res-45",
+    slideId: "slide-25",
+    type: "tool",
+    title: "Agent Flywheel",
+    url: "https://agent-flywheel.com/",
+    description: "VPS setup to run 10+ agents simultaneously",
   },
   // Sample Prompt Resources
   {
@@ -756,6 +1018,37 @@ export const resources: Resource[] = [
 4. What questions should I be asking as a beginner?
 
 Please use simple language and avoid jargon.`,
+  },
+  {
+    id: "prompt-04",
+    slideId: "slide-08",
+    type: "prompt",
+    title: "Learn Better Prompting",
+    url: "#",
+    prompt: `I'm new to using AI chatbots and I want to get better at writing prompts. Please teach me:
+
+1. What makes a good prompt vs a bad one? Give me 3 examples of each.
+2. What are the most common mistakes beginners make?
+3. What are 3-5 simple techniques I can start using right now to get better answers?
+4. How do I know if the AI understood what I meant?
+
+Keep it practical — I want tips I can use in my very next conversation.`,
+  },
+  {
+    id: "prompt-05",
+    slideId: "slide-08",
+    type: "prompt",
+    title: "Understanding Model Limitations",
+    url: "#",
+    prompt: `I've been using AI for questions, summaries, explanations, and brainstorming. Help me understand the boundaries:
+
+1. When should I trust the AI's answer vs double-check it myself?
+2. What kinds of questions is AI reliably good at answering?
+3. What kinds of questions does it frequently get wrong or make up?
+4. How can I tell when it's "hallucinating" (making something up confidently)?
+5. What's the difference between using AI for brainstorming vs using it for facts?
+
+Give me practical rules of thumb I can follow.`,
   },
   {
     id: "prompt-02",
@@ -778,25 +1071,362 @@ Can you help me build a better mental model? Please:
 4. Ask me clarifying questions if needed`,
   },
   {
-    id: "prompt-03",
+    id: "prompt-06",
+    slideId: "slide-09",
+    type: "prompt",
+    title: "Exploring File Upload Capabilities",
+    url: "#",
+    prompt: `I want to understand what I can upload to AI chatbots and what happens when I do. Please explain:
+
+1. What file types can I upload? (PDFs, Word docs, images, spreadsheets, etc.)
+2. What does the AI actually "see" when I upload each type?
+3. What works well? (e.g., summarizing a PDF, analyzing an image)
+4. What doesn't work well or has limitations?
+5. Are there size limits or other restrictions I should know about?
+6. What's different between ChatGPT, Claude, and Gemini when it comes to file uploads?
+
+I want to know what's possible so I can start using this in my daily work.`,
+  },
+  // slide-10: Context Management
+  {
+    id: "prompt-07",
     slideId: "slide-10",
     type: "prompt",
-    title: "Structured Context Template",
+    title: "Using Projects in Claude and ChatGPT",
     url: "#",
-    prompt: `## Context
-[Describe the situation or background]
+    prompt: `I want to learn how to use "Projects" in AI chatbots to organize my work better. Please explain:
 
-## Goal
-[What you're trying to achieve]
+1. What are Projects in Claude and ChatGPT? How do they work?
+2. When should I create a new Project vs just starting a new conversation?
+3. How do I add context to a Project (files, instructions, etc.)?
+4. What are the benefits of using Projects over regular conversations?
+5. What are some practical examples of good Project setups?
+6. Any tips for keeping Projects organized as they grow?
 
-## Constraints
-- [Any limitations or requirements]
+Please cover both Claude Projects and ChatGPT Projects, noting any differences between them.`,
+  },
+  {
+    id: "prompt-08",
+    slideId: "slide-10",
+    type: "prompt",
+    title: "Understanding AI Context Windows",
+    url: "#",
+    prompt: `I've noticed that AI chatbots sometimes seem to "forget" things or give worse answers in long conversations. Help me understand why:
 
-## What I've Tried
-- [Previous attempts if any]
+1. What is a "context window" and how does it work?
+2. Why do AI responses get worse as a conversation gets longer?
+3. How much can I put into a single conversation before quality drops?
+4. What are the signs that the context is getting too full?
+5. When should I start a fresh conversation vs continue an existing one?
+6. Are there tricks to keep conversations effective for longer?
 
-## Question
-[Your specific question or request]`,
+Explain this in simple terms — I don't have a technical background.`,
+  },
+  {
+    id: "prompt-09",
+    slideId: "slide-10",
+    type: "prompt",
+    title: "Understanding Markdown",
+    url: "#",
+    prompt: `I keep hearing that using Markdown formatting when talking to AI gives better results. Please teach me:
+
+1. What is Markdown and why does it help when communicating with AI?
+2. Show me the most useful Markdown basics: headings, lists, bold, code blocks
+3. Give me a before/after example — a messy prompt vs the same prompt formatted in Markdown
+4. What's the minimum I need to know to start using it right away?
+5. Where else is Markdown used? (so I know if it's worth learning more)
+
+Keep it simple — I've never used Markdown before.`,
+  },
+  {
+    id: "prompt-10",
+    slideId: "slide-10",
+    type: "prompt",
+    title: "Understanding JSON for Non-Technical People",
+    url: "#",
+    prompt: `I'm not a programmer, but I keep running into something called JSON when working with AI tools and automations. Help me understand it:
+
+1. What is JSON in plain English? What's it used for?
+2. Show me a simple example and explain each part
+3. Why do AI tools and automations use JSON so much?
+4. What are the basic rules I need to know to read or edit JSON without breaking it?
+5. What are the most common mistakes people make with JSON?
+6. Are there any free tools that help me work with JSON more easily?
+
+Remember, I'm not a developer — please use everyday analogies.`,
+  },
+  // slide-12: AI-Powered Browsing
+  {
+    id: "prompt-11",
+    slideId: "slide-12",
+    type: "prompt",
+    title: "Using Google Gemini in the Browser",
+    url: "#",
+    prompt: `I have Google Gemini available in my Chrome browser. Please help me understand how to use it:
+
+1. How do I activate and use Gemini within Chrome?
+2. What can Gemini do with the web page I'm currently viewing?
+3. What does the blue outline mean when it appears around elements on a page?
+4. Can Gemini summarize articles, extract information, or help me fill out forms?
+5. What are the most useful things I can ask Gemini to do while browsing?
+6. What are its limitations — what can't it do with web pages?
+
+Give me practical examples I can try right now.`,
+  },
+  {
+    id: "prompt-12",
+    slideId: "slide-12",
+    type: "prompt",
+    title: "Using the Claude Browser Extension",
+    url: "#",
+    prompt: `I have the Claude browser extension installed. Help me understand what it can do:
+
+1. What actions can the Claude extension take in my browser?
+2. Can it read and summarize the page I'm on?
+3. Can it interact with web pages — clicking buttons, filling forms, navigating?
+4. What are the most useful everyday use cases for the extension?
+5. How is it different from just copying text into Claude's chat?
+6. What are its limitations and what should I be careful about?
+
+Give me 5 practical things I can try today with the Claude extension.`,
+  },
+  // slide-14b: Meta Level Meta Thinking (non-technical)
+  {
+    id: "prompt-13",
+    slideId: "slide-14b",
+    type: "prompt",
+    title: "AI Automation for Knowledge Work",
+    url: "#",
+    prompt: `Help me understand which types of my daily knowledge work I can automate or enhance with AI:
+
+1. What types of activities can AI do on its own (fully automate)?
+2. What types of work can AI assist with but still need my input?
+3. What types of knowledge work is AI NOT good at automating?
+4. Give me examples of automations I could build using tools like Gumloop or N8n
+5. What's the difference between simple automations (like auto-forwarding emails) and AI-powered automations?
+6. Where should I start if I've never built an automation before?
+
+I'm not a programmer. Focus on things I can set up using visual/drag-and-drop tools.`,
+  },
+  // slide-15: Natural Language Software Tools
+  {
+    id: "prompt-14",
+    slideId: "slide-15",
+    type: "prompt",
+    title: "Getting Started with Google AI Studio",
+    url: "#",
+    prompt: `I've never created software before, and I want to try Google AI Studio. Please help me understand:
+
+1. What is Google AI Studio and what can I build with it?
+2. How is it different from just chatting with an AI?
+3. Walk me through creating something simple — step by step
+4. What do terms like "front-end" and "back-end" mean in simple language?
+5. What's Google AI Studio good at, and where does it struggle?
+6. What should I expect as a complete beginner — what's realistic to build?
+7. How does it compare to similar tools like Lovable and Bolt AI?
+
+Assume I have zero coding experience. Use analogies to explain technical concepts.`,
+  },
+  // slide-15b: Claude Co-work
+  {
+    id: "prompt-15",
+    slideId: "slide-15b",
+    type: "prompt",
+    title: "Getting the Most Out of Claude Co-work",
+    url: "#",
+    prompt: `I want to understand Claude's Co-work feature. Please explain:
+
+1. What is Claude Co-work and how is it different from regular Claude conversations?
+2. What types of tasks is Co-work best suited for?
+3. What can Co-work do that regular Claude can't?
+4. What are its current limitations?
+5. Walk me through a practical example of using Co-work effectively
+6. What tips or best practices should I know to get the best results?
+
+I want to know if and how I should start using this in my daily work.`,
+  },
+  // slide-16: Command Line Interface
+  {
+    id: "prompt-16",
+    slideId: "slide-16",
+    type: "prompt",
+    title: "Command Line Basics for Mac",
+    url: "#",
+    prompt: `I'm a Mac user and I've never used the command line before. Please teach me:
+
+1. How do I open the Terminal app on my Mac?
+2. What is the command line and why would I want to use it?
+3. Teach me the 5 most essential commands I need to know:
+   - How to see where I am (pwd)
+   - How to see what files are here (ls)
+   - How to move to a different folder (cd)
+   - How to create a new folder (mkdir)
+   - How to go back to my home folder (cd ~)
+4. Give me a simple exercise to practice these commands
+5. What are common mistakes beginners make?
+6. What should I do if something goes wrong or I get stuck?
+
+I'm a complete beginner — please be patient and explain everything.`,
+  },
+  {
+    id: "prompt-17",
+    slideId: "slide-16",
+    type: "prompt",
+    title: "Command Line Basics for Windows",
+    url: "#",
+    prompt: `I'm a Windows user and I've never used the command line before. Please teach me:
+
+1. How do I open a terminal on Windows? (Command Prompt, PowerShell, or Windows Terminal)
+2. Which terminal should I use as a beginner?
+3. What is the command line and why would I want to use it?
+4. Teach me the 5 most essential commands:
+   - How to see where I am (cd or pwd)
+   - How to see what files are here (dir or ls)
+   - How to move to a different folder (cd)
+   - How to create a new folder (mkdir)
+   - How to go back to my home folder
+5. Give me a simple exercise to practice
+6. What should I do if something goes wrong?
+
+I'm a complete beginner — please be patient and explain everything.`,
+  },
+  // slide-18: Git and GitHub
+  {
+    id: "prompt-18",
+    slideId: "slide-18",
+    type: "prompt",
+    title: "Understanding Git Basics",
+    url: "#",
+    prompt: `I'm learning about software development with AI and I keep hearing about Git. Please teach me:
+
+1. What is Git in simple terms? Use an analogy I can relate to.
+2. Why do I need Git if I'm using AI to write code?
+3. What are the most important Git concepts I need to understand?
+   - Commits (saving snapshots)
+   - Branches (parallel versions)
+   - Merging (combining work)
+4. What are the 5 Git commands I'll use most often?
+5. What happens if I make a mistake — can I undo things?
+6. What's the minimum I need to know to start using Git today?
+
+Assume I've never used Git or the command line before.`,
+  },
+  {
+    id: "prompt-19",
+    slideId: "slide-18",
+    type: "prompt",
+    title: "Understanding GitHub",
+    url: "#",
+    prompt: `I understand the basics of Git (saving snapshots of code). Now help me understand GitHub:
+
+1. What is GitHub and how is it different from Git?
+2. Why do developers use GitHub? What problems does it solve?
+3. What is a "repository" (repo) on GitHub?
+4. How do I create a GitHub account and my first repo?
+5. How does GitHub help when AI makes mistakes with my code?
+6. What are the most important GitHub features I should know about?
+
+Use simple analogies — think of me as someone who uses Google Docs but has never seen code before.`,
+  },
+  // slide-20: Modes and Workflows
+  {
+    id: "prompt-20",
+    slideId: "slide-20",
+    type: "prompt",
+    title: "Understanding Claude Code Modes",
+    url: "#",
+    prompt: `I'm using Claude Code (the CLI tool) and want to understand its different modes. Please explain:
+
+1. What is "Plan Mode" and when should I use it?
+2. What does "Accept with Edits" mean and how do I use it effectively?
+3. What other modes or settings affect how Claude Code works?
+4. How do I switch between modes and what's the workflow?
+5. When should I plan first vs just start building?
+6. What are common mistakes people make with these modes?
+
+Give me a practical workflow example showing when to use each mode.`,
+  },
+  {
+    id: "prompt-21",
+    slideId: "slide-20",
+    type: "prompt",
+    title: "Using Skills in Claude Code",
+    url: "#",
+    prompt: `I want to understand how to use Skills in Claude Code. Please look up the most recent Anthropic documentation on Skills and explain:
+
+1. What are Skills and how do they work?
+2. How do I find and install Skills?
+3. How do I create my own custom Skills?
+4. When should I use a Skill vs just giving instructions directly?
+5. What are some examples of useful Skills?
+6. What's the difference between Skills, slash commands, and system prompts?
+
+Focus on practical usage — I want to start using Skills in my next coding session.`,
+  },
+  {
+    id: "prompt-22",
+    slideId: "slide-20",
+    type: "prompt",
+    title: "Understanding Subagents",
+    url: "#",
+    prompt: `I'm using AI coding tools and I keep hearing about "subagents." Please explain:
+
+1. What is a subagent? How is it different from a regular AI conversation?
+2. When should I use subagents vs doing everything in one conversation?
+3. How do subagents work — do they share context with the main conversation?
+4. What are practical examples of tasks that benefit from subagents?
+5. How do I launch and manage subagents in Claude Code?
+6. What are the limitations and gotchas I should know about?
+
+Explain this assuming I'm comfortable with AI chat but new to agent-based workflows.`,
+  },
+  // slide-20b: Meta Level Meta Thinking (technical)
+  {
+    id: "prompt-23",
+    slideId: "slide-20b",
+    type: "prompt",
+    title: "Competing Subagents for Code Review",
+    url: "#",
+    prompt: `Please dispatch two subagents to carefully review phase 5. Tell them that they're competing with another agent. Make sure they look at both architecture and implementation. Tell them that whomever finds more issues gets promoted.`,
+  },
+  // slide-21: Using AI to Go Live
+  {
+    id: "prompt-24",
+    slideId: "slide-21",
+    type: "prompt",
+    title: "CLI Tools for Deployment Services",
+    url: "#",
+    prompt: `I'm learning to deploy web applications with AI assistance. Please teach me how to use the CLI (command line) tools for these services:
+
+1. **Supabase CLI**: How do I install it, connect to my project, and manage my database from the terminal?
+2. **Vercel CLI**: How do I install it, deploy my app, and manage deployments from the terminal?
+3. **Cloudflare CLI (Wrangler)**: How do I install it, manage domains/DNS, and deploy Workers?
+
+For each one:
+- Show me the installation command
+- Show me the 3-5 most common commands I'll use
+- Explain what each command does in plain language
+- Tell me when to use the CLI vs the web dashboard
+
+Assume I know basic command line skills but am new to deployment.`,
+  },
+  // slide-24: Parallel Agents
+  {
+    id: "prompt-25",
+    slideId: "slide-24",
+    type: "prompt",
+    title: "Understanding GitHub Worktrees",
+    url: "#",
+    prompt: `I'm using AI coding tools and want to understand Git Worktrees for running parallel agents. Please explain:
+
+1. What is a Git Worktree in simple terms?
+2. Why are worktrees useful when working with AI coding agents?
+3. How do I create, list, and remove worktrees?
+4. How do worktrees differ from branches?
+5. What's a practical workflow for using worktrees with multiple AI agents working simultaneously?
+6. What are common pitfalls or mistakes with worktrees?
+
+I understand Git basics (commits, branches) but have never used worktrees.`,
   },
 ];
 

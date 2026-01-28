@@ -150,6 +150,42 @@
   color: var(--color-text-secondary);
 }
 
+/* Slide Writeup */
+.slide-writeup {
+  padding: 0 1.5rem 1.5rem;
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.slide-writeup p {
+  margin: 0 0 1em;
+}
+
+.slide-writeup p:last-child {
+  margin-bottom: 0;
+}
+
+.slide-writeup a {
+  color: #3b82f6;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s;
+}
+
+.slide-writeup a:hover {
+  border-bottom-color: #3b82f6;
+}
+
+.slide-writeup strong {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+.slide-writeup em {
+  color: var(--color-text-muted);
+}
+
 /* Resource List */
 .resource-list {
   padding: 1rem 1.5rem 1.5rem;

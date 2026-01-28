@@ -61,6 +61,7 @@ export interface Resource {
   image?: string; // Custom image URL or path for thumbnail display
   featured?: boolean; // Show as icon branching from metro stop
   prompt?: string; // For prompt type resources - the actual prompt text
+  description?: string; // Why this resource is interesting/useful
 }
 
 // Node data interfaces for React Flow nodes

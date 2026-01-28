@@ -5,6 +5,7 @@ interface LinkCardProps {
   url: string;
   type: ResourceType;
   image?: string;
+  description?: string;
 }
 
 const typeLabels: Record<ResourceType, string> = {
@@ -16,7 +17,7 @@ const typeLabels: Record<ResourceType, string> = {
   prompt: "Prompt",
 };
 
-function LinkCard({ title, url, type, image }: LinkCardProps) {
+function LinkCard({ title, url, type, image, description }: LinkCardProps) {
   return (
     <a
       href={url}
@@ -28,6 +29,9 @@ function LinkCard({ title, url, type, image }: LinkCardProps) {
       <div className="link-card-content">
         <span className="link-card-title">{title}</span>
         <span className="link-card-type">{typeLabels[type]}</span>
+        {description && (
+          <span className="link-card-description">{description}</span>
+        )}
       </div>
       <span className="link-card-arrow">&#8599;</span>
     </a>

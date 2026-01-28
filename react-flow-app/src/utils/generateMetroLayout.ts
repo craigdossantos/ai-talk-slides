@@ -535,6 +535,7 @@ export function generateMetroLayout(
       sourceHandle: "bottom",
       targetHandle: "top-0", // Top handle on CLI junction
       type: "smoothstep",
+      zIndex: -100, // Below river (-50) and landmarks (-60)
       pathOptions: {
         borderRadius: EDGE_BORDER_RADIUS,
         offset: 40,
@@ -544,7 +545,7 @@ export function generateMetroLayout(
         strokeWidth: METRO_LAYOUT.lineThickness,
         strokeLinecap: "round",
         strokeLinejoin: "round",
-        strokeDasharray: "20 12",
+        strokeDasharray: "8 16",
       },
     });
   }

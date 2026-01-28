@@ -38,6 +38,7 @@ function ResourceList({ resources, lineColor }: ResourceListProps) {
               url={resource.url}
               type={resource.type}
               image={resource.image}
+              description={resource.description}
             />
           );
         })}
