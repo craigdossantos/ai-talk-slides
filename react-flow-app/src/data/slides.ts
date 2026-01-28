@@ -249,6 +249,15 @@ export const slides: SlideContent[] = [
     ],
   },
   {
+    id: "slide-14b",
+    sectionId: "levels-nontech",
+    type: "content",
+    title: "Meta Level Meta Thinking",
+    backgroundImage:
+      "/assets/images/slide-20b_billboard_v2_20260123_123045.jpg",
+    bullets: [],
+  },
+  {
     id: "slide-15",
     sectionId: "levels-nontech",
     type: "content",
@@ -437,6 +446,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "CraigDosSantos.com",
     subtitle: "Personal portfolio and blog",
+    backgroundImage: "/assets/images/project-01-craigdossantos.jpg",
     bullets: ["Showcasing my work and writing", "Built with AI assistance"],
   },
   {
@@ -445,6 +455,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "The Secret Game",
     subtitle: "Share secrets with friends",
+    backgroundImage: "/assets/images/project-02-secret-game.jpg",
     bullets: [
       "Pass a URL to a group",
       "Answer questions to reveal hidden answers",
@@ -456,6 +467,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Freestyle Flow",
     subtitle: "Mobile app for freestyle rap training",
+    backgroundImage: "/assets/images/project-03-freestyle-flow.jpg",
     bullets: ["Improv singing and rap practice", "Practice at your own pace"],
   },
   {
@@ -464,6 +476,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "OurWeUnion.com",
     subtitle: "Wedding website",
+    backgroundImage: "/assets/images/project-04-ourweunion.jpg",
     bullets: [
       "Single landing page with Google Form",
       "Built for Craig and Stef",
@@ -475,6 +488,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Dialogue Dojo",
     subtitle: "Practice communication skills",
+    backgroundImage: "/assets/images/project-05-dialogue-dojo.jpg",
     bullets: [
       "Voice-to-voice sessions",
       "Negotiation and non-violent communication",
@@ -486,6 +500,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Instant Book",
     subtitle: "Learn from books faster",
+    backgroundImage: "/assets/images/project-06-instant-book.jpg",
     bullets: [
       "Upload EPUB books, break into chapters",
       "Zoom in and out of content",
@@ -497,6 +512,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "YouTube Summary",
     subtitle: "Summarize YouTube videos",
+    backgroundImage: "/assets/images/project-07-youtube-summary.jpg",
     bullets: [
       "Drop in video or playlist links",
       "Get summaries and key takeaways",
@@ -508,7 +524,20 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Video Sum",
     subtitle: "Mac desktop application",
+    backgroundImage: "/assets/images/project-08-video-sum.jpg",
     bullets: ["Summarizing video content locally"],
+  },
+  {
+    id: "project-stefsbirthday",
+    sectionId: "projects",
+    type: "content",
+    title: "Stef's Birthday",
+    subtitle: "Interactive birthday audio card",
+    backgroundImage: "/assets/images/project-10-stefsbirthday.jpg",
+    bullets: [
+      "stefsbirthday.com",
+      "Friends record voice messages for Stef's 40th",
+    ],
   },
   {
     id: "project-quota",
@@ -516,6 +545,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Quota",
     subtitle: "Credit-based AI billing",
+    backgroundImage: "/assets/images/project-09-usequota.jpg",
     bullets: [
       "Launch AI apps with portable wallet system",
       "Works across multiple apps",
@@ -527,6 +557,7 @@ export const slides: SlideContent[] = [
     type: "content",
     title: "Level Up with AI Prez",
     subtitle: "This presentation",
+    backgroundImage: "/assets/images/project-11-presentation.jpg",
     bullets: [
       "Interactive metro map visualization",
       "Built with React Flow and AI",

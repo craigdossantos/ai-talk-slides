@@ -540,10 +540,11 @@ export function generateMetroLayout(
         offset: 40,
       },
       style: {
-        stroke: METRO_LINE_COLORS["levels-tech"],
+        stroke: "#166534",
         strokeWidth: METRO_LAYOUT.lineThickness,
         strokeLinecap: "round",
         strokeLinejoin: "round",
+        strokeDasharray: "20 12",
       },
     });
   }
