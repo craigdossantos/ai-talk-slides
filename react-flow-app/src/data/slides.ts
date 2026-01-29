@@ -561,6 +561,15 @@ export const slides: SlideContent[] = [
 
 // Define resources linked to key slides
 export const resources: Resource[] = [
+  // Avoidance - Millennials and platform shifts
+  {
+    id: "res-47",
+    slideId: "slide-07",
+    type: "article",
+    title: "Millennials and the Platform Shift",
+    url: "https://x.com/katelin_cruse/status/2015186335150326227",
+    description: "How millennials might view the upcoming platform shift",
+  },
   // Level 1: AI as Portal to Internet Research - link to ChatGPT
   {
     id: "res-01",
@@ -622,6 +631,14 @@ export const resources: Resource[] = [
     title: "Markdown Guide",
     url: "https://www.markdownguide.org/basic-syntax/",
     image: "https://www.markdownguide.org/favicon.ico",
+  },
+  {
+    id: "res-48",
+    slideId: "slide-10",
+    type: "article",
+    title: "Best Nested Data Format Comparison",
+    url: "https://www.improvingagents.com/blog/best-nested-data-format/",
+    description: "Comparing JSON vs Markdown vs XML vs YAML for AI context",
   },
   // Level 4: Using AI Tools - link to Wispr Flow
   {
