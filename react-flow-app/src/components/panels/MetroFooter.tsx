@@ -20,6 +20,25 @@ function MetroFooter() {
           <circle cx="7" cy="5" r="2" fill="currentColor" />
           {/* Body leaning forward toward screen */}
           <path d="M9 8 L6 9 L7 12 L12 14 L13 11 Z" fill="currentColor" />
+          {/* Legs - bent at knee, feet toward monitor */}
+          <line
+            x1="11"
+            y1="14"
+            x2="13"
+            y2="17"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+          <line
+            x1="13"
+            y1="17"
+            x2="15"
+            y2="15"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
           {/* Arm reaching toward screen */}
           <line
             x1="12"
