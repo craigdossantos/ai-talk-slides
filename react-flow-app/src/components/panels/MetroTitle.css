@@ -1,0 +1,88 @@
+.metro-title {
+  position: absolute;
+  top: 24px;
+  left: 24px;
+  background: rgba(255, 255, 255, 0.98);
+  padding: 16px 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  z-index: 1600;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+}
+
+.metro-title__logo {
+  flex-shrink: 0;
+}
+
+.metro-title__logo-svg {
+  width: 48px;
+  height: 48px;
+}
+
+.metro-title__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.metro-title__heading {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.metro-title__subheading {
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .metro-title {
+    padding: 12px 16px;
+    gap: 10px;
+  }
+
+  .metro-title__logo-svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  .metro-title__heading {
+    font-size: 14px;
+  }
+
+  .metro-title__subheading {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .metro-title {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  .metro-title__logo-svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  .metro-title__heading {
+    font-size: 12px;
+  }
+
+  .metro-title__subheading {
+    font-size: 10px;
+  }
+}

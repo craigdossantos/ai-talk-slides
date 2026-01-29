@@ -18,6 +18,11 @@ export const sections: Section[] = [
     track: "non-technical",
   },
   {
+    id: "hypophobia",
+    title: "AI Hypophobia",
+    track: "general",
+  },
+  {
     id: "levels-tech",
     title: "Technical Levels",
     track: "technical",
@@ -266,7 +271,7 @@ export const slides: SlideContent[] = [
   },
   {
     id: "slide-15b",
-    sectionId: "levels-nontech",
+    sectionId: "hypophobia",
     type: "content",
     title: "Claude Co-work",
     backgroundImage:

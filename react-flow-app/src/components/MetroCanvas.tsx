@@ -23,6 +23,8 @@ import SubnodeBranchEdge from "./edges/SubnodeBranchEdge";
 import NavigationControls from "./panels/NavigationControls";
 import { EDIT_MODE } from "../config";
 import MetroLegend from "./panels/MetroLegend";
+import MetroTitle from "./panels/MetroTitle";
+import MetroFooter from "./panels/MetroFooter";
 import { useKeyboardNavigation } from "../hooks/useKeyboardNavigation";
 import { generateMetroLayout } from "../utils/generateMetroLayout";
 import {
@@ -417,7 +419,9 @@ function MetroCanvas() {
         }}
         proOptions={{ hideAttribution: true }}
       />
+      <MetroTitle />
       <MetroLegend />
+      <MetroFooter />
       <NavigationControls
         currentSlideIndex={currentSlideIndex}
         totalSlides={totalSlides}

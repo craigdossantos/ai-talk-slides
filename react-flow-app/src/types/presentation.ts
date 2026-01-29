@@ -221,14 +221,15 @@ export const TRACK_COLORS = {
   general: "#6b7280", // gray
 } as const;
 
-// Metro line colors matching the reference design
+// Metro line colors - DC Metro official palette
 export const METRO_LINE_COLORS = {
-  understanding: "#eab308", // yellow - AI Mental Models (merged intro + understanding)
-  mapping: "#22c55e", // green - Mapping the Journey
-  "levels-nontech": "#3b82f6", // blue - Non-Technical Track
-  "levels-tech": "#dc2626", // red - Technical Track
-  closing: "#000000", // black - Closing (single stop, not a line)
-  projects: "#9333ea", // purple - The Project Path
+  understanding: "#FFD100", // DC Yellow Line - AI Mental Models (merged intro + understanding)
+  mapping: "#00B140", // DC Green Line - Mapping the Journey
+  "levels-nontech": "#009CDE", // DC Blue Line - Non-Technical Track
+  "levels-tech": "#BF0D3E", // DC Red Line - Technical Track
+  hypophobia: "#919D9D", // DC Grey Line - AI Hypophobia (bridge from non-tech to tech)
+  closing: "#919D9D", // DC Silver Line - Closing (single stop, not a line)
+  projects: "#ED8B00", // DC Orange Line - The Project Path
 } as const;
 
 // Metro layout constants

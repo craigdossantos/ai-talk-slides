@@ -1,0 +1,92 @@
+.metro-footer {
+  position: absolute;
+  bottom: 80px; /* Above NavigationControls */
+  left: 270px; /* Clear the legend (200px width + 24px left + margin) */
+  right: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  z-index: 1500;
+  pointer-events: none;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+}
+
+.metro-footer__accessibility,
+.metro-footer__disclaimer {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 10px 14px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.metro-footer__icon {
+  width: 48px;
+  height: 48px;
+  color: #1a1a1a;
+  flex-shrink: 0;
+}
+
+.metro-footer__icon--small {
+  width: 20px;
+  height: 20px;
+}
+
+.metro-footer__text {
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  line-height: 1.3;
+}
+
+.metro-footer__disclaimer {
+  color: #666;
+}
+
+.metro-footer__disclaimer .metro-footer__text {
+  font-weight: 400;
+  font-style: italic;
+  color: #666;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .metro-footer {
+    bottom: 70px;
+    left: 240px;
+    right: 16px;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .metro-footer__accessibility,
+  .metro-footer__disclaimer {
+    padding: 8px 12px;
+  }
+
+  .metro-footer__text {
+    font-size: 11px;
+  }
+
+  .metro-footer__icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  .metro-footer__icon--small {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  /* On small screens, hide the footer to avoid crowding */
+  .metro-footer {
+    display: none;
+  }
+}

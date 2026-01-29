@@ -105,6 +105,7 @@ const SECTION_Y_POSITIONS: Record<string, number> = {
   understanding: 150, // Top-left start - AI Mental Models (merged intro)
   mapping: 600, // Center junction area
   "levels-nontech": 500, // Upper parallel track
+  hypophobia: 650, // Bridge between non-tech and tech (grey line)
   "levels-tech": 850, // Lower parallel track
   closing: 700, // Right side convergence
   projects: 1400, // Below all other tracks - purple line
@@ -115,6 +116,7 @@ const SECTION_X_STARTS: Record<string, number> = {
   understanding: 100, // Start position - AI Mental Models (merged intro)
   mapping: 400,
   "levels-nontech": 700,
+  hypophobia: 2900, // Continues from end of non-tech track
   "levels-tech": 700,
   closing: 3200,
   projects: 700, // Start aligned with CLI (levels-tech) for connection
@@ -149,6 +151,12 @@ const METRO_LINE_LABELS: Record<
   "levels-tech": {
     lineName: "RED LINE",
     subtitle: "Technical Track",
+    offsetX: -50,
+    offsetY: -80,
+  },
+  hypophobia: {
+    lineName: "GREY LINE",
+    subtitle: "AI Hypophobia",
     offsetX: -50,
     offsetY: -80,
   },
@@ -487,29 +495,52 @@ export function generateMetroLayout(
     });
   }
 
-  // Non-Tech -> Tech Track (bridge from Natural Language Software to CLI)
-  if (
-    lastNodeBySection["levels-nontech"] &&
-    firstNodeBySection["levels-tech"]
-  ) {
-    edges.push({
-      id: "edge-nontech-to-tech",
+  // Grey Line: Natural Language Software (slide-15) -> Claude Co-work (slide-15b) -> CLI (slide-16)
+  // "AI Hypophobia" - the grey line representing the bridge from non-tech to tech
+  const greyLineColor = METRO_LINE_COLORS["hypophobia"];
+
+  // Edge 1: Natural Language Software (last non-tech) -> Claude Co-work (first hypophobia)
+  if (lastNodeBySection["levels-nontech"] && firstNodeBySection["hypophobia"]) {
+    const greyLineEdge1: MetroLineEdge = {
+      id: "edge-nontech-to-hypophobia",
       source: lastNodeBySection["levels-nontech"],
+      target: firstNodeBySection["hypophobia"],
+      sourceHandle: "right",
+      targetHandle: "left",
+      type: "metroLine",
+      data: {
+        lineLabel: "GREY LINE",
+        lineSubtitle: "AI Hypophobia",
+        lineColor: greyLineColor,
+      },
+      style: {
+        stroke: greyLineColor,
+        strokeWidth: METRO_LAYOUT.lineThickness,
+        strokeLinecap: "round",
+        strokeLinejoin: "round",
+      },
+    };
+    edges.push(greyLineEdge1);
+  }
+
+  // Edge 2: Claude Co-work (last hypophobia) -> CLI (first tech)
+  if (lastNodeBySection["hypophobia"] && firstNodeBySection["levels-tech"]) {
+    edges.push({
+      id: "edge-hypophobia-to-tech",
+      source: lastNodeBySection["hypophobia"],
       target: firstNodeBySection["levels-tech"],
-      sourceHandle: "bottom",
-      targetHandle: "top-0", // Top handle on CLI junction
+      sourceHandle: "right",
+      targetHandle: "left-0",
       type: "smoothstep",
-      zIndex: -100, // Below river (-50) and landmarks (-60)
       pathOptions: {
         borderRadius: EDGE_BORDER_RADIUS,
         offset: 40,
       },
       style: {
-        stroke: "#166534",
+        stroke: greyLineColor,
         strokeWidth: METRO_LAYOUT.lineThickness,
         strokeLinecap: "round",
         strokeLinejoin: "round",
-        strokeDasharray: "8 16",
       },
     });
   }
@@ -559,14 +590,15 @@ export function generateMetroLayout(
   }
 
   // Project Path connections (magenta line - standalone with specific connections)
-  // CraigDosSantos.com (first project) -> CLI (levels-tech first node)
+  // CLI (levels-tech first node) -> CraigDosSantos.com (first project)
+  // Note: Edge direction swapped so handle types match (bottom=source, top=target)
   if (firstNodeBySection["projects"] && firstNodeBySection["levels-tech"]) {
     edges.push({
-      id: "edge-projects-to-cli",
-      source: firstNodeBySection["projects"],
-      target: firstNodeBySection["levels-tech"],
-      sourceHandle: "top",
-      targetHandle: "bottom",
+      id: "edge-cli-to-projects",
+      source: firstNodeBySection["levels-tech"],
+      target: firstNodeBySection["projects"],
+      sourceHandle: "bottom",
+      targetHandle: "top",
       type: "smoothstep",
       pathOptions: {
         borderRadius: EDGE_BORDER_RADIUS,
@@ -581,14 +613,15 @@ export function generateMetroLayout(
     });
   }
 
-  // Level Up with AI Prez (last project) -> The Only Way Forward (closing)
+  // The Only Way Forward (closing) -> Level Up with AI Prez (last project)
+  // Note: Edge direction swapped so handle types match (bottom=source, top=target)
   if (lastNodeBySection["projects"] && firstNodeBySection["closing"]) {
     edges.push({
-      id: "edge-levelupai-to-closing",
-      source: lastNodeBySection["projects"],
-      target: firstNodeBySection["closing"],
-      sourceHandle: "top",
-      targetHandle: "bottom",
+      id: "edge-closing-to-levelupai",
+      source: firstNodeBySection["closing"],
+      target: lastNodeBySection["projects"],
+      sourceHandle: "bottom",
+      targetHandle: "top",
       type: "smoothstep",
       pathOptions: {
         borderRadius: EDGE_BORDER_RADIUS,

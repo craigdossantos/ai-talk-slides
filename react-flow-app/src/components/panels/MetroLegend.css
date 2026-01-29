@@ -6,41 +6,75 @@
   padding: 20px 24px;
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-  font-family: "Space Grotesk", sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
   z-index: 1600;
   min-width: 200px;
 }
 
 .metro-legend__title {
   font-weight: 700;
-  font-size: 12px;
-  letter-spacing: 1px;
-  margin: 0 0 16px 0;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  margin: 0 0 12px 0;
   color: #1a1a1a;
   text-transform: uppercase;
+}
+
+.metro-legend__title--features {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #e5e5e5;
 }
 
 .metro-legend__items {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .metro-legend__item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .metro-legend__line {
-  width: 32px;
-  height: 8px;
-  border-radius: 4px;
+  width: 28px;
+  height: 6px;
+  border-radius: 3px;
   flex-shrink: 0;
 }
 
 .metro-legend__label {
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   color: #333;
+}
+
+/* Station features section */
+.metro-legend__features {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.metro-legend__feature {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.metro-legend__feature-icon {
+  font-size: 11px;
+  font-weight: 700;
+  color: #1a1a1a;
+  font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace;
+  min-width: 24px;
+}
+
+.metro-legend__feature-label {
+  font-size: 11px;
+  font-weight: 400;
+  color: #555;
 }
