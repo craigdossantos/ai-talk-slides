@@ -102,19 +102,17 @@ function generateSubnodePositions(
 
 // Section-specific Y positions - expanded for slide images above stops
 const SECTION_Y_POSITIONS: Record<string, number> = {
-  intro: 150, // Top-left start (increased for image space)
-  understanding: 350, // Curves down (was 180)
-  mapping: 600, // Center junction area (was 320)
-  "levels-nontech": 500, // Upper parallel track (was 260)
-  "levels-tech": 850, // Lower parallel track (was 440)
-  closing: 700, // Right side convergence (was 350)
-  projects: 1400, // Below all other tracks - standalone magenta line
+  understanding: 150, // Top-left start - AI Mental Models (merged intro)
+  mapping: 600, // Center junction area
+  "levels-nontech": 500, // Upper parallel track
+  "levels-tech": 850, // Lower parallel track
+  closing: 700, // Right side convergence
+  projects: 1400, // Below all other tracks - purple line
 };
 
 // Section-specific starting X positions - staggered for diagonal flow
 const SECTION_X_STARTS: Record<string, number> = {
-  intro: 100,
-  understanding: 250, // Staggered to create diagonal
+  understanding: 100, // Start position - AI Mental Models (merged intro)
   mapping: 400,
   "levels-nontech": 700,
   "levels-tech": 700,
@@ -130,15 +128,9 @@ const METRO_LINE_LABELS: Record<
   string,
   { lineName: string; subtitle: string; offsetX: number; offsetY: number }
 > = {
-  intro: {
-    lineName: "RED LINE",
-    subtitle: "The Widening Gulf (Introduction)",
-    offsetX: -50,
-    offsetY: -80,
-  },
   understanding: {
     lineName: "YELLOW LINE",
-    subtitle: "Understanding AI",
+    subtitle: "AI Mental Models",
     offsetX: -50,
     offsetY: -80,
   },
@@ -150,25 +142,19 @@ const METRO_LINE_LABELS: Record<
   },
   "levels-nontech": {
     lineName: "BLUE LINE",
-    subtitle: "Non-Technical Track (Levels 0-8)",
+    subtitle: "Non-Technical Track",
     offsetX: -50,
     offsetY: -80,
   },
   "levels-tech": {
-    lineName: "ORANGE LINE",
-    subtitle: "Technical Track (Levels 1-9)",
-    offsetX: -50,
-    offsetY: -80,
-  },
-  closing: {
-    lineName: "PURPLE LINE",
-    subtitle: "Closing",
+    lineName: "RED LINE",
+    subtitle: "Technical Track",
     offsetX: -50,
     offsetY: -80,
   },
   projects: {
-    lineName: "MAGENTA LINE",
-    subtitle: "The Project Path",
+    lineName: "PURPLE LINE",
+    subtitle: "Projects",
     offsetX: -50,
     offsetY: -80,
   },
@@ -435,28 +421,6 @@ export function generateMetroLayout(
   }
 
   // Create inter-section connections with offset to route around labels
-  // Intro -> Understanding (diagonal connection)
-  if (lastNodeBySection["intro"] && firstNodeBySection["understanding"]) {
-    edges.push({
-      id: "edge-intro-to-understanding",
-      source: lastNodeBySection["intro"],
-      target: firstNodeBySection["understanding"],
-      sourceHandle: "right",
-      targetHandle: "left",
-      type: "smoothstep",
-      pathOptions: {
-        borderRadius: EDGE_BORDER_RADIUS,
-        offset: 80, // Route around labels
-      },
-      style: {
-        stroke: METRO_LINE_COLORS["understanding"],
-        strokeWidth: METRO_LAYOUT.lineThickness,
-        strokeLinecap: "round",
-        strokeLinejoin: "round",
-      },
-    });
-  }
-
   // Understanding -> Mapping
   if (lastNodeBySection["understanding"] && firstNodeBySection["mapping"]) {
     edges.push({

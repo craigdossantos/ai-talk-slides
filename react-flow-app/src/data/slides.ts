@@ -3,13 +3,8 @@ import type { Section, SlideContent, Resource } from "../types/presentation";
 // Define the sections of the presentation
 export const sections: Section[] = [
   {
-    id: "intro",
-    title: "The Widening Gulf",
-    track: "general",
-  },
-  {
     id: "understanding",
-    title: "Understanding AI",
+    title: "AI Mental Models",
     track: "non-technical",
   },
   {
@@ -41,10 +36,10 @@ export const sections: Section[] = [
 
 // Define all slides with their content (slide 17 removed - integrated into slide 16)
 export const slides: SlideContent[] = [
-  // Section: Introduction - The Widening Gulf
+  // Section: AI Mental Models (merged intro + understanding)
   {
     id: "slide-01",
-    sectionId: "intro",
+    sectionId: "understanding",
     type: "title",
     title: "The Widening Gulf of Technology",
     subtitle: "The growing divide between tech-literate and non-tech-literate",
@@ -57,7 +52,7 @@ export const slides: SlideContent[] = [
   },
   {
     id: "slide-06",
-    sectionId: "intro",
+    sectionId: "understanding",
     type: "content",
     title: "What It Takes",
     subtitle: "Resistance to change is the real barrier",
@@ -69,15 +64,14 @@ export const slides: SlideContent[] = [
   },
   {
     id: "slide-02",
-    sectionId: "intro",
+    sectionId: "understanding",
     type: "content",
     title: "Mental Models Through Use",
     subtitle: "Understanding comes from doing, not reading",
     backgroundImage: "/assets/images/slide-02_billboard_v4_20260123_110517.jpg",
     bullets: ["Mental models improve more through use, not instruction"],
   },
-
-  // Section: Understanding AI
+  // (slides 03, 04 were already in understanding section)
   {
     id: "slide-03",
     sectionId: "understanding",

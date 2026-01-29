@@ -223,13 +223,12 @@ export const TRACK_COLORS = {
 
 // Metro line colors matching the reference design
 export const METRO_LINE_COLORS = {
-  intro: "#dc2626", // red - The Widening Gulf (Introduction)
-  understanding: "#eab308", // yellow - Understanding AI
+  understanding: "#eab308", // yellow - AI Mental Models (merged intro + understanding)
   mapping: "#22c55e", // green - Mapping the Journey
   "levels-nontech": "#3b82f6", // blue - Non-Technical Track
-  "levels-tech": "#f97316", // orange - Technical Track
-  closing: "#a855f7", // purple - Closing
-  projects: "#ec4899", // magenta - The Project Path
+  "levels-tech": "#dc2626", // red - Technical Track
+  closing: "#000000", // black - Closing (single stop, not a line)
+  projects: "#9333ea", // purple - The Project Path
 } as const;
 
 // Metro layout constants

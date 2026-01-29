@@ -3,12 +3,11 @@ import { METRO_LINE_COLORS } from "../../types/presentation";
 import "./MetroLegend.css";
 
 const LINE_LABELS: Record<string, string> = {
-  intro: "Introduction",
-  understanding: "Understanding AI",
+  understanding: "AI Mental Models",
   mapping: "Mapping the Journey",
   "levels-nontech": "Non-Technical Track",
   "levels-tech": "Technical Track",
-  closing: "Closing",
+  projects: "Projects",
 };
 
 function MetroLegend() {
