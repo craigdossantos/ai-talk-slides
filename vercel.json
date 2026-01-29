@@ -3,5 +3,6 @@
   "framework": "vite",
   "buildCommand": "cd react-flow-app && npm run build",
   "outputDirectory": "react-flow-app/dist",
-  "installCommand": "cd react-flow-app && npm install"
+  "installCommand": "cd react-flow-app && npm install",
+  "rewrites": [{ "source": "/((?!assets/).*)", "destination": "/index.html" }]
 }
