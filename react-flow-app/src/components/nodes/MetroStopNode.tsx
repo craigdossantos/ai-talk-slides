@@ -166,6 +166,8 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
                 <a
                   href={`/resources#${slide.id}`}
                   className="metro-stop__resources-heading"
+                  target="_blank"
+                  rel="noopener noreferrer"
                 >
                   Resources
                 </a>
@@ -185,6 +187,8 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
                   <a
                     href={`/resources#${slide.id}`}
                     className="metro-stop__resources-more"
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     See all {linkResources.length} resources →
                   </a>
