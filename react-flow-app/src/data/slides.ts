@@ -541,6 +541,15 @@ export const slides: SlideContent[] = [
 
 // Define resources linked to key slides
 export const resources: Resource[] = [
+  // New Tech, Old Mental Model - ChatGPT Billboard
+  {
+    id: "res-49",
+    slideId: "slide-03",
+    type: "article",
+    title: "ChatGPT Billboard Ad",
+    url: "https://creativereview.imgix.net/uploads/2025/09/ChatGPTCarUK1.jpg?auto=compress,format&crop=faces,entropy,edges&fit=crop&q=60&w=2000&h=1125",
+    description: "ChatGPT billboard treating AI like Google search",
+  },
   // Avoidance - Millennials and platform shifts
   {
     id: "res-47",
@@ -872,6 +881,15 @@ export const resources: Resource[] = [
     title: "Windsurf IDE",
     url: "https://windsurf.com",
   },
+  // Modes and Workflows - Claude Code docs
+  {
+    id: "res-50",
+    slideId: "slide-20",
+    type: "docs",
+    title: "Claude Code Common Workflows",
+    url: "https://code.claude.com/docs/en/common-workflows",
+    description: "Common workflows and understanding Plan mode",
+  },
   // Meta Level / Skill Creator
   {
     id: "res-34",
@@ -879,6 +897,14 @@ export const resources: Resource[] = [
     type: "github",
     title: "Anthropic Skill Creator",
     url: "https://github.com/anthropics/skills/tree/main/skills/skill-creator",
+  },
+  {
+    id: "res-51",
+    slideId: "slide-20b",
+    type: "github",
+    title: "Last 30 Days Skill",
+    url: "https://github.com/mvanhorn/last30days-skill",
+    description: "Find recent talk about topics on X and Reddit",
   },
   // Full Software Lifecycle - Vercel
   {
@@ -993,6 +1019,14 @@ export const resources: Resource[] = [
     title: "Agent Flywheel",
     url: "https://agent-flywheel.com/",
     description: "VPS setup to run 10+ agents simultaneously",
+  },
+  {
+    id: "res-52",
+    slideId: "slide-25",
+    type: "tool",
+    title: "Clawd.bot",
+    url: "https://clawd.bot/",
+    description: "Run Claude on your local machine",
   },
   // Sample Prompt Resources
   {
@@ -1336,6 +1370,77 @@ Use simple analogies — think of me as someone who uses Google Docs but has nev
 6. What are common mistakes people make with these modes?
 
 Give me a practical workflow example showing when to use each mode.`,
+  },
+  // Project Resources
+  {
+    id: "res-proj-01",
+    slideId: "project-craigdossantos",
+    type: "tool",
+    title: "CraigDosSantos.com",
+    url: "https://craigdossantos.com/",
+  },
+  {
+    id: "res-proj-02",
+    slideId: "project-secretgame",
+    type: "tool",
+    title: "The Secret Game",
+    url: "https://secretgame.lightersky.com/",
+  },
+  {
+    id: "res-proj-03",
+    slideId: "project-freestyleflow",
+    type: "video",
+    title: "Freestyle Flow Demo",
+    url: "https://youtube.com/shorts/wwJlxvHnJFI?si=oZlh1rnWQyaPXYqv",
+  },
+  {
+    id: "res-proj-04",
+    slideId: "project-ourweunion",
+    type: "tool",
+    title: "OurWeUnion.com",
+    url: "https://www.ourweunion.com/",
+  },
+  {
+    id: "res-proj-05",
+    slideId: "project-dialoguedojo",
+    type: "tool",
+    title: "Dialogue Dojo",
+    url: "https://dialoguedojo.lightersky.com/",
+  },
+  {
+    id: "res-proj-06",
+    slideId: "project-instantbook",
+    type: "tool",
+    title: "Instant Book",
+    url: "https://instantbook.lightersky.com/",
+  },
+  {
+    id: "res-proj-07",
+    slideId: "project-youtubesummary",
+    type: "tool",
+    title: "YouTube Summary",
+    url: "https://youtubesummary.lightersky.com/",
+  },
+  {
+    id: "res-proj-08",
+    slideId: "project-stefsbirthday",
+    type: "tool",
+    title: "Stef's Birthday",
+    url: "https://stefsbirthday.com/",
+  },
+  {
+    id: "res-proj-09",
+    slideId: "project-quota",
+    type: "tool",
+    title: "Quota",
+    url: "https://usequota.app/",
+  },
+  {
+    id: "res-proj-10",
+    slideId: "project-levelupai",
+    type: "tool",
+    title: "Level Up with AI",
+    url: "https://levelupwithai.lightersky.com/",
   },
   {
     id: "prompt-21",
