@@ -7,27 +7,18 @@ import type {
   ResourceIconNode,
   Resource,
   JunctionHandle,
-  SubnodeNode,
-  SubnodeContent,
   LandmarkNode,
   RiverWaypointNode,
 } from "../types/presentation";
 import { METRO_LINE_COLORS, METRO_LAYOUT } from "../types/presentation";
 import { loadPersistedPositions } from "./persistence";
 import type { MetroLineEdge } from "../components/edges/MetroLineEdge";
-import type { ArcEdge } from "../components/edges/ArcEdge";
 import type { RiverEdge } from "../components/edges/RiverEdge";
-import type { SubnodeBranchEdge } from "../components/edges/SubnodeBranchEdge";
 import { LANDMARKS, LANDMARK_INITIAL_POSITIONS } from "../data/landmarks";
 import committedPositions from "../data/nodePositions.json";
 
 // Spacing between parallel lines at junctions (in pixels)
 const JUNCTION_LINE_SPACING = 12;
-
-// Subnode arc configuration - positioned below the parent node
-const SUBNODE_ARC_RADIUS = 180; // Distance from parent node center
-const SUBNODE_ARC_START_ANGLE = 30; // Start angle in degrees (lower right)
-const SUBNODE_ARC_END_ANGLE = 150; // End angle in degrees (lower left)
 
 // River waypoint initial positions - flows from lake (top-left) to ocean (bottom-right)
 // Coordinates adjusted to connect to water bodies on expanded canvas
@@ -48,56 +39,10 @@ interface MetroLayoutResult {
   nodes: (
     | MetroStopNode
     | ResourceIconNode
-    | SubnodeNode
     | LandmarkNode
     | RiverWaypointNode
   )[];
-  edges: (
-    | BuiltInEdge
-    | MetroLineEdge
-    | ArcEdge
-    | RiverEdge
-    | SubnodeBranchEdge
-  )[];
-}
-
-/**
- * Generates subnode positions in an arc above the parent metro stop
- */
-function generateSubnodePositions(
-  parentX: number,
-  parentY: number,
-  subnodes: SubnodeContent[],
-): { x: number; y: number }[] {
-  const positions: { x: number; y: number }[] = [];
-  const count = subnodes.length;
-
-  if (count === 0) return positions;
-
-  // Single subnode goes directly below (90 degrees)
-  if (count === 1) {
-    positions.push({
-      x: parentX,
-      y: parentY + SUBNODE_ARC_RADIUS,
-    });
-    return positions;
-  }
-
-  // Multiple subnodes spread in an arc
-  const angleRange = SUBNODE_ARC_END_ANGLE - SUBNODE_ARC_START_ANGLE;
-  const angleStep = angleRange / (count - 1);
-
-  for (let i = 0; i < count; i++) {
-    const angleDeg = SUBNODE_ARC_START_ANGLE + i * angleStep;
-    const angleRad = (angleDeg * Math.PI) / 180;
-
-    positions.push({
-      x: parentX + SUBNODE_ARC_RADIUS * Math.cos(angleRad),
-      y: parentY + SUBNODE_ARC_RADIUS * Math.sin(angleRad),
-    });
-  }
-
-  return positions;
+  edges: (BuiltInEdge | MetroLineEdge | RiverEdge)[];
 }
 
 // Section-specific Y positions - expanded for slide images above stops
@@ -180,17 +125,10 @@ export function generateMetroLayout(
   const nodes: (
     | MetroStopNode
     | ResourceIconNode
-    | SubnodeNode
     | LandmarkNode
     | RiverWaypointNode
   )[] = [];
-  const edges: (
-    | BuiltInEdge
-    | MetroLineEdge
-    | ArcEdge
-    | RiverEdge
-    | SubnodeBranchEdge
-  )[] = [];
+  const edges: (BuiltInEdge | MetroLineEdge | RiverEdge)[] = [];
 
   // Load positions: committed JSON as base, localStorage overrides
   const localStoragePositions = loadPersistedPositions();
@@ -285,94 +223,6 @@ export function generateMetroLayout(
           },
         });
       });
-
-      // Create subnode nodes and branch loop edges if slide has subnodes
-      if (slide.subnodes && slide.subnodes.length > 0) {
-        const nodePosition = persistedNodePos || { x: currentX, y: currentY };
-        const subnodePositions = generateSubnodePositions(
-          nodePosition.x,
-          nodePosition.y,
-          slide.subnodes,
-        );
-
-        const subnodeNodeIds: string[] = [];
-
-        slide.subnodes.forEach((subnode, subnodeIndex) => {
-          const subnodeNodeId = `subnode-${subnode.id}`;
-          subnodeNodeIds.push(subnodeNodeId);
-          const defaultPosition = subnodePositions[subnodeIndex];
-          // Use persisted position if available, otherwise use calculated arc position
-          const persistedSubnodePos = persistedPositions?.[subnodeNodeId];
-
-          // Create subnode node
-          const subnodeNode: SubnodeNode = {
-            id: subnodeNodeId,
-            type: "subnode",
-            position: persistedSubnodePos || defaultPosition,
-            data: {
-              subnode,
-              parentNodeId: nodeId,
-              lineColor,
-              arcIndex: subnodeIndex,
-              totalSubnodes: slide.subnodes!.length,
-              isExpanded: false, // Will be updated by MetroCanvas based on active state
-            },
-            draggable: true, // Enable dragging to reposition subnodes
-          };
-          nodes.push(subnodeNode);
-        });
-
-        // Create branch loop edges:
-        // 1. Metro stop (branch-out) → first subnode (left)
-        const branchOutEdge: SubnodeBranchEdge = {
-          id: `branch-out-${nodeId}-${subnodeNodeIds[0]}`,
-          source: nodeId,
-          target: subnodeNodeIds[0],
-          sourceHandle: "branch-out",
-          targetHandle: "left",
-          type: "subnodeBranch",
-          data: {
-            lineColor,
-            isExpanded: false,
-            parentSlideId: slide.id,
-          },
-        };
-        edges.push(branchOutEdge);
-
-        // 2. Chain subnodes left-to-right: subnode[i] (right) → subnode[i+1] (left)
-        for (let j = 0; j < subnodeNodeIds.length - 1; j++) {
-          const chainEdge: SubnodeBranchEdge = {
-            id: `branch-chain-${subnodeNodeIds[j]}-${subnodeNodeIds[j + 1]}`,
-            source: subnodeNodeIds[j],
-            target: subnodeNodeIds[j + 1],
-            sourceHandle: "right",
-            targetHandle: "left",
-            type: "subnodeBranch",
-            data: {
-              lineColor,
-              isExpanded: false,
-              parentSlideId: slide.id,
-            },
-          };
-          edges.push(chainEdge);
-        }
-
-        // 3. Last subnode (right) → metro stop (branch-in)
-        const branchInEdge: SubnodeBranchEdge = {
-          id: `branch-in-${subnodeNodeIds[subnodeNodeIds.length - 1]}-${nodeId}`,
-          source: subnodeNodeIds[subnodeNodeIds.length - 1],
-          target: nodeId,
-          sourceHandle: "right",
-          targetHandle: "branch-in",
-          type: "subnodeBranch",
-          data: {
-            lineColor,
-            isExpanded: false,
-            parentSlideId: slide.id,
-          },
-        };
-        edges.push(branchInEdge);
-      }
 
       // Create edge to previous node in same section
       if (prevNodeId) {

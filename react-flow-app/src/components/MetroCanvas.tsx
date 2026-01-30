@@ -13,13 +13,10 @@ import MetroStopNode from "./nodes/MetroStopNode";
 import MetroBackgroundNode from "./nodes/MetroBackgroundNode";
 import ResourceIconNode from "./nodes/ResourceIconNode";
 import SlideNode from "./nodes/SlideNode";
-import SubnodeNode from "./nodes/SubnodeNode";
 import LandmarkNode from "./nodes/LandmarkNode";
 import RiverWaypointNode from "./nodes/RiverWaypointNode";
 import MetroLineEdge from "./edges/MetroLineEdge";
-import ArcEdge from "./edges/ArcEdge";
 import RiverEdge from "./edges/RiverEdge";
-import SubnodeBranchEdge from "./edges/SubnodeBranchEdge";
 import NavigationControls from "./panels/NavigationControls";
 import { EDIT_MODE } from "../config";
 import MetroLegend from "./panels/MetroLegend";
@@ -42,7 +39,6 @@ const nodeTypes = {
   metroBackground: MetroBackgroundNode,
   resourceIcon: ResourceIconNode,
   slide: SlideNode,
-  subnode: SubnodeNode,
   landmark: LandmarkNode,
   riverWaypoint: RiverWaypointNode,
 };
@@ -50,9 +46,7 @@ const nodeTypes = {
 // Register custom edge types
 const edgeTypes = {
   metroLine: MetroLineEdge,
-  arcEdge: ArcEdge,
   riverEdge: RiverEdge,
-  subnodeBranch: SubnodeBranchEdge,
 };
 
 function MetroCanvas() {
@@ -120,31 +114,6 @@ function MetroCanvas() {
     toggleOverview,
     setActiveSlide,
   } = useKeyboardNavigation({ sections, slides });
-
-  // Helper to fit viewport to slide + subnodes
-  const fitSlideWithSubnodes = useCallback(
-    (slideId: string) => {
-      const slide = slides.find((s) => s.id === slideId);
-      if (!slide?.subnodes || slide.subnodes.length === 0) return false;
-
-      // Collect the node IDs to fit: metro stop + all its subnodes
-      const nodeIdsToFit = [
-        `metro-${slideId}`,
-        ...slide.subnodes.map((subnode) => `subnode-${subnode.id}`),
-      ];
-
-      // Fit view to include the slide and all its subnodes
-      fitView({
-        nodes: nodes.filter((n) => nodeIdsToFit.includes(n.id)),
-        duration: 500,
-        padding: 0.2,
-        minZoom: 0.5, // Ensure subnodes are visible per ZOOM_THRESHOLD
-      });
-
-      return true;
-    },
-    [nodes, fitView],
-  );
 
   // Find closest metro stop to viewport center
   const findClosestSlide = useCallback(() => {
@@ -218,21 +187,12 @@ function MetroCanvas() {
         if (slideId === currentSlideId) {
           setFullSlideNodeId((prev) => (prev === nodeId ? null : nodeId));
         } else {
-          // Check if slide has subnodes - use custom fitting
-          const slide = slides.find((s) => s.id === slideId);
-          if (slide?.subnodes && slide.subnodes.length > 0) {
-            // For slides with subnodes: set state directly and use custom fitView
-            setActiveSlide(slideId);
-            fitSlideWithSubnodes(slideId);
-          } else {
-            // For regular slides: use standard navigation
-            navigateToSlide(slideId);
-          }
+          navigateToSlide(slideId);
           setFullSlideNodeId(nodeId);
         }
       }
     },
-    [navigateToSlide, currentSlideId, setActiveSlide, fitSlideWithSubnodes],
+    [navigateToSlide, currentSlideId],
   );
 
   // Handle pane click (clicking on canvas background) - close full slide
@@ -332,24 +292,6 @@ function MetroCanvas() {
         };
       }
 
-      // Handle subnode expansion based on parent metro stop being active
-      if (node.type === "subnode") {
-        // parentNodeId is like "metro-slide-03", currentSlideId is like "slide-03"
-        const parentSlideId = (
-          node.data as { parentNodeId: string }
-        ).parentNodeId.replace("metro-", "");
-        const isExpanded = parentSlideId === currentSlideId;
-
-        return {
-          ...node,
-          zIndex: isExpanded ? 999 : 0, // Above other nodes but below active metro stop
-          data: {
-            ...node.data,
-            isExpanded,
-          },
-        };
-      }
-
       return node;
     });
   }, [
@@ -362,47 +304,11 @@ function MetroCanvas() {
     fullSlideNodeId,
   ]);
 
-  // Update subnode edges with expansion state based on their parent metro stop being active
-  const edgesWithExpansionState = useMemo(() => {
-    return edges.map((edge) => {
-      if (edge.type === "arcEdge") {
-        // Arc edges connect from subnode (source) to metro stop (target)
-        // Target is like "metro-slide-03", currentSlideId is like "slide-03"
-        const targetSlideId = edge.target.replace("metro-", "");
-        const isExpanded = targetSlideId === currentSlideId;
-
-        return {
-          ...edge,
-          data: {
-            ...edge.data,
-            isExpanded,
-          },
-        };
-      }
-
-      if (edge.type === "subnodeBranch") {
-        // Branch edges store their parent slide ID in data
-        const parentSlideId = (edge.data as { parentSlideId?: string })
-          ?.parentSlideId;
-        const isExpanded = parentSlideId === currentSlideId;
-
-        return {
-          ...edge,
-          data: {
-            ...edge.data,
-            isExpanded,
-          },
-        };
-      }
-      return edge;
-    });
-  }, [edges, currentSlideId]);
-
   return (
     <div style={{ width: "100%", height: "100%", position: "relative" }}>
       <ReactFlow
         nodes={nodesWithActiveState}
-        edges={edgesWithExpansionState}
+        edges={edges}
         nodeTypes={nodeTypes}
         edgeTypes={edgeTypes}
         onNodeClick={handleNodeClick}
