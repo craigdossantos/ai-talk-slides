@@ -112,7 +112,10 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
       {/* Full slide content - rendered via portal to escape React Flow transforms */}
       {showFullSlide &&
         createPortal(
-          <div className="metro-stop__full-slide">
+          <div
+            className="metro-stop__full-slide"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               className="metro-stop__close-btn"
               onClick={(e) => {
@@ -168,13 +171,19 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
                   className="metro-stop__resources-heading"
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
                 >
                   Resources
                 </a>
                 <ul>
                   {linkResources.slice(0, 4).map((r) => (
                     <li key={r.id}>
-                      <a href={r.url} target="_blank" rel="noopener noreferrer">
+                      <a
+                        href={r.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                      >
                         {r.title}
                       </a>
                       <span className="metro-stop__resource-type">
@@ -189,6 +198,7 @@ function MetroStopNode({ data }: MetroStopNodeProps) {
                     className="metro-stop__resources-more"
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
                   >
                     See all {linkResources.length} resources →
                   </a>
