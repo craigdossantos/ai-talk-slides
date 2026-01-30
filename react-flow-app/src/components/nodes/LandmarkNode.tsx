@@ -1,6 +1,5 @@
 import { memo, useState, useCallback, useRef } from "react";
 import type { NodeProps, Node } from "@xyflow/react";
-import { EDIT_MODE } from "../../config";
 import {
   loadPersistedPositions,
   savePersistedPositions,
@@ -13,6 +12,7 @@ export interface LandmarkNodeData {
   svgType?: "water" | "landmass"; // For inline SVG landmarks
   label: string;
   scale?: number; // Persisted scale factor
+  isEditMode?: boolean; // Runtime edit mode from parent
 }
 
 export type LandmarkNode = Node<LandmarkNodeData, "landmark">;
@@ -207,11 +207,11 @@ function LandmarkNode({ id, data }: NodeProps<LandmarkNode>) {
 
   return (
     <div
-      className={`landmark-node ${EDIT_MODE ? "landmark-node--edit" : ""}`}
+      className={`landmark-node ${data.isEditMode ? "landmark-node--edit" : ""}`}
       style={{ transform: `scale(${scale})`, transformOrigin: "top left" }}
     >
       {renderContent()}
-      {EDIT_MODE && (
+      {data.isEditMode && (
         <>
           <div className="landmark-node__label">{data.label}</div>
           {/* nodrag nopan classes prevent React Flow from intercepting drag events */}

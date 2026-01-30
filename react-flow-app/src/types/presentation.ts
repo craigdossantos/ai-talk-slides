@@ -159,11 +159,13 @@ export interface LandmarkNodeData {
   svgType?: "water" | "landmass"; // For inline SVG landmarks
   label: string;
   scale?: number; // Persisted scale factor
+  isEditMode?: boolean; // Runtime edit mode from parent
 }
 
 export interface RiverWaypointNodeData {
   [key: string]: unknown;
   waypointIndex: number;
+  isEditMode?: boolean; // Runtime edit mode from parent
 }
 
 // React Flow node types with their data

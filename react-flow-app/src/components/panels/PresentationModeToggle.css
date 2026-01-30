@@ -1,0 +1,18 @@
+.presentation-mode-toggle {
+  position: absolute;
+  top: 115px;
+  left: 24px;
+  z-index: 1500;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.presentation-mode-toggle:hover {
+  opacity: 1;
+}

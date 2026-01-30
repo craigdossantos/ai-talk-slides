@@ -1,11 +1,11 @@
 import { memo } from "react";
 import { Handle, Position, type NodeProps, type Node } from "@xyflow/react";
-import { EDIT_MODE } from "../../config";
 import "./RiverWaypointNode.css";
 
 export interface RiverWaypointNodeData {
   [key: string]: unknown;
   waypointIndex: number;
+  isEditMode?: boolean; // Runtime edit mode from parent
 }
 
 export type RiverWaypointNode = Node<RiverWaypointNodeData, "riverWaypoint">;
@@ -13,14 +13,14 @@ export type RiverWaypointNode = Node<RiverWaypointNodeData, "riverWaypoint">;
 /**
  * River waypoint node - invisible control point for shaping the river path.
  * Invisible in presentation mode, shows subtle dot in edit mode.
- * Draggable only when EDIT_MODE = true.
+ * Draggable only when data.isEditMode = true.
  */
 function RiverWaypointNode({ data }: NodeProps<RiverWaypointNode>) {
   return (
     <div
-      className={`river-waypoint-node ${EDIT_MODE ? "river-waypoint-node--edit" : ""}`}
+      className={`river-waypoint-node ${data.isEditMode ? "river-waypoint-node--edit" : ""}`}
     >
-      {EDIT_MODE && (
+      {data.isEditMode && (
         <>
           <div className="river-waypoint-node__dot" />
           <div className="river-waypoint-node__label">{data.waypointIndex}</div>

@@ -18,6 +18,7 @@ import RiverWaypointNode from "./nodes/RiverWaypointNode";
 import MetroLineEdge from "./edges/MetroLineEdge";
 import RiverEdge from "./edges/RiverEdge";
 import NavigationControls from "./panels/NavigationControls";
+import PresentationModeToggle from "./panels/PresentationModeToggle";
 import { EDIT_MODE } from "../config";
 import MetroLegend from "./panels/MetroLegend";
 import MetroTitle from "./panels/MetroTitle";
@@ -89,6 +90,9 @@ function MetroCanvas() {
 
   // Track which node has full slide view open (null = none)
   const [fullSlideNodeId, setFullSlideNodeId] = useState<string | null>(null);
+
+  // Edit mode state - initialized from config constant
+  const [isEditMode, setIsEditMode] = useState(EDIT_MODE);
 
   // Close full slide view on Escape key
   useEffect(() => {
@@ -292,6 +296,30 @@ function MetroCanvas() {
         };
       }
 
+      // Pass isEditMode to landmark nodes and control draggability
+      if (node.type === "landmark") {
+        return {
+          ...node,
+          draggable: isEditMode,
+          data: {
+            ...node.data,
+            isEditMode,
+          },
+        } as typeof node;
+      }
+
+      // Pass isEditMode to river waypoint nodes and control draggability
+      if (node.type === "riverWaypoint") {
+        return {
+          ...node,
+          draggable: isEditMode,
+          data: {
+            ...node.data,
+            isEditMode,
+          },
+        } as typeof node;
+      }
+
       return node;
     });
   }, [
@@ -302,6 +330,7 @@ function MetroCanvas() {
     orderedSlides,
     navigateToSlide,
     fullSlideNodeId,
+    isEditMode,
   ]);
 
   return (
@@ -315,7 +344,7 @@ function MetroCanvas() {
         onPaneClick={handlePaneClick}
         onNodesChange={onNodesChange}
         onNodeDragStop={onNodeDragStop}
-        nodesDraggable={EDIT_MODE}
+        nodesDraggable={isEditMode}
         minZoom={0.1}
         maxZoom={3}
         fitView
@@ -326,13 +355,17 @@ function MetroCanvas() {
         proOptions={{ hideAttribution: true }}
       />
       <MetroTitle />
+      <PresentationModeToggle
+        isEditMode={isEditMode}
+        onToggle={() => setIsEditMode((prev) => !prev)}
+      />
       <MetroLegend />
       <MetroFooter />
       <NavigationControls
         currentSlideIndex={currentSlideIndex}
         totalSlides={totalSlides}
         isOverviewMode={isOverviewMode}
-        isEditMode={EDIT_MODE}
+        isEditMode={isEditMode}
         onPrevious={goToPreviousSlide}
         onNext={goToNextSlide}
         onToggleOverview={handleToggleOverview}
