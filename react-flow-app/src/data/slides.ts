@@ -692,7 +692,7 @@ export const resources: Resource[] = [
     slideId: "slide-12",
     type: "tool",
     title: "Gemini in Chrome",
-    url: "https://support.google.com/chrome/answer/14286918",
+    url: "https://gemini.google/overview/gemini-in-chrome/",
     image:
       "https://www.gstatic.com/lamda/images/gemini_favicon_f069958c85030456e93de685481c559f160ea06b.png",
   },
